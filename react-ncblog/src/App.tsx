@@ -1,4 +1,5 @@
-import { Button, ButtonGroup, Grid, GridItem, Show } from '@chakra-ui/react'
+import { Grid, GridItem, Show } from '@chakra-ui/react'
+import NavLogo from './components/NavLogo'
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         }  
       }> 
         {/* <GridItem area='nav' bg='coral'>Nav</GridItem> */}
-        <GridItem area='nav-logo' bg='coral'>Logo</GridItem>
+        <GridItem area='nav-logo' bg='coral'><NavLogo></NavLogo></GridItem>
         <GridItem area='main' bg='dodgerblue'>Main</GridItem>
         <Show above="lg">
           <GridItem area='nav-menu' bg='red'>Menu</GridItem>

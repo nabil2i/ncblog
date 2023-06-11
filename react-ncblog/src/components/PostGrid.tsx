@@ -1,22 +1,9 @@
-import  React, { useState, useEffect } from 'react'
-import apiClient from '../services/api-client';
-import { Text } from '@chakra-ui/react';
 
-interface Post {
-  id: number;
-  title: string;
-}
+import { Text } from '@chakra-ui/react';
+import usePosts from '../hooks/usePosts';
 
 const PostGrid = () => {
- const [ posts, setPosts ] = useState<Post[]>([]);
- const [error, setError ] = useState('');
-
- useEffect(() => {
-  apiClient
-    .get('/posts')
-    .then(res => setPosts(res.data))
-    .catch(err => setError(err.message));
- })
+  const { posts, error} = usePosts();
 
   return (
     <>

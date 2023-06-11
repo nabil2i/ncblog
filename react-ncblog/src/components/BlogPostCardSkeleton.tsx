@@ -2,7 +2,7 @@ import { Box, Text, Heading, Skeleton, SkeletonText } from "@chakra-ui/react";
 
 const BlogPostCardSkeleton = () => {
   return (
-    <Box  height={228} borderWidth="1px" borderRadius="lg" overflow="hidden">
+    <Box  width="350px" borderWidth="1px" borderRadius="lg" overflow="hidden">
       {/* <Skeleton height="100px" /> */}
         {/* <Box m="5" as="a"> */}
 

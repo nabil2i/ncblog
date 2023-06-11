@@ -10,21 +10,29 @@ export interface Post {
 const usePosts = () => {
   const [ posts, setPosts ] = useState<Post[]>([]);
   const [error, setError ] = useState('');
+  const [ isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
+
+    setLoading(true);
+
     apiClient
       .get('/posts', { signal: controller.signal })
-      .then(res => setPosts(res.data))
+      .then(res => {
+        setPosts(res.data);
+        setLoading(false);
+      })
       .catch(err => {
         if (err instanceof CanceledError) return;
         setError(err.message);
+        setLoading(false);
       });
 
     return () => controller.abort();
  }, []);
 
- return { posts, error };
+ return { posts, error, isLoading };
 }
 
 export default usePosts;

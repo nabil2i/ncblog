@@ -4,7 +4,7 @@ import NabilConveys1 from '../assets/NabilConveys1.webp';
 
 const NavLogo = () => {
   return (
-    <HStack padding="10px">
+    <HStack p="10px">
       <Image src={NabilConveys1} boxSize="60px"/>
       <Text>Nabil Conveys</Text>
     </HStack>

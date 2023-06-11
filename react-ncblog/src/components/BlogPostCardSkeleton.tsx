@@ -1,23 +1,14 @@
-import { Box, Text, Heading, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Box, Text, Heading, Skeleton, SkeletonText, Card, CardBody } from "@chakra-ui/react";
 
 const BlogPostCardSkeleton = () => {
   return (
-    <Box  width="350px" borderWidth="1px" borderRadius="lg" overflow="hidden">
-      {/* <Skeleton height="100px" /> */}
-        {/* <Box m="5" as="a"> */}
+      <Card>
+        <CardBody>
+          <SkeletonText></SkeletonText>
+          <SkeletonText></SkeletonText>
+        </CardBody>
+    </Card>
 
-        <Skeleton height={10}></Skeleton>
-          <SkeletonText/>
-          {/* <Heading m="5" mb="0" as="h4" size="md" fontSize="2xl">
-            {post.title}
-          </Heading> */}
-
-          <SkeletonText />
-          {/* <Text m="5" mt="0">
-            My cool blog post
-          </Text> */}
-        {/* </Box> */}
-    </Box>
   )
 }
 

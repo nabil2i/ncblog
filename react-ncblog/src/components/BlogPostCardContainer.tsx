@@ -6,7 +6,7 @@ interface Props {
 }
 const BlogPostCardContainer = ({ children }: Props) => {
   return (
-    <Box width="350px"  borderRadius="lg" overflow="hidden">
+    <Box width="350px" borderRadius="lg" borderWidth="1px" overflow="hidden">
       {children}
     </Box>
   )

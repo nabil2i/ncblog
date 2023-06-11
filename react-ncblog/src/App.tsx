@@ -1,7 +1,9 @@
-import { Grid, GridItem, Show } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Center, Grid, GridItem, Show, VStack } from "@chakra-ui/react";
 import NavLogo from "./components/NavLogo";
 import NavButtons from "./components/NavButtons";
 import PostGrid from "./components/PostGrid";
+import Headline from "./components/Headline";
+import Hero from "./components/Hero";
 
 function App() {
   return (
@@ -10,8 +12,8 @@ function App() {
         templateAreas={
           /* `"nav-logo  nav-menu nav-search" "main main aside"` */
           {
-            base: `"search search" "nav-logo nav-buttons" "main main"`,
-            lg: `"search search search" "nav-logo  nav-menu nav-buttons" "main main aside"`,
+            base: `"search search" "nav-logo nav-buttons"  "main main"`,
+            lg: `"search search search" "nav-logo  nav-menu nav-buttons" "main main main"`,
             // lg: `"nav" "main"`
           }
         }
@@ -25,23 +27,42 @@ function App() {
           <NavLogo></NavLogo>
         </GridItem>
 
-        <GridItem area="main">
-          <PostGrid></PostGrid>
-        </GridItem>
-
-        <GridItem area="nav-buttons" >
-          <NavButtons></NavButtons>
-        </GridItem>
-
         <Show above="lg">
           <GridItem area="nav-menu" bg="red">
             Menu
           </GridItem>
 
-          <GridItem area="aside" bg="gold">
+          {/* <GridItem area="aside" bg="gold">
             Aside
-          </GridItem>
+          </GridItem> */}
         </Show>
+
+        <GridItem area="nav-buttons" >
+          <NavButtons></NavButtons>
+        </GridItem>
+
+        <GridItem area="main" >
+          <VStack>
+            <Headline></Headline>
+            <Hero></Hero>
+          </VStack>
+          
+          
+          <PostGrid></PostGrid>
+          
+        </GridItem>
+
+        
+
+        {/* <GridItem area="headline">
+          <Headline></Headline>
+        </GridItem>
+
+        <GridItem area="hero">
+          
+        </GridItem> */}
+
+        
       </Grid>
     </>
   );

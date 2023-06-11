@@ -1,6 +1,7 @@
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import NavLogo from "./components/NavLogo";
 import NavButtons from "./components/NavButtons";
+import PostGrid from "./components/PostGrid";
 
 function App() {
   return (
@@ -19,15 +20,19 @@ function App() {
         <GridItem area="search" bg="green">
           Search
         </GridItem>
+
         <GridItem area="nav-logo">
           <NavLogo></NavLogo>
         </GridItem>
-        <GridItem area="main" bg="dodgerblue">
-          Main
+
+        <GridItem area="main">
+          <PostGrid></PostGrid>
         </GridItem>
+
         <GridItem area="nav-buttons" >
           <NavButtons></NavButtons>
         </GridItem>
+
         <Show above="lg">
           <GridItem area="nav-menu" bg="red">
             Menu

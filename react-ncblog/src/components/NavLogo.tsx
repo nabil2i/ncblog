@@ -6,7 +6,7 @@ const NavLogo = () => {
   return (
     <HStack p="10px">
       <Image src={NabilConveys1} boxSize="60px"/>
-      <Text>Nabil Conveys</Text>
+      <Text fontSize={20}>Nabil Conveys</Text>
     </HStack>
   )
 }

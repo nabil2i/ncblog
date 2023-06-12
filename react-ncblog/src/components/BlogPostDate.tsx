@@ -1,8 +1,12 @@
-import React from 'react'
+import { Text } from '@chakra-ui/react'
 
-const BlogPostDate = () => {
+interface Props {
+  date: string
+}
+const BlogPostDate = ({ date }: Props) => {
   return (
-    <div>BlogPostDate</div>
+    <Text>{date}</Text>
+    // <Text>{date.toDateString()}</Text>
   )
 }
 

@@ -5,6 +5,7 @@ import { CanceledError } from "axios";
 export interface Post {
   id: number;
   title: string;
+  createdAt: Date;
 }
 
 const usePosts = () => {

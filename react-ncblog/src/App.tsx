@@ -1,4 +1,4 @@
-import { AbsoluteCenter, Box, Center, Grid, GridItem, Show, VStack } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Center, Grid, GridItem, HStack, Show, VStack } from "@chakra-ui/react";
 import NavLogo from "./components/NavLogo";
 import NavButtons from "./components/NavButtons";
 import PostGrid from "./components/PostGrid";
@@ -48,7 +48,9 @@ function App() {
           </VStack>
           
           
-          <PostGrid></PostGrid>
+          
+            <PostGrid></PostGrid>
+          
           
         </GridItem>
 

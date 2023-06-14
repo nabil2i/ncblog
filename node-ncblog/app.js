@@ -4,12 +4,12 @@ const express = require('express');
 
 const app = express();
 
-const PORT = 5000 || process.env.port;
+require('./server/startup/routes')(app);
+require('./server/startup/db')();
 
-app.get('', (req, res) => {
-  res.send("Hello World");
+const port = 5000 || process.env.PORT;
+const server = app.listen(port, () => {
+  console.log(`App listening on port ${port}...`)
 });
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}...`)
-});
+module.exports = server;

@@ -3,7 +3,7 @@ const Joi = require('joi');
 
 const postSchema = new mongoose.Schema({
   title: {
-    type: string,
+    type: String,
     required: true,
     minlength: 5,
     maxlength: 255
@@ -13,7 +13,7 @@ const postSchema = new mongoose.Schema({
     required: true,
     minlength: 5,
   },
-  createAt: {
+  createdAt: {
     type: Date,
     default: Date.now
   },

@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')
 
 const home = require('../routes/home');
+const admin = require('../routes/admin');
 
 
 module.exports = function(app) {
@@ -17,5 +18,6 @@ module.exports = function(app) {
   app.use(methodOverride('_method'));
 
   app.use('/', home);
+  app.use('/admin', admin);
 
 }

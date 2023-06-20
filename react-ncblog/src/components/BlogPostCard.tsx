@@ -1,7 +1,8 @@
 
-import { Box, Text, Heading, Card, CardBody, HStack } from "@chakra-ui/react";
+import { Text, Image, Heading, Card, CardBody, HStack } from "@chakra-ui/react";
 import { Post } from "../hooks/usePosts";
 import BlogPostDate from "./BlogPostDate";
+import NabilConveys1 from '../assets/NabilConveys1.webp';
 
 interface Props {
   post: Post
@@ -9,12 +10,19 @@ interface Props {
 
 const  BlogPostCard = ({ post }: Props) => {
   return (
-    <Card as="a" href="/blog-post-thing" textAlign="left">
+    <Card as="a" href="https://google.com" textAlign="left" height="100%" >
       <CardBody>
-        <Heading fontSize="2xl" noOfLines={1}>{post.title}</Heading>
-        <Text noOfLines={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod ex odit harum quo nisi magnam veniam, rerum neque libero porro voluptatibus quam ipsa illum reprehenderit enim, iusto id tempora, dicta veritatis quisquam? Amet officia qui corrupti voluptas fugit tempore. Voluptatum dicta illo eveniet odio illum iusto, amet quasi! Ab, debitis!</Text>
-        <HStack paddingY="1">
-          <BlogPostDate date={"20 Dec 2023"} />
+        <Heading fontSize="2xl" noOfLines={2}>{post.title}</Heading>
+        <Image
+        mt={3} mb={3}
+          src={NabilConveys1} boxSize="350px" height="350px"
+        />
+        <Text noOfLines={5}>{post.body}</Text>
+        
+        <HStack mt={3} paddingY="1" justifyContent={"space-between"}>
+          <BlogPostDate date={post.createdAt} />
+          <Text> {post._id} </Text>
+          {/* <Text> Icon </Text> */}
         </HStack>
       </CardBody>
     </Card>

@@ -3,10 +3,21 @@ import apiClient from "../services/api-client";
 import { CanceledError } from "axios";
 
 export interface Post {
-  id: number;
+  _id: number;
   title: string;
+  body: string;
   createdAt: Date;
 }
+
+// export interface Local {
+//   title: string;
+//   description: string
+// }
+
+// export interface PostResults {
+//   locals: Local;
+//   posts: Post[]
+// }
 
 const usePosts = () => {
   const [ posts, setPosts ] = useState<Post[]>([]);

@@ -6,10 +6,10 @@ interface Props {
 }
 const BlogPostCardContainer = ({ children }: Props) => {
   return (
-    <Box width="350px" borderRadius="lg" borderWidth="1px" overflow="hidden">
+    <Box maxWidth="350px" borderRadius="lg" borderWidth="1px" overflow="hidden">
       {children}
     </Box>
   )
 }
 
-export default BlogPostCardContainer
+export default BlogPostCardContainer;

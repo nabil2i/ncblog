@@ -1,4 +1,4 @@
-import { Box, HStack, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import usePosts from "../hooks/usePosts";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
@@ -13,23 +13,24 @@ const PostGrid = () => {
     <>
       {error && <Text>{error}</Text>}
       <LatestPosts></LatestPosts>
-      
+
       <VStack>
-        <SimpleGrid textAlign="center"
+        <SimpleGrid
+          textAlign="center"
           columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
           spacing={10}
           padding={10}
         >
           {isLoading &&
             skeletons.map((skeleton) => (
-              <BlogPostCardContainer>
-                <BlogPostCardSkeleton key={skeleton}></BlogPostCardSkeleton>
+              <BlogPostCardContainer key={skeleton}>
+                <BlogPostCardSkeleton /> {" "}
               </BlogPostCardContainer>
             ))}
-        
+
           {posts.map((post) => (
-            <BlogPostCardContainer>
-              <BlogPostCard key={post.id} post={post} />
+            <BlogPostCardContainer key={post.id}>
+              <BlogPostCard post={post} />
             </BlogPostCardContainer>
           ))}
         </SimpleGrid>

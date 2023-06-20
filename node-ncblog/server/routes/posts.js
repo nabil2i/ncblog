@@ -16,12 +16,22 @@ router.get('/', async (req, res) => {
       locals,
       posts
     }
-    res.send(results);
+    res.send(posts);
   } catch(err) {
     console.log(err);
   }
 
   // res.send("Hello World");
+});
+
+router.get('/:id', async(req, res) => {
+  try {
+    let id = req.params.id;
+    const post = await Post.findById({ _id: id});
+    res.send(post);
+  } catch(err) {
+    console.log(err)
+  }
 });
 
 // INSERTING DUMMY POSTS

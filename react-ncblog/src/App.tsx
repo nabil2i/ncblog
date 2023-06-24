@@ -18,6 +18,12 @@ function App() {
             // lg: `"nav" "main"`
           }
         }
+        templateColumns={
+          {
+            base: '1fr 1fr',
+            lg: '1fr 1fr 1fr'
+          }
+        }
       >
         {/* <GridItem area='nav' bg='coral'>Nav</GridItem> */}
         <GridItem area="search" bg="green">

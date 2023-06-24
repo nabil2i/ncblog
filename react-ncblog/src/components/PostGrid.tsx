@@ -6,7 +6,9 @@ import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
 import LatestPosts from "./LatestPosts";
 
 const PostGrid = () => {
-  const { posts, error, isLoading } = usePosts();
+  //const { posts, error, isLoading } = usePosts();
+  const { data, error, isLoading } = usePosts();
+  console.log(data);
   const skeletons = [1, 2, 3, 4];
 
   return (
@@ -28,8 +30,8 @@ const PostGrid = () => {
               </BlogPostCardContainer>
             ))}
 
-          {posts.map((post) => (
-            <BlogPostCardContainer key={post.id}>
+          {data.map((post) => (
+            <BlogPostCardContainer key={post._id}>
               <BlogPostCard post={post} />
             </BlogPostCardContainer>
           ))}

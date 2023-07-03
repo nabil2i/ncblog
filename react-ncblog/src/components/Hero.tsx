@@ -1,5 +1,5 @@
 import hero from '../assets/hero-image.webp'
-import { Box, HStack, Image } from '@chakra-ui/react'
+import { Image } from '@chakra-ui/react'
 
 const Hero = () => {
   return (

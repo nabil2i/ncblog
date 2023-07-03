@@ -1,21 +1,20 @@
 import { SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
+import { PostQuery } from "../App";
 import usePosts from "../hooks/usePosts";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
-import LatestPosts from "./LatestPosts";
-import { PostQuery } from "../App";
 
 interface Props {
   postQuery: PostQuery;
 }
 
-const PostGrid = ( { postQuery }: Props) => {
+const PostGrid = ({ postQuery }: Props) => {
   //const { posts, error, isLoading } = usePosts();
   const { data, error, isLoading } = usePosts(postQuery);
   // console.log(data);
 
-  if (isLoading) return <Spinner/>
+  if (isLoading) return <Spinner />;
 
   const skeletons = [1, 2, 3, 4];
 
@@ -35,10 +34,9 @@ const PostGrid = ( { postQuery }: Props) => {
           {isLoading &&
             skeletons.map((skeleton) => (
               <BlogPostCardContainer key={skeleton}>
-                <BlogPostCardSkeleton /> {" "}
+                <BlogPostCardSkeleton />{" "}
               </BlogPostCardContainer>
-            )) 
-          }
+            ))}
 
           {data.map((post) => (
             <BlogPostCardContainer key={post._id}>

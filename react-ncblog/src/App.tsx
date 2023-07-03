@@ -7,6 +7,7 @@ import NavLogo from "./components/NavLogo";
 import PostGrid from "./components/PostGrid";
 import SearchInput from "./components/SearchInput";
 import { useState } from "react";
+import PostHeading from "./components/PostHeading";
 
 export interface PostQuery {
   searchText: string
@@ -67,11 +68,19 @@ function App() {
             <Headline></Headline>
             <Hero></Hero>
           </VStack>
-          <Flex>
-            <Box>
-              <CategorySelector />
-            </Box>
-          </Flex>
+            <VStack>
+              <Box>
+                <PostHeading postQuery={postQuery}/>
+              </Box>
+
+              <Flex>
+                <Box>
+                  <CategorySelector />
+                </Box>
+              </Flex>
+              
+            </VStack>
+
           <PostGrid postQuery={postQuery}></PostGrid>
         </GridItem>
 

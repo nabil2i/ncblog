@@ -23,7 +23,7 @@ const PostGrid = ( { postQuery }: Props) => {
     <>
       {/* {error && <Text>{error}</Text>} */}
       {error && <Text> We encountered a problem.</Text>}
-      <LatestPosts></LatestPosts>
+      {/* <LatestPosts></LatestPosts> */}
 
       <VStack>
         <SimpleGrid

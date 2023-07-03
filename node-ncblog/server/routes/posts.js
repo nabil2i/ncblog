@@ -11,7 +11,27 @@ router.get('/', async (req, res) => {
   };
 
   try {
-    const posts = await Post.find().sort("-createdAt");
+    let searchTerm = req.query.search;
+    let posts = [];
+
+    if (searchTerm) {
+      const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
+      // console.log(searchTerm)
+
+      posts = await Post
+        .find({ 
+          // do query 
+          $or: [
+            { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
+            { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
+          ]
+        })
+        .sort("-createdAt");
+    }
+    else {
+      posts = await Post.find().sort("-createdAt");
+    }
+
     const results = {
       locals,
       posts

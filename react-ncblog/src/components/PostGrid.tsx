@@ -16,7 +16,8 @@ const PostGrid = () => {
 
   return (
     <>
-      {error && <Text>{error}</Text>}
+      {/* {error && <Text>{error}</Text>} */}
+      {error && <Text> We encountered a problem.</Text>}
       <LatestPosts></LatestPosts>
 
       <VStack>

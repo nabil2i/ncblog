@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
-import { CanceledError } from "axios";
+import { AxiosRequestConfig, CanceledError } from "axios";
 
 // export interface Post {
 //   _id: number;
@@ -25,7 +25,7 @@ import { CanceledError } from "axios";
 // }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const useData = <T>(endpoint: string, deps?: any[]) => {
+const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?: any[]) => {
   // use generic type parameter <T>
   const [ data, setData ] = useState<T[]>([]);
   const [error, setError ] = useState("");
@@ -38,7 +38,7 @@ const useData = <T>(endpoint: string, deps?: any[]) => {
 
     apiClient
       // .get<FetchResponse<T>>(endpoint, { signal: controller.signal })
-      .get(endpoint, { signal: controller.signal })
+      .get(endpoint, { signal: controller.signal, ...requestConfig })
       .then(res => {
         // setData(res.data.data);
         setData(res.data);
@@ -51,7 +51,7 @@ const useData = <T>(endpoint: string, deps?: any[]) => {
       });
 
     return () => controller.abort();
- }, [endpoint]);
+ }, deps ? [...deps] : [endpoint]);
 
  return { data, error, isLoading };
 }

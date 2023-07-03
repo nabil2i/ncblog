@@ -1,3 +1,4 @@
+import { PostQuery } from './../App';
 import useData from "./useData";
 
 export interface Post {
@@ -7,6 +8,14 @@ export interface Post {
   createdAt: Date;
 }
 
-const usePosts = () => useData<Post>('/posts');
+const usePosts = (postQuery: PostQuery) => useData<Post>(
+  '/posts',
+  {
+    params: {
+      search: postQuery.searchText
+    },
+  },
+  [ postQuery ]
+);
 
 export default usePosts;

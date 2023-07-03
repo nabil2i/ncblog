@@ -4,10 +4,15 @@ import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
 import LatestPosts from "./LatestPosts";
+import { PostQuery } from "../App";
 
-const PostGrid = () => {
+interface Props {
+  postQuery: PostQuery;
+}
+
+const PostGrid = ( { postQuery }: Props) => {
   //const { posts, error, isLoading } = usePosts();
-  const { data, error, isLoading } = usePosts();
+  const { data, error, isLoading } = usePosts(postQuery);
   // console.log(data);
 
   if (isLoading) return <Spinner/>

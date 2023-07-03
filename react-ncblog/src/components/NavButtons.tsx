@@ -9,7 +9,7 @@ const NavButtons = () => {
       <HStack justifyContent="space-between" padding="10px">
         <HStack>
           <Search2Icon boxSize={6} />
-          <Text>Search</Text>
+          <Text >Search</Text>
         </HStack>
 
         <ColorModeSwitch />

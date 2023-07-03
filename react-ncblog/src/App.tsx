@@ -1,12 +1,21 @@
-import { Box, Flex, Grid, GridItem, HStack, Show, VStack } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, HStack, Show, Spacer, VStack } from "@chakra-ui/react";
 import CategorySelector from "./components/CategorySelector";
 import Headline from "./components/Headline";
 import Hero from "./components/Hero";
 import NavButtons from "./components/NavButtons";
 import NavLogo from "./components/NavLogo";
 import PostGrid from "./components/PostGrid";
+import SearchInput from "./components/SearchInput";
+import { useState } from "react";
+
+export interface PostQuery {
+  searchText: string
+}
 
 function App() {
+  // const [ searchText, setSearchText] = useState("");
+  const [ postQuery, setPostQuery ] = useState<PostQuery>({} as PostQuery)
+
   return (
     <>
       <Grid
@@ -24,8 +33,10 @@ function App() {
         }}
       >
         {/* <GridItem area='nav' bg='coral'>Nav</GridItem> */}
-        <GridItem area="search" bg="green">
-          Search
+        <GridItem area="search">
+          <HStack marginTop={5} paddingLeft={50} paddingRight={50} paddingBottom={10}>
+            <SearchInput onSearch={(searchText) => setPostQuery({ ...postQuery, searchText })}/>
+          </HStack>
         </GridItem>
 
         <GridItem area="nav-logo">
@@ -43,7 +54,12 @@ function App() {
         </Show>
 
         <GridItem area="nav-buttons">
-          <NavButtons></NavButtons>
+          <Flex>
+            <Spacer />
+            <Box paddingTop={5}>
+              <NavButtons ></NavButtons>
+            </Box>
+          </Flex>
         </GridItem>
 
         <GridItem area="main">
@@ -56,7 +72,7 @@ function App() {
               <CategorySelector />
             </Box>
           </Flex>
-          <PostGrid></PostGrid>
+          <PostGrid postQuery={postQuery}></PostGrid>
         </GridItem>
 
         {/* <GridItem area="headline">

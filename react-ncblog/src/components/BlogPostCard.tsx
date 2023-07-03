@@ -14,6 +14,7 @@ const  BlogPostCard = ({ post }: Props) => {
       <CardBody>
         <Heading fontSize="2xl" noOfLines={2}>{post.title}</Heading>
         <Image
+        // objectFit='cover'
         mt={3} mb={3}
           src={NabilConveys1} boxSize="350px" height="350px"
         />

@@ -1,10 +1,10 @@
-import { AbsoluteCenter, Box, Center, Grid, GridItem, HStack, Show, VStack } from "@chakra-ui/react";
-import NavLogo from "./components/NavLogo";
-import NavButtons from "./components/NavButtons";
-import PostGrid from "./components/PostGrid";
+import { Box, Flex, Grid, GridItem, HStack, Show, VStack } from "@chakra-ui/react";
+import CategorySelector from "./components/CategorySelector";
 import Headline from "./components/Headline";
 import Hero from "./components/Hero";
-
+import NavButtons from "./components/NavButtons";
+import NavLogo from "./components/NavLogo";
+import PostGrid from "./components/PostGrid";
 
 function App() {
   return (
@@ -18,12 +18,10 @@ function App() {
             // lg: `"nav" "main"`
           }
         }
-        templateColumns={
-          {
-            base: '1fr 1fr',
-            lg: '1fr 1fr 1fr'
-          }
-        }
+        templateColumns={{
+          base: "1fr 1fr",
+          lg: "1fr 1fr 1fr",
+        }}
       >
         {/* <GridItem area='nav' bg='coral'>Nav</GridItem> */}
         <GridItem area="search" bg="green">
@@ -44,24 +42,22 @@ function App() {
           </GridItem> */}
         </Show>
 
-        <GridItem area="nav-buttons" >
+        <GridItem area="nav-buttons">
           <NavButtons></NavButtons>
         </GridItem>
 
-        <GridItem area="main" >
+        <GridItem area="main">
           <VStack>
             <Headline></Headline>
             <Hero></Hero>
           </VStack>
-          
-          
-          
-            <PostGrid></PostGrid>
-          
-          
+          <Flex>
+            <Box>
+              <CategorySelector />
+            </Box>
+          </Flex>
+          <PostGrid></PostGrid>
         </GridItem>
-
-        
 
         {/* <GridItem area="headline">
           <Headline></Headline>
@@ -70,8 +66,6 @@ function App() {
         <GridItem area="hero">
           
         </GridItem> */}
-
-        
       </Grid>
     </>
   );

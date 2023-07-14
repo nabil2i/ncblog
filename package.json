@@ -1,0 +1,18 @@
+{
+  "name": "ncblog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npm run dev --prefix node-ncblog",
+    "client": "npm run dev --prefix react-ncblog",    
+    "dev": "concurrently \"npm run server\" \"npm run client\""    
+
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

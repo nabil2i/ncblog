@@ -11,8 +11,15 @@ router.get('/', async (req, res) => {
   };
 
   try {
+    let page = parseInt(req.query.page) || 1;
+    let perPage = parseInt(req.query.page) || 3;
     let searchTerm = req.query.search;
+    let count = 0;
+    let prevPage = 1;
+    let nextPage = 1;
+    let hasNextPage = false;
     let posts = [];
+    let results = {};
 
     if (searchTerm) {
       const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
@@ -27,16 +34,53 @@ router.get('/', async (req, res) => {
           ]
         })
         .sort("-createdAt");
+
+        count = await Post
+        .find({ 
+          // do query 
+          $or: [
+            { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
+            { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
+          ]
+        })
+        .count();
+
+      results = {
+        locals,
+        count,
+        current: page,
+        prev: prevPage,
+        next: nextPage,
+        posts
+      }
     }
     else {
-      posts = await Post.find().sort("-createdAt");
+      // pagination
+      count = await Post.count();
+      perPage = 3
+
+      const posts = await Post
+        .aggregate([{ $sort: { createdAt: -1 }}])
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+        .exec();
+      // posts = await Post.find().sort("-createdAt");
+
+      prevPage = page > 2 ? parseInt(page) - 1 : parseInt(page);
+      nextPage = parseInt(page) + 1;
+      hasNextPage = nextPage <= Math.ceil(count / perPage);
+
+      results = {
+        locals,
+        count,
+        current: page,
+        prev: prevPage,
+        next: hasNextPage ? nextPage : null,
+        posts
+      }
     }
 
-    const results = {
-      locals,
-      posts
-    }
-    res.send(posts);
+    res.send(results);
   } catch(err) {
     console.log(err);
   }

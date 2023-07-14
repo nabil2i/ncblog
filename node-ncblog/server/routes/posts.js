@@ -18,14 +18,14 @@ router.get('/', async (req, res) => {
     let prevPage = 1;
     let nextPage = 1;
     let hasNextPage = false;
-    let posts = [];
-    let results = {};
+    let results = [];
+    let data = {};
 
     if (searchTerm) {
       const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
       // console.log(searchTerm)
 
-      posts = await Post
+      results = await Post
         .find({ 
           // do query 
           $or: [
@@ -45,13 +45,13 @@ router.get('/', async (req, res) => {
         })
         .count();
 
-      results = {
+      data = {
         locals,
         count,
         current: page,
         prev: prevPage,
         next: nextPage,
-        posts
+        results
       }
     }
     else {
@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
       count = await Post.count();
       perPage = 3
 
-      const posts = await Post
+      const results = await Post
         .aggregate([{ $sort: { createdAt: -1 }}])
         .skip(perPage * page - perPage)
         .limit(perPage)
@@ -70,17 +70,17 @@ router.get('/', async (req, res) => {
       nextPage = parseInt(page) + 1;
       hasNextPage = nextPage <= Math.ceil(count / perPage);
 
-      results = {
+      data = {
         locals,
         count,
         current: page,
         prev: prevPage,
         next: hasNextPage ? nextPage : null,
-        posts
+        results
       }
     }
 
-    res.send(results);
+    res.send(data);
   } catch(err) {
     console.log(err);
   }

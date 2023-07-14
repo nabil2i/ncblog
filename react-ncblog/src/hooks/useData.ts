@@ -26,7 +26,7 @@ interface FetchResponse<T> {
   current: number;
   prev: number;
   next: number;
-  posts: T[];
+  results: T[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,7 +46,7 @@ const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?:
       .get<FetchResponse<T>>(endpoint, { signal: controller.signal, ...requestConfig })
       .then(res => {
         // setData(res.data.data);
-        setData(res.data.posts);
+        setData(res.data.results);
         setLoading(false);
       })
       .catch(err => {

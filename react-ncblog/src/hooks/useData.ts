@@ -9,10 +9,10 @@ import apiClient from "../services/api-client";
 //   createdAt: Date;
 // }
 
-// export interface Local {
-//   title: string;
-//   description: string
-// }
+export interface Locals {
+  title: string;
+  description: string
+}
 
 // export interface PostResults {
 //   locals: Local;
@@ -20,9 +20,14 @@ import apiClient from "../services/api-client";
 // }
 
 // If fetching different data in the response
-// interface FetchResponse<T> {
-//   data: T[];
-// }
+interface FetchResponse<T> {
+  locals: Locals;
+  count: number;
+  current: number;
+  prev: number;
+  next: number;
+  posts: T[];
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?: any[]) => {
@@ -38,10 +43,10 @@ const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?:
 
     apiClient
       // .get<FetchResponse<T>>(endpoint, { signal: controller.signal })
-      .get(endpoint, { signal: controller.signal, ...requestConfig })
+      .get<FetchResponse<T>>(endpoint, { signal: controller.signal, ...requestConfig })
       .then(res => {
         // setData(res.data.data);
-        setData(res.data);
+        setData(res.data.posts);
         setLoading(false);
       })
       .catch(err => {
@@ -51,7 +56,7 @@ const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?:
       });
 
     return () => controller.abort();
- }, deps ? [...deps] : [endpoint, requestConfig]);
+ }, deps ? [...deps] : []);
 
  return { data, error, isLoading };
 }

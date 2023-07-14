@@ -26,13 +26,15 @@ interface FetchResponse<T> {
   current: number;
   prev: number;
   next: number;
+  perPage: number;
   results: T[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?: any[]) => {
   // use generic type parameter <T>
-  const [ data, setData ] = useState<T[]>([]);
+  // const [ data, setData ] = useState<T[]>([]);
+  const [ data, setData ] = useState<FetchResponse<T>>({} as FetchResponse<T>);
   const [error, setError ] = useState("");
   const [ isLoading, setLoading] = useState(false);
 
@@ -46,7 +48,8 @@ const useData = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, deps?:
       .get<FetchResponse<T>>(endpoint, { signal: controller.signal, ...requestConfig })
       .then(res => {
         // setData(res.data.data);
-        setData(res.data.results);
+        // console.log(res.data);
+        setData(res.data);
         setLoading(false);
       })
       .catch(err => {

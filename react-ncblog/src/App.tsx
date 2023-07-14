@@ -8,14 +8,16 @@ import PostGrid from "./components/PostGrid";
 import SearchInput from "./components/SearchInput";
 import { useState } from "react";
 import PostHeading from "./components/PostHeading";
-
 export interface PostQuery {
-  searchText: string
+  searchText: string;
+  page: number;
+  perPage: number;
 }
 
 function App() {
   // const [ searchText, setSearchText] = useState("");
   const [ postQuery, setPostQuery ] = useState<PostQuery>({} as PostQuery)
+
 
   return (
     <>
@@ -81,7 +83,11 @@ function App() {
               
             </VStack>
 
-          <PostGrid postQuery={postQuery}></PostGrid>
+          <PostGrid
+            postQuery={postQuery}
+            paginate={(page) => setPostQuery({ ...postQuery, page})}
+          ></PostGrid>
+          
         </GridItem>
 
         {/* <GridItem area="headline">

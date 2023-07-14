@@ -12,7 +12,9 @@ const usePosts = (postQuery: PostQuery) => useData<Post>(
   '/posts',
   {
     params: {
-      search: postQuery.searchText
+      search: postQuery.searchText,
+      page: postQuery?.page,
+      perPage: postQuery?.perPage
     },
   },
   [ postQuery ]

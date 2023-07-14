@@ -12,11 +12,11 @@ router.get('/', async (req, res) => {
 
   try {
     let page = parseInt(req.query.page) || 1;
-    let perPage = parseInt(req.query.page) || 3;
+    let perPage = parseInt(req.query.perPage) || 3;
     let searchTerm = req.query.search;
     let count = 0;
-    let prevPage = 1;
-    let nextPage = 1;
+    let prevPage = null;
+    let nextPage = null;
     let hasNextPage = false;
     let results = [];
     let data = {};
@@ -66,7 +66,7 @@ router.get('/', async (req, res) => {
         .exec();
       // posts = await Post.find().sort("-createdAt");
 
-      prevPage = page > 2 ? parseInt(page) - 1 : parseInt(page);
+      prevPage = page > 2 ? parseInt(page) - 1 : null;
       nextPage = parseInt(page) + 1;
       hasNextPage = nextPage <= Math.ceil(count / perPage);
 
@@ -76,6 +76,7 @@ router.get('/', async (req, res) => {
         current: page,
         prev: prevPage,
         next: hasNextPage ? nextPage : null,
+        perPage: perPage,
         results
       }
     }

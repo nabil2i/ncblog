@@ -4,15 +4,19 @@ import usePosts from "../hooks/usePosts";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
+import PaginationBox from "./PaginationBox";
 
 interface Props {
   postQuery: PostQuery;
+  paginate: (number: number) => void;
 }
 
-const PostGrid = ({ postQuery }: Props) => {
+const PostGrid = ({ postQuery, paginate }: Props) => {
   //const { posts, error, isLoading } = usePosts();
   const { data, error, isLoading } = usePosts(postQuery);
   // console.log(data);
+ 
+  
 
   if (isLoading) return <Spinner />;
 
@@ -23,8 +27,7 @@ const PostGrid = ({ postQuery }: Props) => {
       {/* {error && <Text>{error}</Text>} */}
       {error && <Text> We encountered a problem.</Text>}
       {/* <LatestPosts></LatestPosts> */}
-
-      <VStack>
+      <VStack paddingBottom={5}>
         <SimpleGrid
           textAlign="center"
           columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
@@ -38,13 +41,21 @@ const PostGrid = ({ postQuery }: Props) => {
               </BlogPostCardContainer>
             ))}
 
-          {data.map((post) => (
+          {data?.results?.map((post) => (
             <BlogPostCardContainer key={post._id}>
               <BlogPostCard post={post} />
             </BlogPostCardContainer>
           ))}
         </SimpleGrid>
+
+        <PaginationBox
+            postPerPage={data.perPage}
+            totalPosts={data.count}
+            currentPage={data.current}
+            paginate={paginate}
+          ></PaginationBox>
       </VStack>
+      
     </>
   );
 };

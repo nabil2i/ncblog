@@ -1,25 +1,31 @@
-import { SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
-import { PostQuery } from "../App";
+import { Box, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
+// import { PostQuery } from "../App";
 import usePosts from "../hooks/usePosts";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
 import PaginationBox from "./PaginationBox";
+// import usePostQueryStore from "../store";
 
 interface Props {
-  postQuery: PostQuery;
+  // postQuery: PostQuery;
   paginate: (page: number) => void;
-  // prevPaginate: (page: number) => void;
-  // nextPaginate: (page: number) => void;
+//   // prevPaginate: (page: number) => void;
+//   // nextPaginate: (page: number) => void;
 }
 
-const PostGrid = ({ postQuery, paginate }: Props) => {
+const PostGrid = (
+  { 
+  // postQuery, 
+  paginate }: Props
+  ) => {
+
   //const { posts, error, isLoading } = usePosts();
-  const { data, error, isLoading } = usePosts(postQuery);
+  const { data, error, isLoading } = usePosts();
   // console.log(data);
  
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
 
   const skeletons = [1, 2, 3, 4];
 
@@ -42,7 +48,7 @@ const PostGrid = ({ postQuery, paginate }: Props) => {
               </BlogPostCardContainer>
             ))}
 
-          {data?.results?.map((post) => (
+          {data?.results.map((post) => (
             <BlogPostCardContainer key={post._id}>
               <BlogPostCard post={post} />
             </BlogPostCardContainer>
@@ -50,11 +56,11 @@ const PostGrid = ({ postQuery, paginate }: Props) => {
         </SimpleGrid>
 
         <PaginationBox
-            postPerPage={data.perPage}
-            totalPosts={data.count}
-            currentPage={data.current}
-            prev={data.prev}
-            next={data.next}
+            postPerPage={data?.perPage as number} 
+            totalPosts={data?.count as number}
+            currentPage={data?.current as number}
+            prev={data?.prev as number}
+            next={data?.next as number}
             paginate={paginate}
             // prevPaginate={prevPaginate}
             // nextPaginate={nextPaginate}

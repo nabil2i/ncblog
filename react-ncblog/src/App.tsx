@@ -8,17 +8,19 @@ import PostGrid from "./components/PostGrid";
 import SearchInput from "./components/SearchInput";
 import { useState } from "react";
 import PostHeading from "./components/PostHeading";
-export interface PostQuery {
-  searchText: string;
-  page: number;
-  perPage: number;
-}
+import usePostQueryStore from "./store";
+// export interface PostQuery {
+//   searchText: string;
+//   page: number;
+//   perPage: number;
+// }
 
 function App() {
   // const [ searchText, setSearchText] = useState("");
-  const [ postQuery, setPostQuery ] = useState<PostQuery>({} as PostQuery)
+  // const [ postQuery, setPostQuery ] = useState<PostQuery>({} as PostQuery)
   // set the number of query per page
-  postQuery.perPage =  3;
+  // postQuery.perPage =  3;
+  const setPage = usePostQueryStore(s => s.setPage);
 
   return (
     <>
@@ -39,7 +41,9 @@ function App() {
         {/* <GridItem area='nav' bg='coral'>Nav</GridItem> */}
         <GridItem area="search">
           <HStack marginTop={5} paddingLeft={50} paddingRight={50} paddingBottom={10}>
-            <SearchInput onSearch={(searchText) => setPostQuery({ ...postQuery, searchText })}/>
+            <SearchInput
+              // onSearch={(searchText) => setPostQuery({ ...postQuery, searchText })}
+            />
           </HStack>
         </GridItem>
 
@@ -73,7 +77,9 @@ function App() {
           </VStack>
             <VStack>
               <Box>
-                <PostHeading postQuery={postQuery}/>
+                <PostHeading
+                  // postQuery={postQuery}
+                />
               </Box>
 
               <Flex>
@@ -85,10 +91,10 @@ function App() {
             </VStack>
 
           <PostGrid
-            postQuery={postQuery}
+            // postQuery={postQuery}
             paginate={(page) => {
               if (page === null) return null;
-              setPostQuery({ ...postQuery, page})
+              setPage(page)
             }
           }
           ></PostGrid>

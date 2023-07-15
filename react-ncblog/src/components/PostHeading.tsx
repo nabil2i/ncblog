@@ -1,14 +1,21 @@
 import { Heading } from "@chakra-ui/react";
-import { PostQuery } from "../App";
+// import { PostQuery } from "../App";
+import usePostQueryStore from "../store";
 
-interface Props {
-  postQuery: PostQuery;
-}
+// interface Props {
+//   postQuery: PostQuery;
+// }
 
-const PostHeading = ({ postQuery }: Props) => {
+const PostHeading = (
+  // { postQuery }: Props
+  ) => {
   let heading;
-  if (postQuery.searchText){
-    heading = `Search Posts containing: ${postQuery?.searchText || ''}`;
+  
+  const searchText = usePostQueryStore(s => s.postQuery.searchText);
+
+
+  if (searchText){
+    heading = `Search Posts containing: ${searchText || ''}`;
   }
   else {
     heading = "Posts";

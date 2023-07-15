@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import ms from 'ms';
 import Post from '../entities/Post';
 import APIClient, { FetchResponse } from '../services/api-client';
-import { PostQuery } from './../App';
+// import { PostQuery } from './../App';
 import { CACHE_KEY_POSTS } from './constants';
+import usePostQueryStore from '../store';
 
 const apiClient = new APIClient<Post>('/posts');
 // const usePosts = (postQuery: PostQuery) => useData<Post>(
@@ -17,7 +18,12 @@ const apiClient = new APIClient<Post>('/posts');
 //   },
 //   [ postQuery ]
 // );
-const usePosts = (postQuery: PostQuery) => {
+
+
+
+const usePosts = () => { 
+  const postQuery = usePostQueryStore(s => s.postQuery);
+  
   return useQuery<FetchResponse<Post>>({
     queryKey: [CACHE_KEY_POSTS, postQuery],
     queryFn: () => apiClient.getAll({

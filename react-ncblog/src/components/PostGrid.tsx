@@ -18,7 +18,6 @@ const PostGrid = ({ postQuery, paginate }: Props) => {
   const { data, error, isLoading } = usePosts(postQuery);
   // console.log(data);
  
-  
 
   if (isLoading) return <Spinner />;
 

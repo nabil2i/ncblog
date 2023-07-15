@@ -8,7 +8,9 @@ import PaginationBox from "./PaginationBox";
 
 interface Props {
   postQuery: PostQuery;
-  paginate: (number: number) => void;
+  paginate: (page: number) => void;
+  // prevPaginate: (page: number) => void;
+  // nextPaginate: (page: number) => void;
 }
 
 const PostGrid = ({ postQuery, paginate }: Props) => {
@@ -52,7 +54,11 @@ const PostGrid = ({ postQuery, paginate }: Props) => {
             postPerPage={data.perPage}
             totalPosts={data.count}
             currentPage={data.current}
+            prev={data.prev}
+            next={data.next}
             paginate={paginate}
+            // prevPaginate={prevPaginate}
+            // nextPaginate={nextPaginate}
           ></PaginationBox>
       </VStack>
       

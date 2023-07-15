@@ -14,7 +14,7 @@ const usePosts = (postQuery: PostQuery) => useData<Post>(
     params: {
       search: postQuery.searchText,
       page: postQuery?.page,
-      perPage: postQuery?.perPage
+      // perPage: postQuery?.perPage
     },
   },
   [ postQuery ]

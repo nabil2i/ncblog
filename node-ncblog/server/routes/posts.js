@@ -66,7 +66,7 @@ router.get('/', async (req, res) => {
         .exec();
       // posts = await Post.find().sort("-createdAt");
 
-      prevPage = page > 2 ? parseInt(page) - 1 : null;
+      prevPage = page >= 2 ? parseInt(page) - 1 : null;
       nextPage = parseInt(page) + 1;
       hasNextPage = nextPage <= Math.ceil(count / perPage);
 

@@ -11,7 +11,7 @@ import PostHeading from "./components/PostHeading";
 export interface PostQuery {
   searchText: string;
   page: number;
-  perPage: number;
+  // perPage: number;
 }
 
 function App() {
@@ -85,7 +85,11 @@ function App() {
 
           <PostGrid
             postQuery={postQuery}
-            paginate={(page) => setPostQuery({ ...postQuery, page})}
+            paginate={(page) => {
+              if (page === null) return null;
+              setPostQuery({ ...postQuery, page})
+            }
+          }
           ></PostGrid>
           
         </GridItem>

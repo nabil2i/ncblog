@@ -1,15 +1,11 @@
 import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
 import CategorySelector from "../components/CategorySelector";
-import Headline from "../components/Headline";
-import Hero from "../components/Hero";
-import NavBar from "../components/NavBar";
 import PostGrid from "../components/PostGrid";
 import PostHeading from "../components/PostHeading";
 import usePostQueryStore from "../store";
-import LatestPosts from "../components/LatestPosts";
 
-const HomePage = () => {
-  const setPage = usePostQueryStore(s => s.setPage);
+const BlogPage = () => {
+  const setPage = usePostQueryStore((s) => s.setPage);
   return (
     <Grid
       templateAreas={
@@ -25,47 +21,35 @@ const HomePage = () => {
         lg: "1fr",
       }}
     >
-
       <GridItem area="main">
-        <VStack>
+        {/* <VStack>
           <Headline></Headline>
           <Hero></Hero>
-        </VStack>
+        </VStack> */}
+
         <VStack>
-          {/* <Box>
+          <Box>
             <PostHeading
             // postQuery={postQuery}
             />
-          </Box> */}
+          </Box>
 
-          {/* <Flex>
+          <Flex>
             <Box>
               <CategorySelector />
             </Box>
-          </Flex> */}
+          </Flex>
         </VStack>
 
-        {/* <PostGrid
+        <PostGrid
           // postQuery={postQuery}
           paginate={(page) => {
             if (page === null) return null;
             setPage(page);
           }}
-        ></PostGrid> */}
-
-        <LatestPosts></LatestPosts>
-
+        ></PostGrid>
       </GridItem>
-
-      {/* <GridItem area="headline">
-          <Headline></Headline>
-        </GridItem>
-
-        <GridItem area="hero">
-          
-        </GridItem> */}
     </Grid>
   );
 };
-
-export default HomePage;
+export default BlogPage;

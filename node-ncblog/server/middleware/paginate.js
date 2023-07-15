@@ -75,11 +75,13 @@ module.exports = (model) => {
         }
       }
 
+      // throw new Error('my error');
       res.paginatedResults = data
       next(); 
       // res.send(data);
     } catch(err) {
-      console.log(err);
+      res.status(500).send({ message: err.message})
+      // console.log(err);
     }
   }
 }

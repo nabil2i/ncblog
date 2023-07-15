@@ -7,10 +7,10 @@ const NavButtons = () => {
     <Flex alignItems="right" gap="2">
       <Spacer />
       <HStack justifyContent="space-between" padding="10px">
-        <HStack>
+        {/* <HStack>
           <Search2Icon boxSize={6} />
           <Text >Search</Text>
-        </HStack>
+        </HStack> */}
 
         <ColorModeSwitch />
       </HStack>

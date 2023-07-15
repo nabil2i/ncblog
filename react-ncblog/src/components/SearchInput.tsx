@@ -20,7 +20,7 @@ const SearchInput = (
       if (ref.current) setSearchText(ref.current.value);
     }}>
       <InputGroup>
-      <InputLeftElement children={<BsSearch/>}/>
+        <InputLeftElement children={<BsSearch/>}/>
         <Input ref={ref} borderRadius={20} placeholder="Search blog..." variant="filled" />
       </InputGroup>
     </form>

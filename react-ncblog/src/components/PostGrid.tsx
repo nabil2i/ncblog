@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
 // import { PostQuery } from "../App";
 import usePosts from "../hooks/usePosts";
 import BlogPostCard from "./BlogPostCard";
@@ -33,7 +33,12 @@ const PostGrid = (
     <>
       {/* {error && <Text>{error}</Text>} */}
       {error && <Text> We encountered a problem.</Text>}
-      {/* <LatestPosts></LatestPosts> */}
+      {/* <Box m="5" textAlign="center">
+        <Heading as="h2" size="2xl">
+         Posts
+        </Heading>
+      </Box> */}
+      
       <VStack paddingBottom={5}>
         <SimpleGrid
           textAlign="center"

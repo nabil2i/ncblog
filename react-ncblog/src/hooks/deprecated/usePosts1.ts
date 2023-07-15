@@ -1,4 +1,4 @@
-import { PostQuery } from './../App';
+// import { PostQuery } from './../App';
 // import useData from "./useData";
 
 // export interface Post {

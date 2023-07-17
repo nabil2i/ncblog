@@ -6,7 +6,12 @@ interface Props {
 }
 const BlogPostCardContainer = ({ children }: Props) => {
   return (
-    <Box maxWidth="350px" borderRadius="lg" borderWidth="1px" overflow="hidden">
+    <Box
+      _hover={{
+        transform: 'scale(1.03)',
+        transition: 'transform .05s ease-in'
+      }}
+      maxWidth="350px" borderRadius="lg" borderWidth="1px" overflow="hidden">
       {children}
     </Box>
   )

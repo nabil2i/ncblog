@@ -1,9 +1,21 @@
-import React from 'react'
+import { useParams } from "react-router-dom";
+import usePost from "../hooks/usePost";
+import { Heading, Spinner, VStack, Text } from "@chakra-ui/react";
 
 const PostPage = () => {
-  return (
-    <div>PostPage</div>
-  )
-}
+  const { id } = useParams();
+  const { data: post, isLoading, error } = usePost(id!);
 
-export default PostPage
+  if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
+
+  if (error || !post) throw error;
+
+  return (
+    <>
+      <Heading>{post.title}</Heading>
+      <Text>{post.body}</Text>
+    </>
+  );
+};
+
+export default PostPage;

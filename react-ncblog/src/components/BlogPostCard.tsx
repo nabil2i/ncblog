@@ -2,6 +2,7 @@ import { Card, CardBody, HStack, Heading, Image, Text } from "@chakra-ui/react";
 import NabilConveys1 from "../assets/NabilConveys1.webp";
 import Post from "../entities/Post";
 import BlogPostDate from "./BlogPostDate";
+import { Link } from "react-router-dom";
 
 interface Props {
   post: Post;
@@ -9,7 +10,8 @@ interface Props {
 
 const BlogPostCard = ({ post }: Props) => {
   return (
-    <Card as="a" href="https://google.com" textAlign="left" height="100%">
+    <Link to={'/blog/' + post._id}> 
+    <Card textAlign="left" height="100%">
       <CardBody>
         <Heading fontSize="2xl" noOfLines={2}>
           {post.title}
@@ -31,6 +33,7 @@ const BlogPostCard = ({ post }: Props) => {
         </HStack>
       </CardBody>
     </Card>
+    </Link>
     // <Box m="5" as="a" href="/blog-post-thing">
     //   <Heading m="5" mb="0" as="h4" size="md">
     //     Blog Post

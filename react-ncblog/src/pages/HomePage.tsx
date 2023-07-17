@@ -1,15 +1,11 @@
-import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
-import CategorySelector from "../components/CategorySelector";
+import { Grid, GridItem, VStack } from "@chakra-ui/react";
 import Headline from "../components/Headline";
 import Hero from "../components/Hero";
-import NavBar from "../components/NavBar";
-import PostGrid from "../components/PostGrid";
-import PostHeading from "../components/PostHeading";
-import usePostQueryStore from "../store";
 import LatestPosts from "../components/LatestPosts";
+import usePostQueryStore from "../store";
 
 const HomePage = () => {
-  const setPage = usePostQueryStore(s => s.setPage);
+  const setPage = usePostQueryStore((s) => s.setPage);
   return (
     <Grid
       templateAreas={
@@ -25,7 +21,6 @@ const HomePage = () => {
         lg: "1fr",
       }}
     >
-
       <GridItem area="main">
         <VStack>
           <Headline></Headline>
@@ -54,7 +49,6 @@ const HomePage = () => {
         ></PostGrid> */}
 
         <LatestPosts></LatestPosts>
-
       </GridItem>
 
       {/* <GridItem area="headline">

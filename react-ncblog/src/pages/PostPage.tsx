@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import usePost from "../hooks/usePost";
-import { Heading, Spinner, VStack, Text } from "@chakra-ui/react";
+import { Heading, Spinner, VStack, Text, Box, Flex, Center } from "@chakra-ui/react";
 
 const PostPage = () => {
   const { id } = useParams();
@@ -12,8 +12,14 @@ const PostPage = () => {
 
   return (
     <>
-      <Heading>{post.title}</Heading>
-      <Text>{post.body}</Text>
+    <Center>
+    <Flex  direction="column" height="100%" alignContent={"center"} justifyContent={"center"}>
+        <Heading>{post.title}</Heading>
+        <Text>{post.body}</Text>
+    </Flex>
+    </Center>
+      
+
     </>
   );
 };

@@ -16,7 +16,11 @@ const posts = require('../routes/posts');
 module.exports = function(app) {
 
   app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:5000',
+      'http://localhost:3000'
+    ]
   }));
   app.use(express.urlencoded({ extended: true}));
   app.use(express.json());

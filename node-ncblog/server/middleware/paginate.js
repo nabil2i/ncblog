@@ -76,7 +76,7 @@ module.exports = (model) => {
       }
 
       // throw new Error('my error');
-      res.paginatedResults = data
+      res.paginatedResults = data;
       next(); 
       // res.send(data);
     } catch(err) {

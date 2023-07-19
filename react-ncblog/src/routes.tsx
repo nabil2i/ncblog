@@ -4,6 +4,7 @@ import Layout from "./pages/Layout";
 import BlogPage from "./pages/BlogPage";
 import PostPage from "./pages/PostPage";
 import ErrorPage from "./pages/ErrorPage";
+import SearchPage from "./pages/SearchPage";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage/>},
       { path: 'blog', element: <BlogPage/>},
       { path: 'blog/:id', element: <PostPage/>},
+      { path: 'search', element: <SearchPage/>},
     ]
   }
 ]);

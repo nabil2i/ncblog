@@ -4,27 +4,31 @@ import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
 import usePostQueryStore from "../store";
+import SimpelPostGrid from "./SimpelPostGrid";
 
 const LatestPosts = () => {
-  const { data, error, isLoading } = usePosts();
-  const searchText = usePostQueryStore(s => s.postQuery.searchText)
+  // const { data, error, isLoading } = usePosts();
+  // const searchText = usePostQueryStore(s => s.postQuery.searchText)
   
 
-  if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
+  // if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
 
-  const skeletons = [1, 2, 3, 4];
+  // const skeletons = [1, 2, 3, 4];
 
   return (
     <>
-      {error && <Text> We encountered a problem.</Text>}
       <Box m="5" textAlign="center">
         <Heading as="h2" size="2xl">
           {" "}
-          { searchText ? `Searched for: ${searchText}`: "Latest Posts" }
+        Latest Posts
         </Heading>
       </Box>
+      <SimpelPostGrid/>
+      {/* {error && <Text> We encountered a problem.</Text>} */}
 
-      <VStack paddingBottom={5}>
+          {/* { searchText ? `Searched for: ${searchText}`: "Latest Posts" } */}
+
+      {/* <VStack paddingBottom={5}>
         <SimpleGrid
           textAlign="center"
           columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
@@ -44,7 +48,7 @@ const LatestPosts = () => {
             </BlogPostCardContainer>
           ))}
         </SimpleGrid>
-      </VStack>
+      </VStack> */}
     </>
   );
 };

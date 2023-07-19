@@ -21,7 +21,7 @@ const SearchInput = (
       event.preventDefault();
       if (ref.current) {
         setSearchText(ref.current.value);
-        navigate('/');
+        navigate(`/search?q=${ref.current.value}`);
       }
     }}>
       <InputGroup>

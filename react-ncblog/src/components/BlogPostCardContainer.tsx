@@ -11,7 +11,7 @@ const BlogPostCardContainer = ({ children }: Props) => {
         transform: 'scale(1.03)',
         transition: 'transform .05s ease-in'
       }}
-      maxWidth="350px" borderRadius="lg" borderWidth="1px" overflow="hidden">
+      maxWidth="400px" borderRadius="lg" borderWidth="1px" overflow="hidden">
       {children}
     </Box>
   )

@@ -6,17 +6,19 @@ import BlogPostCardSkeleton from './BlogPostCardSkeleton';
 import BlogPostCard from './BlogPostCard';
 import usePosts from '../hooks/usePosts';
 
-const SimpelPostGrid = () => {
+const SimplePostGrid = () => {
   const { data, error, isLoading } = usePosts();
-  const searchText = usePostQueryStore(s => s.postQuery.searchText)
+  // const setSearchText = usePostQueryStore(s => s.setSearchText);
+  
   
   if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
 
   const skeletons = [1, 2, 3, 4];
   return (
     <>
+    {/* {setSearchText('')} */}
     {error && <Text> We encountered a problem.</Text>}
-    <Box paddingLeft={20}>
+    {/* <Box paddingLeft={20}>
       {
         searchText && <Heading
                         as="h2"
@@ -25,7 +27,7 @@ const SimpelPostGrid = () => {
                           {`Results for: ${searchText || ''}`}
                       </Heading>
             }
-    </Box>
+    </Box> */}
     <VStack paddingBottom={5}>
         <SimpleGrid
           textAlign="center"
@@ -51,4 +53,4 @@ const SimpelPostGrid = () => {
   )
 }
 
-export default SimpelPostGrid
+export default SimplePostGrid

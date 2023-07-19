@@ -1,15 +1,9 @@
-import { Box, Heading, SimpleGrid, Spinner, VStack, Text } from "@chakra-ui/react";
-import usePosts from "../hooks/usePosts";
-import BlogPostCard from "./BlogPostCard";
-import BlogPostCardContainer from "./BlogPostCardContainer";
-import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
-import usePostQueryStore from "../store";
-import SimpelPostGrid from "./SimpelPostGrid";
+import { Box, Heading } from "@chakra-ui/react";
+import SimplePostGrid from "./SimplePostGrid";
 
 const LatestPosts = () => {
   // const { data, error, isLoading } = usePosts();
   // const searchText = usePostQueryStore(s => s.postQuery.searchText)
-  
 
   // if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
 
@@ -20,13 +14,13 @@ const LatestPosts = () => {
       <Box m="5" textAlign="center">
         <Heading as="h2" size="2xl">
           {" "}
-        Latest Posts
+          Latest Posts
         </Heading>
       </Box>
-      <SimpelPostGrid/>
+      <SimplePostGrid />
       {/* {error && <Text> We encountered a problem.</Text>} */}
 
-          {/* { searchText ? `Searched for: ${searchText}`: "Latest Posts" } */}
+      {/* { searchText ? `Searched for: ${searchText}`: "Latest Posts" } */}
 
       {/* <VStack paddingBottom={5}>
         <SimpleGrid

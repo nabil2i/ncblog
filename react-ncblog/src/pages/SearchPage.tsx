@@ -1,13 +1,10 @@
-import { Box, Center, Flex, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
-import usePostQueryStore from "../store";
-import { useParams } from "react-router-dom";
-import PostGrid from "../components/PostGrid";
-import SimpelPostGrid from "../components/SimpelPostGrid";
+import { Grid, GridItem } from "@chakra-ui/react";
+import SearchPostGrid from "../components/SearchPostGrid";
 
 const SearchPage = () => {
   // const setPage = usePostQueryStore((s) => s.setPage);
-  
-  return(
+
+  return (
     <Grid
       templateAreas={
         /* `"nav-logo  nav-menu nav-search" "main main aside"` */
@@ -30,8 +27,8 @@ const SearchPage = () => {
             setPage(page);
           }}
         ></PostGrid> */}
-        
-        <SimpelPostGrid/>
+
+        <SearchPostGrid />
         {/* <PostGrid
           // postQuery={postQuery}
           paginate={(page) => {
@@ -40,8 +37,6 @@ const SearchPage = () => {
           }}
         ></PostGrid> */}
       </GridItem>
-
-  
     </Grid>
   );
 };

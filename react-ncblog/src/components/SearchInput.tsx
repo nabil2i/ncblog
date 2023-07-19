@@ -2,7 +2,7 @@ import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
 import usePostQueryStore from "../store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 // interface Props {
 //   onSearch: (searchText: string) => void
@@ -15,14 +15,18 @@ const SearchInput = (
   const setSearchText = usePostQueryStore(s => s.setSearchText);
   const navigate = useNavigate();
 
+  // const [searchParams, setSearchParams] = useSearchParams();
+
   return (
     // <form style={{ width: '100%'}} onSubmit={(event) => {
     <form onSubmit={(event) => {
       event.preventDefault();
       if (ref.current) {
         setSearchText(ref.current.value);
-        navigate(`/search?q=${ref.current.value}`);
+        // setSearchParams({ q: 'active'});
+        navigate(`/`);
       }
+
     }}>
       <InputGroup>
         <InputLeftElement children={<BsSearch/>}/>

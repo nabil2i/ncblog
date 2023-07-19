@@ -3,9 +3,12 @@ import Headline from "../components/Headline";
 import Hero from "../components/Hero";
 import LatestPosts from "../components/LatestPosts";
 import usePostQueryStore from "../store";
+import SearchPostGrid from "../components/SearchPostGrid";
 
 const HomePage = () => {
-  const setPage = usePostQueryStore((s) => s.setPage);
+  // const setPage = usePostQueryStore((s) => s.setPage);
+  const searchText = usePostQueryStore((s) => s.postQuery.searchText);
+
   return (
     <Grid
       templateAreas={
@@ -22,10 +25,17 @@ const HomePage = () => {
       }}
     >
       <GridItem area="main">
+        { !searchText && 
+        <>
         <VStack>
           <Headline></Headline>
           <Hero></Hero>
         </VStack>
+        <LatestPosts/>
+        </>
+        }
+        { searchText && <SearchPostGrid/>}
+
         <VStack>
           {/* <Box>
             <PostHeading
@@ -48,7 +58,7 @@ const HomePage = () => {
           }}
         ></PostGrid> */}
 
-        <LatestPosts></LatestPosts>
+        
       </GridItem>
 
       {/* <GridItem area="headline">

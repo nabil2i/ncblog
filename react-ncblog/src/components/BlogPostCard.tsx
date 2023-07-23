@@ -1,5 +1,7 @@
-import { Box, Card, CardBody, CardFooter, CardHeader, Center, Divider, HStack, Heading, Image, Text } from "@chakra-ui/react";
+import { Avatar, Box, Card, CardBody, CardFooter, CardHeader, Center, Divider, Flex, HStack, Heading, Image, Tag, Text } from "@chakra-ui/react";
 import NabilConveys1 from "../assets/NabilConveys1.webp";
+import NabilConveys2 from "../assets/NabilConveys2.webp";
+import Landscape from "../assets/landscape.jpeg"
 import Post from "../entities/Post";
 import BlogPostDate from "./BlogPostDate";
 import { Link } from "react-router-dom";
@@ -11,36 +13,54 @@ interface Props {
 const BlogPostCard = ({ post }: Props) => {
   return (
     <Link to={'/blog/' + post._id}> 
-    <Card textAlign="left" height="100%" key={post._id} >
-      <CardHeader>
-        <Box w="50px" h="50px">
-          <Text>Av</Text>
-        </Box>
-      </CardHeader>
+    <Card textAlign="left" height="100%" key={post._id} borderRadius='4'>
       <CardBody>
-        <Center>
+        {/* <Center> */}
           <Image
             // objectFit='cover'
             mt={3}
             mb={3}
-            src={NabilConveys1}
+            src={Landscape}
             // boxSize="350px"
             height="200px"
+            borderRadius='xl'
+            objectFit='cover'
+            mx='auto'
             />
-        </Center>
-        <Heading fontSize="2xl" noOfLines={2}>
+        {/* </Center> */}
+        <HStack mt='5' spacing="3">
+          {['Islam', 'Religion'].map(item => (
+            <Tag
+              key={item}
+              color={'green.500'}
+              // variant="outline"
+              >{item}</Tag>
+          ))}
+        </HStack>
+        <Heading my='4' fontSize="lg" noOfLines={2}>
           {post.title}
         </Heading>
         
-        <Text noOfLines={2}>{post.body}</Text>
+        <Text noOfLines={5}>{post.body}</Text>
+        
       </CardBody>
       {/* <Divider borderColor="gray.200"/> */}
+      {/* <CardHeader>
+        
+      </CardHeader> */}
       <CardFooter>
-        <HStack mt={3} paddingY="1" justifyContent={"space-between"}>
+      <Flex mt="4" gap='2'>
+          <Avatar src={NabilConveys2}/>
+          <Box>
+            <Text fontWeight={600}>Nabil Ibn Ismail</Text>
+            <BlogPostDate date={post.createdAt} />
+            {/* <Text>Nabil Ibn Ismail</Text> */}
+          </Box>
+        </Flex>
+        {/* <HStack  justifyContent={"space-around"}>
           <BlogPostDate date={post.createdAt} />
-          <Text> {post._id} </Text>
-          {/* <Text> Icon </Text> */}
-        </HStack> 
+          <Text> </Text>
+        </HStack>  */}
       </CardFooter>
     </Card>
     </Link>

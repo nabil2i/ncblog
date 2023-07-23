@@ -9,7 +9,7 @@ const BlogPostDate = ({ date }: Props) => {
   return (
     <Text>
       {
-        dateFormat(date, "ddd, mmm dS, yyyy")
+        dateFormat(date, "mmm dS, yyyy")
         // new Intl.DateTimeFormat(
         //   'en-US',
         //   {

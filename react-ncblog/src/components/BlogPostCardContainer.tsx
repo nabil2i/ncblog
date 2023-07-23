@@ -1,21 +1,28 @@
-import { Box } from '@chakra-ui/react'
-import { ReactNode } from 'react'
+import { Box, Center } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 interface Props {
-  children: ReactNode
+  children: ReactNode;
 }
 const BlogPostCardContainer = ({ children }: Props) => {
   return (
+
     <Box
       _hover={{
-        transform: 'scale(1.03)',
-        transition: 'transform .05s ease-in'
+        transform: "scale(1.03)",
+        transition: "transform .05s ease-in",
       }}
-      minWidth="400px"
-      maxWidth="400px" borderRadius="lg" borderWidth="1px" overflow="hidden">
+      // bg='white'
+      // minWidth="400px"
+      maxWidth="420px"
+      // borderRadius="lg"
+      // borderWidth="1px"
+      overflow="hidden"
+      p="6"
+      >
       {children}
     </Box>
-  )
-}
+  );
+};
 
 export default BlogPostCardContainer;

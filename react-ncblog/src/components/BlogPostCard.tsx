@@ -1,4 +1,4 @@
-import { Card, CardBody, Center, HStack, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Card, CardBody, CardFooter, CardHeader, Center, Divider, HStack, Heading, Image, Text } from "@chakra-ui/react";
 import NabilConveys1 from "../assets/NabilConveys1.webp";
 import Post from "../entities/Post";
 import BlogPostDate from "./BlogPostDate";
@@ -11,7 +11,12 @@ interface Props {
 const BlogPostCard = ({ post }: Props) => {
   return (
     <Link to={'/blog/' + post._id}> 
-    <Card textAlign="left" height="100%">
+    <Card textAlign="left" height="100%" key={post._id} >
+      <CardHeader>
+        <Box w="50px" h="50px">
+          <Text>Av</Text>
+        </Box>
+      </CardHeader>
       <CardBody>
         <Center>
           <Image
@@ -28,13 +33,15 @@ const BlogPostCard = ({ post }: Props) => {
         </Heading>
         
         <Text noOfLines={2}>{post.body}</Text>
-
+      </CardBody>
+      {/* <Divider borderColor="gray.200"/> */}
+      <CardFooter>
         <HStack mt={3} paddingY="1" justifyContent={"space-between"}>
           <BlogPostDate date={post.createdAt} />
           <Text> {post._id} </Text>
           {/* <Text> Icon </Text> */}
-        </HStack>
-      </CardBody>
+        </HStack> 
+      </CardFooter>
     </Card>
     </Link>
     // <Box m="5" as="a" href="/blog-post-thing">

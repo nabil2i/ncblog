@@ -39,7 +39,7 @@ const BlogPage = () => {
               <CategorySelector />
             </Box>
           </Flex>
-        </VStack>
+        
 
         <PostGrid
           // postQuery={postQuery}
@@ -48,6 +48,7 @@ const BlogPage = () => {
             setPage(page);
           }}
         ></PostGrid>
+      </VStack>
       </GridItem>
     </Grid>
   );

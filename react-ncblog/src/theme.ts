@@ -26,7 +26,11 @@ const theme = extendTheme({
       900: "#111",
 
     }
-  }
+  },
+  // fonts: {
+  //   body: 'Lora',
+  //   heading: 'Lora'
+  // }
 })
 
 export default theme

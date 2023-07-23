@@ -4,17 +4,24 @@ import ColorModeSwitch from "./ColorModeSwitch";
 
 const NavButtons = () => {
   return (
-    <Flex alignItems="right" gap="2">
-      <Spacer />
-      <HStack justifyContent="space-between" padding="10px">
-        {/* <HStack>
-          <Search2Icon boxSize={6} />
-          <Text >Search</Text>
-        </HStack> */}
+    <ColorModeSwitch />
+    // <Flex 
+    //   // alignItems="right"
+    //   // gap="2"
+    // >
+    //   <Spacer />
+    //   <HStack
+    //     // justifyContent="space-between"
+    //     // padding="10px"
+    //     >
+    //     {/* <HStack>
+    //       <Search2Icon boxSize={6} />
+    //       <Text >Search</Text>
+    //     </HStack> */}
 
-        <ColorModeSwitch />
-      </HStack>
-    </Flex>
+    //     <ColorModeSwitch />
+    //   </HStack>
+    // </Flex>
   );
 };
 

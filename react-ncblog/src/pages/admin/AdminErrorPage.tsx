@@ -1,11 +1,13 @@
-import { Grid, GridItem } from "@chakra-ui/react";
-import { Outlet } from "react-router-dom";
+import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import AdminNavBar from "../../components/admincomponentss/AdminNavBar";
 import AdminSideBar from "../../components/admincomponentss/AdminSideBar";
 
-const AdminLayout = () => {
-  return (
-      <Grid
+const AdminErrorPage = () => {
+  const error = useRouteError();
+  return(
+    <>
+    <Grid
         templateColumns="repeat(6, 1fr)"
         // bg="gray.50"
       >
@@ -25,10 +27,18 @@ const AdminLayout = () => {
           px="40px"
         >
           <AdminNavBar />
-          <Outlet />
+          <Box padding={5}>
+            <Heading>Oops</Heading>
+            <Text>
+              {isRouteErrorResponse(error)
+                ? "This page does not exist."
+                : "An unexpected error occurred."}
+            </Text>
+          </Box>
         </GridItem>
       </Grid>
-  );
+  </>
+);
 };
 
-export default AdminLayout;
+export default AdminErrorPage;

@@ -5,6 +5,10 @@ import HomePage from "./pages/HomePage";
 import Layout from "./pages/Layouts/Layout";
 import PostPage from "./pages/PostPage";
 import AdminLayout from "./pages/Layouts/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import Profile from "./pages/admin/Profile";
+import AdminErrorPage from "./pages/admin/AdminErrorPage";
+import PostsPage, { createAction } from "./pages/admin/PostsPage";
 
 const router = createBrowserRouter([
   {
@@ -19,10 +23,14 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/admin",
+    path: "/admin/",
     element: <AdminLayout />,
+    errorElement: <AdminErrorPage/>,
     children: [
-      { index: true, element: <HomePage/>},
+      { index: true, element: <Dashboard/>},
+      { path: "profile", element: <Profile/>},
+      { path: "posts", element: <PostsPage/>, action: createAction },
+      // { path: "resources", element: <Profile/>},
     ],
   }
 ]);

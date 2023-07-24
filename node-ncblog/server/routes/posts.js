@@ -102,6 +102,20 @@ router.get('/:id', async(req, res) => {
   }
 });
 
+router.post('/', async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  // console.log(req.body);
+
+  const newPost = new Post({
+    title: req.body.title,
+    body: req.body.body
+  });
+
+  await Post.create(newPost);
+  res.send(newPost);
+});
+
 // INSERTING DUMMY POSTS
 // function insertPostData () {
 //   Post.insertMany([

@@ -7,6 +7,8 @@ import usePostQueryStore from "../store";
 const BlogPage = () => {
   const setPage = usePostQueryStore((s) => s.setPage);
   return (
+    <Box>
+
     <Grid
       templateAreas={
         /* `"nav-logo  nav-menu nav-search" "main main aside"` */
@@ -20,7 +22,7 @@ const BlogPage = () => {
         base: "1fr",
         lg: "1fr",
       }}
-    >
+      >
       <GridItem area="main">
         {/* <VStack>
           <Headline></Headline>
@@ -47,10 +49,11 @@ const BlogPage = () => {
             if (page === null) return null;
             setPage(page);
           }}
-        ></PostGrid>
+          ></PostGrid>
       </VStack>
       </GridItem>
     </Grid>
+          </Box>
   );
 };
 export default BlogPage;

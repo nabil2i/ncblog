@@ -1,12 +1,18 @@
 import hero from '../assets/hero-image.webp'
-import { Image } from '@chakra-ui/react'
+import { Box, Image } from '@chakra-ui/react'
 
 const Hero = () => {
   return (
-    
-      <Image src={hero} padding="10px" overflow="hidden" textAlign="center" border-radius="lg" width="90%" maxH="528px" />
-   
-    
+
+      <Image
+        src={hero}
+        padding="10px"
+        overflow="hidden"
+        textAlign="center"
+        border-radius="lg"
+        width="80%"
+        maxH="528px"
+        />
   )
 }
 

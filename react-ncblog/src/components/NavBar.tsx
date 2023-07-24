@@ -10,7 +10,11 @@ const NavBar = () => {
   const { isOpen, onToggle } = useDisclosure();
   return (
     <>
-    <Box>
+    <Box
+      position="static"
+      backgroundColor="rgba(255, 255, 255, 0.8)"
+      backdropFilter="saturate(180%) blur(5px)" 
+      w="100%">
       <VStack
         display={{ lg: 'none'}}
         py={5}
@@ -19,14 +23,16 @@ const NavBar = () => {
       </VStack>
 
       <Flex
+        
         as="nav"
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
         minH={'60px'}
         py={{ base: 2 }}
         px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={'solid'}
+        // borderBottom={1}
+        // borderStyle={'solid'}
+        boxShadow={'dark-lg'}
         borderColor={useColorModeValue('gray.200', 'gray.900')}
         align={'center'}
       >

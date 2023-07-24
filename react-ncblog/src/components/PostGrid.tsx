@@ -38,7 +38,8 @@ const PostGrid = (
          Posts
         </Heading>
       </Box> */}
-      
+    
+
       <VStack paddingBottom={5}>
         <SimpleGrid
           textAlign="center"
@@ -69,8 +70,9 @@ const PostGrid = (
             paginate={paginate}
             // prevPaginate={prevPaginate}
             // nextPaginate={nextPaginate}
-          ></PaginationBox>
+            ></PaginationBox>
       </VStack>
+      
       
     </>
   );

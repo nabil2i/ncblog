@@ -1,4 +1,4 @@
-import { Grid, GridItem, VStack } from "@chakra-ui/react";
+import { Box, Container, Grid, GridItem, VStack } from "@chakra-ui/react";
 import Headline from "../components/Headline";
 import Hero from "../components/Hero";
 import LatestPosts from "../components/LatestPosts";
@@ -10,6 +10,8 @@ const HomePage = () => {
   const searchText = usePostQueryStore((s) => s.postQuery.searchText);
 
   return (
+    <Box as="main" mt="20">
+
     <Grid
       templateAreas={
         /* `"nav-logo  nav-menu nav-search" "main main aside"` */
@@ -45,7 +47,7 @@ const HomePage = () => {
 
           {/* <Flex>
             <Box>
-              <CategorySelector />
+            <CategorySelector />
             </Box>
           </Flex> */}
         </VStack>
@@ -63,12 +65,13 @@ const HomePage = () => {
 
       {/* <GridItem area="headline">
           <Headline></Headline>
-        </GridItem>
-
-        <GridItem area="hero">
+          </GridItem>
+          
+          <GridItem area="hero">
           
         </GridItem> */}
     </Grid>
+        </Box>
   );
 };
 

@@ -4,30 +4,41 @@ import { NavLink } from "react-router-dom";
 import NAV_ITEMS, { NavItem } from "./navitems";
 
 const DesktopNav = () => {
+  const page = window.location.pathname;
+  console.log(page);
+
   return (
     <Stack direction={'row'} spacing={4} >
       {NAV_ITEMS.map(navItem => (
         <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
+          <Popover
+            trigger={'hover'}
+            placement={'bottom-start'}>
             <PopoverTrigger>
-              <Link
+              <Box
+                
                 p={2}
                 // fontSize={'sm'}
                 // fontWeight={500}
 
                 // color={"linkedin.50"}
                 _hover={{
-                  TextDecoder: 'none',
+                  textDecoration: 'none',
+                  color: 'green'
                   // color: ,
                 }}
               >
                 <NavLink
-                  to={navItem.href ?? '#'}>
+                  to={navItem.href ?? '#'}
+                  // style={({ isActive }) => ({ 
+                  //   color: !isActive ? 'greenyellow' : ''})}
+                  >
                     <Text whiteSpace={'nowrap'}>
                       {navItem.label}
                     </Text>
+                    <i className="fas fa-sign-out-alt"></i>
                 </NavLink>
-              </Link>
+              </Box>
             </PopoverTrigger>
 
             {navItem.children && (
@@ -54,7 +65,7 @@ const DesktopNav = () => {
 };
 
 const DesktopSubNav = ({ label, href, subLabel}: NavItem) => (
-  <Link
+  <Box
     role={'group'}
     display={'block'}
     p={2}
@@ -62,7 +73,10 @@ const DesktopSubNav = ({ label, href, subLabel}: NavItem) => (
     _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
   >
     <NavLink
-      to={href ?? '#'}>
+      to={href ?? '#'}
+      // style={({ isActive }) => ({ 
+      //   color: isActive ? 'greenyellow' : 'white' })}
+        >
       <Stack direction={'row'} align={'center'}>
         <Box>
           <Text
@@ -86,7 +100,7 @@ const DesktopSubNav = ({ label, href, subLabel}: NavItem) => (
         </Flex>
       </Stack>
     </NavLink>
-  </Link>
+  </Box>
 )
 
 export default DesktopNav;

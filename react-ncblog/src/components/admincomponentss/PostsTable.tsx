@@ -13,6 +13,7 @@ import {
   Thead,
   Tr,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import usePosts from "../../hooks/usePosts";
@@ -21,6 +22,19 @@ import { redirect } from "react-router-dom";
 
 const PostsTable = () => {
   const { data, error, isLoading } = usePosts();
+  const toast = useToast();
+
+  const showToast = () => {
+    toast({
+      title: "Deleted a post",
+      description: "Successfully deleted the post.",
+      duration: 5000, // 5s
+      isClosable: true,
+      status: "success",
+      position: "top",
+      // icon: <UnlockIcon />,
+    });
+  };
 
   if (isLoading)
     return (
@@ -28,10 +42,12 @@ const PostsTable = () => {
         <Spinner />
       </VStack>
     );
+    
 
   const deletePost = (postId: string) => {
     // console.log("deleting..."); return;
     axios.delete(`http://localhost:5000/api/posts/${postId}`);
+    showToast();
     redirect("/admin/dashboard");
   };
 

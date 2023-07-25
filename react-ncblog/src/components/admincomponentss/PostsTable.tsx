@@ -47,9 +47,14 @@ const PostsTable = () => {
 
   const deletePost = (postId: string) => {
     // console.log("deleting..."); return;
-    axios.delete(`http://localhost:5000/api/posts/${postId}`);
-    showToast();
-    redirect("/admin/dashboard");
+    axios
+      .delete(`http://localhost:5000/api/posts/${postId}`)
+      .then(res => {
+        res.data;
+        showToast();
+        redirect("/admin/posts");
+      })
+    
   };
 
   return (

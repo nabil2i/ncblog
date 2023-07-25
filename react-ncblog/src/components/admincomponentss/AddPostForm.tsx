@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { FieldError, FieldValues, useForm } from "react-hook-form";
 import axios from "axios";
 import { AddIcon } from "@chakra-ui/icons";
+import { redirect } from "react-router-dom";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -54,6 +55,7 @@ const AddPostForm = () => {
       .then(res => {
         res.data;
         showToast();
+        redirect('/admin/posts');
       }
         )
       

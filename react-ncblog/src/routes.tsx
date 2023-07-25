@@ -8,7 +8,7 @@ import AdminLayout from "./pages/Layouts/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Profile from "./pages/admin/Profile";
 import AdminErrorPage from "./pages/admin/AdminErrorPage";
-import PostsPage, { createAction } from "./pages/admin/PostsPage";
+import PostsPage from "./pages/admin/PostsPage";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Dashboard/>},
       { path: "profile", element: <Profile/>},
-      { path: "posts", element: <PostsPage/>, action: createAction },
+      { path: "posts", element: <PostsPage/>},
       // { path: "resources", element: <Profile/>},
     ],
   }

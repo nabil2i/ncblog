@@ -47,6 +47,18 @@ const AddPostForm = () => {
       icon: <AddIcon />,
     });
   };
+
+  const showErrorToast = () => {
+    toast({
+      title: "Add a post",
+      description: "Error occured while deleting the post.",
+      duration: 5000, // 5s
+      isClosable: true,
+      status: "error",
+      position: "top",
+      icon: <AddIcon />,
+    });
+  };
   
   const createPost = useMutation({
     mutationFn: (post: MyPost) => 
@@ -56,8 +68,11 @@ const AddPostForm = () => {
         res.data;
         showToast();
         redirect('/admin/posts');
-      }
-        )
+      })
+      .catch(err => {
+        console.log(err);
+        showErrorToast();
+      })
       
   });
 

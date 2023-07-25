@@ -37,6 +37,18 @@ const PostsTable = () => {
     });
   };
 
+  const showErrorToast = () => {
+    toast({
+      title: "Delete a post",
+      description: "Error in deleting the post.",
+      duration: 5000, // 5s
+      isClosable: true,
+      status: "error",
+      position: "top",
+      icon: <DeleteIcon />,
+    });
+  };
+
   if (isLoading)
     return (
       <VStack marginTop={2}>
@@ -53,6 +65,10 @@ const PostsTable = () => {
         res.data;
         showToast();
         redirect("/admin/posts");
+      })
+      .catch(err => {
+        console.log(err);
+        showErrorToast();
       })
     
   };

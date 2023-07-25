@@ -1,23 +1,8 @@
 // import { ChatIcon, EmailIcon, StarIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Text,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Textarea,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 // import { Form, redirect } from "react-router-dom";
-import { FieldValues, useForm } from "react-hook-form";
 import AddPostForm from "../../components/admincomponentss/AddPostForm";
+import PostsTable from "../../components/admincomponentss/PostsTable";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -31,7 +16,6 @@ import AddPostForm from "../../components/admincomponentss/AddPostForm";
 // type FormData = z.infer<typeof schema>;
 
 const PostsPage = () => {
-
   return (
     <>
       <Tabs mt="10px" p="20px" colorScheme="green.300" variant="enclosed">
@@ -42,6 +26,7 @@ const PostsPage = () => {
 
         <TabPanels>
           <TabPanel>
+            <PostsTable />
             {/* <List spacing={4}>
               <ListItem>
                 <ListIcon as={EmailIcon}/>
@@ -64,7 +49,7 @@ const PostsPage = () => {
                 method="post"
                 action="/admin/posts"
               > */}
-              <AddPostForm/>
+              <AddPostForm />
               {/* </Form> */}
             </Box>
           </TabPanel>

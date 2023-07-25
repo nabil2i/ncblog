@@ -3,7 +3,7 @@ import dateFormat from "dateformat";
 // import "moment-timezone";
 
 interface Props {
-  date: Date;
+  date: Date | undefined;
 }
 const BlogPostDate = ({ date }: Props) => {
   return (

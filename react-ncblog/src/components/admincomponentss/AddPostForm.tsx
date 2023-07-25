@@ -9,11 +9,14 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { FieldError, FieldValues, useForm } from "react-hook-form";
-import Post from "../../entities/Post";
 import axios from "axios";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
+interface MyPost {
+  title: string,
+  body: string
+}
 interface FormData {
   title: string;
   body: string;
@@ -29,7 +32,7 @@ interface FormData {
 
 const AddPostForm = () => {
   const createPost = useMutation({
-    mutationFn: (post: Post) =>
+    mutationFn: (post: MyPost) =>
       axios
         .post('http://localhost:5000/api/posts', post)
         .then(res => res.data)

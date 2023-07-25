@@ -40,7 +40,7 @@ const PostsTable = () => {
   const showErrorToast = () => {
     toast({
       title: "Delete a post",
-      description: "Error in deleting the post.",
+      description: "An error occured while deleting the post.",
       duration: 5000, // 5s
       isClosable: true,
       status: "error",

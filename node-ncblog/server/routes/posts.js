@@ -116,6 +116,24 @@ router.post('/', async (req, res) => {
   res.send(newPost);
 });
 
+router.put('/:id', async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.send(400).send(error.details[0].message);
+
+  const post = await Post.findByIdAndUpdate(
+    req.params.id,
+    {
+      title: req.body.title,
+      body: req.body.body,
+    },
+    { new: true}
+  );
+
+  if (!post) return res.status(404).send("The post with given ID doesn't exist");
+
+  res.send(post);
+});
+
 router.delete('/:id', async (req, res) => {
   const post = await Post.findByIdAndRemove(req.params.id);
 

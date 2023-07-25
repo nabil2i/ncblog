@@ -20,9 +20,12 @@ import usePosts from "../../hooks/usePosts";
 import BlogPostDate from "../BlogPostDate";
 import { NavLink, redirect, useNavigate } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CACHE_KEY_POSTS } from "../../hooks/constants";
 
 const PostsTable = () => {
   const { data, error, isLoading } = usePosts();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -50,6 +53,27 @@ const PostsTable = () => {
     });
   };
 
+  const deletePost = useMutation({
+    mutationFn: (postId: string) =>
+      // console.log("deleting..."); return;
+      axios
+        .delete(`http://localhost:5000/api/posts/${postId}`)
+        .then(res => res.data),
+    onSuccess: () => {
+      showToast();
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
+    },
+    onError: () =>  {
+      showErrorToast();
+    }
+  });
+
+  const triggerDeletePost = (postId: string) => {
+    // console.log(postId);
+    if (postId)
+    deletePost.mutate(postId)
+  }
+
   if (isLoading)
     return (
       <VStack marginTop={2}>
@@ -58,21 +82,24 @@ const PostsTable = () => {
     );
     
 
-  const deletePost = (postId: string) => {
-    // console.log("deleting..."); return;
-    axios
-      .delete(`http://localhost:5000/api/posts/${postId}`)
-      .then(res => {
-        res.data;
-        showToast();
-        redirect("/admin/posts");
-      })
-      .catch(err => {
-        console.log(err);
-        showErrorToast();
-      })
+
+  
+
+  // const deletePost = (postId: string) => {
+  //   // console.log("deleting..."); return;
+  //   axios
+  //     .delete(`http://localhost:5000/api/posts/${postId}`)
+  //     .then(res => {
+  //       res.data;
+  //       showToast();
+  //       redirect("/admin/posts");
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       showErrorToast();
+  //     })
     
-  };
+  // };
 
   const updatePost = (postId: string) => {
     navigate(`/admin/posts/${postId}`);
@@ -126,7 +153,7 @@ const PostsTable = () => {
                     >Edit</Button>
                     <Button
                       colorScheme="red"
-                      onClick={() => deletePost(post._id)}
+                      onClick={() => triggerDeletePost(post._id)}
                     >
                       Delete
                     </Button>

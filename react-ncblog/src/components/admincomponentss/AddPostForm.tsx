@@ -1,5 +1,10 @@
 import { AddIcon } from "@chakra-ui/icons";
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -9,10 +14,13 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { FieldValues, useForm } from "react-hook-form";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+import { CACHE_KEY_POSTS } from "../../hooks/constants";
+import Post from "../../entities/Post";
+import { useRef } from "react";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -34,6 +42,8 @@ export interface FormData {
 // type FormData = z.infer<typeof schema>;
 
 const AddPostForm = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const toast = useToast();
 
   const showToast = () => {
@@ -60,31 +70,39 @@ const AddPostForm = () => {
     });
   };
 
-  const createPost = useMutation({
+  const createPost = useMutation<MyPost, Error, MyPost>({
     mutationFn: (post: MyPost) =>
       axios
-        .post("http://localhost:5000/api/posts", post)
-        .then((res) => {
-          res.data;
-          showToast();
-          redirect("/admin/posts");
-        })
-        .catch((err) => {
-          console.log(err);
-          showErrorToast();
-        }),
+        .post<MyPost>("http://localhost:5000/api/posts", post)
+        .then((res) => res.data),
+    onSuccess: (savedPost, newPost) =>  {
+      reset();
+      showToast();
+      // method 1 to update
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
+      // method 2 to update with direct update of cache
+      // queryClient.setQueryData<MyPost[]>([CACHE_KEY_POSTS], posts => [savedPost, ...(posts || [])])
+      
+
+      navigate("/admin/posts");
+    },
+    onError: () =>  {
+      showErrorToast();
+    }
   });
 
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors, isSubmitting, isValid },
     // } = useForm();
   } = useForm<FormData>();
   // } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
+    // console.log(data);
+    if (data && data.title && data.body)
     createPost.mutate({
       title: data.title,
       body: data.body,
@@ -92,6 +110,15 @@ const AddPostForm = () => {
   };
 
   return (
+    <>
+    <Box >
+
+    {createPost.error &&
+    <Alert mb="15px" mt="10px" status='error'>
+      <AlertIcon />
+      <AlertTitle>{createPost.error.name}</AlertTitle>
+      <AlertDescription>{createPost.error.message}</AlertDescription>
+    </Alert>}
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isRequired isInvalid={errors.title ? true : false} mb="40px">
         <FormLabel htmlFor="title">Post title:</FormLabel>
@@ -107,7 +134,7 @@ const AddPostForm = () => {
               message: "Title must be at least 20 characters.",
             },
           })}
-        />
+          />
         <FormErrorMessage>
           {errors.title && errors.title.message}
         </FormErrorMessage>
@@ -128,7 +155,7 @@ const AddPostForm = () => {
               message: "Body must be at least 50 characters.",
             },
           })}
-        />
+          />
         <FormErrorMessage>
           {errors.body && errors.body.message}
         </FormErrorMessage>
@@ -136,14 +163,16 @@ const AddPostForm = () => {
       </FormControl>
 
       <Button
-        disabled={!isValid}
+        disabled={createPost.isLoading}
         type="submit"
         colorScheme="green"
         isLoading={isSubmitting}
-      >
-        Create post
+        >
+        {createPost.isLoading ? 'Creating a post...' : 'Create post' }
       </Button>
     </form>
+          </Box>
+    </>
   );
 };
 

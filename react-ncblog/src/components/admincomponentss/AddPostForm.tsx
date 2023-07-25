@@ -6,10 +6,12 @@ import {
   FormLabel,
   Input,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { FieldError, FieldValues, useForm } from "react-hook-form";
 import axios from "axios";
+import { AddIcon } from "@chakra-ui/icons";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -31,11 +33,30 @@ interface FormData {
 // type FormData = z.infer<typeof schema>;
 
 const AddPostForm = () => {
+  const toast = useToast();
+
+  const showToast = () => {
+    toast({
+      title: "Add a post",
+      description: "Successfully added the post.",
+      duration: 5000, // 5s
+      isClosable: true,
+      status: "success",
+      position: "top",
+      icon: <AddIcon />,
+    });
+  };
+  
   const createPost = useMutation({
-    mutationFn: (post: MyPost) =>
+    mutationFn: (post: MyPost) => 
       axios
-        .post('http://localhost:5000/api/posts', post)
-        .then(res => res.data)
+      .post('http://localhost:5000/api/posts', post)
+      .then(res => {
+        res.data;
+        showToast();
+      }
+        )
+      
   });
 
   const {

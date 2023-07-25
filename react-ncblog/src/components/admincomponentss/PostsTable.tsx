@@ -68,7 +68,7 @@ const PostsTable = () => {
           <Tbody>
             {data?.results.map((post) => (
               <Tr key={post._id}>
-                <Td _hover={{ color: "green" }}>{post.title}</Td>
+                <Td _hover={{ color: "green", cursor: "grab" }}>{post.title}</Td>
                 <Td>
                   <BlogPostDate date={post.createdAt} />
                 </Td>

@@ -51,7 +51,7 @@ const AddPostForm = () => {
   const showErrorToast = () => {
     toast({
       title: "Add a post",
-      description: "Error occured while deleting the post.",
+      description: "An error occured while adding the post.",
       duration: 5000, // 5s
       isClosable: true,
       status: "error",

@@ -19,6 +19,7 @@ import axios from "axios";
 import usePosts from "../../hooks/usePosts";
 import BlogPostDate from "../BlogPostDate";
 import { redirect } from "react-router-dom";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const PostsTable = () => {
   const { data, error, isLoading } = usePosts();
@@ -26,13 +27,13 @@ const PostsTable = () => {
 
   const showToast = () => {
     toast({
-      title: "Deleted a post",
+      title: "Delete a post",
       description: "Successfully deleted the post.",
       duration: 5000, // 5s
       isClosable: true,
       status: "success",
       position: "top",
-      // icon: <UnlockIcon />,
+      icon: <DeleteIcon />,
     });
   };
 

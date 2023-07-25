@@ -1,3 +1,4 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Button,
   FormControl,
@@ -9,18 +10,17 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import { FieldError, FieldValues, useForm } from "react-hook-form";
 import axios from "axios";
-import { AddIcon } from "@chakra-ui/icons";
+import { FieldValues, useForm } from "react-hook-form";
 import { redirect } from "react-router-dom";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
 interface MyPost {
-  title: string,
-  body: string
+  title: string;
+  body: string;
 }
-interface FormData {
+export interface FormData {
   title: string;
   body: string;
 }
@@ -59,28 +59,27 @@ const AddPostForm = () => {
       icon: <AddIcon />,
     });
   };
-  
+
   const createPost = useMutation({
-    mutationFn: (post: MyPost) => 
+    mutationFn: (post: MyPost) =>
       axios
-      .post('http://localhost:5000/api/posts', post)
-      .then(res => {
-        res.data;
-        showToast();
-        redirect('/admin/posts');
-      })
-      .catch(err => {
-        console.log(err);
-        showErrorToast();
-      })
-      
+        .post("http://localhost:5000/api/posts", post)
+        .then((res) => {
+          res.data;
+          showToast();
+          redirect("/admin/posts");
+        })
+        .catch((err) => {
+          console.log(err);
+          showErrorToast();
+        }),
   });
 
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting, isValid },
-  // } = useForm();
+    // } = useForm();
   } = useForm<FormData>();
   // } = useForm<FormData>({ resolver: zodResolver(schema) });
 
@@ -88,17 +87,13 @@ const AddPostForm = () => {
     console.log(data);
     createPost.mutate({
       title: data.title,
-      body: data.body
+      body: data.body,
     });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl
-        isRequired
-        isInvalid={errors.title ? true: false}
-        mb="40px"
-      >
+      <FormControl isRequired isInvalid={errors.title ? true : false} mb="40px">
         <FormLabel htmlFor="title">Post title:</FormLabel>
         <Input
           id="title"
@@ -119,11 +114,7 @@ const AddPostForm = () => {
         <FormHelperText>Enter the title of the post</FormHelperText>
       </FormControl>
 
-      <FormControl
-        isRequired
-        isInvalid={errors.body ? true: false}
-        mb="40px"
-      >
+      <FormControl isRequired isInvalid={errors.body ? true : false} mb="40px">
         <FormLabel htmlFor="body">Post content:</FormLabel>
         <Textarea
           id="body"

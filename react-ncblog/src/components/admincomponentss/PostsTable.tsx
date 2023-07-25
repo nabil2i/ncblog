@@ -18,12 +18,13 @@ import {
 import axios from "axios";
 import usePosts from "../../hooks/usePosts";
 import BlogPostDate from "../BlogPostDate";
-import { redirect } from "react-router-dom";
+import { NavLink, redirect, useNavigate } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 const PostsTable = () => {
   const { data, error, isLoading } = usePosts();
   const toast = useToast();
+  const navigate = useNavigate();
 
   const showToast = () => {
     toast({
@@ -73,6 +74,23 @@ const PostsTable = () => {
     
   };
 
+  const updatePost = (postId: string) => {
+    navigate(`/admin/posts/${postId}`);
+    console.log("updating...");
+    // axios
+    //   .delete(`http://localhost:5000/api/posts/${postId}`)
+    //   .then(res => {
+    //     res.data;
+    //     showToast();
+    //     redirect("/admin/posts");
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //     showErrorToast();
+    //   })
+    
+  };
+
   return (
     <>
       {error && <Text> We encountered a problem.</Text>}
@@ -89,14 +107,23 @@ const PostsTable = () => {
           </Thead>
           <Tbody>
             {data?.results.map((post) => (
+              
               <Tr key={post._id}>
-                <Td _hover={{ color: "green", cursor: "grab" }}>{post.title}</Td>
+                
+                <Td _hover={{ color: "green", cursor: "grab" }}>
+                  <NavLink to={`/admin/posts/${post._id}`}>
+                    {post.title}
+                  </NavLink>
+                </Td>
                 <Td>
                   <BlogPostDate date={post.createdAt} />
                 </Td>
                 <Td>
                   <Flex gap="3">
-                    <Button colorScheme="blue">Edit</Button>
+                    <Button
+                      colorScheme="blue"
+                      onClick={() => updatePost(post._id)}
+                    >Edit</Button>
                     <Button
                       colorScheme="red"
                       onClick={() => deletePost(post._id)}

@@ -5,7 +5,7 @@ import PostImage from "../components/PostImage";
 
 const PostPage = () => {
   const { id } = useParams();
-  const { data: post, isLoading, error } = usePost(id!);
+  const { data: post, isLoading, error } = usePost(id as string);
 
   if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
 

@@ -108,13 +108,13 @@ const PostsTable = () => {
               </Tr>
             ))}
           </Tbody>
-          <Tfoot>
+          {/* <Tfoot>
             <Tr>
               <Th>To convert</Th>
               <Th>into</Th>
               <Th isNumeric>multiply by</Th>
             </Tr>
-          </Tfoot>
+          </Tfoot> */}
         </Table>
       </TableContainer>
     </>

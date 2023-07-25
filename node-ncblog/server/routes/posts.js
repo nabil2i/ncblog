@@ -116,6 +116,14 @@ router.post('/', async (req, res) => {
   res.send(newPost);
 });
 
+router.delete('/:id', async (req, res) => {
+  const post = await Post.findByIdAndRemove(req.params.id);
+
+  if(!post) return res.status(404).send('The post with given ID is not found.')
+
+  res.send(post);
+})
+
 // INSERTING DUMMY POSTS
 // function insertPostData () {
 //   Post.insertMany([

@@ -1,25 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Post from "../entities/Post";
-import postService from "../services/postService";
 import { CACHE_KEY_POSTS } from "./constants";
+import APIClient from "../services/api-client";
 
 //OPTIMISTIC
 // interface CreatePostContext {
 //   prevPosts: Post[]
 // }
 
-// const apiClient = new APIClient<Post>('/posts');
 
-const useCreatePost = (
+
+const useUpdatePost = (id: string,
   // callback functions to pass control to AddPostForm
-  onCreatePost: () => void,
+  onUpdatePost: () => void,
   showToast: () => void,
   showErrorToast: () => void,
   ) => {
   const queryClient = useQueryClient();
+  const apiClient = new APIClient<Post>(`/posts/${id}`);
   
-  const createPost = useMutation<Post, Error, Post>({
-    mutationFn: postService.post,
+  return useMutation<Post, Error, Post>({
+    mutationFn:  apiClient.put,
       // axios
       //   .post<MyPost>("http://localhost:5000/api/posts", post)
       //   .then((res) => res.data),
@@ -43,7 +44,7 @@ const useCreatePost = (
     // },
 
     onSuccess: (savedPost, newPost) => {
-     onCreatePost();
+     onUpdatePost();
       showToast();
       // method 1 to update
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
@@ -68,8 +69,6 @@ const useCreatePost = (
       // queryClient.setQueryData<Post[]>([CACHE_KEY_POSTS], context.prevPosts)
     },
   });
-
-  return createPost;
 }
 
-export default useCreatePost;
+export default useUpdatePost;

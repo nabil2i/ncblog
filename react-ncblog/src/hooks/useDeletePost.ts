@@ -10,16 +10,16 @@ import { CACHE_KEY_POSTS } from "./constants";
 
 // const apiClient = new APIClient<Post>('/posts');
 
-const useCreatePost = (
+const useDeletePost = (
   // callback functions to pass control to AddPostForm
-  onCreatePost: () => void,
+  onDeletePost: () => void,
   showToast: () => void,
   showErrorToast: () => void,
   ) => {
   const queryClient = useQueryClient();
   
-  const createPost = useMutation<Post, Error, Post>({
-    mutationFn: postService.post,
+  return useMutation({
+    mutationFn: postService.delete,
       // axios
       //   .post<MyPost>("http://localhost:5000/api/posts", post)
       //   .then((res) => res.data),
@@ -43,7 +43,7 @@ const useCreatePost = (
     // },
 
     onSuccess: (savedPost, newPost) => {
-     onCreatePost();
+     onDeletePost();
       showToast();
       // method 1 to update
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
@@ -69,7 +69,6 @@ const useCreatePost = (
     },
   });
 
-  return createPost;
 }
 
-export default useCreatePost;
+export default useDeletePost;

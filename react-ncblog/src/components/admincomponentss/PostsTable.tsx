@@ -22,6 +22,7 @@ import { NavLink, redirect, useNavigate } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CACHE_KEY_POSTS } from "../../hooks/constants";
+import useDeletePost from "../../hooks/useDeletePost";
 
 const PostsTable = () => {
   const { data, error, isLoading } = usePosts();
@@ -29,7 +30,34 @@ const PostsTable = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const showToast = () => {
+  // const showToast = () => {
+  //   toast({
+  //     title: "Delete a post",
+  //     description: "Successfully deleted the post.",
+  //     duration: 5000, // 5s
+  //     isClosable: true,
+  //     status: "success",
+  //     position: "top",
+  //     icon: <DeleteIcon />,
+  //   });
+  // };
+
+  // const showErrorToast = () => {
+  //   toast({
+  //     title: "Delete a post",
+  //     description: "An error occured while deleting the post.",
+  //     duration: 5000, // 5s
+  //     isClosable: true,
+  //     status: "error",
+  //     position: "top",
+  //     icon: <DeleteIcon />,
+  //   });
+  // };
+
+  const deletePost = useDeletePost(() => {
+    // reset();
+  },
+  () => {
     toast({
       title: "Delete a post",
       description: "Successfully deleted the post.",
@@ -38,10 +66,9 @@ const PostsTable = () => {
       status: "success",
       position: "top",
       icon: <DeleteIcon />,
-    });
-  };
-
-  const showErrorToast = () => {
+    })}
+  ,
+  () => {
     toast({
       title: "Delete a post",
       description: "An error occured while deleting the post.",
@@ -51,22 +78,21 @@ const PostsTable = () => {
       position: "top",
       icon: <DeleteIcon />,
     });
-  };
-
-  const deletePost = useMutation({
-    mutationFn: (postId: string) =>
-      // console.log("deleting..."); return;
-      axios
-        .delete(`http://localhost:5000/api/posts/${postId}`)
-        .then(res => res.data),
-    onSuccess: () => {
-      showToast();
-      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
-    },
-    onError: () =>  {
-      showErrorToast();
-    }
   });
+  // const deletePost = useMutation({
+  //   mutationFn: (postId: string) =>
+  //     // console.log("deleting..."); return;
+  //     axios
+  //       .delete(`http://localhost:5000/api/posts/${postId}`)
+  //       .then(res => res.data),
+  //   onSuccess: () => {
+  //     showToast();
+  //     queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
+  //   },
+  //   onError: () =>  {
+  //     showErrorToast();
+  //   }
+  // });
 
   const triggerDeletePost = (postId: string) => {
     // console.log(postId);
@@ -149,11 +175,11 @@ const PostsTable = () => {
                   <Flex gap="3">
                     <Button
                       colorScheme="blue"
-                      onClick={() => updatePost(post._id)}
+                      onClick={() => updatePost(post._id as string)}
                     >Edit</Button>
                     <Button
                       colorScheme="red"
-                      onClick={() => triggerDeletePost(post._id)}
+                      onClick={() => triggerDeletePost(post._id as string)}
                     >
                       Delete
                     </Button>

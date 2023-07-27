@@ -10,6 +10,8 @@ import Profile from "./pages/admin/Profile";
 import AdminErrorPage from "./pages/admin/AdminErrorPage";
 import PostsPage from "./pages/admin/PostsPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "blog", element: <BlogPage /> },
       { path: "blog/:id", element: <PostPage /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "sign-up", element: <SignUpPage /> },
       // { path: 'search/:query', element: <SearchPage/>},
     ],
   },

@@ -12,12 +12,28 @@ router.post('/', async (req, res) => {
   try {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
+    // if (error) return res.status(400).send(error);
     
-    const { username, password, password2 } = req.body;
+    const { username, email, password, password2 } = req.body;
     
-    if (password !== password2) res.status(400).send("Passwords don't matchMedia.");
-    let user = await User.findOne({ username: username });
-    if (user) return res.status(400).send('User already registrated.');
+    if (password !== password2) res.status(400).send("Passwords don't match.");
+    // if (password !== password2) res.status(400).json({
+    //   message: "Passwords don't match.",
+    //   // additionalData: {message: "Passwords don't match."}
+    // });
+    let user = await User.findOne({ username: username});
+    if (user) return res.status(400).send('User with this username already registrated.');
+    // if (user) return res.status(400).json({
+      //   message: 'User with this username already registrated.',
+      //   // additionalData: {message: 'User already registrated.'}
+      // });
+      
+      user = await User.findOne({ email: email });
+      if (user) return res.status(400).send('User with this email address already registrated.');
+    // if (user) return res.status(400).json({
+    //   message: 'User with this email address already registrated.',
+    //   // additionalData: {message: 'User already registrated.'}
+    // });
     
     user = new User(_.pick(req.body, ['username', 'email', 'password']));
     
@@ -34,6 +50,7 @@ router.post('/', async (req, res) => {
     // res.status(201).send(_.pick(user, ['id', 'username', 'email']));
   } catch(err) {
     console.log(err);
+    // res.json(err);
   }
 })
 
@@ -111,7 +128,7 @@ router.put('/:id', [auth, admin], async (req, res) => {
       if (!user) return res.status(404).send('The user with the given ID was not found.');
       res.send(user);
     } catch(err) {
-      console.log(err);
+      // console.log(err);
     }
 });
     

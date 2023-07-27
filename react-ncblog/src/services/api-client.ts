@@ -1,4 +1,4 @@
-import axios, {AxiosRequestConfig, CanceledError} from "axios";
+import axios, {AxiosError, AxiosRequestConfig, CanceledError} from "axios";
 
 export interface FetchResponse<T> {
   // locals: Locals;
@@ -13,6 +13,23 @@ export interface FetchResponse<T> {
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:5000/api'
 });
+
+// // Axios Interceptor to handle error responses
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   (error: AxiosError) => {
+//     // // Check if the error response has additional data
+//     // const responseData = error?.response?.data;
+    
+//     // if (responseData && responseData.message) {
+//     //   // Handle the error message or additional data here
+//     //   console.error('Error Message:', responseData.message);
+//     // }
+
+//     // Propagate the error so that the useMutation onError callback can handle it
+//     return Promise.reject(error);
+//   }
+// );
 
 class APIClient<T> {
   endpoint: string;
@@ -37,6 +54,14 @@ class APIClient<T> {
     return axiosInstance
         .post<T>(this.endpoint, data)
         .then((res) => res.data);
+        // .catch(error => {
+        //   console.error('Error:', error);
+        //   error.data;
+        //   if (error.message) {
+        //     // Extract and use the error message
+        //     console.log('Error Message:', error.message);
+        //   }
+        // });
   };
 
   put = (data: T) => {

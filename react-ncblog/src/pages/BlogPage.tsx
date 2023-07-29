@@ -36,11 +36,11 @@ const BlogPage = () => {
             />
           </Box>
 
-          <Flex>
+          {/* <Flex>
             <Box>
               <CategorySelector />
             </Box>
-          </Flex>
+          </Flex> */}
         
 
         <PostGrid

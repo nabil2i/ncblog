@@ -8,15 +8,17 @@ import usePosts from '../hooks/usePosts';
 
 const SimplePostGrid = () => {
   const { data, error, isLoading } = usePosts();
-  // const setSearchText = usePostQueryStore(s => s.setSearchText);
+  // postQuery.latestPosts = 3;
   
   
   if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
+  
 
   const skeletons = [1, 2, 3, 4];
   return (
+    
     <>
-    {/* {setSearchText('')} */}
+    
     {error && <Text> We encountered a problem.</Text>}
     {/* <Box paddingLeft={20}>
       {

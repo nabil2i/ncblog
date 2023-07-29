@@ -33,7 +33,9 @@ const usePosts = () => {
         // _start: (postQuery.page - 1) * postQuery.perPage,
         // _limit: postQuery.perPage,
         page: postQuery.page,
-        perPage: postQuery.perPage
+        perPage: postQuery.perPage,
+        // latestPosts: postQuery.latestPosts
+        latestPosts: postQuery.latestPosts
       },
     }),
     // getNextPageParam: (lastPage, allPages) => {

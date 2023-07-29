@@ -1,9 +1,11 @@
 import { Box, Heading } from "@chakra-ui/react";
 import SimplePostGrid from "./SimplePostGrid";
+import usePostQueryStore from "../store";
 
 const LatestPosts = () => {
   // const { data, error, isLoading } = usePosts();
   // const searchText = usePostQueryStore(s => s.postQuery.searchText)
+  // const setLatestPosts = usePostQueryStore(s => s.setLatestPosts)
 
   // if (isLoading) return <VStack marginTop={2}><Spinner /></VStack>;
 

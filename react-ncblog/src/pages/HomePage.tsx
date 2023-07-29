@@ -1,77 +1,81 @@
-import { Box, Container, Grid, GridItem, VStack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
 import Headline from "../components/Headline";
 import Hero from "../components/Hero";
 import LatestPosts from "../components/LatestPosts";
-import usePostQueryStore from "../store";
 import SearchPostGrid from "../components/SearchPostGrid";
+import usePostQueryStore from "../store";
 
 const HomePage = () => {
   // const setPage = usePostQueryStore((s) => s.setPage);
   const searchText = usePostQueryStore((s) => s.postQuery.searchText);
 
+  // const setLatestPosts = usePostQueryStore(s => s.setLatestPosts);
+  // const location = useLocation();
+  // console.log(`Current location: ${location.pathname}`)
+  // if (location.pathname === '/') {
+  //   setLatestPosts(3)
+  // } else {setLatestPosts(0)}
+
   return (
-    <Box as="main" mt="20">
-
-    <Grid
-      templateAreas={
-        /* `"nav-logo  nav-menu nav-search" "main main aside"` */
-        {
-          base: `"main"`,
-          lg: `"main"`,
-          // lg: `"nav" "main"`
+    <Box as="main">
+      <Grid
+        templateAreas={
+          /* `"nav-logo  nav-menu nav-search" "main main aside"` */
+          {
+            base: `"main"`,
+            lg: `"main"`,
+            // lg: `"nav" "main"`
+          }
         }
-      }
-      templateColumns={{
-        base: "1fr",
-        lg: "1fr",
-      }}
-    >
-      <GridItem area="main">
-        { !searchText && 
-        <>
-        <VStack>
-          <Headline></Headline>
-          <Hero></Hero>
-        </VStack>
-        <LatestPosts/>
-        </>
-        }
-        { searchText && <SearchPostGrid/>}
+        templateColumns={{
+          base: "1fr",
+          lg: "1fr",
+        }}
+      >
+        <GridItem area="main">
+          {!searchText && (
+            <>
+              <VStack>
+                <Headline></Headline>
+                <Hero></Hero>
+              </VStack>
+              <LatestPosts />
+            </>
+          )}
+          {searchText && <SearchPostGrid />}
 
-        <VStack>
-          {/* <Box>
+          <VStack>
+            {/* <Box>
             <PostHeading
             // postQuery={postQuery}
             />
           </Box> */}
 
-          {/* <Flex>
+            {/* <Flex>
             <Box>
             <CategorySelector />
             </Box>
           </Flex> */}
-        </VStack>
+          </VStack>
 
-        {/* <PostGrid
+          {/* <PostGrid
           // postQuery={postQuery}
           paginate={(page) => {
             if (page === null) return null;
             setPage(page);
           }}
         ></PostGrid> */}
+        </GridItem>
 
-        
-      </GridItem>
-
-      {/* <GridItem area="headline">
+        {/* <GridItem area="headline">
           <Headline></Headline>
           </GridItem>
           
           <GridItem area="hero">
           
         </GridItem> */}
-    </Grid>
-        </Box>
+      </Grid>
+    </Box>
   );
 };
 

@@ -2,23 +2,27 @@ import { Flex, HStack, Box, Image, Text, useBreakpointValue } from "@chakra-ui/r
 // import logo from '../assets/logo.webp';
 import NabilConveys1 from "../assets/NabilConveys1.webp";
 import { Link } from "react-router-dom";
+import usePostQueryStore from "../store";
 
 const NavLogo = () => {
   return (
     <Link to='/'>
       <Flex
-        // flex={{ base:1, md: 'none'}}
+        flex={{ base: 1 }}
         // display={{ base: 'flex'}}
         align={'center'}
         gap={1}
 
       >
 
-        <Flex justify={{ base: 'left', md: 'left'}}>
-          <Image src={NabilConveys1} boxSize="50px" objectFit="cover" />
+        <Flex
+          // justify={{ base: 'left', md: 'left'}}
+          justify={{ base: 'center', md: 'start'}}>
+          <Image src={NabilConveys1} boxSize="50px"  objectFit="cover"/>
         </Flex>
 
-        <Flex display={{ base: 'none', md:'flex'}}>
+        <Flex
+          display={{ base: 'none', lg:'flex'}}>
           <Text fontSize={20} whiteSpace="nowrap" fontWeight={900} >
             NabilConveys
           </Text>

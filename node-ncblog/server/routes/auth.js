@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     // res.status(200).header('x-auth-token', token).send(token);
 
     // if storing the token in a cookie
-    res.status(200).cookie('token' ,token, { httpOnly: true }).send(token);
+    res.status(200).cookie('token' ,token, { httpOnly: true }).send({ token: token });
   } catch(err) {
     console.log(err);
   }

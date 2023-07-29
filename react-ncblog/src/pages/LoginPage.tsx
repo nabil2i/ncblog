@@ -1,6 +1,6 @@
 import { Grid, GridItem, Flex, SimpleGrid, Box, Image, Center } from "@chakra-ui/react";
 import LoginForm from "../components/LoginForm";
-import HomeHero from '../../public/landing.svg'
+import HomeHero from '../assets/landing.svg'
 
 const LoginPage = () => (
   <>

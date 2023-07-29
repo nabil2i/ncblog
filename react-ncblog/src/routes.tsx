@@ -12,6 +12,8 @@ import PostsPage from "./pages/admin/PostsPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import PrivateRoute from "./components/PrivateRoute";
+import useAuth from "./hooks/useAuth";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +21,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: "blog", element: <BlogPage /> },
+      { index: true, element: <PrivateRoute><HomePage/></PrivateRoute> },
+      { path: "blog", element: <PrivateRoute><BlogPage /></PrivateRoute>},
       { path: "blog/:id", element: <PostPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "sign-up", element: <SignUpPage /> },
@@ -29,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin/",
-    element: <AdminLayout />,
+    element: <PrivateRoute><AdminLayout /></PrivateRoute>,
     errorElement: <AdminErrorPage/>,
     children: [
       { index: true, element: <Dashboard/>},

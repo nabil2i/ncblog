@@ -1,64 +1,96 @@
-import { Box, Button, Collapse, Flex, HStack, IconButton, Show, Spacer, Stack, Text, VStack, useBreakpointValue, useColorModeValue, useDisclosure} from "@chakra-ui/react";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Collapse,
+  Flex,
+  HStack,
+  IconButton,
+  Show,
+  Stack,
+  VStack,
+  useDisclosure,
+} from "@chakra-ui/react";
+import DesktopNav from "./DesktopNav";
+import MobileNav from "./MobileNav";
 import NavButtons from "./NavButtons";
 import NavLogo from "./NavLogo";
 import SearchInput from "./SearchInput";
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import DesktopNav from "./DesktopNav";
-import MobileNav from "./MobileNav";
+import Profile from "./Profile";
+import ColorModeSwitch from "./ColorModeSwitch";
 
 const NavBar = () => {
   const { isOpen, onToggle } = useDisclosure();
+  // const [ token, setToken] = useState();
+
   return (
     <>
-    <Box
+      <Box
       // position="static"
       // backgroundColor="rgba(255, 255, 255, 0.8)"
-      // backdropFilter="saturate(180%) blur(5px)" 
+      // backdropFilter="saturate(180%) blur(5px)"
       // w="100%"
       >
-      <VStack
-        display={{ lg: 'none'}}
-        py={5}
-        px={6}>
-          <SearchInput />
-      </VStack>
 
-      <Flex
-        
-        as="nav"
-        // bg={useColorModeValue('white', 'gray.800')}
-        // color={useColorModeValue('gray.600', 'white')}
-        minH={'60px'}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        // borderBottom={1}
-        // borderStyle={'solid'}
-        // boxShadow={'dark-lg'}
-        // borderColor={useColorModeValue('gray.200', 'gray.900')}
-        align={'center'}
-      >
-        <Flex
-          flex={{ base: 1, md: 'auto'}}
-          ml={{ base: -2 }}
-          display={{ base: 'flex', md: 'none' }}
+        <HStack justifyItems={"center"}
           >
-          <IconButton 
-            onClick={onToggle}
-            icon={
-              isOpen ? <CloseIcon  w={3} h={3}/> : <HamburgerIcon w={5} h={5}/>
-            }
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
-        </Flex>
+          <Box py={{ base: 2 }}
+            paddingLeft={{ base: 4 }}
+            display={{ md: 'none'}}>
+            <NavLogo />
+          </Box>
+
+          <Box py={{ base: 2 }}
+              paddingRight={{ base: 4 }} paddingLeft={{ base: 0, md: 4}}
+              flexGrow="1"
+              display={{ base: 'flex', lg: 'none'}}>
+            <SearchInput />
+          </Box>
+        </HStack>
 
         <Flex
-          flex={{ base: 2}}
-          justify={{base : 'center', md: 'start'}}
-          align={'center'}
+          as="nav"
+          // bg={useColorModeValue('white', 'gray.800')}
+          // color={useColorModeValue('gray.600', 'white')}
+          minH={"60px"}
+          py={{ base: 2 }}
+          px={{ base: 4 }}
+          // borderBottom={1}
+          // borderStyle={'solid'}
+          // boxShadow={'dark-lg'}
+          // borderColor={useColorModeValue('gray.200', 'gray.900')}
+          align={"center"}
         >
-          <NavLogo/>
-          {/* <Text
+          
+          <Flex
+            flex={{ base: 1,  md: "auto"}}  //flex: grow shrink basis; flew: 1 (auto shrink and basis)
+            ml={{ base: -2 }}
+            display={{ base: "flex", md: "none" }}
+          >
+            <IconButton
+              onClick={onToggle}
+              icon={
+                isOpen ? (
+                  <CloseIcon w={3} h={3} />
+                ) : (
+                  <HamburgerIcon w={5} h={5} />
+                )
+              }
+              variant={"ghost"}
+              aria-label={"Toggle Navigation"}
+            />
+          </Flex>
+
+          <Flex
+            flex={{ base: 1 }} // spread the logo + desktop menu all line
+            justify={{ base: "center", md: "start" }}
+            align={"center"}
+          >
+            <Box
+              display={{ base: 'none', md: "flex" }}
+            >
+              <NavLogo />
+            </Box>
+            {/* <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left'})}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
@@ -66,19 +98,30 @@ const NavBar = () => {
             Logo
           </Text> */}
 
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10} align={'center'}>
-            <DesktopNav />
+            <Flex
+              display={{ base: "none", md: "flex" }}
+              ml={10}
+              align={"center"}
+            >
+              <DesktopNav />
+            </Flex>
           </Flex>
-        </Flex>
 
-        {/* Right end of menu */}
-        <Stack
-          flex={{ base: 1, md: 0}}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={6}
-        >
-          {/* <Button
+          {/* Right end of menu */}
+          <Stack
+            // flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            align="center"
+            direction={"row"}
+            spacing={2}
+          >
+            <Show above="lg">
+              <SearchInput />
+            </Show>
+            <NavButtons />
+            <ColorModeSwitch />
+            <Profile />
+            {/* <Button
             as={'a'}
             fontSize={'sm'}
             fontWeight={400}
@@ -101,23 +144,25 @@ const NavBar = () => {
           >
             Sign up
           </Button> */}
-        </Stack>
+          </Stack>
 
-        <HStack spacing={5}>
-          <Show above="lg">
-            <SearchInput/>
-          </Show>
-          <NavButtons/>
-      </HStack>
-      </Flex>
+          {/* <HStack spacing={3}>
+            <Show above="lg">
+              <SearchInput />
+            </Show>
+            <NavButtons />
+            <ColorModeSwitch />
+            <Profile />
+          </HStack> */}
+        </Flex>
 
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
-      </Collapse>
-    </Box>
+        <Collapse in={isOpen} animateOpacity>
+          <MobileNav />
+        </Collapse>
+      </Box>
 
-
-    {/* <Flex
+      {/* // old implementation
+        <Flex
       // padding="10px"
       py="2"
       px="4"

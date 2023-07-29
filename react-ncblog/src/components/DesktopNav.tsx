@@ -13,7 +13,7 @@ const DesktopNav = () => {
   return (
     <Stack direction={'row'} spacing={4} >
       {NAV_ITEMS.map(navItem => (
-        <Box key={navItem.label}>
+        <Box key={navItem.label} textAlign="center">
           <Popover
             trigger={'hover'}
             placement={'bottom-start'}>
@@ -27,7 +27,8 @@ const DesktopNav = () => {
                 // color={"linkedin.50"}
                 _hover={{
                   textDecoration: 'none',
-                  background: colorMode === 'light' ?  `${VARIANT_COLOR}.500` : `${VARIANT_COLOR}.500`
+                  background: colorMode === 'light' ?  `${VARIANT_COLOR}.500` : `${VARIANT_COLOR}.500`,
+                  rounded: 'md'
                   // color: ,
                 }}
               >

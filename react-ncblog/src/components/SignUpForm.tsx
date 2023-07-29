@@ -74,8 +74,8 @@ const SignUpForm = () => {
       {/* {createUser.error && (
        <Alert mb="15px" mt="10px" status="error">
             <AlertIcon />
-            <AlertTitle>{createUser.error.name}</AlertTitle>
-            <AlertDescription>{createUser.error.message}</AlertDescription>
+            <AlertTitle></AlertTitle>
+            <AlertDescription>{createUser.error.response?.data || ''}</AlertDescription>
           </Alert>
         )} */}
       <Center>

@@ -93,7 +93,7 @@ const LoginForm = () => {
           isRequired
           isInvalid={errors.username ? true: false}>
           <FormLabel htmlFor="username">Username</FormLabel>
-          <Input type="text" placeholder='Enter your username'
+          <Input type="text" focusBorderColor='teal.500' placeholder='Enter your username'
             {...register("username", {
               required: "Username is required",
               minLength: {
@@ -115,7 +115,7 @@ const LoginForm = () => {
           isInvalid={errors.password ? true: false}
           mt={4}>
           <FormLabel htmlFor="password">Password</FormLabel>
-          <Input type="password" placeholder='Enter your password'
+          <Input type="password" focusBorderColor='teal.500' placeholder='Enter your password'
           {...register("password", {
             required: "Password is required",
             minLength: {

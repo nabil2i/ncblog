@@ -1,9 +1,8 @@
 import hero from '../assets/hero-image.webp'
 import { Box, Image } from '@chakra-ui/react'
 
-const Hero = () => {
+const HeroImage = () => {
   return (
-
       <Image
         src={hero}
         padding="10px"
@@ -16,4 +15,4 @@ const Hero = () => {
   )
 }
 
-export default Hero
+export default HeroImage;

@@ -1,9 +1,10 @@
 import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
-import Headline from "../components/Headline";
-import Hero from "../components/Hero";
+import Headline from "../components/HeroHeadline";
+import Hero from "../components/HeroImage";
 import LatestPosts from "../components/LatestPosts";
 import SearchPostGrid from "../components/SearchPostGrid";
 import usePostQueryStore from "../store";
+import HeroSection from "../components/HeroSection";
 
 const HomePage = () => {
   // const setPage = usePostQueryStore((s) => s.setPage);
@@ -35,11 +36,10 @@ const HomePage = () => {
         <GridItem area="main">
           {!searchText && (
             <>
-              <VStack>
-                <Headline></Headline>
-                <Hero></Hero>
-              </VStack>
+            <Box>
+              <HeroSection/>
               <LatestPosts />
+            </Box>
             </>
           )}
           {searchText && <SearchPostGrid />}

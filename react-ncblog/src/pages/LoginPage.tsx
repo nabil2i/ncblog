@@ -1,6 +1,7 @@
 import { Grid, GridItem, Flex, SimpleGrid, Box, Image, Center } from "@chakra-ui/react";
 import LoginForm from "../components/LoginForm";
-import HomeHero from '../assets/landing.svg'
+// import HomeHero from '../assets/landing.svg'
+import HomeHero from '../assets/islam.jpg'
 
 const LoginPage = () => (
   <>
@@ -14,7 +15,12 @@ const LoginPage = () => (
         <Flex pr="150px"
         minH= {{ lg: "80vh"}} width="full" align="center" justifyContent="center"
         >
-        <Image src={HomeHero}/>
+        <Center>
+        <Image src={HomeHero}
+          
+        />
+
+        </Center>
         </Flex>
       </GridItem>
 

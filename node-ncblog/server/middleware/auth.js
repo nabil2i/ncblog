@@ -11,7 +11,7 @@ module.exports = function(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.NODE_ENV_JWT_SECRET);
     // what we have in the token:
     // { _id: this._id, isAdmin: this.isAdmin }
     req.user = decoded;

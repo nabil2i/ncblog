@@ -1,8 +1,8 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import AuthProvider from "../../AuthProvider";
-import AdminNavBar from "../../components/admincomponentss/AdminNavBar";
-import AdminSideBar from "../../components/admincomponentss/AdminSideBar";
+import AdminNavBar from "../../components/admincomponents/AdminNavBar";
+import AdminSideBar from "../../components/admincomponents/AdminSideBar";
+import AuthProvider from "../../components/navigationbar/AuthProvider";
 
 const AdminLayout = () => {
   // const [userData, dispatch] = useReducer(authReducer, {});

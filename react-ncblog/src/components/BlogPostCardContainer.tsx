@@ -8,6 +8,7 @@ const BlogPostCardContainer = ({ children }: Props) => {
   return (
 
     <Box
+      as="article"
       _hover={{
         transform: "scale(1.03)",
         transition: "transform .05s ease-in",

@@ -1,22 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import LoginData from "../entities/LoginData";
 import User from "../entities/User";
 import authService from "../services/authService";
 import { CACHE_KEY_USERS } from "./constants";
-import { AxiosError } from "axios";
-import TokenObj from "../entities/TokenObj";
-import UserData from "../entities/UserData";
-
 
 const useLogin = (
-  onLogin: (userData: UserData) => void,
+  onLogin: (userData: User) => void,
   showToast: () => void,
   showErrorToast: (errorMessage: string) => void,
   ) => {
   const queryClient = useQueryClient();
   
-  return useMutation<TokenObj, AxiosError, TokenObj>({
+  return useMutation<User, AxiosError, LoginData>({
     mutationFn: authService.post,
-    onSuccess: (userData) => {
+    onSuccess: (userData: User) => {
      onLogin(userData);
       showToast();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USERS] })

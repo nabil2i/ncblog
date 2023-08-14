@@ -8,7 +8,16 @@ import "./index.css";
 import router from "./routes.tsx";
 import theme from "./theme.ts";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient(
+  // {
+  //   defaultOptions: {
+  //     queries: {
+  //       retry: process.env.NODE_ENV === 'production',
+  //       refetchOnWindowFocus: process.env.NODE_ENV === 'production',
+  //     },
+  //   },
+  // }
+);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

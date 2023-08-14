@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules/
 dist/
+deprecated/
 dist
 dist-ssr
 *.local
@@ -25,4 +26,4 @@ dist-ssr
 *.sw?
 
 #
-.env
+*.env

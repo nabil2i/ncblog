@@ -38,35 +38,57 @@ module.exports = (model) => {
       if (searchTerm) {
         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
         // console.log(searchTerm)
-  
-        results = await model
-          .find({ 
-            // do query 
-            $or: [
-              { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
-              { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
-            ]
-          })
-          .sort("-createdAt");
-  
-          count = await model
-          .find({ 
-            // do query 
-            $or: [
-              { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
-              { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
-            ]
-          })
-          .count();
+
+        const startIndex = (page - 1) * perPage;
+
+        const result = await model
+          .aggregate([
+            {
+              $facet: {
+                totalCount: [
+                  // query condition
+                  { $match:
+                    { $or: [
+                      { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
+                      { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
+                      ]
+                    } },
+                  { $count: 'count'}
+                ],
+
+                items: [
+                  { $match:
+                    { $or: [
+                      { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
+                      { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
+                      ]
+                    } },
+                  { $sort: { createdAt: -1 } },
+                  { $skip: startIndex },
+                  { $limit: perPage }
+                ]
+              }
+            }
+          ]);
+        
+        const count = result[0].totalCount[0] ? result[0].totalCount[0].count : 0;
+        const totalPages = Math.ceil(count / perPage);
+        const results = result[0].items;
+
+        prevPage = page >= 2 ? parseInt(page) - 1 : null;
+        nextPage = parseInt(page) + 1;
+        hasNextPage = nextPage <= totalPages;
   
         data = {
           // locals,
           count,
           current: page,
           prev: prevPage,
-          next: nextPage,
+          next: hasNextPage ? nextPage : null,
+          perPage: perPage,
           results
         }
+
       }
       else {
         // pagination

@@ -3,7 +3,7 @@ const { Post } = require('../models/post')
 
 module.exports = async function() {
 
-  const dbUrl = process.env.MONGODB_URI;
+  const dbUrl = process.env.NODE_ENV_MONGODB_URI;
 
   try {
     mongoose.set('strictQuery', false);

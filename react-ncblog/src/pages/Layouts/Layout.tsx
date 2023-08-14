@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import AuthProvider from "../../AuthProvider";
-import NavBar from "../../components/NavBar";
+import { AuthProvider, NavBar } from "../../components/navigationbar";
 
 const Layout = () => {
   // const [userData, dispatch] = useReducer(authReducer, {});
@@ -19,13 +18,6 @@ const Layout = () => {
         <Outlet />
       </Box>
     </AuthProvider>
-
-    // <AuthContext.Provider value={{ userData, dispatch}}>
-    //   <NavBar />
-    //   <Box padding={5}>
-    //     <Outlet />
-    //   </Box>
-    // </AuthContext.Provider>
   );
 };
 

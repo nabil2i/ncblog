@@ -1,13 +1,14 @@
 import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
-import Headline from "../components/HeroHeadline";
-import Hero from "../components/HeroImage";
+// import Headline from "../components/HeroHeadline";
+// import Hero from "../components/HeroImage";
 import LatestPosts from "../components/LatestPosts";
 import SearchPostGrid from "../components/SearchPostGrid";
 import usePostQueryStore from "../store";
 import HeroSection from "../components/HeroSection";
+// import ModalSearchInput from "../components/ModalSearchInput";
 
 const HomePage = () => {
-  // const setPage = usePostQueryStore((s) => s.setPage);
+  const setPage = usePostQueryStore((s) => s.setPage);
   const searchText = usePostQueryStore((s) => s.postQuery.searchText);
 
   // const setLatestPosts = usePostQueryStore(s => s.setLatestPosts);
@@ -42,7 +43,10 @@ const HomePage = () => {
             </Box>
             </>
           )}
-          {searchText && <SearchPostGrid />}
+          {searchText && <SearchPostGrid paginate={(page) => {
+            if (page === null) return null;
+            setPage(page);
+          }}/>}
 
           <VStack>
             {/* <Box>

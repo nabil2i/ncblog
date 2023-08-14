@@ -1,23 +1,24 @@
 import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
-import AdminNavBar from "../../components/admincomponentss/AdminNavBar";
-import AdminSideBar from "../../components/admincomponentss/AdminSideBar";
+import AdminNavBar from "../../components/admincomponents/AdminNavBar";
+import AdminSideBar from "../../components/admincomponents/AdminSideBar";
 
 const AdminErrorPage = () => {
   const error = useRouteError();
-  return(
+  return (
     <>
-    <Grid
+      <Grid
         templateColumns="repeat(6, 1fr)"
         // bg="gray.50"
       >
-        <GridItem as="aside"
+        <GridItem
+          as="aside"
           colSpan={{ base: 6, lg: 2, xl: 1 }}
           backgroundColor="purple.600"
           minHeight="100vh"
           p="30px"
-          >
-          <AdminSideBar/>
+        >
+          <AdminSideBar />
         </GridItem>
 
         <GridItem
@@ -37,8 +38,8 @@ const AdminErrorPage = () => {
           </Box>
         </GridItem>
       </Grid>
-  </>
-);
+    </>
+  );
 };
 
 export default AdminErrorPage;

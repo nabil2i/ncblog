@@ -1,7 +1,7 @@
 import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
 import CategorySelector from "../components/CategorySelector";
 import PostGrid from "../components/PostGrid";
-import PostHeading from "../components/PostHeading";
+import PostHeading from "../components/PostsHeading";
 import usePostQueryStore from "../store";
 
 const BlogPage = () => {
@@ -29,7 +29,7 @@ const BlogPage = () => {
           <Hero></Hero>
         </VStack> */}
 
-        <VStack>
+        <VStack as="section">
           <Box>
             <PostHeading
             // postQuery={postQuery}

@@ -11,8 +11,13 @@ import usePostQueryStore from "../store";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
+import PaginationBox from "./PaginationBox";
 
-const SearchPostGrid = () => {
+interface Props {
+  paginate: (page: number) => void;
+}
+
+const SearchPostGrid = ({ paginate }: Props) => {
   const { data, error, isLoading } = usePosts();
   const searchText = usePostQueryStore((s) => s.postQuery.searchText);
 
@@ -49,8 +54,8 @@ const SearchPostGrid = () => {
         <SimpleGrid
           textAlign="center"
           columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
-          spacing={10}
-          padding={10}
+          spacing={3}
+          padding={1}
         >
           {isLoading &&
             skeletons.map((skeleton) => (
@@ -65,6 +70,16 @@ const SearchPostGrid = () => {
             </BlogPostCardContainer>
           ))}
         </SimpleGrid>
+        {data && (
+            <PaginationBox
+              postPerPage={data?.perPage as number}
+              totalPosts={data?.count as number}
+              currentPage={data?.current as number}
+              prev={data?.prev as number}
+              next={data?.next as number}
+              paginate={paginate}
+            ></PaginationBox>
+          )}
       </VStack>
     </>
   );

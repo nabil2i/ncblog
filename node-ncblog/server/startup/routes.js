@@ -22,7 +22,8 @@ module.exports = function(app) {
     origin: [
       'http://localhost:5173',
       'http://localhost:5000',
-      'http://localhost:3000'
+      'http://localhost:3000',
+      'http://127.0.0.1:5173'
     ]
   }));
   app.use(express.urlencoded({ extended: true})); // to past params in post request, forms
@@ -31,11 +32,11 @@ module.exports = function(app) {
   app.use(methodOverride('_method'));
 
   app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.NODE_ENV_SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI
+      mongoUrl: process.env.NODE_ENV_MONGODB_URI
     })
     // for seeing the cookie expiration time
     //cookie: { maxAge: new Date ( Date.now() + (3600000) ) } 

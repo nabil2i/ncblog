@@ -11,7 +11,9 @@ export interface FetchResponse<T> {
 }
 
 const axiosInstance = axios.create({
+  // baseURL: process.env.REACT_APP_API_BASE_URL
   baseURL: 'http://localhost:5000/api'
+  // baseURL: import.meta.env.VITE_API_BASE_URL
 });
 
 // // Axios Interceptor to handle error responses
@@ -31,7 +33,7 @@ const axiosInstance = axios.create({
 //   }
 // );
 
-class APIClient<T> {
+class APIClient<T, Q> {
   endpoint: string;
 
   constructor(endpoint: string) {
@@ -50,7 +52,7 @@ class APIClient<T> {
       .then(res => res.data);
   };
 
-  post = (data: T) => {
+  post = (data: Q) => {
     return axiosInstance
         .post<T>(this.endpoint, data)
         .then((res) => res.data);

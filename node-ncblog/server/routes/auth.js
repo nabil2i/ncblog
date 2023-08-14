@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/auth');
@@ -21,11 +22,14 @@ router.post('/', async (req, res) => {
     
     // if login successful, send create a token and send it to user
     const token = user.generateAuthToken();
-    // res.status(200).send(token);
-    // res.status(200).header('x-auth-token', token).send(token);
+    // res.status(200).send(userData);
+    // res.status(200).header('x-auth-token', token).send(userData);
 
+    const userData = _.pick(user, ['_id', 'username', 'email', 'token'])
+    userData.token = token;
+    userData.isAuthenticated = true;
     // if storing the token in a cookie
-    res.status(200).cookie('token' ,token, { httpOnly: true }).send({ token: token });
+    res.status(200).cookie('token' ,token, { httpOnly: true }).send(userData);
   } catch(err) {
     console.log(err);
   }

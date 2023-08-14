@@ -44,10 +44,15 @@ router.post('/', async (req, res) => {
     
     // send the user info to client with the token in the header
     const token = user.generateAuthToken();
-    // res.status(201).header('x-auth-token', token).send(_.pick(user, ['id', 'username', 'email']));
+
+    const userData = _.pick(user, ['_id', 'username', 'email', 'token'])
+    userData.token = token;
+    userData.isAuthenticated = true;
+  
+    // res.status(201).header('x-auth-token', token).send(userData);
     // or send it to be set in the cookie
-    res.status(201).cookie('token', token, { httpOnly: true}).send(_.pick(user, ['id', 'username', 'email']));
-    // res.status(201).send(_.pick(user, ['id', 'username', 'email']));
+    res.status(201).cookie('token', token, { httpOnly: true}).send(userData);
+    // res.status(201).send(userData);
   } catch(err) {
     console.log(err);
     // res.json(err);

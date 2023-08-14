@@ -7,8 +7,6 @@ interface Props {
   prev: number;
   next: number;
   paginate: (page: number) => void;
-  // prevPaginate: (page: number) => void;
-  // nextPaginate: (page: number) => void;
 }
 const PaginationBox = ({
   postPerPage,
@@ -17,8 +15,6 @@ const PaginationBox = ({
   prev,
   next,
   paginate,
-  // prevPaginate,
-  // nextPaginate
 }: Props) => {
   // const [pageNumberLimit, setPageNumberLimit] = useState(3);
   // const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(3);
@@ -34,6 +30,7 @@ const PaginationBox = ({
   return (
     <HStack spacing={2}>
       <Button
+        disabled={currentPage === 1}
         onClick={() => paginate(prev)}
         size="sm"
         variant={currentPage !== 1 ? "solid" : "outline"}

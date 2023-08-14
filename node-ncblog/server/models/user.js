@@ -25,7 +25,19 @@ const userSchema = new mongoose.Schema({
   },
   isAdmin: {
     type: Boolean,
-  }
+  },
+  firstname: {
+    type: String,
+    // required: true,
+    minlength: 5,
+    maxlength: 50
+  },
+  lastname: {
+    type: String,
+    // required: true,
+    minlength: 5,
+    maxlength: 50
+  },
 });
 
 // instance method 

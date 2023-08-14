@@ -107,12 +107,27 @@ router.post('/', async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
   // console.log(req.body);
 
-  const newPost = new Post({
-    title: req.body.title,
-    body: req.body.body
-  });
+  // get the user who is posting
+  const user = await User.findById(req.body.userId);
+  if (!user) return res.status(400).send('Invalid user.');
 
-  await Post.create(newPost);
+  let newPost = new Post({
+    user: {
+      _id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      title: req.body.title,
+      body: req.body.body
+    }
+  })
+  newPost = await newPost.save();
+  // const newPost = new Post({
+  //   title: req.body.title,
+  //   body: req.body.body
+  // });
+
+  // await Post.create(newPost);
+
   res.send(newPost);
 });
 

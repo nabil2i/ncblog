@@ -28,10 +28,11 @@ const NavBar = () => {
         as="nav"
         position="fixed"
         top="0"
-        backgroundColor={useColorModeValue("rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 1)")}
+        backgroundColor={useColorModeValue("rgba(255, 255, 255, 0.8)", "rgba(0, 0, 0, 0.8)")}
         backdropFilter="saturate(180%) blur(5px)"
         w="100%"
-        // marginBottom="10px"
+        boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+        zIndex="999"
       >
         <HStack justifyItems={"center"}>
           {/* <Box py={{ base: 2 }}

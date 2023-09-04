@@ -7,6 +7,7 @@ import {
   IconButton,
   Show,
   Stack,
+  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import DesktopNav from "./DesktopNav";
@@ -25,11 +26,11 @@ const NavBar = () => {
     <>
       <Box
         as="nav"
-        // position="fixed"
-        // top="0"
-        // backgroundColor={useColorModeValue("rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 1)")}
-        // backdropFilter="saturate(180%) blur(5px)"
-        // w="100%"
+        position="fixed"
+        top="0"
+        backgroundColor={useColorModeValue("rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 1)")}
+        backdropFilter="saturate(180%) blur(5px)"
+        w="100%"
         // marginBottom="10px"
       >
         <HStack justifyItems={"center"}>

@@ -140,9 +140,9 @@ const LoginForm = () => {
 
         <HStack justifyContent="space-between" mt={4}>
           <Box>
-            <Checkbox border={1} colorScheme={VARIANT_COLOR} borderColor="teal">
+            {/* <Checkbox border={1} colorScheme={VARIANT_COLOR} borderColor="teal">
               Remember me
-            </Checkbox>
+            </Checkbox> */}
           </Box>
           <Box color={`${VARIANT_COLOR}.500`}>
             <NavLink

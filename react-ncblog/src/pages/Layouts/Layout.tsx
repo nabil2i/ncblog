@@ -14,7 +14,7 @@ const Layout = () => {
   return (
     <AuthProvider>
       <NavBar />
-      <Box padding={5} marginTop={5}>
+      <Box padding={5} marginTop={12}>
         <Outlet />
       </Box>
     </AuthProvider>

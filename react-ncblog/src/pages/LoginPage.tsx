@@ -1,56 +1,74 @@
-import { Grid, GridItem, Flex, SimpleGrid, Box, Image, Center } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  Grid,
+  GridItem,
+  Image,
+  Show,
+  Text,
+} from "@chakra-ui/react";
+import HomeHero from "../assets/islam2.jpg";
 import LoginForm from "../components/LoginForm";
-// import HomeHero from '../assets/landing.svg'
-import HomeHero from '../assets/islam.jpg'
+import { BsBrightnessAltHigh } from "react-icons/bs";
 
 const LoginPage = () => (
   <>
-    <Grid 
-      templateAreas={{ base: `"loginform" "hero" `, lg: `"hero loginform"` }}
-      templateColumns={{ base: `"1fr"  "1fr"`, lg: "1fr 1fr" }}
-      gap={4}
-      justifyContent="center"
-    >
-      <GridItem area="hero" >
-        <Flex pr="150px"
-        minH= {{ lg: "80vh"}} width="full" align="center" justifyContent="center"
-        >
-        <Center>
-        <Image src={HomeHero}
-          
-        />
-
-        </Center>
-        </Flex>
-      </GridItem>
-
-      <GridItem area="loginform">
-        <Flex minH= {{ lg: "80vh"}} width="full" align="center" justifyContent="center">
-          <Box borderWidth={1}
-            px={4}
-            width="full"
-            maxWidth="500px"
-            borderRadius={4}
-            textAlign="center"
-            boxShadow="lg">
-            <LoginForm />
-          </Box>
-        </Flex>
-      </GridItem>
-    </Grid>
-
-    {/* <SimpleGrid columns={{base: 1, md:2}} spacing={2}>
-        <GridItem bg="blue">
-
+    <Center p={10}>
+      <Grid
+        borderWidth={{ lg: 1 }}
+        borderRadius={16}
+        boxShadow="lg"
+        marginTop={{ base: "100px", lg: "30px" }}
+        templateAreas={{ base: `"loginform"`, lg: `"hero loginform"` }}
+        templateColumns={{ base: `"1fr"`, lg: "1fr 1fr" }}
+        // templateAreas={{ base: `"loginform" "hero" `, lg: `"hero loginform"` }}
+        // templateColumns={{ base: `"1fr"  "1fr"`, lg: "1fr 1fr" }}
+        gap={0}
+        justifyContent="center"
+        alignContent="center"
+      >
+        <GridItem area="hero">
+          <Flex minH={{ lg: "70vh" }} width="full" position={"relative"}>
+            {" "}
+            <Show above="lg">
+              <Image
+                src={HomeHero}
+                borderTopLeftRadius={{ lg: 16 }}
+                borderBottomLeftRadius={{ lg: 16 }}
+              />
+              <Box position={"absolute"}
+                background="rgba(0, 0, 0, 0.4)"
+                height="100%"
+                borderTopLeftRadius={{ lg: 16 }}
+                borderBottomLeftRadius={{ lg: 16 }}
+              >
+                {/* <Text
+                  fontSize={50}
+                  pt={150}
+                  textAlign="center"
+                  textColor={"white"}
+                >
+                  WELCOME TO NABILCONVEYS
+                </Text> */}
+              </Box>
+            </Show>
+          </Flex>
         </GridItem>
 
-        <GridItem bg="green">
-          <Flex width="full" align="center">
-          <LoginForm />
-        </Flex>
+        <GridItem area="loginform" background="">
+          <Flex minH={{ lg: "70vh" }} width="full" justifyContent="center">
+            <Box
+              px={4}
+              width="full"
+              maxWidth="450px"
+            >
+              <LoginForm />
+            </Box>
+          </Flex>
         </GridItem>
-       
-      </SimpleGrid> */}
+      </Grid>
+    </Center>
   </>
 );
 

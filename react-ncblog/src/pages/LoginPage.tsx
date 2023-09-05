@@ -1,20 +1,10 @@
-import {
-  Box,
-  Center,
-  Flex,
-  Grid,
-  GridItem,
-  Image,
-  Show,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Image, Show } from "@chakra-ui/react";
 import HomeHero from "../assets/islam2.jpg";
 import LoginForm from "../components/LoginForm";
-import { BsBrightnessAltHigh } from "react-icons/bs";
 
 const LoginPage = () => (
   <>
-    <Center p={10}>
+    <Box p={10}>
       <Grid
         borderWidth={{ lg: 1 }}
         borderRadius={16}
@@ -37,7 +27,8 @@ const LoginPage = () => (
                 borderTopLeftRadius={{ lg: 16 }}
                 borderBottomLeftRadius={{ lg: 16 }}
               />
-              <Box position={"absolute"}
+              <Box
+                position={"absolute"}
                 background="rgba(0, 0, 0, 0.4)"
                 height="100%"
                 borderTopLeftRadius={{ lg: 16 }}
@@ -58,17 +49,13 @@ const LoginPage = () => (
 
         <GridItem area="loginform" background="">
           <Flex minH={{ lg: "70vh" }} width="full" justifyContent="center">
-            <Box
-              px={4}
-              width="full"
-              maxWidth="450px"
-            >
+            <Box px={4} width="full" maxWidth="450px">
               <LoginForm />
             </Box>
           </Flex>
         </GridItem>
       </Grid>
-    </Center>
+    </Box>
   </>
 );
 

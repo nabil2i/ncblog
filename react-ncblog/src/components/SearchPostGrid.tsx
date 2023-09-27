@@ -4,6 +4,7 @@ import {
   SimpleGrid,
   Spinner,
   Text,
+  useColorMode,
   VStack,
 } from "@chakra-ui/react";
 import usePosts from "../hooks/usePosts";
@@ -20,7 +21,9 @@ interface Props {
 const SearchPostGrid = ({ paginate }: Props) => {
   const { data, error, isLoading } = usePosts();
   const searchText = usePostQueryStore((s) => s.postQuery.searchText);
+  const { colorMode } = useColorMode();
 
+  console.log(data)
   if (isLoading)
     return (
       <VStack marginTop={2}>
@@ -45,8 +48,14 @@ const SearchPostGrid = ({ paginate }: Props) => {
     </Center> */}
       <Box paddingLeft={20}>
         {searchText && (
-          <Heading as="h2" marginY={5} fontSize="5xl">
-            {`Results for: ${searchText || ""}`}
+          <Heading as="h2" marginY={5} fontSize="5xl"
+          >
+            {`Results for: `}
+            <Text as="span"
+              color={colorMode === "light" ? "gray.300" : "green.300"}
+            >
+              {`${searchText || ""}`}
+            </Text>
           </Heading>
         )}
       </Box>
@@ -70,7 +79,8 @@ const SearchPostGrid = ({ paginate }: Props) => {
             </BlogPostCardContainer>
           ))}
         </SimpleGrid>
-        {data && (
+       
+        {data?.count ? (
             <PaginationBox
               postPerPage={data?.perPage as number}
               totalPosts={data?.count as number}
@@ -79,7 +89,9 @@ const SearchPostGrid = ({ paginate }: Props) => {
               next={data?.next as number}
               paginate={paginate}
             ></PaginationBox>
-          )}
+          )
+        :
+        <VStack><Text>Nothing found. Try a different search.</Text></VStack>}
       </VStack>
     </>
   );

@@ -4,9 +4,9 @@ import HeroImage from "./HeroImage";
 
 const HeroSection = () => {
   return (
-    <VStack as="section">
+    <VStack as="section" pt={{ base: "50px", lg: "0px"}}>
       <Headline></Headline>
-      <HeroImage></HeroImage>
+      {/* <HeroImage></HeroImage> */}
     </VStack>
   );
 };

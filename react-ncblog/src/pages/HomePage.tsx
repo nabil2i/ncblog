@@ -11,13 +11,6 @@ const HomePage = () => {
   const setPage = usePostQueryStore((s) => s.setPage);
   const searchText = usePostQueryStore((s) => s.postQuery.searchText);
 
-  // const setLatestPosts = usePostQueryStore(s => s.setLatestPosts);
-  // const location = useLocation();
-  // console.log(`Current location: ${location.pathname}`)
-  // if (location.pathname === '/') {
-  //   setLatestPosts(3)
-  // } else {setLatestPosts(0)}
-
   return (
     <Box as="main">
       <Grid

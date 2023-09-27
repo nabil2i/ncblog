@@ -6,7 +6,6 @@ import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
 
 const SimplePostGrid = () => {
   const { data, error, isLoading } = usePosts();
-  // postQuery.latestPosts = 3;
 
   if (isLoading)
     return (
@@ -40,7 +39,7 @@ const SimplePostGrid = () => {
                 </BlogPostCardContainer>
               ))}
 
-            {data?.results.map((post) => (
+            {data?.results.slice(0, 3).map((post) => (
               <BlogPostCardContainer key={post._id}>
                 <BlogPostCard post={post} />
               </BlogPostCardContainer>

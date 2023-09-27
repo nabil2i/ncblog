@@ -9,7 +9,7 @@ const HeroImage = () => {
         overflow="hidden"
         textAlign="center"
         border-radius="lg"
-        width="80%"
+        width="100%"
         maxH="528px"
         />
   )

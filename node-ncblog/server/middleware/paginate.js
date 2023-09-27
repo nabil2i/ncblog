@@ -2,29 +2,7 @@ module.exports = (model) => {
   return async (req, res, next) => {
     try {
       let page = parseInt(req.query.page) || 1;
-      let perPage;
-      // let perPage = parseInt(req.query.perPage)  || 6;
-
-      console.log(`New print...`);
-
-      let latestPosts = parseInt(req.query.latestPosts);
-      console.log(`LatestPosts: ${latestPosts}`);
-
-      let perPageCount = parseInt(req.query.perPage);
-      console.log(`perPageCount: ${perPageCount}`);
-      
-      if(latestPosts > 0) {
-        perPage = latestPosts;
-      } else {
-        if(perPageCount)
-        {
-          perPage = perPageCount;
-        } else {
-          perPage = 5;
-        }
-      }
-      console.log(`perPage: ${perPage}`);
-      
+      let perPage = parseInt(req.query.perPage)  || 10;
       let searchTerm = req.query.search;
 
       let count = 0;
@@ -52,7 +30,8 @@ module.exports = (model) => {
                       { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
                       { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
                       ]
-                    } },
+                    }
+                  },
                   { $count: 'count'}
                 ],
 
@@ -128,3 +107,23 @@ module.exports = (model) => {
     }
   }
 }
+
+      // console.log(`New print...`);
+
+      // let latestPosts = parseInt(req.query.latestPosts);
+      // console.log(`LatestPosts: ${latestPosts}`);
+
+      // let perPageCount = parseInt(req.query.perPage);
+      // console.log(`perPageCount: ${perPageCount}`);
+      
+      // if(latestPosts > 0) {
+      //   perPage = latestPosts;
+      // } else {
+      //   if(perPageCount)
+      //   {
+      //     perPage = perPageCount;
+      //   } else {
+      //     perPage = 5;
+      //   }
+      // }
+      // console.log(`perPage: ${perPage}`);

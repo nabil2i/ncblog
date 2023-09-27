@@ -23,7 +23,7 @@ const SearchPostGrid = ({ paginate }: Props) => {
   const searchText = usePostQueryStore((s) => s.postQuery.searchText);
   const { colorMode } = useColorMode();
 
-  console.log(data)
+  // console.log(data)
   if (isLoading)
     return (
       <VStack marginTop={2}>

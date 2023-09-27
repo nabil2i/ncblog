@@ -36,10 +36,15 @@ const HomePage = () => {
             </Box>
             </>
           )}
-          {searchText && <SearchPostGrid paginate={(page) => {
-            if (page === null) return null;
-            setPage(page);
-          }}/>}
+          {searchText && 
+          
+          <Box pt={{ base: "50px", lg: "0px"}}>
+            <SearchPostGrid paginate={(page) => {
+              if (page === null) return null;
+              setPage(page);
+            }}/>
+          </Box>
+          }
 
           <VStack>
             {/* <Box>

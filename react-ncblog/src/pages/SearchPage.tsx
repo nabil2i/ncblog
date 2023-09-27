@@ -1,8 +1,10 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, Box } from "@chakra-ui/react";
 import SearchPostGrid from "../components/SearchPostGrid";
+import { useSearchPostQueryStore } from "../store";
 
 const SearchPage = () => {
-  // const setPage = usePostQueryStore((s) => s.setPage);
+  const setPage = useSearchPostQueryStore((s) => s.setPage);
+  const searchText = useSearchPostQueryStore((s) => s.searchPostQuery.searchText)
 
   return (
     <Grid
@@ -20,22 +22,14 @@ const SearchPage = () => {
       }}
     >
       <GridItem area="main">
-        {/* <PostGrid
-          // postQuery={postQuery}
-          paginate={(page) => {
-            if (page === null) return null;
-            setPage(page);
-          }}
-        ></PostGrid> */}
-
-        <SearchPostGrid />
-        {/* <PostGrid
-          // postQuery={postQuery}
-          paginate={(page) => {
-            if (page === null) return null;
-            setPage(page);
-          }}
-        ></PostGrid> */}
+        {searchText && 
+          <Box pt={{ base: "50px", lg: "0px"}}>
+            <SearchPostGrid paginate={(page) => {
+              if (page === null) return null;
+              setPage(page);
+            }}/>
+          </Box>
+        }
       </GridItem>
     </Grid>
   );

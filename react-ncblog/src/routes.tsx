@@ -13,6 +13,7 @@ import AdminPostPage from "./pages/admin/AdminPostPage";
 import Dashboard from "./pages/admin/Dashboard";
 import PostsPage from "./pages/admin/PostsPage";
 import Profile from "./pages/admin/Profile";
+import SearchPage from "./pages/SearchPage";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
       { path: "blog/:id", element: <PostPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "sign-up", element: <SignUpPage /> },
-      // { path: 'search/:query', element: <SearchPage/>},
+      { path: 'search/:query', element: <SearchPage/>},
     ],
   },
   {

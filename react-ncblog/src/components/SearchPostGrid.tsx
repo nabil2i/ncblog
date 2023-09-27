@@ -8,19 +8,20 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import usePosts from "../hooks/usePosts";
-import usePostQueryStore from "../store";
+import usePostQueryStore, { useSearchPostQueryStore } from "../store";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
 import PaginationBox from "./PaginationBox";
+import useSearchPosts from "../hooks/useSearchPosts";
 
 interface Props {
   paginate: (page: number) => void;
 }
 
 const SearchPostGrid = ({ paginate }: Props) => {
-  const { data, error, isLoading } = usePosts();
-  const searchText = usePostQueryStore((s) => s.postQuery.searchText);
+  const { data, error, isLoading } = useSearchPosts();
+  const searchText = useSearchPostQueryStore((s) => s.searchPostQuery.searchText);
   const { colorMode } = useColorMode();
 
   // console.log(data)

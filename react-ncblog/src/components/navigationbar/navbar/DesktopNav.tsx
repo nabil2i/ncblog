@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import NAV_ITEMS, { NavItem } from "./navitems";
+import usePostQueryStore from "../../../store";
 
 const VARIANT_COLOR = "teal";
 
@@ -26,7 +27,8 @@ const DesktopNav = () => {
     `${VARIANT_COLOR}.500`
   );
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
-
+  const setSearchText = usePostQueryStore(s => s.setSearchText);
+  
   return (
     <Stack direction={"row"} spacing={4}>
       {NAV_ITEMS.map((navItem) => (
@@ -46,7 +48,12 @@ const DesktopNav = () => {
                   rounded: "md",
                 }}
               >
-                <NavLink to={navItem.href ?? "#"}>
+                <NavLink to={navItem.href ?? "#"}
+                  onClick={() => { 
+                    if (navItem.label === "home") {
+                      setSearchText("")
+                    }
+                    }}>
                   <Flex justify={"space-between"}>
                     <Text whiteSpace={"nowrap"}>{navItem.label}</Text>
                     <i className="fas fa-sign-out-alt"></i>

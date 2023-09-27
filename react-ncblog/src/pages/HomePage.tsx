@@ -28,15 +28,19 @@ const HomePage = () => {
         }}
       >
         <GridItem area="main">
-          {!searchText && (
+          <Box>
+            <HeroSection/>
+            <LatestPosts />
+          </Box>
+          {/* {!searchText && (
             <>
             <Box>
               <HeroSection/>
               <LatestPosts />
             </Box>
             </>
-          )}
-          {searchText && 
+          )} */}
+          {/* {searchText && 
           
           <Box pt={{ base: "50px", lg: "0px"}}>
             <SearchPostGrid paginate={(page) => {
@@ -44,7 +48,7 @@ const HomePage = () => {
               setPage(page);
             }}/>
           </Box>
-          }
+          } */}
 
           <VStack>
             {/* <Box>

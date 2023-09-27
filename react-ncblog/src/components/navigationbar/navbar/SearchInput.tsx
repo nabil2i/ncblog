@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { BsSearch } from "react-icons/bs";
 // import usePostQueryStore from "../store";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import usePostQueryStore from "../../../store";
+import usePostQueryStore, { useSearchPostQueryStore } from "../../../store";
 
 // interface Props {
 //   onSearch: (searchText: string) => void
@@ -13,7 +13,7 @@ const SearchInput = (
   // { onSearch }: Props
   ) => {
   const ref = useRef<HTMLInputElement>(null);
-  const setSearchText = usePostQueryStore(s => s.setSearchText);
+  const setSearchText = useSearchPostQueryStore(s => s.setSearchText);
   const navigate = useNavigate();
 
   // const [searchParams, setSearchParams] = useSearchParams();
@@ -25,8 +25,9 @@ const SearchInput = (
         event.preventDefault();
         if (ref.current) {
           setSearchText(ref.current.value);
+          navigate(`/search/${ref.current.value}`);
           // setSearchParams({ q: 'active'});
-          navigate(`/`);
+          // navigate(`/search?q=${searchParams}`);
         }
         
       }}>

@@ -4,8 +4,9 @@ import Post from '../entities/Post';
 import { FetchResponse } from '../services/api-client';
 // import { PostQuery } from './../App';
 import postService from "../services/postService";
-import usePostQueryStore from '../store';
+// import usePostQueryStore, { useSearchPostQueryStore } from '../store';
 import { CACHE_KEY_POSTS } from './constants';
+import { useSearchPostQueryStore } from '../store';
 
 // const apiClient = new APIClient<Post>('/posts');
 // const usePosts = (postQuery: PostQuery) => useData<Post>(
@@ -22,20 +23,17 @@ import { CACHE_KEY_POSTS } from './constants';
 
 
 
-const usePosts = () => { 
-  const postQuery = usePostQueryStore(s => s.postQuery);
+const useSearchPosts = () => { 
+  const searchPostQuery = useSearchPostQueryStore(s => s.searchPostQuery);
   
   return useQuery<FetchResponse<Post>>({
-    queryKey: [CACHE_KEY_POSTS, postQuery],
+    queryKey: [CACHE_KEY_POSTS, searchPostQuery],
     queryFn: () => postService.getAll({
       params: {
-        // search: postQuery.searchText,
+        search: searchPostQuery.searchText,
         // _start: (postQuery.page - 1) * postQuery.perPage,
         // _limit: postQuery.perPage,
-        page: postQuery.page,
-        // perPage: postQuery.perPage,
-        // latestPosts: postQuery.latestPosts
-        // latestPosts: postQuery.latestPosts
+        page: searchPostQuery.page,
       },
     }),
     // getNextPageParam: (lastPage, allPages) => {
@@ -46,4 +44,4 @@ const usePosts = () => {
   });
 };
 
-export default usePosts;
+export default useSearchPosts;

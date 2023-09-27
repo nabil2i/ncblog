@@ -29,6 +29,7 @@ const PaginationBox = ({
 
   return (
     <HStack spacing={2}>
+      { currentPage && 
       <Button
         disabled={currentPage === 1}
         onClick={() => paginate(prev)}
@@ -36,6 +37,7 @@ const PaginationBox = ({
         variant={currentPage !== 1 ? "solid" : "outline"}
         colorScheme="teal"
         >Prev</Button>
+      }
 
       {pageNumbers.map((page) => (
 
@@ -64,6 +66,7 @@ const PaginationBox = ({
         </Button>
       ))} */}
 
+      {currentPage && 
       <Button
         disabled={currentPage === totalPages}
         onClick={() => paginate(next)}
@@ -71,6 +74,7 @@ const PaginationBox = ({
         variant={currentPage !== totalPages ? "solid" : "outline"}
         colorScheme="teal"
         >Next</Button>
+      }
     </HStack>
   );
 };

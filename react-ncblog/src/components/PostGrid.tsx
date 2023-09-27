@@ -54,7 +54,7 @@ const PostGrid = ({ paginate }: Props) => {
           ))}
         </SimpleGrid>
 
-        {data && (
+        {data?.count ? (
           <PaginationBox
             postPerPage={data?.perPage as number}
             totalPosts={data?.count as number}
@@ -62,8 +62,9 @@ const PostGrid = ({ paginate }: Props) => {
             prev={data?.prev as number}
             next={data?.next as number}
             paginate={paginate}
-          ></PaginationBox>
-        )}
+          ></PaginationBox>)
+          : <VStack><Text>Nothing found. Try a different search.</Text></VStack>
+        }
       </VStack>
     </>
   );

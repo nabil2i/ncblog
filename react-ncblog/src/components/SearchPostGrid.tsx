@@ -90,8 +90,7 @@ const SearchPostGrid = ({ paginate }: Props) => {
               paginate={paginate}
             ></PaginationBox>
           )
-        :
-        <VStack><Text>Nothing found. Try a different search.</Text></VStack>}
+          : <VStack><Text>Nothing found. Try a different search.</Text></VStack>}
       </VStack>
     </>
   );

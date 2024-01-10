@@ -7,7 +7,7 @@ const app = express();
 require('./server/startup/routes')(app);
 require('./server/startup/db')();
 
-const port = 5000 || process.env.PORT;
+const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {
   console.log(`App listening on port ${port}...`)
 });

@@ -7,7 +7,7 @@ import { CACHE_KEY_USERS } from "./constants";
 
 const useLogin = (
   onLogin: (userData: User) => void,
-  showToast: () => void,
+  showSuccessToast: () => void,
   showErrorToast: (errorMessage: string) => void,
   ) => {
   const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ const useLogin = (
     mutationFn: authService.post,
     onSuccess: (userData: User) => {
      onLogin(userData);
-      showToast();
+      showSuccessToast();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USERS] })
 
     },

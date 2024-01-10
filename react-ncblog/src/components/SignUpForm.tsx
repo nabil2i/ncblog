@@ -66,12 +66,21 @@ const SignUpForm = () => {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { errors, isSubmitting, isValid },
     // } = useForm();
   } = useForm<FormData>();
 
+  const password = watch("password");
+  const password2 = watch("password2");
+
   const onSubmit = (data: FieldValues) => {
     // console.log(data);
+    // if (data.password !== data.password2) {
+    //   setError("Passwords do not match");
+    //   return;
+    // }
+
     createUser.mutate({
       username: data.username,
       email: data.email,

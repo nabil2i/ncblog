@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
+// const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth');
 const express = require('express');
 const { User } = require('../models/user')

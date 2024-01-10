@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path')
 const express = require('express');
 const cors = require('cors');
 // const expressLayout = require('express-ejs-layouts'); // if using ejs
@@ -14,6 +15,7 @@ const admin = require('../routes/admin');
 const posts = require('../routes/posts');
 const users = require('../routes/users');
 const auth = require('../routes/auth');
+const error = require('../routes/error');
 
 
 module.exports = function(app) {
@@ -50,10 +52,11 @@ module.exports = function(app) {
   // app.set('layout', './layouts/main'); // default layout
   // app.set('view engine', 'ejs'); // view engine is ejs
 
+  app.use('/', express.static(path.join(__dirname, '..', 'public')));
   app.use('/', home);
   app.use('/admin', admin);
   app.use('/api/posts', posts);
   app.use('/api/users', users);
   app.use('/api/auth', auth);
-
+  app.all('*', error);
 }

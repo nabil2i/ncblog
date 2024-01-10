@@ -1,15 +1,14 @@
-require('dotenv').config();
 const path = require('path')
 const express = require('express');
 const cors = require('cors');
-const corsOptions = require('../../config/corsOptions')
+const corsOptions = require('./corsOptions')
 // const expressLayout = require('express-ejs-layouts'); // if using ejs
 const methodOverride = require('method-override');
 // cookie-parser will grave, save,... cookies
 const cookieParser = require('cookie-parser');
 // to store sessions
 const session = require('express-session');
-const sessionOptions = require('../../config/sessionOptions')
+const sessionOptions = require('./sessionOptions')
 const { logger } = require('../middleware/logger');
 const errorHandler = require('../middleware/errorHandler');
 const home = require('../routes/home');

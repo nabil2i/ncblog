@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Joi = require('joi');
 
 const postSchema = new mongoose.Schema({
@@ -22,6 +23,8 @@ const postSchema = new mongoose.Schema({
     default: Date.now
   },
   user: {
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: 'User',
     type: new mongoose.Schema({
       firstname: {
         type: String,
@@ -38,13 +41,24 @@ const postSchema = new mongoose.Schema({
     }),
     required: true
   }
-});
+  },
+  // {
+  //   timestamps: true // auto createdAt and updatedAt 
+  // },
+);
 
-// postSchema.statics.lookup = function(userId) {
-//   return this.findOne({
-//     'user._id': userId
-//   });
-// }
+// add a ticket field inside a post with collection Counter
+postSchema.plugin(AutoIncrement, {
+  inc_field: 'ticket',
+  id: 'ticketNums',
+  start_seq: 500
+})
+
+postSchema.statics.lookup = function(userId) {
+  return this.findOne({
+    'user._id': userId
+  });
+}
 
 const Post = mongoose.model('Post', postSchema);
 

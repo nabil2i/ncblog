@@ -1,5 +1,6 @@
-require('dotenv').config();
 const MongoStore = require('connect-mongo')
+
+// console.log("mongo uri: ", process.env.NODE_ENV_MONGODB_URI)
 
 const sessionOptions = {
   secret: process.env.NODE_ENV_SESSION_SECRET,

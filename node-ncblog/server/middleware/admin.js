@@ -1,8 +1,23 @@
+// module.exports = function (req, res, next) {
+//   if (!req.user.isAdmin)
+//     return res.status(403).json({
+//       success: false,
+//       error: { code: 403, message: "Access denied."}
+//     });
+//   next();
+// }
+
+
 module.exports = function (req, res, next) {
-  if (!req.user.isAdmin)
+  const roles = req.user.roles
+  const lowercaseRoles = roles.map(role => role.toLowerCase());
+
+  const userRole = "admin"
+
+  if (!lowercaseRoles.includes(userRole.toLowerCase()))
     return res.status(403).json({
       success: false,
-      error: { code: 403, message: "Access denied."}
+      error: { code: 403, message: "Access denied. Wrong permission."}
     });
   next();
 }

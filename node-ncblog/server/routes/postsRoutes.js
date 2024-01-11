@@ -97,15 +97,15 @@ router.route('/')
   // res.send("Hello World");
 // }
   )
-  .post(postsController.createNewPost);
-  // .post([auth, editor], postsController.createNewPost);
+  // .post(postsController.createNewPost);
+  .post([auth, editor], postsController.createNewPost);
 
 router.route('/:id')
   .get(postsController.getPost)
-  .put(postsController.updatePost)
-  // .put([auth, editor], postsController.updatePost)
-  .delete(postsController.deletePost);
-  // .delete([auth, editor], postsController.deletePost);
+  // .put(postsController.updatePost)
+  .put([auth, editor], postsController.updatePost)
+  // .delete(postsController.deletePost);
+  .delete([auth, editor], postsController.deletePost);
 
 // INSERTING DUMMY POSTS
 // function insertPostData () {

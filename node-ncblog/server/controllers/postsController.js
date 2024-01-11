@@ -94,7 +94,7 @@ const updatePost = async (req, res) => {
       return res.status(400).json({ success: false, error: { code: 400, message: "Post ID required."}})
     }
 
-    const { error } = validate(req.body);
+    const { error } = validatePost(req.body);
     if (error) return res.status(400).json({ success: false, error: { code: 400, message: error.details[0].message}});
     
     const post = await Post.findByIdAndUpdate(
@@ -108,7 +108,7 @@ const updatePost = async (req, res) => {
       
       if (!post) return res.status(404).json({ success: false, error: { code: 404, message: "The post with given ID doesn't exist"}});
       
-      res.json({ success: true, message: `The post with ID ${post._iIDd} is updated`});
+      res.json({ success: true, message: `The post with ID ${post._id} is updated`});
     } catch(err) {
       console.log(err)
       if (err.name === 'CastError') {

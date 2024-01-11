@@ -1,13 +1,13 @@
 const MongoStore = require('connect-mongo')
 
-// console.log("mongo uri: ", process.env.NODE_ENV_MONGODB_URI)
+// console.log("mongo uri: ", process.env.NODE_APP_MONGODB_URI)
 
 const sessionOptions = {
-  secret: process.env.NODE_ENV_SESSION_SECRET,
+  secret: process.env.NODE_APP_SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: process.env.NODE_ENV_MONGODB_URI
+      mongoUrl: process.env.NODE_APP_MONGODB_URI
     }),
     // // for seeing the cookie expiration time
     // cookie: { maxAge: new Date ( Date.now() + (3600000) ) } 

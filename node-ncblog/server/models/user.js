@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema({
 // instance method 
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
-    { _id: this._id, isAdmin: this.isAdmin, roles: this.roles },
+    { _id: this._id, isAdmin: this.isAdmin, roles: this.roles, isActive: this.isActive },
     process.env.NODE_APP_JWT_SECRET);
     // config.get(process.env.JWT_SECRET));
   return token;
@@ -64,11 +64,12 @@ function validateUser(user) {
     username: Joi.string().min(5).max(20).required(),
     email: Joi.string().min(5).max(255).email(),
     password: Joi.string().min(5).max(255).required(),
+    isActive: Joi.boolean(),
   });
 
   return schema.validate(user);
 }
 
 exports.User = User;
-exports.validate = validateUser;
+exports.validateUser = validateUser;
 exports.userSchema = userSchema;

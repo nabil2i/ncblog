@@ -24,7 +24,7 @@ mongoose.connection.once('open', () => {
     console.log(error)
   }
   // const serverIstance = app.listen(port, () => {
-  //   console.log(`App listening on port ${port}...`)
+  //   console.log(`App listening on port ${port}...`)                                                                                                                                                                                    
   //   resolve(serverIstance)
   // });
 });

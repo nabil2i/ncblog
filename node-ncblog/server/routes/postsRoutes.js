@@ -2,11 +2,16 @@ const express = require('express');
 const {Post, validate } = require('../models/post');
 const router = express.Router();
 const paginate = require('../middleware/paginate');
+const postsController = require('../controllers/postsController');
+const editor = require('../middleware/editor');
+const auth = require('../middleware/auth');
 
-// ROUTES
 // GET all blog posts
-router.get('/', paginate(Post), async (req, res) => {
-  res.send(res.paginatedResults);
+router.route('/')
+// router.get('/', paginate(Post), async (req, res) => {
+  .get(paginate(Post), postsController.getAllPosts
+  // , async (req, res) => {
+  // res.send(res.paginatedResults);
   // const locals = {
   //   title: "NabilConveys Blog",
   //   description: "Conveying the message of God to all humanity!" 
@@ -90,72 +95,17 @@ router.get('/', paginate(Post), async (req, res) => {
   // }
 
   // res.send("Hello World");
-});
+// }
+  )
+  .post(postsController.createNewPost);
+  // .post([auth, editor], postsController.createNewPost);
 
-router.get('/:id', async(req, res) => {
-  try {
-    let id = req.params.id;
-    const post = await Post.findById({ _id: id});
-    res.send(post);
-  } catch(err) {
-    console.log(err)
-  }
-});
-
-router.post('/', async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  // console.log(req.body);
-
-  // get the user who is posting
-  const user = await User.findById(req.body.userId);
-  if (!user) return res.status(400).send('Invalid user.');
-
-  let newPost = new Post({
-    user: {
-      _id: user._id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      title: req.body.title,
-      body: req.body.body
-    }
-  })
-  newPost = await newPost.save();
-  // const newPost = new Post({
-  //   title: req.body.title,
-  //   body: req.body.body
-  // });
-
-  // await Post.create(newPost);
-
-  res.send(newPost);
-});
-
-router.put('/:id', async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  const post = await Post.findByIdAndUpdate(
-    req.params.id,
-    {
-      title: req.body.title,
-      body: req.body.body,
-    },
-    { new: true}
-  );
-
-  if (!post) return res.status(404).send("The post with given ID doesn't exist");
-
-  res.send(post);
-});
-
-router.delete('/:id', async (req, res) => {
-  const post = await Post.findByIdAndRemove(req.params.id);
-
-  if(!post) return res.status(404).send('The post with given ID is not found.')
-
-  res.send(post);
-})
+router.route('/:id')
+  .get(postsController.getPost)
+  .put(postsController.updatePost)
+  // .put([auth, editor], postsController.updatePost)
+  .delete(postsController.deletePost);
+  // .delete([auth, editor], postsController.deletePost);
 
 // INSERTING DUMMY POSTS
 // function insertPostData () {

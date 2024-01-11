@@ -12,8 +12,8 @@ const queryClient = new QueryClient(
   // {
   //   defaultOptions: {
   //     queries: {
-  //       retry: process.env.NODE_ENV === 'production',
-  //       refetchOnWindowFocus: process.env.NODE_ENV === 'production',
+  //       retry: process.env.NODE_APP === 'production',
+  //       refetchOnWindowFocus: process.env.NODE_APP === 'production',
   //     },
   //   },
   // }

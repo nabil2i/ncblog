@@ -13,9 +13,9 @@ const { logger } = require('../middleware/logger');
 const errorHandler = require('../middleware/errorHandler');
 const home = require('../routes/home');
 const admin = require('../routes/admin');
-const posts = require('../routes/posts');
-const users = require('../routes/users');
-const auth = require('../routes/auth');
+const posts = require('../routes/postsRoutes');
+const users = require('../routes/usersRoutes');
+const auth = require('../routes/authRoutes');
 const error = require('../routes/error');
 
 

@@ -1,6 +1,6 @@
 module.exports = (model) => {
   return async (req, res, next) => {
-    try {
+    // try {
       let page = parseInt(req.query.page) || 1;
       let perPage = parseInt(req.query.perPage)  || 3;
       let searchTerm = req.query.search;
@@ -41,7 +41,8 @@ module.exports = (model) => {
                       { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
                       { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
                       ]
-                    } },
+                    }
+                  },
                   { $sort: { createdAt: -1 } },
                   { $skip: startIndex },
                   { $limit: perPage }
@@ -52,7 +53,7 @@ module.exports = (model) => {
         
         const count = result[0].totalCount[0] ? result[0].totalCount[0].count : 0;
         const totalPages = Math.ceil(count / perPage);
-        const results = result[0].items;
+        results = result[0].items;
 
         prevPage = page >= 2 ? parseInt(page) - 1 : null;
         nextPage = parseInt(page) + 1;
@@ -75,7 +76,7 @@ module.exports = (model) => {
         const startIndex = (page - 1) * perPage;
         const totalPages = Math.ceil(count / perPage);
   
-        const results = await model
+        results = await model
           .aggregate([{ $sort: { createdAt: -1 }}])
           .skip(startIndex)
           .limit(perPage)
@@ -101,10 +102,10 @@ module.exports = (model) => {
       res.paginatedResults = data;
       next(); 
       // res.send(data);
-    } catch(err) {
-      res.status(500).send({ message: err.message})
-      // console.log(err);
-    }
+    // } catch(err) {
+    //   res.status(500).json({ success: false, error: { code: 500,  message: err.message}})
+    //   // console.log(err);
+    // }
   }
 }
 

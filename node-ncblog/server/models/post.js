@@ -5,6 +5,7 @@ const Joi = require('joi');
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
+    unique: true,
     required: true,
     minlength: 5,
     maxlength: 255
@@ -66,12 +67,13 @@ function validatePost(post) {
   const schema = Joi.object({
     title: Joi.string().min(5).max(255).required(),
     body: Joi.string().min(5).required(),
-    userId: Joi.objectId().required(),
+    userId: Joi.string().hex().length(24).required(),
+    // userId: Joi.objectId().required(),
   });
 
   return schema.validate(post);
 }
 
 exports.Post = Post;
-exports.validate = validatePost;
+exports.validatePost = validatePost;
 exports.postSchema = postSchema;

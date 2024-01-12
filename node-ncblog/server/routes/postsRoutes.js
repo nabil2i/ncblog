@@ -5,108 +5,37 @@ const paginate = require('../middleware/paginate');
 const postsController = require('../controllers/postsController');
 const editor = require('../middleware/editor');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
-// GET all blog posts
 router.route('/')
-// router.get('/', paginate(Post), async (req, res) => {
-  .get(paginate(Post), postsController.getAllPosts
-  // , async (req, res) => {
-  // res.send(res.paginatedResults);
-  // const locals = {
-  //   title: "NabilConveys Blog",
-  //   description: "Conveying the message of God to all humanity!" 
-  // };
-
-  // try {
-
-  //   let page = parseInt(req.query.page) || 1;
-  //   let perPage = parseInt(req.query.perPage) || 3;
-  //   let searchTerm = req.query.search;
-  //   let count = 0;
-  //   let prevPage = null;
-  //   let nextPage = null;
-  //   let hasNextPage = false;
-  //   let results = [];
-  //   let data = {};
-
-  //   if (searchTerm) {
-  //     const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
-  //     // console.log(searchTerm)
-
-  //     results = await Post
-  //       .find({ 
-  //         // do query 
-  //         $or: [
-  //           { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
-  //           { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
-  //         ]
-  //       })
-  //       .sort("-createdAt");
-
-  //       count = await Post
-  //       .find({ 
-  //         // do query 
-  //         $or: [
-  //           { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
-  //           { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
-  //         ]
-  //       })
-  //       .count();
-
-  //     data = {
-  //       locals,
-  //       count,
-  //       current: page,
-  //       prev: prevPage,
-  //       next: nextPage,
-  //       results
-  //     }
-  //   }
-  //   else {
-  //     // pagination
-  //     count = await Post.count();
-  //     perPage = 3
-
-  //     const results = await Post
-  //       .aggregate([{ $sort: { createdAt: -1 }}])
-  //       .skip(perPage * page - perPage)
-  //       .limit(perPage)
-  //       .exec();
-  //     // posts = await Post.find().sort("-createdAt");
-
-  //     prevPage = page >= 2 ? parseInt(page) - 1 : null;
-  //     nextPage = parseInt(page) + 1;
-  //     hasNextPage = nextPage <= Math.ceil(count / perPage);
-
-  //     data = {
-  //       locals,
-  //       count,
-  //       current: page,
-  //       prev: prevPage,
-  //       next: hasNextPage ? nextPage : null,
-  //       perPage: perPage,
-  //       results
-  //     }
-  //   }
-
-  //   res.send(data);
-  // } catch(err) {
-  //   console.log(err);
-  // }
-
-  // res.send("Hello World");
-// }
-  )
-  // .post(postsController.createNewPost);
+  // get all blog posts
+  .get(paginate(Post), postsController.getAllPosts)
+  // create a blog post
   .post([auth, editor], postsController.createNewPost);
 
 router.route('/:id')
+  // get a blog post
   .get(postsController.getPost)
-  // .put(postsController.updatePost)
+  // update a blog post
   .put([auth, editor], postsController.updatePost)
-  // .delete(postsController.deletePost);
+  // delete a blog post
   .delete([auth, editor], postsController.deletePost);
 
+router.route('/:id/comments')
+  // get all comments of a blog post
+  // .get([auth, admin], paginate(Comment), postsController.getPostComments)
+  // create a comment on a blog post
+  .post(auth, postsController.createComment)
+
+router.route('/:id/comments/:cid')
+  // get a comment of a blog post
+  .get([auth, admin], postsController.getComment)
+  // update a comment of a blog post
+  .put([auth, admin], postsController.updateComment)
+  // delete a comment of a blog post
+  .delete([auth, admin], postsController.deleteComment);
+
+  
 // INSERTING DUMMY POSTS
 // function insertPostData () {
 //   Post.insertMany([

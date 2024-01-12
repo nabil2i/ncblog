@@ -1,6 +1,6 @@
 module.exports = (model) => {
   return async (req, res, next) => {
-    // try {
+    try {
       let page = parseInt(req.query.page) || 1;
       let perPage = parseInt(req.query.perPage)  || 3;
       let searchTerm = req.query.search;
@@ -19,33 +19,53 @@ module.exports = (model) => {
 
         const startIndex = (page - 1) * perPage;
 
+        const matchConditions = {
+          $or: [
+            { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
+            { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
+          ]
+        };
+
         const result = await model
           .aggregate([
             {
               $facet: {
                 totalCount: [
-                  // query condition
-                  { $match:
-                    { $or: [
-                      { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
-                      { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
-                      ]
-                    }
-                  },
+                  { $match: matchConditions },
                   { $count: 'count'}
                 ],
 
                 items: [
-                  { $match:
-                    { $or: [
-                      { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},
-                      { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}
-                      ]
-                    }
-                  },
+                  { $match: matchConditions },
                   { $sort: { createdAt: -1 } },
                   { $skip: startIndex },
-                  { $limit: perPage }
+                  { $limit: perPage },
+                  { $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'userDetails',
+                  },
+                },
+                { $unwind: {
+                    path: '$userDetails',
+                    preserveNullAndEmptyArrays: true
+                  },
+                },
+                { $project: {
+                    _id: 1,
+                    title: 1,
+                    body: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    user: {
+                      _id: '$userDetails._id',
+                      firstname: '$userDetails.firstname',
+                      lastname: '$userDetails.lastname',
+                    },
+                    comments: 1,
+                  }
+                },
                 ]
               }
             }
@@ -60,7 +80,6 @@ module.exports = (model) => {
         hasNextPage = nextPage <= totalPages;
   
         data = {
-          // locals,
           count,
           current: page,
           prev: prevPage,
@@ -71,24 +90,49 @@ module.exports = (model) => {
 
       }
       else {
-        // pagination
         count = await model.count();
         const startIndex = (page - 1) * perPage;
         const totalPages = Math.ceil(count / perPage);
   
         results = await model
-          .aggregate([{ $sort: { createdAt: -1 }}])
-          .skip(startIndex)
-          .limit(perPage)
+          .aggregate([
+            { $sort: { createdAt: -1 }},
+            { $skip: startIndex },
+            { $limit: perPage },
+            { $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'userDetails',
+              },
+          },
+            { $unwind: {
+                path: '$userDetails',
+                preserveNullAndEmptyArrays: true,
+              },
+            },
+            { $project: {
+                _id: 1,
+                title: 1,
+                body: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                user: {
+                    _id: '$userDetails._id',
+                    firstname: '$userDetails.firstname',
+                    lastname: '$userDetails.lastname',
+                },
+                comments: 1,
+              }
+            },
+          ])
           .exec();
-        // posts = await Post.find().sort("-createdAt");
   
         prevPage = page >= 2 ? parseInt(page) - 1 : null;
         nextPage = parseInt(page) + 1;
         hasNextPage = nextPage <= totalPages;
   
         data = {
-          // locals,
           count,
           current: page,
           prev: prevPage,
@@ -98,33 +142,14 @@ module.exports = (model) => {
         }
       }
 
-      // throw new Error('my error');
       res.paginatedResults = data;
       next(); 
-      // res.send(data);
-    // } catch(err) {
-    //   res.status(500).json({ success: false, error: { code: 500,  message: err.message}})
-    //   // console.log(err);
-    // }
+    } catch(err) {
+      // console.log(err);
+      res.status(500).json({
+        success: false,
+        error: { code: 500,  message: err.message}
+     })
+    }
   }
 }
-
-      // console.log(`New print...`);
-
-      // let latestPosts = parseInt(req.query.latestPosts);
-      // console.log(`LatestPosts: ${latestPosts}`);
-
-      // let perPageCount = parseInt(req.query.perPage);
-      // console.log(`perPageCount: ${perPageCount}`);
-      
-      // if(latestPosts > 0) {
-      //   perPage = latestPosts;
-      // } else {
-      //   if(perPageCount)
-      //   {
-      //     perPage = perPageCount;
-      //   } else {
-      //     perPage = 5;
-      //   }
-      // }
-      // console.log(`perPage: ${perPage}`);

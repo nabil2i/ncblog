@@ -19,7 +19,7 @@ mongoose.connection.once('open', () => {
   console.log(`Connected to ${mongoose.connection.host}`);
   try {
     console.log("Populating db")
-    populateDb();
+    // populateDb();
   } catch(error) {
     console.log(error)
   }

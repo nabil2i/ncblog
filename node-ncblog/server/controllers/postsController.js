@@ -5,6 +5,7 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const { User, validateUser } = require('../models/user');
 const { Post, validatePost } = require('../models/post');
+const { Comment, validateComment } = require('../models/comment');
 const paginate = require('../middleware/paginate');
 
 
@@ -21,35 +22,57 @@ const getAllPosts = asyncHandler(async (req, res) => {
 const createNewPost = async (req, res) => {
   try {
     const { error } = validatePost(req.body);
-    if (error) return res.status(400).json({ success: false, error: { code: 400, message: error.details[0].message}});
+    if (error)
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: error.details[0].message}
+      });
     // console.log(req.body);
-    
-    // get the user who is posting
-    const user = await User.findById(req.body.userId);
-    if (!user) return res.status(400).json({ success: false, error: { code: 400, message: 'Invalid user.'}});
+    const { title, body, userId } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user)
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: 'Invalid user'}
+      });
     
     let newPost = new Post({
-      user: {
-        _id: user._id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-      },
-      title: req.body.title,
-      body: req.body.body
+      user: userId,
+      title,
+      body
     })
+    // let newPost = new Post({
+    //   user: {
+    //     _id: user._id,
+    //     firstname: user.firstname,
+    //     lastname: user.lastname,
+    //   },
+    //   title,
+    //   body
+    // })
     newPost = await newPost.save();
-    // await Post.create(newPost);
 
-    if (!newPost) return res.status(400).json({ success: false, error: { code: 400, message: 'An error occured' } });
+    if (!newPost)
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: 'An error occured' }
+      });
 
-    newPost = _.pick(newPost, ['_id', 'title', 'user._id', 'user.firstname', 'user.lastname']);
+    newPost = _.pick(newPost, ['_id', 'title', 'user']);
     res.status(201).json({success: true, data: newPost});
   } catch(err) {
     console.log(err)
     if (err.name === 'CastError') {
-      return res.status(400).json({ success: false, error: { code: 400, message: 'Invalid post ID.' } });
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: 'Invalid post ID' }
+      });
     }
-    res.status(500).json({ success: false, error: { code: 500, message: err.errors} });
+    res.status(500).json({
+      success: false,
+      error: { code: 500, message: err.errors}
+    });
   }
 };
 
@@ -58,20 +81,65 @@ const createNewPost = async (req, res) => {
 // @access Public
 const getPost = async (req, res) => {
   try {
+    let postId = req.params.id;
 
-    if (!req.params.id) {
-      return res.status(400).json({ success: false, error: { code: 400, message: "Post ID required."}})
+    if (!postId) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: "Post ID required"}
+      })
     }
-    
-    let id = req.params.id;
-    
-    const post = await Post.findById({ _id: id}).lean().exec();
+     
+    const post = await Post.findById(postId)
+      .populate([
+        {
+          path: 'user',
+          select: 'firstname lastname',
+        },
+        {
+          path: 'comments',
+          populate: [
+            {
+              path: 'user',
+              select: 'firstname lastname',
+            },
+            {
+              path: 'replies',
+              populate: {
+                path: 'user',
+                select: 'firstname lastname'
+              }
+            }
+          ]
+        }   
+      ])
+      // .populate({
+      //   path: 'user',
+      //   select: 'firstname lastname',
+      // })
+      // .populate({
+      //   path: 'comments',
+      //   populate: [
+      //     {
+      //       path: 'user',
+      //       select: 'firstname lastname',
+      //     },
+      //     {
+      //       path: 'replies',
+      //       populate: {
+      //         path: 'user',
+      //         select: 'firstname lastname'
+      //       }
+      //     }
+      //   ]
+      // })
+      .exec();
     
     if (!post) return res.status(404).json({
       success: false, 
       error: {
         code: 404,
-        message: 'The post with the given ID was not found.'
+        message: 'The post with the given ID was not found'
       }
     });
     
@@ -79,9 +147,15 @@ const getPost = async (req, res) => {
   } catch(err) {
     console.log(err)
     if (err.name === 'CastError') {
-      return res.status(400).json({ success: false, error: { code: 400, message: 'Invalid post ID.' } });
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: 'Invalid post ID'}
+      });
     }
-    res.status(500).json({ success: false, error: { code: 500, message: 'Internal Server Error.' } });
+    res.status(500).json({
+      success: false,
+      error: { code: 500, message: 'Internal Server Error'}
+    });
   }
 };
 
@@ -90,32 +164,51 @@ const getPost = async (req, res) => {
 // @access Private
 const updatePost = async (req, res) => {
   try {
-    if (!req.params.id) {
-      return res.status(400).json({ success: false, error: { code: 400, message: "Post ID required."}})
+    let postId = req.params.id;
+
+    if (!postId) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: "Post ID required"}
+      });
     }
 
     const { error } = validatePost(req.body);
-    if (error) return res.status(400).json({ success: false, error: { code: 400, message: error.details[0].message}});
+    if (error) return res.status(400).json({
+      success: false,
+      error: { code: 400, message: error.details[0].message}
+    });
     
+    const { title, body, userId } = req.body;
+
     const post = await Post.findByIdAndUpdate(
-      req.params.id,
+      postId,
       {
-        title: req.body.title,
-        body: req.body.body,
+        title,
+        body,
       },
       { new: true}
-      );
+    );
       
-      if (!post) return res.status(404).json({ success: false, error: { code: 404, message: "The post with given ID doesn't exist"}});
+    if (!post) return res.status(404).json({
+      success: false,
+      error: { code: 404, message: "The post with given ID doesn't exist"}
+    });
       
-      res.json({ success: true, message: `The post with ID ${post._id} is updated`});
-    } catch(err) {
-      console.log(err)
-      if (err.name === 'CastError') {
-        return res.status(400).json({ success: false, error: { code: 400, message: 'Invalid post ID.' } });
-      }
-      res.status(500).json({ success: false, error: { code: 500, message: 'Internal Server Error.' } });
+    res.json({ success: true, message: `The post with ID ${post._id} is updated`});
+  } catch(err) {
+    console.log(err)
+    if (err.name === 'CastError') {
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: 'Invalid post ID'}
+      });
     }
+    res.status(500).json({
+      success: false,
+      error: { code: 500, message: 'Internal Server Error'}
+    });
+  }
 };
 
 // @desc Delete a post
@@ -123,29 +216,153 @@ const updatePost = async (req, res) => {
 // @access Private
 const deletePost = async (req, res) => {
   try {
-    if (!req.params.id) {
-      return res.status(400).json({ success: false, error: { code: 400, message: "Post ID required."}})
+    let postId = req.params.id;
+
+    if (!postId) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: "Post ID required"}
+      })
     }
   
-    const post = await Post.findByIdAndRemove(req.params.id);
+    const post = await Post.findByIdAndRemove(postId);
   
-    if(!post) return res.status(404).json({ success: false, error: { code: 404, message: 'The post with given ID is not found.'}})
+    if(!post) return res.status(404).json({
+      success: false,
+      error: { code: 404, message: 'The post with given ID is not found'}
+    })
   
-    res.status(200).json({ success: true, message: `The post with ID ${post._id} was deleted.`});
+    res.status(200).json({
+      success: true,
+      message: `The post with ID ${post._id} was deleted`
+    });
 
   } catch(err) {
     console.log(err)
     if (err.name === 'CastError') {
-      return res.status(400).json({ success: false, error: { code: 400, message: 'Invalid post ID.' } });
+      return res.status(400).json({
+        success: false,
+        error: { code: 400, message: 'Invalid post ID'}
+      });
     }
-    res.status(500).json({ success: false, error: { code: 500, message: 'Internal Server Error.' } });
+    res.status(500).json({
+      success: false,
+      error: { code: 500, message: 'Internal Server Error'}
+    });
   }
 };
+
+// RELETED TO COMMENTS OF A POST
+// @desc Get all posts
+// @route GET /posts/:id/comments
+// @access Private
+const getPostComments = asyncHandler(async (req, res) => {
+  let postId = req.params.id;
+  const comments = await Comment.find().sort("-createdAt");
+  res.status(200).json({ success: true, message: "Get all comments of the post" });
+});
+
+// @desc Create a comment
+// @route POST /posts/:id/comments
+// @access Private
+const createComment = async (req, res) => {
+  try {
+    const { error } = validateComment(req.body);
+    if (error) return res.status(400).json({
+      success: false,
+      error: { code: 400, message: error.details[0].message}
+    });
+    // console.log(req.body);
+    
+    let postId = req.params.id;
+    const { text, userId, parentCommentId } = req.body;
+
+    const post = await Post.findById(postId);
+    if (!post) return res.status(400).json({
+      success: false,
+      error: { code: 400, message: 'Invalid post'}
+    });
+    
+    let newComment = new Comment({
+      text,
+      user: userId,
+      post: postId
+    })
+
+    newComment = await newComment.save();
+
+    if (parentCommentId) {
+      const parentComment = await Comment.findById(parentCommentId);
+      if (!parentComment) {
+        return res.status(400).json({
+          success: false,
+          error: { code: 400, message: 'Invalid parent comment ID'}
+        });
+      }
+
+      parentComment.replies.push(newComment);
+      await parentComment.save();
+    } else {
+      post.comments.push(newComment);
+      await post.save();
+    }
+
+    newComment = _.pick(newComment, ['_id', 'text']);
+    res.status(201).json({success: true, data: newComment});
+  } catch(err) {
+    console.log(err)
+    // if (err.name === 'CastError') {
+    //   return res.status(400).json({
+    //     success: false,
+    //     error: { code: 400, message: 'Invalid post ID'}
+    //   });
+    // }
+    res.status(500).json({
+      success: false,
+      error: { code: 500, message: err.errors}
+    });
+  }
+};
+
+// @desc Create a comment
+// @route GET /posts/:id/comments/:cid
+// @access Private
+const getComment = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Get a comment of a post" });
+});
+
+// @desc Create a comment
+// @route UPDATE /posts/:id/comments/:cid
+// @access Private
+const updateComment = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Update a comment of a post"
+  });
+});
+
+// @desc Create a comment
+// @route DELETE /posts/:id/comments/:cid
+// @access Private
+const deleteComment = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Delete a comment of a post"
+  });
+});
+
 
 module.exports = {
   getAllPosts,
   getPost,
   createNewPost,
   updatePost,
-  deletePost
+  deletePost,
+  getPostComments,
+  createComment,
+  getComment,
+  updateComment,
+  deleteComment
 }

@@ -6,7 +6,9 @@ dotenv.config(); // Load environment variables from .env file
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    include: "**/*.tsx",
+  })],
   define: {
     "process.env.API_BASE_URL": `"${process.env.API_BASE_URL}"`,
   },

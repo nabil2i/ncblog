@@ -1,3 +1,4 @@
+import { FetchError, FetchResponse } from './../services/api-client';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import LoginData from "../entities/LoginData";
@@ -12,19 +13,20 @@ const useLogin = (
   ) => {
   const queryClient = useQueryClient();
   
-  return useMutation<User, AxiosError, LoginData>({
+  return useMutation<FetchResponse<User>, AxiosError, LoginData>({
     mutationFn: authService.post,
-    onSuccess: (userData: User) => {
-     onLogin(userData);
+    onSuccess: (userData: FetchResponse<User>) => {
+     onLogin(userData.data);
       showSuccessToast();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USERS] })
 
     },
     onError: (error: AxiosError, newPost, context) => {
 
-      const responseData = error.response?.data as string
+      const responseData = error.response?.data as FetchError
+      const errorMessage = responseData.error.message
 
-      showErrorToast(responseData);
+      showErrorToast(errorMessage);
     },
   });
 

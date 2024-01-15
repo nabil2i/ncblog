@@ -1,8 +1,8 @@
 // import { ChatIcon, EmailIcon, StarIcon } from "@chakra-ui/icons";
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 // import { Form, redirect } from "react-router-dom";
-import AddPostForm from "../../components/admincomponents/AddPostForm";
-import PostsTable from "../../components/admincomponents/PostsTable";
+import AddPostForm from "../../components/admin/AddPostForm";
+import PostsTable from "../../components/admin/PostsTable";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 

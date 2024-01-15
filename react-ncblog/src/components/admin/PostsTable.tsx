@@ -1,4 +1,6 @@
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
   Flex,
   Spinner,
@@ -8,24 +10,22 @@ import {
   Tbody,
   Td,
   Text,
-  Tfoot,
   Th,
   Thead,
   Tr,
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import axios from "axios";
-import usePosts from "../../hooks/usePosts";
-import BlogPostDate from "../BlogPostDate";
-import { NavLink, redirect, useNavigate } from "react-router-dom";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CACHE_KEY_POSTS } from "../../hooks/constants";
+import { useQueryClient } from "@tanstack/react-query";
+import { NavLink, useNavigate } from "react-router-dom";
 import useDeletePost from "../../hooks/useDeletePost";
+import usePosts from "../../hooks/usePosts";
+import BlogPostDate from "../posts/BlogPostDate";
 
 const PostsTable = () => {
-  const { data, error, isLoading } = usePosts();
+  const { data: payload, error, isLoading } = usePosts();
+  const data = payload?.data;
+
   const queryClient = useQueryClient();
   const toast = useToast();
   const navigate = useNavigate();
@@ -54,31 +54,33 @@ const PostsTable = () => {
   //   });
   // };
 
-  const deletePost = useDeletePost(() => {
-    // reset();
-  },
-  () => {
-    toast({
-      title: "Delete a post",
-      description: "Successfully deleted the post.",
-      duration: 5000, // 5s
-      isClosable: true,
-      status: "success",
-      position: "top",
-      icon: <DeleteIcon />,
-    })}
-  ,
-  () => {
-    toast({
-      title: "Delete a post",
-      description: "An error occured while deleting the post.",
-      duration: 5000, // 5s
-      isClosable: true,
-      status: "error",
-      position: "top",
-      icon: <DeleteIcon />,
-    });
-  });
+  const deletePost = useDeletePost(
+    () => {
+      // reset();
+    },
+    () => {
+      toast({
+        title: "Delete a post",
+        description: "Successfully deleted the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "success",
+        position: "top",
+        icon: <DeleteIcon />,
+      });
+    },
+    () => {
+      toast({
+        title: "Delete a post",
+        description: "An error occured while deleting the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "error",
+        position: "top",
+        icon: <DeleteIcon />,
+      });
+    }
+  );
   // const deletePost = useMutation({
   //   mutationFn: (postId: string) =>
   //     // console.log("deleting..."); return;
@@ -96,20 +98,17 @@ const PostsTable = () => {
 
   const triggerDeletePost = (postId: string) => {
     // console.log(postId);
-    if (postId)
-    deletePost.mutate(postId)
-  }
+    if (postId) deletePost.mutate(postId);
+  };
 
   if (isLoading)
     return (
-      <VStack marginTop={2}>
-        <Spinner />
-      </VStack>
+      <Box p={10}>
+        <VStack marginTop={2}>
+          <Spinner />
+        </VStack>
+      </Box>
     );
-    
-
-
-  
 
   // const deletePost = (postId: string) => {
   //   // console.log("deleting..."); return;
@@ -124,12 +123,12 @@ const PostsTable = () => {
   //       console.log(err);
   //       showErrorToast();
   //     })
-    
+
   // };
 
   const updatePost = (postId: string) => {
     navigate(`/admin/posts/${postId}`);
-    console.log("updating...");
+    // console.log("updating...");
     // axios
     //   .delete(`http://localhost:5000/api/posts/${postId}`)
     //   .then(res => {
@@ -141,7 +140,6 @@ const PostsTable = () => {
     //     console.log(err);
     //     showErrorToast();
     //   })
-    
   };
 
   return (
@@ -160,9 +158,7 @@ const PostsTable = () => {
           </Thead>
           <Tbody>
             {data?.results.map((post) => (
-              
               <Tr key={post._id}>
-                
                 <Td _hover={{ color: "green", cursor: "grab" }}>
                   <NavLink to={`/admin/posts/${post._id}`}>
                     {post.title}
@@ -176,7 +172,9 @@ const PostsTable = () => {
                     <Button
                       colorScheme="blue"
                       onClick={() => updatePost(post._id as string)}
-                    >Edit</Button>
+                    >
+                      Edit
+                    </Button>
                     <Button
                       colorScheme="red"
                       onClick={() => triggerDeletePost(post._id as string)}

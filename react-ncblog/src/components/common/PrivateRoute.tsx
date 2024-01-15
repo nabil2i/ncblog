@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import useAuth from "./navigationbar/useAuth";
+import useAuth from "../navigationbar/useAuth";
 
 interface Props {
   children: ReactNode;
@@ -12,7 +12,7 @@ const PrivateRoute = ({ children }: Props) => {
   // const finalComponent = userData.token ? children : <LoginPage/>
 
   // return finalComponent;
-  if (!userData.token) {
+  if (!userData?.isAuthenticated) {
     return (
       <Navigate
         to="/login"

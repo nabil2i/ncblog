@@ -1,16 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from 'axios';
 import Post from "../entities/Post";
 import postService from "../services/postService";
+import { FetchError, FetchResponse } from './../services/api-client';
 import { CACHE_KEY_POSTS } from "./constants";
 
 const useCreatePost = (
   onCreatePost: () => void,
   showToast: () => void,
-  showErrorToast: () => void,
+  showErrorToast: (FormErrorMessage: string) => void,
   ) => {
   const queryClient = useQueryClient();
   
-  const createPost = useMutation<Post, Error, Post>({
+  const createPost = useMutation<FetchResponse<Post>, AxiosError, Post>({
     mutationFn: postService.post,
 
     onSuccess: (savedPost, newPost) => {
@@ -19,8 +21,10 @@ const useCreatePost = (
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
 
     },
-    onError: (error, newPost, context) => {
-      showErrorToast();
+    onError: (error: AxiosError, newPost, context) => {
+      const responseData = error.response?.data as FetchError
+      const errorMessage = responseData.error.message
+      showErrorToast(errorMessage);
     },
   });
 

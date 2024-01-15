@@ -3,21 +3,20 @@ import {
   Box,
   Drawer,
   Flex,
-  HStack,
   IconButton,
   Show,
   Stack,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import ColorModeSwitch from "./ColorModeSwitch";
 import DesktopNav from "./DesktopNav";
-import NavButtons from "./NavButtons";
+import MobileNavDrawer from "./MobileNavDrawer";
+import NavAuthButtons from "./NavAuthButtons";
 import NavLogo from "./NavLogo";
 import Profile from "./NavProfile";
-import ColorModeSwitch from "./ColorModeSwitch";
-import MobileNavDrawer from "./MobileNavDrawer";
-import ModalSearchInput from "./ModalSearchInput";
 import SearchInput from "./SearchInput";
+import SearchInputModalIcon from "./SearchInputModalIcon";
 
 const NavBar = () => {
   const { isOpen, onClose, onToggle } = useDisclosure();
@@ -28,177 +27,105 @@ const NavBar = () => {
         as="nav"
         position="fixed"
         top="0"
-        backgroundColor={useColorModeValue("rgba(255, 255, 255, 0.8)", "rgba(0, 0, 0, 0.8)")}
-        backdropFilter="saturate(180%) blur(5px)"
+        backgroundColor={useColorModeValue(
+          "rgba(255, 255, 255, 1)",
+          "rgba(0, 0, 0, 1)"
+        )}
         w="100%"
-        boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
         zIndex="999"
+        // backdropFilter="saturate(180%) blur(5px)"
+        // maxWidth={"1000px"}
+        // boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+        borderBottom={"1px"}
+        borderColor={"gray"}
       >
-        <HStack justifyItems={"center"}>
-          {/* <Box py={{ base: 2 }}
-            paddingLeft={{ base: 4 }}
-            display={{ md: 'none'}}>
-            <NavLogo boxSize="40px"/>
-          </Box> */}
-          <Box
-            py={{ base: 2 }}
-            paddingLeft={{ base: 4 }}
-            display={{ md: "none" }}
-          >
-            <IconButton
-              onClick={onToggle}
-              icon={
-                <HamburgerIcon w={7} h={7} />
-                // isOpen ? (
-                //   // <CloseIcon w={3} h={3} />
-                //   <CloseIcon w={5} h={5} />
-                // ) : (
-                //   // <HamburgerIcon w={5} h={5} />
-                //   <HamburgerIcon w={7} h={7} />
-                // )
-              }
-              variant={"ghost"}
-              aria-label={"Toggle Navigation"}
-            />
-          </Box>
-
-          <Box
-            py={{ base: 2 }}
-            paddingRight={{ base: 4 }}
-            paddingLeft={{ base: 0, md: 4 }}
-            flexGrow="1"
-            display={{ base: "flex", lg: "none" }}
-          >
-            {/* <SearchInput /> */}
-            <ModalSearchInput />
-          </Box>
-        </HStack>
-
         <Flex
-          // as="nav"
+          px={{ base: 4 }}
+          minH={"60px"}
           // bg={useColorModeValue('white', 'gray.800')}
           // color={useColorModeValue('gray.600', 'white')}
-          minH={"60px"}
-          py={{ base: 2 }}
-          px={{ base: 4 }}
+          // py={{ base: 2 }}
           // borderBottom={1}
           // borderStyle={'solid'}
           // boxShadow={'dark-lg'}
           // borderColor={useColorModeValue('gray.200', 'gray.900')}
           align={"center"}
+          justify="space-between"
         >
-          {/* <Flex
-            flex={{ base: 1,  md: "auto"}}  //flex: grow shrink basis; flew: 1 (auto shrink and basis)
-            ml={{ base: -2 }}
-            display={{ base: "flex", md: "none" }}
-          >
-            <IconButton
-              onClick={onToggle}
-              icon={
-                isOpen ? (
-                  // <CloseIcon w={3} h={3} />
-                  <CloseIcon w={5} h={5} />
-                ) : (
-                  // <HamburgerIcon w={5} h={5} />
-                  <HamburgerIcon w={7} h={7} />
-                )
-              }
-              variant={"ghost"}
-              aria-label={"Toggle Navigation"}
-            />
-          </Flex> */}
 
+          {/* START MobileNav */}
           <Flex
-            flex={{ base: 1 }} // spread the logo + desktop menu all line
-            // justify={{ base: "center", md: "start" }}
-            justify={{ base: "start" }}
-            align={"center"}
+            align="center"
+            // paddingRight={4}
           >
             <Box
-              // display={{ base: 'none', md: "flex" }}
-              display={{ md: "flex" }}
+            // py={{ base: 2 }}
+            // paddingLeft={{ base: 4 }}
+            display={{ lg: "none" }}
             >
-              <NavLogo boxSize="40px" />
+              <IconButton
+                onClick={onToggle}
+                icon={<HamburgerIcon w={7} h={7} />}
+                variant={"ghost"}
+                aria-label={"Toggle Navigation"}
+              />
             </Box>
-            {/* <Text
-            textAlign={useBreakpointValue({ base: 'center', md: 'left'})}
-            fontFamily={'heading'}
-            color={useColorModeValue('gray.800', 'white')}
-          >
-            Logo
-          </Text> */}
-
-            <Flex
-              display={{ base: "none", md: "flex" }}
-              ml={5}
-              align={"center"}
+            <Drawer
+              isOpen={isOpen}
+              placement="left"
+              onClose={onClose}
+              // finalFocusRef={btnRef}
             >
-              <DesktopNav />
-            </Flex>
-          </Flex>
+              <Show
+                above="base"
+                below="lg"
+              >
+                <MobileNavDrawer onCloseMain={onClose} />
+              </Show>
+            </Drawer>
 
-          {/* Right end of menu */}
+            <Box>
+              {" "}
+              <NavLogo boxSize="30px" />{" "}
+            </Box>
+          </Flex>
+          {/* END MobileNav */}
+
+          {/* START Desktop menu */}
+          <Flex
+            display={{ base: "none", lg: "flex" }}
+            align={"center"}
+            height="full"
+          >
+            <DesktopNav />
+          </Flex>
+          {/* END Desktop logo and menu */}
+
+          {/* START Search */}
+          <Box
+            px={8}
+            flexGrow="1"
+            display={{ base: "none", md: "flex", lg: "none" }}
+          >
+            <SearchInput />
+          </Box>
+          {/* END Search */}
+
+          {/* START right end of menu */}
           <Stack
-            // flex={{ base: 1, md: 0 }}
-            justify={"flex-end"}
             align="center"
             direction={"row"}
-            spacing={2}
+            gap={2}
           >
-            <Show above="lg">
-              <SearchInput />
-            </Show>
+            <Box display={{ base: "flex", md: "none", lg: "flex"}}>
+              <SearchInputModalIcon />
+            </Box> 
             <ColorModeSwitch />
-            <NavButtons />
+            <NavAuthButtons />
             <Profile />
-            {/* <Button
-            as={'a'}
-            fontSize={'sm'}
-            fontWeight={400}
-            variant={'link'}
-            href={'#'}
-          >
-            Sign in
-          </Button>
-          <Button
-            as={'a'}
-            display={ {base: 'none', md: 'inline-flex'}}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'green.400'}
-            href={'#'}
-            _hover={{
-              bg: 'green.300'
-            }}
-          >
-            Sign up
-          </Button> */}
           </Stack>
-
-          {/* <HStack spacing={3}>
-            <Show above="lg">
-              <SearchInput />
-            </Show>
-            <NavButtons />
-            <ColorModeSwitch />
-            <Profile />
-          </HStack> */}
+          {/* END right end of menu */}
         </Flex>
-
-        {/* <Collapse in={isOpen} animateOpacity>
-          <MobileNav />
-        </Collapse> */}
-        <Drawer
-          isOpen={isOpen}
-          placement="left"
-          onClose={onClose}
-          // finalFocusRef={btnRef}
-        >
-          <Show above="base" below="md">
-            <MobileNavDrawer onCloseMain={onClose} />
-          </Show>
-        </Drawer>
       </Box>
     </>
   );

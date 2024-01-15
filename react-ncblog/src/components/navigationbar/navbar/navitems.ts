@@ -16,6 +16,10 @@ const NAV_ITEMS: Array<NavItem> =  [
     href: '/blog',
   },
   {
+    label: 'Books',
+    href: '/books',
+  },
+  {
     label: 'YouTube',
     href: 'https://youtube.com/@NabilConveys',
     target: '_blank',
@@ -38,22 +42,7 @@ const NAV_ITEMS: Array<NavItem> =  [
       },
     ],
   },
-  // {
-  //   label: 'Dawah',
-  //   children: [
-  //     {
-  //       label: 'Job Board',
-  //       subLabel: 'Find your dream design job',
-  //       href: '#',
-  //     },
-  //     {
-  //       label: 'Freelance Projects',
-  //       subLabel: 'An exclusive list for contract work',
-  //       href: '#',
-  //     },
-  //   ],
-  // },
-  
+
 ];
 
 export default NAV_ITEMS;

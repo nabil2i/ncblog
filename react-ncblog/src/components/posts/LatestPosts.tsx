@@ -1,6 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
 import SimplePostGrid from "./SimplePostGrid";
-import usePostQueryStore from "../store";
 
 const LatestPosts = () => {
   // const { data, error, isLoading } = usePosts();
@@ -13,7 +12,7 @@ const LatestPosts = () => {
 
   return (
     <>
-      <Box as="section" m="5" textAlign="center">
+      <Box as="section"textAlign="center">
         <Heading as="h2" size="2xl">
           {" "}
           Latest Posts

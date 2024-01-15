@@ -1,3 +1,13 @@
+import '@fontsource/raleway/400.css'
+import '@fontsource/open-sans/700.css'
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+
+
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -31,3 +41,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     </ChakraProvider>
   </React.StrictMode>
 );
+
+library.add(fab, fas, far)

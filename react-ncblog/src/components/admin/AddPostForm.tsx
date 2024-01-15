@@ -14,13 +14,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { FieldValues, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import MyPost from "../../entities/MyPost";
-import Post from "../../entities/Post";
-import { CACHE_KEY_POSTS } from "../../hooks/constants";
 import useCreatePost from "../../hooks/useCreatePost";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
@@ -46,33 +40,34 @@ export interface FormData {
 const AddPostForm = () => {
   // const navigate = useNavigate();
   const toast = useToast();
-  const createPost = useCreatePost(() => {
-    reset();
-  },
-  () => {
-    toast({
-      title: "Add a post",
-      description: "Successfully added the post.",
-      duration: 5000, // 5s
-      isClosable: true,
-      status: "success",
-      position: "top",
-      icon: <AddIcon />,
-    })}
-  ,
-  () => {
-    toast({
-      title: "Add a post",
-      description: "An error occured while adding the post.",
-      duration: 5000, // 5s
-      isClosable: true,
-      status: "error",
-      position: "top",
-      icon: <AddIcon />,
-    });
-  });
+  const createPost = useCreatePost(
+    () => {
+      reset();
+    },
+    () => {
+      toast({
+        title: "Add a post",
+        description: "Successfully added the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "success",
+        position: "top",
+        icon: <AddIcon />,
+      });
+    },
+    () => {
+      toast({
+        title: "Add a post",
+        description: "An error occured while adding the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "error",
+        position: "top",
+        icon: <AddIcon />,
+      });
+    }
+  );
   // const queryClient = useQueryClient();
-
 
   // const showToast = () => {
   //   toast({
@@ -103,7 +98,7 @@ const AddPostForm = () => {
   //     axios
   //       .post<MyPost>("http://localhost:5000/api/posts", post)
   //       .then((res) => res.data),
-  //   // called before the mutation is executed 
+  //   // called before the mutation is executed
   //   onMutate: (newPost) => {
   //     // create context to store previous posts before update if doing optimistic update
   //     const prevPosts = queryClient.getQueryData<Post[]>([CACHE_KEY_POSTS]) || [];
@@ -128,7 +123,7 @@ const AddPostForm = () => {
 
   //     // if used the onMutate() for optimistic update then
   //     queryClient.setQueryData<MyPost[]>([CACHE_KEY_POSTS], (posts) =>
-  //       posts?.map((post) => 
+  //       posts?.map((post) =>
   //         post === newPost ? savedPost : post
   //       )
   //     );

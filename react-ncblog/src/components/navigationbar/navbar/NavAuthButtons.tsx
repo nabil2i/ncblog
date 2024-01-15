@@ -5,11 +5,12 @@ import useAuth from "../useAuth";
 
 const VARIANT_COLOR = "teal";
 
-const NavButtons = () => {
+const NavAuthButtons = () => {
   // const [userData, dispatch] = useReducer(authReducer, {});
   const { userData } = useAuth();
+  // console.log(userData)
 
-  if (!userData?.token)
+  if (!userData.isAuthenticated)
     return (
       <>
         <HStack>
@@ -51,7 +52,7 @@ const NavButtons = () => {
     );
 };
 
-// NavButtons.propTypes = {
+// NavAuthButtons.propTypes = {
 //   setToken: PropTypes.func.isRequired
 // }
-export default NavButtons;
+export default NavAuthButtons;

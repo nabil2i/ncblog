@@ -1,8 +1,9 @@
+import { FetchError, FetchResponse } from './../services/api-client';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import User from "../entities/User";
 import userService from "../services/userService";
 import { CACHE_KEY_USERS } from "./constants";
-import { AxiosError } from "axios";
 
 const useCreateUser = (
   onCreateUser: (user: User) => void,
@@ -11,20 +12,20 @@ const useCreateUser = (
   ) => {
   const queryClient = useQueryClient();
   
-  return useMutation<User, AxiosError, User>({
+  return useMutation<FetchResponse<User>, AxiosError, User>({
     mutationFn: userService.post,
 
-    onSuccess: (savedUser, newUser) => {
-     onCreateUser(savedUser);
+    onSuccess: (savedUser: FetchResponse<User>, newUser) => {
+     onCreateUser(savedUser.data);
       showToast();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USERS] })
     },
     onError: (error: AxiosError, newPost, context) => {
-      // Check if there's additional data in the error response
-      const responseData = error.response?.data as string
+      const responseData = error.response?.data as FetchError;
+      const errorMessage = responseData.error.message
 
       // Handle the error and show an error toast
-      showErrorToast(responseData);
+      showErrorToast(errorMessage);
     },
   });
 

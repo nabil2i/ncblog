@@ -13,8 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { FieldValues, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-import useCreateUser from "../hooks/useCreateUser";
-import useAuth from "./navigationbar/useAuth";
+import useCreateUser from "../../hooks/useCreateUser";
+import useAuth from "../navigationbar/useAuth";
 
 const VARIANT_COLOR = "teal";
 

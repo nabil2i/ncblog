@@ -7,7 +7,7 @@ interface Props {
 }
 const BlogPostDate = ({ date }: Props) => {
   return (
-    <Text as="time">
+    <Text as="time" fontSize={"md"} color="gray">
       {
         dateFormat(date, "mmm dS, yyyy")
         // new Intl.DateTimeFormat(

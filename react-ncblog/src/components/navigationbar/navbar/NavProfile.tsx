@@ -43,9 +43,11 @@ const NavLink = (props: Props) => {
 const Profile = () => {
   // const [userData, dispatch] = useReducer(authReducer, {});
   // const { userData, dispatch} = useContext(AuthContext);
+  // const { userData, dispatch } = useAuth();
   const { userData, dispatch } = useAuth();
+  // console.log(userData)
 
-  if (userData?.token)
+  if (userData.isAuthenticated)
     return (
       <>
         <Box>
@@ -79,7 +81,7 @@ const Profile = () => {
               </Center>
               <br />
               <Center>
-                <p>Username</p>
+                <p>{userData.username}</p>
               </Center>
               <br />
               <MenuDivider />

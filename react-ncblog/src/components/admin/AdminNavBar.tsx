@@ -9,7 +9,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import NavButtons from "../navigationbar/navbar/NavButtons";
+import NavButtons from "../navigationbar/navbar/NavAuthButtons";
 
 const AdminNavBar = () => {
   const toast = useToast();

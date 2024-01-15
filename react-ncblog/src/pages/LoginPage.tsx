@@ -1,8 +1,22 @@
 import { Box, Flex, Grid, GridItem, Image, Show } from "@chakra-ui/react";
 import HomeHero from "../assets/islam2.jpg";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/auth/LoginForm";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import useAuth from "../components/navigationbar/useAuth";
 
-const LoginPage = () => (
+const LoginPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { userData } = useAuth();
+  const redirect = new URLSearchParams(location.search).get("redirect");
+
+  useEffect(() => {
+    if (userData.isAuthenticated) {
+      navigate(redirect || "/")
+    }
+  }, [navigate, redirect, userData.isAuthenticated])
+  return (
   <>
     <Box p={10}>
       <Grid
@@ -57,6 +71,7 @@ const LoginPage = () => (
       </Grid>
     </Box>
   </>
-);
+  );
+}
 
 export default LoginPage;

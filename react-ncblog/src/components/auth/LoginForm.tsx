@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Center,
-  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -13,10 +12,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { FieldValues, useForm } from "react-hook-form";
-import { NavLink, useNavigate } from "react-router-dom";
-import LoginData from "../entities/LoginData";
-import useLogin from "../hooks/useLogin";
-import useAuth from "./navigationbar/useAuth";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import LoginData from "../../entities/LoginData";
+import useLogin from "../../hooks/useLogin";
+import useAuth from "../navigationbar/useAuth";
 
 const VARIANT_COLOR = "teal";
 
@@ -62,11 +61,10 @@ const LoginForm = () => {
     register,
     reset,
     formState: { errors, isSubmitting, isValid },
-    // } = useForm();
   } = useForm<LoginData>();
 
   const onSubmit = (data: FieldValues) => {
-    console.log(`"Form fields": ${data}`);
+    // console.log(`"Form fields": ${data}`);
     login.mutate({
       // _id: id,
       username: data.username,

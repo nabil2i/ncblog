@@ -8,7 +8,7 @@ const ErrorPage = () => {
   return (
     <>
       <NavBar/>
-      <Box padding={5}>
+      <Box px="80px" marginTop={{ base: "150px", md: "70px"}}>
         <Heading>Oops</Heading>
         <Text>{ isRouteErrorResponse(error) ? 'This page does not exist.' : 'An unexpected error occurred.'}</Text>
       </Box>

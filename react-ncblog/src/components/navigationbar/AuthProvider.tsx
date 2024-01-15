@@ -14,6 +14,11 @@ interface LogoutAction {
 
 export type AuthAction = LoginAction | LogoutAction;
 
+export interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+}
+
 const authReducer = (state: User, action: AuthAction): User => {
   switch (action.type) {
     case "LOGIN": {
@@ -29,25 +34,50 @@ const authReducer = (state: User, action: AuthAction): User => {
   }
 };
 
-// export default authReducer;
+// const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+//   switch (action.type) {
+//     case "LOGIN": {
+//       return {
+//         user: action.userData,
+//         isAuthenticated: true
+//       };
+//     }
+//     case "LOGOUT":
+//       return {
+//         user: null,
+//         isAuthenticated: false,
+//       };
+//     default:
+//       return state;
+//   }
+// };
 
 // Authentication Provider
 interface Props {
   children: ReactNode;
 }
+
 const AuthProvider = ({ children }: Props) => {
   const userStoreString = localStorage.getItem("userData");
-  // console.log(`userStoreString: ${userStoreString}`);
+
+  const initialState: User = {
+    _id: "",
+    username: "",
+    email: "",
+    token: "",
+    isAuthenticated: false,
+    img: "",
+  };
 
   let userStore;
 
-  if (!userStoreString) userStore = "";
-  else userStore = JSON.parse(userStoreString);
+  try {
+    userStore = userStoreString ? JSON.parse(userStoreString) : initialState;
+  } catch (error) {
+    console.error("Error parsing user data from localStorage", error);
+    userStore = null;
+  }
 
-  // const userStore = JSON.parse(userStoreString || "")
-  // console.log(`userStore: ${userStore}`);
-
-  // const [ userData, dispatch ] = useReducer(authReducer, {});
   const [userData, dispatch] = useReducer(authReducer, userStore);
 
   return (

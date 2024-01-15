@@ -1,5 +1,5 @@
 import { Box, Image } from "@chakra-ui/react";
-import NabilConveys1 from "../assets/NabilConveys1.webp";
+import NabilConveys1 from "../../assets/NabilConveys1.webp";
 
 const PostImage = () => {
   return (

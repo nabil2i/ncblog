@@ -34,8 +34,8 @@ const login = asyncHandler(async (req, res) => {
   
   const token = user.generateAuthToken();
   
-  const userData = _.pick(user, ['_id', 'username', 'email', 'token'])
-  userData.token = token;
+  const userData = _.pick(user, ['_id', 'username', 'email'])
+  // userData.token = token;
   userData.isAuthenticated = true;
   res.status(200).cookie('token' ,token, { httpOnly: true }).json({
     success: true,

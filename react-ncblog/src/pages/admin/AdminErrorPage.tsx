@@ -1,7 +1,7 @@
 import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
-import AdminNavBar from "../../components/admincomponents/AdminNavBar";
-import AdminSideBar from "../../components/admincomponents/AdminSideBar";
+import AdminNavBar from "../../components/admin/AdminNavBar";
+import AdminSideBar from "../../components/admin/AdminSideBar";
 
 const AdminErrorPage = () => {
   const error = useRouteError();

@@ -1,10 +1,7 @@
 import {
-  Avatar,
-  Box,
   Card,
   CardBody,
   CardFooter,
-  Flex,
   HStack,
   Heading,
   Image,
@@ -12,10 +9,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import NabilConveys2 from "../assets/NabilConveys2.webp";
-import Landscape from "../assets/landscape.jpeg";
-import Post from "../entities/Post";
-import BlogPostDate from "./BlogPostDate";
+import Landscape from "../../assets/landscape.jpeg";
+import Post from "../../entities/Post";
+import BlogPostAuthor from "./BlogPostAuthor";
 
 interface Props {
   post: Post;
@@ -50,24 +46,20 @@ const BlogPostCard = ({ post }: Props) => {
               </Tag>
             ))}
           </HStack>
-          <Heading as="h3" my="4" fontSize="lg" noOfLines={2}>
+          <Heading as="h3" my="4" fontSize="xl" noOfLines={2}>
             {post.title}
           </Heading>
 
-          <Text noOfLines={3}>{post.body}</Text>
+          <Text fontSize={"md"} noOfLines={3}>
+            {post.body}
+          </Text>
         </CardBody>
         {/* <Divider borderColor="gray.200"/> */}
         {/* <CardHeader>
           
         </CardHeader> */}
         <CardFooter>
-          <Flex mt="4" gap="2">
-            <Avatar src={NabilConveys2} />
-            <Box>
-              <Text fontWeight={600}>Nabil Ibn Ismail</Text>
-              <BlogPostDate date={post.createdAt} />
-            </Box>
-          </Flex>
+          <BlogPostAuthor post={post} />
         </CardFooter>
       </Card>
     </Link>

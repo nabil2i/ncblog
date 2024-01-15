@@ -1,4 +1,4 @@
-import { Flex, Icon, Link, Text } from "@chakra-ui/react";
+import { Flex, Icon, Link, Text, useColorModeValue } from "@chakra-ui/react";
 import { FaFacebook, FaInstagram, FaTwitter, FaWhatsapp, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
@@ -7,10 +7,12 @@ const Footer = () => {
       direction="column"
       align="center"
       justify="center"
-      borderTop="1px"
+      // borderTop="1px"
       // bg="gray.900"
       // color="white"
+      color={useColorModeValue("white", "black")}
       paddingY={4}
+      background={useColorModeValue("gray.900", "gray.100")}
     >
       {/* First Row: Social Icons */}
       <Flex gap={4}>

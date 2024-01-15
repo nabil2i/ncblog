@@ -28,27 +28,29 @@ const DesktopNav = () => {
   );
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
   const setSearchText = usePostQueryStore(s => s.setSearchText);
+
+  // const isActive = (match: any, location: any) => {
+  //   return location.pathname === (navItem.href || '/');
+  // };
   
   return (
-    <Stack direction={"row"} spacing={4}>
+    <Stack direction={"row"} spacing={4} >
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label} textAlign="center">
           <Popover trigger={"hover"} placement={"bottom-start"}>
-            <PopoverTrigger>
+            <PopoverTrigger >
               <Box
-                p={2}
-                // fontSize={'sm'}
-                // fontWeight={500}
+                px={2}  py={5}
                 color={linkColor}
                 _hover={{
                   textDecoration: "none",
-                  // background: colorMode === 'light' ?  `${VARIANT_COLOR}.500` : `${VARIANT_COLOR}.500`,
                   color: linkHoverColor,
                   bg: linkHoverBgColor,
-                  rounded: "md",
+                  // rounded: "md",
                 }}
               >
                 <NavLink to={navItem.href ?? "#"}
+                  // activeClassName="active-link"
                   onClick={() => { 
                     if (navItem.label === "home") {
                       setSearchText("")
@@ -101,10 +103,8 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => (
     p={2}
     rounded={"md"}
     _hover={{
-      // bg: useColorModeValue('pink.50', 'gray.900')
-      // bg: useColorModeValue('teal.400', 'teal.400')
+      color: "white",
       bg: useColorModeValue(`${VARIANT_COLOR}.300`, `${VARIANT_COLOR}.500`),
-      // bg: 'teal.400'
     }}
   >
     <NavLink to={href ?? "#"}>
@@ -144,3 +144,4 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => (
 );
 
 export default DesktopNav;
+

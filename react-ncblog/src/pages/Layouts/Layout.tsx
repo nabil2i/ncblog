@@ -1,18 +1,20 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, VStack } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
+import Footer from "../../components/common/Footer";
 import { AuthProvider, NavBar } from "../../components/navigationbar";
-import Footer from "../../components/Footer";
 
 const Layout = () => {
-
   return (
     <AuthProvider>
-      <NavBar />
-      <Box padding={5} marginTop={12}>
-        <Outlet />
-      </Box>
-      <Footer />
+      <Flex direction="column" minHeight="100vh">
+        <NavBar />
+        <Box flex="1" marginTop={{ base: "60px" }}>
+          <Outlet />
+        </Box>
+        <Footer />
+      </Flex>
     </AuthProvider>
+
   );
 };
 

@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Post from "../entities/Post";
 import postService from "../services/postService";
 import { CACHE_KEY_POSTS } from "./constants";
 

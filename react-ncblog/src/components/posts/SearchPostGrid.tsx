@@ -7,29 +7,34 @@ import {
   useColorMode,
   VStack,
 } from "@chakra-ui/react";
-import usePosts from "../hooks/usePosts";
-import usePostQueryStore, { useSearchPostQueryStore } from "../store";
+import { useSearchPostQueryStore } from "../../store";
+import PaginationBox from "../common/PaginationBox";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
-import PaginationBox from "./PaginationBox";
-import useSearchPosts from "../hooks/useSearchPosts";
+import useSearchPosts from "../../hooks/useSearchPosts";
 
 interface Props {
   paginate: (page: number) => void;
 }
 
 const SearchPostGrid = ({ paginate }: Props) => {
-  const { data, error, isLoading } = useSearchPosts();
-  const searchText = useSearchPostQueryStore((s) => s.searchPostQuery.searchText);
+  const { data: payload, error, isLoading } = useSearchPosts();
+  const data = payload?.data;
+
+  const searchText = useSearchPostQueryStore(
+    (s) => s.searchPostQuery.searchText
+  );
   const { colorMode } = useColorMode();
 
   // console.log(data)
   if (isLoading)
     return (
-      <VStack marginTop={2}>
-        <Spinner />
-      </VStack>
+      <Box p={10}>
+        <VStack marginTop={2}>
+          <Spinner />
+        </VStack>
+      </Box>
     );
 
   const skeletons = [1, 2, 3, 4];
@@ -49,10 +54,10 @@ const SearchPostGrid = ({ paginate }: Props) => {
     </Center> */}
       <Box paddingLeft={20}>
         {searchText && (
-          <Heading as="h2" marginY={5} fontSize="5xl"
-          >
+          <Heading as="h2" marginY={5} fontSize="5xl">
             {`Results for: `}
-            <Text as="span"
+            <Text
+              as="span"
               color={colorMode === "light" ? "gray.300" : "green.300"}
             >
               {`${searchText || ""}`}
@@ -80,18 +85,21 @@ const SearchPostGrid = ({ paginate }: Props) => {
             </BlogPostCardContainer>
           ))}
         </SimpleGrid>
-       
+
         {data?.count ? (
-            <PaginationBox
-              postPerPage={data?.perPage as number}
-              totalPosts={data?.count as number}
-              currentPage={data?.current as number}
-              prev={data?.prev as number}
-              next={data?.next as number}
-              paginate={paginate}
-            ></PaginationBox>
-          )
-          : <VStack><Text>Nothing found. Try a different search.</Text></VStack>}
+          <PaginationBox
+            postPerPage={data?.perPage as number}
+            totalPosts={data?.count as number}
+            currentPage={data?.current as number}
+            prev={data?.prev as number}
+            next={data?.next as number}
+            paginate={paginate}
+          ></PaginationBox>
+        ) : (
+          <VStack>
+            <Text>Nothing found. Try a different search.</Text>
+          </VStack>
+        )}
       </VStack>
     </>
   );

@@ -6,6 +6,7 @@ import image1 from "../assets/login.jpg";
 import image2 from "../assets/landscape.jpeg";
 import image3 from "../assets/pol.jpg";
 import image4 from "../assets/hero-image.webp";
+import image5 from "../assets/pof.jpg";
 
 // import usePostQueryStore from "../store";
 // import Hero from "../components/HeroImage";
@@ -20,6 +21,7 @@ const HomePage = () => {
     { url: image2, caption: "Image 2"},
     { url: image3, caption: "Image 3"},
     { url: image4, caption: "Image 4"},
+    { url: image5, caption: "Image 5"},
   ]
 
   return (

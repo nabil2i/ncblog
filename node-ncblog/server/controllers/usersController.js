@@ -123,7 +123,7 @@ const updateUser = asyncHandler(async (req, res) => {
       error: { code: 400, message: "All fields must be provided"}
     });
   
-  let userId = req.params.id
+  const userId = req.params.id
   const user = await User.findById(userId).exec()
 
   if (!user)
@@ -198,7 +198,7 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route DELETE /users/:id
 // @access Private
 const deleteUser = asyncHandler(async (req, res) => {
-  let userId = req.params.id
+  const userId = req.params.id
   if (!userId) {
     return res.status(400).json({
       success: false,
@@ -237,7 +237,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 // @route GET /users/me
 // @access Private
 const getCurrentUser = asyncHandler(async (req, res) => {
-  let userId = req.user._id
+  const userId = req.user._id
   const user = await User.findById(userId).select('-password').lean().exec();
   res.status(200).json({ success: true, data: user});
 });
@@ -253,7 +253,7 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
       error: { code: 400, message: "All fields must be provided"}
     });
   
-  let userId = req.user._id;
+  const userId = req.user._id;
   const user = await User.findById(userId).exec()
 
   if (!user)
@@ -327,7 +327,7 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
 // @route DELETE /users/me
 // @access Private
 const deleteCurrentUser = asyncHandler(async (req, res) => {
-  let userId = req.user._id
+  const userId = req.user._id
   if (!userId) {
     return res.status(400).json({
       success: false,

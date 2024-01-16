@@ -47,6 +47,10 @@ const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment',
   }],
+  tags: [{
+
+    type: String,
+  }],
   likes: {
     type: Number,
   },

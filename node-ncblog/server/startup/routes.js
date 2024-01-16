@@ -11,6 +11,10 @@ const { logger } = require('../middleware/logger');
 const errorHandler = require('../middleware/errorHandler');
 const home = require('../routes/home');
 const posts = require('../routes/postsRoutes');
+const authors = require('../routes/authorsRoutes');
+const books = require('../routes/booksRoutes');
+const genres = require('../routes/genresRoutes');
+const categories = require('../routes/categoriesRoutes');
 const users = require('../routes/usersRoutes');
 const auth = require('../routes/authRoutes');
 const error = require('../routes/error');
@@ -35,6 +39,10 @@ module.exports = function(app) {
   
   app.use('/', home);
   app.use('/api/posts', posts);
+  app.use('/api/books', books);
+  app.use('/api/authors', authors);
+  app.use('/api/genres', genres);
+  app.use('/api/categories', categories);
   app.use('/api/users', users);
   app.use('/api/auth', auth);
   app.all('*', error);

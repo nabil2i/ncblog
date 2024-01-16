@@ -81,7 +81,7 @@ const createNewPost = async (req, res) => {
 // @access Public
 const getPost = async (req, res) => {
   try {
-    let postId = req.params.id;
+    const postId = req.params.id;
 
     if (!postId) {
       return res.status(400).json({
@@ -164,7 +164,7 @@ const getPost = async (req, res) => {
 // @access Private
 const updatePost = async (req, res) => {
   try {
-    let postId = req.params.id;
+    const postId = req.params.id;
 
     if (!postId) {
       return res.status(400).json({
@@ -216,7 +216,7 @@ const updatePost = async (req, res) => {
 // @access Private
 const deletePost = async (req, res) => {
   try {
-    let postId = req.params.id;
+    const postId = req.params.id;
 
     if (!postId) {
       return res.status(400).json({
@@ -257,7 +257,7 @@ const deletePost = async (req, res) => {
 // @route GET /posts/:id/comments
 // @access Private
 const getPostComments = asyncHandler(async (req, res) => {
-  let postId = req.params.id;
+  const postId = req.params.id;
   const comments = await Comment.find().sort("-createdAt");
   res.status(200).json({ success: true, message: "Get all comments of the post" });
 });
@@ -274,7 +274,7 @@ const createComment = async (req, res) => {
     });
     // console.log(req.body);
     
-    let postId = req.params.id;
+    const postId = req.params.id;
     const { text, userId, parentCommentId } = req.body;
 
     const post = await Post.findById(postId);

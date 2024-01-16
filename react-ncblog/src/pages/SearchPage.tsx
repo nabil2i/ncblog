@@ -1,6 +1,7 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import SearchPostGrid from "../components/posts/SearchPostGrid";
 import { useSearchPostQueryStore } from "../store";
+import PageHeading from "../components/common/PageHeading";
 
 const SearchPage = () => {
   const setPage = useSearchPostQueryStore((s) => s.setPage);
@@ -17,9 +18,9 @@ const SearchPage = () => {
     >
       <GridItem area="main">
         {searchText && (
-          <Box
-            // pt={{ base: "50px", lg: "0px" }}
+          <Box as="section"
           >
+            <PageHeading title={"Search"} />
             <SearchPostGrid
               paginate={(page) => {
                 if (page === null) return null;

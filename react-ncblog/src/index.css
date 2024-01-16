@@ -1,6 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 form {
   width: 100%;
 }
+
+/* @layer utilities {
+  .nav-link {
+    @apply text-zinc-500 hover:text-zinc-800 transition-colors
+  }
+} */
 
 .active-link {
   background-color: teal.500;

@@ -5,7 +5,8 @@ import NabilConveys1 from "../../../assets/NabilConveys1.webp";
 // import usePostQueryStore from "../store";
 
 interface Props {
-  boxSize: string;
+  boxSize?: string;
+  fontSize?: string;
 }
 const NavLogo = ({ boxSize }: Props) => {
   return (
@@ -20,7 +21,7 @@ const NavLogo = ({ boxSize }: Props) => {
           // justify={{ base: 'center', md: 'start'}}
           justify={{ base: "start" }}
         >
-          <Image src={NabilConveys1} boxSize={boxSize} objectFit="cover" />
+          <Image src={NabilConveys1} boxSize={boxSize || 30} objectFit="cover" />
         </Flex>
 
         <Flex display={{ base: "none", md: "flex", lg: "flex" }}>
@@ -33,7 +34,7 @@ const NavLogo = ({ boxSize }: Props) => {
   );
 };
 
-export const NavLogoDrawer = ({ boxSize }: Props) => {
+export const NavLogoDrawer = ({ boxSize, fontSize }: Props) => {
   return (
     <Link to="/">
       <Flex
@@ -43,11 +44,11 @@ export const NavLogoDrawer = ({ boxSize }: Props) => {
         gap={1}
       >
         <Flex justify={{ base: "start" }}>
-          <Image src={NabilConveys1} boxSize={boxSize} objectFit="cover" />
+          <Image src={NabilConveys1} boxSize={boxSize || 30} objectFit="cover" />
         </Flex>
 
         <Flex>
-          <Text fontSize={20} whiteSpace="nowrap" fontWeight={900}>
+          <Text fontSize={fontSize || 20} whiteSpace="nowrap" fontWeight={900}>
             NabilConveys
           </Text>
         </Flex>

@@ -2,7 +2,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 
 const Headline = () => {
   return (
-    <Box m="5" textAlign="center">
+    <Box m ="5" textAlign="center">
       <Heading as='h1' size='2xl' > Welcome to NabilConveys</Heading>
       <Text m="0" mt="1">
         {" "}

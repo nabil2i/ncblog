@@ -4,6 +4,8 @@ import LatestPosts from "../components/posts/LatestPosts";
 import ImageCarousel from "../components/common/ImageCarousel";
 import image1 from "../assets/login.jpg";
 import image2 from "../assets/landscape.jpeg";
+import image3 from "../assets/pol.jpg";
+import image4 from "../assets/hero-image.webp";
 
 // import usePostQueryStore from "../store";
 // import Hero from "../components/HeroImage";
@@ -16,6 +18,8 @@ const HomePage = () => {
   const images: Array<{ url: string; caption: string }> = [
     { url: image1, caption: "Image 1"},
     { url: image2, caption: "Image 2"},
+    { url: image3, caption: "Image 3"},
+    { url: image4, caption: "Image 4"},
   ]
 
   return (
@@ -27,7 +31,7 @@ const HomePage = () => {
         <GridItem area="main">
           <Box>
             <HeroSection />
-            {/* <ImageCarousel images={images}/> */}
+            <ImageCarousel images={images}/>
             <LatestPosts />
           </Box>
         </GridItem>

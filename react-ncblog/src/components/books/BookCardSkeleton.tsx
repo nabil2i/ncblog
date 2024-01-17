@@ -1,6 +1,6 @@
 import { SkeletonText, Card, CardBody, HStack, CardFooter, Flex, SkeletonCircle, Box } from "@chakra-ui/react";
 
-const BlogPostCardSkeleton = () => {
+const BookCardSkeleton = () => {
   return (
       <Card height="100%" borderRadius='4'>
         <CardBody>
@@ -17,17 +17,11 @@ const BlogPostCardSkeleton = () => {
             <SkeletonText />
         </CardBody>
         <CardFooter>
-          <Flex mt="4" gap='2'>
-            <SkeletonCircle />
-              <Box>
-                <SkeletonText />
-                <SkeletonText />
-              </Box>
-            </Flex>
+          <SkeletonText />
         </CardFooter>
     </Card>
 
   )
 }
 
-export default BlogPostCardSkeleton;
+export default BookCardSkeleton;

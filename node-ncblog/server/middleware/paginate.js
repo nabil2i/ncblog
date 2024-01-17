@@ -44,28 +44,40 @@ module.exports = (model) => {
                     from: 'users',
                     localField: 'user',
                     foreignField: '_id',
-                    as: 'userDetails',
+                    as: 'user',
                   },
                 },
                 { $unwind: {
-                    path: '$userDetails',
+                    path: '$user',
                     preserveNullAndEmptyArrays: true
                   },
                 },
-                { $project: {
-                    _id: 1,
-                    title: 1,
-                    body: 1,
-                    createdAt: 1,
-                    updatedAt: 1,
-                    user: {
-                      _id: '$userDetails._id',
-                      firstname: '$userDetails.firstname',
-                      lastname: '$userDetails.lastname',
-                    },
-                    comments: 1,
-                  }
+                { $lookup: {
+                  from: 'authors',
+                  localField: 'author',
+                  foreignField: '_id',
+                  as: 'author',
                 },
+            },
+              { $unwind: {
+                  path: '$author',
+                  preserveNullAndEmptyArrays: true,
+                },
+              },
+                // { $project: {
+                //     _id: 1,
+                //     title: 1,
+                //     body: 1,
+                //     createdAt: 1,
+                //     updatedAt: 1,
+                //     user: {
+                //       _id: '$user._id',
+                //       firstname: '$user.firstname',
+                //       lastname: '$user.lastname',
+                //     },
+                //     comments: 1,
+                //   }
+                // },
                 ]
               }
             }
@@ -103,28 +115,40 @@ module.exports = (model) => {
                 from: 'users',
                 localField: 'user',
                 foreignField: '_id',
-                as: 'userDetails',
+                as: 'user',
               },
           },
             { $unwind: {
-                path: '$userDetails',
+                path: '$user',
                 preserveNullAndEmptyArrays: true,
               },
             },
-            { $project: {
-                _id: 1,
-                title: 1,
-                body: 1,
-                createdAt: 1,
-                updatedAt: 1,
-                user: {
-                    _id: '$userDetails._id',
-                    firstname: '$userDetails.firstname',
-                    lastname: '$userDetails.lastname',
-                },
-                comments: 1,
-              }
+            { $lookup: {
+                from: 'authors',
+                localField: 'author',
+                foreignField: '_id',
+                as: 'author',
+              },
+          },
+            { $unwind: {
+                path: '$author',
+                preserveNullAndEmptyArrays: true,
+              },
             },
+            // { $project: {
+            //     _id: 1,
+            //     title: 1,
+            //     body: 1,
+            //     createdAt: 1,
+            //     updatedAt: 1,
+            //     user: {
+            //         _id: '$user._id',
+            //         firstname: '$user.firstname',
+            //         lastname: '$user.lastname',
+            //     },
+            //     comments: 1,
+            //   }
+            // },
           ])
           .exec();
   

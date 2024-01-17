@@ -16,7 +16,7 @@ const Footer = () => {
     : process.env.VITE_REACT_APP_EMAIL_ADDRESS;
 
   return (
-    <Box background={"black"} color="white">
+    <Box background={"black"} color="white" w="100%">
       {/* <Divider orientation="horizontal" color="gray.500" my="4" /> */}
       <Box  px={{ base: 8, lg: 20 }}  py={14} as="section" >
         <Flex

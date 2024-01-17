@@ -8,6 +8,7 @@ const PostPage = () => {
   const { data: payload, isLoading, error } = usePost(id as string);
   // console.log(payload);
   const post = payload?.data;
+  // console.log(post)
 
   if (isLoading)
     return (
@@ -27,7 +28,7 @@ const PostPage = () => {
         templateAreas={{ base: `"side1" "main" "side2"`, lg: `"side1 main side2"` }}
         templateColumns={{ base: "1fr", lg: "1fr 2fr 1fr" }}
       >
-        <GridItem area="main">
+        <GridItem area="main" py={4} px={8}>
           <BlogPostDetails post={post} />
         </GridItem>
 

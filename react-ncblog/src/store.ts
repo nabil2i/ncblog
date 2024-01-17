@@ -40,3 +40,21 @@ export const useSearchPostQueryStore = create<SearchPostQueryStore>(set => ({
   setSearchText: (searchText) => set(() => ({ searchPostQuery: { searchText}})),
   setPage: (page) => set((store) => ({ searchPostQuery: { ...store.searchPostQuery, page }})),
 }))
+
+
+interface BookQuery {
+  searchText?: string;
+  page?: number;
+}
+
+interface BookQueryStore {
+  bookQuery: BookQuery;
+  setSearchText: (searchText: string) => void;
+  setPage: (page: number) => void;
+}
+
+export const useBookQueryStore = create<BookQueryStore>(set => ({
+  bookQuery: {},
+  setSearchText: (searchText) => set(() => ({ bookQuery: {searchText}})),
+  setPage: (page) => set((store) => ({ bookQuery: { ...store.bookQuery, page }})),
+}));

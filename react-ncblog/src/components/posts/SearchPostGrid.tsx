@@ -40,7 +40,7 @@ const SearchPostGrid = ({ paginate }: Props) => {
   const skeletons = [1, 2, 3, 4];
   return (
     <>
-      {error && <Text> We encountered a problem.</Text>}
+      {error && <Text py={8}> We encountered a problem.</Text>}
 
       {/* <Center>
       <Flex
@@ -86,16 +86,20 @@ const SearchPostGrid = ({ paginate }: Props) => {
           ))}
         </SimpleGrid>
 
-        {data?.count ? (
+        {data?.count && data.count > 1 ? (
           <PaginationBox
-            postPerPage={data?.perPage as number}
-            totalPosts={data?.count as number}
+            itemPerPage={data?.perPage as number}
+            totalItems={data?.count as number}
             currentPage={data?.current as number}
             prev={data?.prev as number}
             next={data?.next as number}
             paginate={paginate}
           ></PaginationBox>
         ) : (
+          <></>
+        )}
+
+        {!data?.count && (
           <VStack>
             <Text>Nothing found. Try a different search.</Text>
           </VStack>

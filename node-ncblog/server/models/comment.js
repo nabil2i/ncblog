@@ -13,10 +13,31 @@ const commentSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  parent: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+  },
   replies: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment'
   }],
+  // replies: [{
+  //   user: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'User',
+  //     required: true,
+  //   },
+  //   parentId: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Comment',
+  //     required: true,
+  //   },
+  //   text: {
+  //     type: String,
+  //     required: true,
+  //     trim: true,
+  //   },
+  // }],
   post: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Post",

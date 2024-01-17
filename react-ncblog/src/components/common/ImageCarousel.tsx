@@ -56,7 +56,7 @@ const ImageCarousel = ({ images }: Props) => {
         <div className="flex top-4 justify-center py-2">
           {images.map((image, index) => (
             <div
-              key="index"
+              key={index}
               onClick={() => goToImage(index)}
               className="text-2xl cursor-pointer"
             >
@@ -65,23 +65,6 @@ const ImageCarousel = ({ images }: Props) => {
           ))}
         </div>
       </div>
-
-      {/* <Box width="100%" height="400px">
-        <Fade>
-          {images.map((image, index) => (
-            <Box key={index}>
-              <Flex
-                height="400px"
-                bgSize="cover"
-                justify="center"
-                align="center"
-                bg={image.url}
-              >
-              </Flex>
-            </Box>
-          ))}
-        </Fade>
-      </Box> */}
     </>
   );
 };

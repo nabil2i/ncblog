@@ -8,7 +8,7 @@ const VARIANT_COLOR = "teal";
 const NavAuthButtons = () => {
   // const [userData, dispatch] = useReducer(authReducer, {});
   const { userData } = useAuth();
-  // console.log(userData)
+  console.log(userData)
 
   if (!userData.isAuthenticated)
     return (

@@ -1,11 +1,11 @@
 import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
+import BookGrid from "../components/books/BookGrid";
 import PageHeading from "../components/common/PageHeading";
-import PostGrid from "../components/posts/PostGrid";
-import usePostQueryStore from "../store";
+import { useBookQueryStore } from "../store";
 
 const BooksPage = () => {
-  const setPage = usePostQueryStore((s) => s.setPage);
-  
+  const setPage = useBookQueryStore((s) => s.setPage);
+
   return (
     <>
       <Box
@@ -18,12 +18,20 @@ const BooksPage = () => {
           <GridItem area="main">
             <VStack as="section">
               <PageHeading title={"Books"} />
-              <PostGrid
+
+              <BookGrid
                 paginate={(page) => {
                   if (page === null) return null;
                   setPage(page);
                 }}
-            ></PostGrid>
+              ></BookGrid>
+
+              {/* <PostGrid
+                paginate={(page) => {
+                  if (page === null) return null;
+                  setPage(page);
+                }}
+            ></PostGrid> */}
             </VStack>
           </GridItem>
         </Grid>

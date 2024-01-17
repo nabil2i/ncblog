@@ -98,6 +98,7 @@ const getPost = async (req, res) => {
         },
         {
           path: 'comments',
+          options: { sort: { createdAt: -1 } },
           populate: [
             {
               path: 'user',
@@ -105,6 +106,7 @@ const getPost = async (req, res) => {
             },
             {
               path: 'replies',
+              options: { sort: { createdAt: -1 } },
               populate: {
                 path: 'user',
                 select: 'firstname lastname'
@@ -286,7 +288,8 @@ const createComment = async (req, res) => {
     let newComment = new Comment({
       text,
       user: userId,
-      post: postId
+      post: postId,
+      parent: parentCommentId
     })
 
     newComment = await newComment.save();
@@ -328,30 +331,106 @@ const createComment = async (req, res) => {
 // @route GET /posts/:id/comments/:cid
 // @access Private
 const getComment = asyncHandler(async (req, res) => {
+  const commentId = req.params.cid;
+
+  if (!commentId) {
+    return res.status(400).json({
+      success: false,
+      error: { code: 400, message: "Comment ID required"}
+    })
+  }
+
+  const comment = await Comment.findById(commentId);
+
   res.status(200).json({
     success: true,
-    message: "Get a comment of a post" });
+    message: "Get a comment of a post",
+    data: comment
+  });
 });
 
 // @desc Create a comment
 // @route UPDATE /posts/:id/comments/:cid
 // @access Private
 const updateComment = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Update a comment of a post"
-  });
+  const commentId = req.params.cid;
+
+  if (!commentId) {
+    return res.status(400).json({
+      success: false,
+      error: { code: 400, message: "Comment ID required"}
+    })
+  }
+
+  const { error } = validateComment(req.body);
+    if (error) return res.status(400).json({
+      success: false,
+      error: { code: 400, message: error.details[0].message}
+    });
+    
+    const { text, userId } = req.body;
+
+    const comment = await Comment.findByIdAndUpdate(
+      commentId,
+      {
+        text, userId
+      },
+      { new: true}
+    );
+      
+    if (!comment) return res.status(404).json({
+      success: false,
+      error: { code: 404, message: "The comment with given ID doesn't exist"}
+    });
+      
+    res.json({
+      success: true,
+      message: `The comment with ID ${comment._id} is updated`
+    });
 });
 
 // @desc Create a comment
 // @route DELETE /posts/:id/comments/:cid
 // @access Private
 const deleteComment = asyncHandler(async (req, res) => {
+  const commentId = req.params.cid;
+
+  if (!commentId) {
+    return res.status(400).json({
+      success: false,
+      error: { code: 400, message: "Comment ID required"}
+    })
+  }
+
+  const comment = await Comment.findById(commentId);
+
+  if(!comment) return res.status(404).json({
+    success: false,
+    error: { code: 404, message: 'The comment with given ID is not found'}
+  })
+
+  await deleteReplies(comment.replies);
+
   res.status(200).json({
     success: true,
-    message: "Delete a comment of a post"
+    message: "Comment and replies deleted"
   });
 });
+
+
+const deleteReplies = async (replyIds) => {
+  if (!replyIds || replyIds.length === 0) return;
+
+  // Delete each reply
+  for (const replyId of replyIds) {
+    const replyToDelete = await Comment.findById(replyId);
+    if (replyToDelete) {
+      await deleteReplies(replyToDelete.replies);
+
+      await Comment.findByIdAndRemove(replyId);
+    }
+  }
+};
 
 
 module.exports = {

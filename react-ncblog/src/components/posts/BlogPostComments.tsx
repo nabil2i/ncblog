@@ -14,16 +14,19 @@ import useAuth from "../navigationbar/useAuth";
 import ElapsedDate from "./ElapsedDate";
 import ReplyComment from "./ReplyComment";
 
-const BlogPostComments = ({
-  comments,
-  postId,
-}: {
+
+interface Props  {
   comments: PostComment[];
   postId: string;
-}) => {
+}
+
+const BlogPostComments = ({ comments, postId }: Props) => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { userData } = useAuth();
+  console.log(comments)
+  console.log(postId)
+
 
   const handleReply = (commentId: string) => {
     if (userData.isAuthenticated) {
@@ -35,30 +38,7 @@ const BlogPostComments = ({
 
   const handleCancelReply = () => setReplyingTo(null);
 
-  // const theme = localStorage.getItem("chakra-ui-color-mode");
   const { colorMode } = useColorMode();
-
-  // const renderCommentsWithVisualIndicators = (comments, depth = 0) => {
-  //   return (
-  //     <>
-  //       {comments.map((comment, index) => (
-  //         <Box key={comment._id} marginLeft={`${depth * 4}rem`}>
-  //           <CommentWithVisualIndicator comment={comment} depth={depth} />
-  //           {/* Rest of your comment rendering logic */}
-  //         </Box>
-  //       ))}
-  //     </>
-  //   );
-  // };
-
-  // const CommentWithVisualIndicator = ({ comment, depth }) => {
-  //   return (
-  //     <Flex>
-  //       <Box width="1rem" height="100%" borderLeft="1px solid gray" marginRight="1rem" />
-  //       {/* Render the rest of your comment content here */}
-  //     </Flex>
-  //   );
-  // };
 
   // RENDER WITH DEPTH
   const renderComments = (
@@ -72,11 +52,11 @@ const BlogPostComments = ({
     return (
       <>
         {comments.map((comment) => (
-          <Box key={comment._id} ml={ml}>
+          <Box key={comment?._id } ml={depth * 4}>
             <Flex gap="3" mb="5" mt="5">
               <Avatar
-                src={comment.user.img}
-                // fallback={comment.user.firstname?.slice(0, 1)}
+                src={comment?.user?.img}
+                // fallback={comment?.user?.firstname.slice(0, 1)}
                 size="xs"
                 // radius="full"
                 className="cursor-pointer"
@@ -90,22 +70,17 @@ const BlogPostComments = ({
                 >
                   <Flex gap="3" align="center">
                     <Text size="3" fontWeight={700}>
-                      {comment.user.firstname + " " + comment.user.lastname}
+                      {comment?.user?.firstname + " " + comment?.user?.lastname}
                     </Text>
                   </Flex>
                   <Text size="2">{comment.text}</Text>
                 </Box>
                 <Flex gap={4}>
                   <ElapsedDate date={comment.createdAt} />
-                  {!replyingTo && (
-                    <CustomButton
-                      onClick={() => handleReply(comment._id)}
-                      text={"Reply"}
-                    />
-                    //   <FaFontAwesome icon="fa-regular fa-paper-plane" />
-                    // </CustomButton>
-                    // <ReplyButton onClick={() => handleReply(comment._id)}></ReplyButton>
-                  )}
+                  <CustomButton
+                    onClick={() => handleReply(comment._id)}
+                    text={"Reply"}
+                  />
                 </Flex>
                 <LoginModal
                   isOpen={isOpen}
@@ -131,11 +106,39 @@ const BlogPostComments = ({
       </>
     );
   };
-  return <>{renderComments(comments, postId)}</>;
+
+  return (
+  <>
+    {renderComments(comments, postId)}
+    </>
+  );
 };
 
-// const ReplyButton = ({ onClick }: { onClick: () => void }) => (
+export default BlogPostComments;
+
+
+  // const renderCommentsWithVisualIndicators = (comments, depth = 0) => {
+  //   return (
+  //     <>
+  //       {comments.map((comment, index) => (
+  //         <Box key={comment._id} marginLeft={`${depth * 4}rem`}>
+  //           <CommentWithVisualIndicator comment={comment} depth={depth} />
+  //           {/* Rest of your comment rendering logic */}
+  //         </Box>
+  //       ))}
+  //     </>
+  //   );
+  // };
+
+  // const CommentWithVisualIndicator = ({ comment, depth }) => {
+  //   return (
+  //     <Flex>
+  //       <Box width="1rem" height="100%" borderLeft="1px solid gray" marginRight="1rem" />
+  //       {/* Render the rest of your comment content here */}
+  //     </Flex>
+  //   );
+  // };
+
+  // const ReplyButton = ({ onClick }: { onClick: () => void }) => (
 //   <button onClick={onClick}><Text size="2" color="gray">Reply</Text></button>
 // )
-
-export default BlogPostComments;

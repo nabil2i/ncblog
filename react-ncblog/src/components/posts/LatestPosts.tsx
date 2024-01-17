@@ -1,5 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
-import SimplePostGrid from "./SimplePostGrid";
+import LatestPostsGrid from "./LatestPostsGrid";
 
 const LatestPosts = () => {
   // const { data, error, isLoading } = usePosts();
@@ -18,7 +18,7 @@ const LatestPosts = () => {
           Latest Posts
         </Heading>
       </Box>
-      <SimplePostGrid />
+      <LatestPostsGrid />
       {/* {error && <Text> We encountered a problem.</Text>} */}
 
       {/* { searchText ? `Searched for: ${searchText}`: "Latest Posts" } */}

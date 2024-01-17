@@ -1,16 +1,16 @@
 import { Button, HStack } from "@chakra-ui/react";
 
 interface Props {
-  postPerPage: number;
-  totalPosts: number;
+  itemPerPage: number;
+  totalItems: number;
   currentPage: number;
   prev: number;
   next: number;
   paginate: (page: number) => void;
 }
 const PaginationBox = ({
-  postPerPage,
-  totalPosts,
+  itemPerPage,
+  totalItems,
   currentPage,
   prev,
   next,
@@ -20,7 +20,7 @@ const PaginationBox = ({
   // const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(3);
   // const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
   
-  const totalPages = Math.ceil(totalPosts / postPerPage);
+  const totalPages = Math.ceil(totalItems / itemPerPage);
 
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {

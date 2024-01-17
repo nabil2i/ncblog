@@ -1,18 +1,18 @@
 import { Box, Flex, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
 // import { PostQuery } from "../App";
+import useBooks from "../../hooks/useBooks";
 import PaginationBox from "../common/PaginationBox";
-import BlogPostCard from "./BlogPostCard";
-import BlogPostCardContainer from "./BlogPostCardContainer";
-import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
-import usePosts from "../../hooks/usePosts";
+import BookCard from "./BookCard";
+import BookCardContainer from "./BookCardContainer";
+import BookCardSkeleton from "./BookCardSkeleton";
 // import usePostQueryStore from "../store";
 
 interface Props {
   paginate: (page: number) => void;
 }
 
-const PostGrid = ({ paginate }: Props) => {
-  const { data: payload, error, isLoading } = usePosts();
+const BookGrid = ({ paginate }: Props) => {
+  const { data: payload, error, isLoading } = useBooks();
   const data = payload?.data;
   // console.log(data);
 
@@ -32,11 +32,11 @@ const PostGrid = ({ paginate }: Props) => {
       {error && (
         <Text py={8} textAlign={"center"}>
           {" "}
-          We encountered a problem. Please retry later. 
+          We encountered a problem. Please retry later.
         </Text>
       )}
 
-      <VStack paddingBottom={5} >
+      <VStack paddingBottom={5}>
         <SimpleGrid
           textAlign="center"
           columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
@@ -46,15 +46,15 @@ const PostGrid = ({ paginate }: Props) => {
           <Flex justify="center" align="center">
             {isLoading &&
               skeletons.map((skeleton) => (
-                <BlogPostCardContainer key={skeleton}>
-                  <BlogPostCardSkeleton />{" "}
-                </BlogPostCardContainer>
+                <BookCardContainer key={skeleton}>
+                  <BookCardSkeleton />{" "}
+                </BookCardContainer>
               ))}
 
-            {data?.results.map((post) => (
-              <BlogPostCardContainer key={post._id}>
-                <BlogPostCard post={post} />
-              </BlogPostCardContainer>
+            {data?.results.map((book) => (
+              <BookCardContainer key={book._id}>
+                <BookCard book={book} />
+              </BookCardContainer>
             ))}
           </Flex>
         </SimpleGrid>
@@ -74,7 +74,7 @@ const PostGrid = ({ paginate }: Props) => {
   
           {!data?.count && (
             <VStack>
-              <Text>Nothing found.</Text>
+              <Text>Nothing found. Try a different search.</Text>
             </VStack>
           )}
       </VStack>
@@ -82,4 +82,4 @@ const PostGrid = ({ paginate }: Props) => {
   );
 };
 
-export default PostGrid;
+export default BookGrid;

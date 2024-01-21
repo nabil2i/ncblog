@@ -23,13 +23,13 @@ interface Props  {
 const BlogPostComments = ({ comments, postId }: Props) => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { userData } = useAuth();
-  console.log(comments)
-  console.log(postId)
+  const { state } = useAuth();
+  // console.log(comments)
+  // console.log(postId)
 
 
   const handleReply = (commentId: string) => {
-    if (userData.isAuthenticated) {
+    if (state.isAuthenticated) {
       setReplyingTo(commentId);
     } else {
       onOpen();

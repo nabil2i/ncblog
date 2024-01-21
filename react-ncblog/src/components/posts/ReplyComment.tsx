@@ -17,7 +17,7 @@ interface Props {
   onCancelReply: () => void;
 }
 const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
-  const { userData } = useAuth();
+  const { state } = useAuth();
   const { id } = useParams();
   const addComment = useCreateComment(id as string, () => {
     reset();
@@ -34,20 +34,20 @@ const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
   const onSubmit = (data: CommentForm) => {
     data = {
       text: data.text,
-      userId: userData._id as string,
+      userId: state.user?._id as string,
       parentCommentId: parent,
     };
-    console.log(`"Form fields": ${JSON.stringify(data)}`);
+    // console.log(`"Form fields": ${JSON.stringify(data)}`);
     addComment.mutate(data);
   };
 
   return (
     <>
-      {userData.isAuthenticated && (
+      {state.isAuthenticated && (
         <form>
           <Flex direction="column">
             {/* <Avatar
-              src={userData.img}
+              src={state.user?.img}
               // fallback={comment.user.firstname?.slice(0, 1)}
               size="md"
               // radius="full"

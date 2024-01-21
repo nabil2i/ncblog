@@ -9,7 +9,7 @@ const SearchPage = () => {
     (s) => s.searchPostQuery.searchText
   );
 
-  console.log(searchText)
+  // console.log(searchText)
 
   return (
     <Grid

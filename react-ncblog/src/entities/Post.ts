@@ -3,7 +3,9 @@ export default interface Post {
   title: string;
   body: string;
   createdAt?: Date;
+  publishedAt?: Date;
   updatedAt?: Date;
+  tags?: string[];
   user?: {
     _id: string;
     firstname: string;

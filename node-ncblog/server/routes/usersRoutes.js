@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 // const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const editor = require('../middleware/editor');
 const express = require('express');
 const { User, validate } = require('../models/user');
 const router = express.Router();
@@ -22,6 +23,10 @@ router.route('/me')
   .put(auth,usersController.updateCurrentUser)
   // delete logged in user
   .delete(auth,usersController.deleteCurrentUser);
+
+router.route('/me/posts')
+  // get logged in user posts
+  .get([auth, editor],usersController.getCurrentUserPosts)
 
 router.route('/:id')
 // get a user

@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { FieldValues, useForm } from "react-hook-form";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import LoginData from "../../entities/LoginData";
 import useLogin from "../../hooks/useLogin";
 import useAuth from "../navigationbar/useAuth";
@@ -60,7 +60,9 @@ const LoginForm = () => {
     handleSubmit,
     register,
     reset,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors,
+      // isSubmitting, isValid 
+    },
   } = useForm<LoginData>();
 
   const onSubmit = (data: FieldValues) => {

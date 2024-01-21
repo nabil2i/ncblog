@@ -227,7 +227,7 @@ const deletePost = async (req, res) => {
       })
     }
   
-    const post = await Post.findByIdAndRemove(postId);
+    const post = await Post.findByIdAndDelete(postId);
   
     if(!post) return res.status(404).json({
       success: false,
@@ -433,6 +433,8 @@ const deleteReplies = async (replyIds) => {
 };
 
 
+
+
 module.exports = {
   getAllPosts,
   getPost,
@@ -443,5 +445,5 @@ module.exports = {
   createComment,
   getComment,
   updateComment,
-  deleteComment
+  deleteComment,
 }

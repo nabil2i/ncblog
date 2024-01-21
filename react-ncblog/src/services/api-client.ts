@@ -1,5 +1,9 @@
-import axios, { AxiosRequestConfig } from "axios";
+/// <reference types="vite/client" />
 
+import axios, { AxiosRequestConfig } from "axios";
+// interface ImportMeta {
+//   env: Record<string, any>;
+// }
 export interface FetchResponse<R> {
   success: boolean;
   data: R;
@@ -53,7 +57,7 @@ class APIClient<T, Q> {
         .then((res) => res.data);
   };
 
-  put = (data: T) => {
+  put = (data: Q) => {
     return axiosInstance
       .put<FetchResponse<T>>(this.endpoint, data)
       .then((res) => res.data);

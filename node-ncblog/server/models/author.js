@@ -6,13 +6,13 @@ const authorSchema = new mongoose.Schema({
   firstname: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 2,
     maxlength: 50
   },
   lastname: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 2,
     maxlength: 50
   },
   bio: {
@@ -45,8 +45,8 @@ const Author = mongoose.model('Author', authorSchema);
 
 function validateAuthor(author) {
   const schema = Joi.object({
-    firstname: Joi.string().min(5).max(50).required(),
-    lastname: Joi.string().min(5).max(50).required(),
+    firstname: Joi.string().min(2).max(50).required(),
+    lastname: Joi.string().min(2).max(50).required(),
     bio: Joi.string().min(5).required(),
     
   });

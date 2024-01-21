@@ -8,7 +8,7 @@ import usePosts from "../../hooks/usePosts";
 // import usePostQueryStore from "../store";
 
 interface Props {
-  paginate: (page: number) => void;
+  paginate?: (page: number) => void;
 }
 
 const PostGrid = ({ paginate }: Props) => {
@@ -43,7 +43,6 @@ const PostGrid = ({ paginate }: Props) => {
           spacing={3}
           padding={1}
         >
-          <Flex justify="center" align="center">
             {isLoading &&
               skeletons.map((skeleton) => (
                 <BlogPostCardContainer key={skeleton}>
@@ -56,10 +55,9 @@ const PostGrid = ({ paginate }: Props) => {
                 <BlogPostCard post={post} />
               </BlogPostCardContainer>
             ))}
-          </Flex>
         </SimpleGrid>
 
-        {data?.count && data.count > 1 ? (
+        {data?.count && data.count > 1 && paginate ? (
           <PaginationBox
             itemPerPage={data?.perPage as number}
             totalItems={data?.count as number}

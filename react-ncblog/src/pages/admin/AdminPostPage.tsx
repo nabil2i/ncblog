@@ -1,286 +1,47 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Spacer,
-  Text,
-  Textarea,
-  useToast,
-} from "@chakra-ui/react";
-import { useQueryClient } from "@tanstack/react-query";
-import { FieldValues, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
-import useDeletePost from "../../hooks/useDeletePost";
+import { Box, Grid, GridItem, Spinner, VStack, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+import BlogPostDetails from "../../components/posts/BlogPostDetails";
 import usePost from "../../hooks/usePost";
-import useUpdatePost from "../../hooks/useUpdatePost";
-
-export interface FormData {
-  title: string;
-  body: string;
-}
+import Post from "../../entities/Post";
+import EditPostButton from "../../components/admin/posts/EditPostButton";
+import DeletePostButton from "../../components/admin/posts/DeletePostButton";
 
 const AdminPostPage = () => {
-  const toast = useToast();
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const { id } = useParams();
-  const { data: post, isLoading, error } = usePost(id as string);
+  // console.log(id)
+  const { data: payload, isLoading, error } = usePost(id as string);
+  const post = payload?.data
+  // console.log(post);
 
-  // UPDATE
-  const updatePost = useUpdatePost(
-    id as string,
-    () => {
-      // reset();
-    },
-    () => {
-      toast({
-        title: "Update a post",
-        description: "Successfully updated the post.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "success",
-        position: "top",
-        icon: <EditIcon />,
-      });
-    },
-    () => {
-      toast({
-        title: "Update a post",
-        description: "An error occured while updating the post.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "error",
-        position: "top",
-        icon: <EditIcon />,
-      });
-    }
-  );
+  if (isLoading)
+    return (
+      <Box p={10}>
+        <VStack marginTop={2}>
+          <Spinner />
+        </VStack>
+      </Box>
+    );
 
-  // const showPutToast = () => {
-  //   toast({
-  //     title: "Update a post",
-  //     description: "Successfully updated the post.",
-  //     duration: 5000, // 5s
-  //     isClosable: true,
-  //     status: "success",
-  //     position: "top",
-  //     icon: <EditIcon />,
-  //   });
-  // };
-
-  // const showPutErrorToast = () => {
-  //   toast({
-  //     title: "Update a post",
-  //     description: "An error occured while updating the post.",
-  //     duration: 5000, // 5s
-  //     isClosable: true,
-  //     status: "error",
-  //     position: "top",
-  //     icon: <EditIcon />,
-  //   });
-  // };
-
-  // const updatePost = useMutation<MyPost, Error, MyPost>({
-  //   mutationFn: (post: MyPost) =>
-  //     axios
-  //       .put<MyPost>("http://localhost:5000/api/posts", post)
-  //       .then((res) => res.data),
-  //   onSuccess: (savedPost, newPost) =>  {
-  //     showPutToast();
-  //     // method 1 to update
-  //     queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
-  //     // method 2 to update with direct update of cache
-  //     // queryClient.setQueryData<MyPost[]>([CACHE_KEY_POSTS], posts => [savedPost, ...(posts || [])])
-
-  //     navigate("/admin/posts");
-  //   },
-  //   onError: () =>  {
-  //     showPutErrorToast();
-  //   }
-  // });
-
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting, isValid },
-    // } = useForm();
-  } = useForm<FormData>();
-
-  const onSubmit = (data: FieldValues) => {
-    // console.log(data);
-    updatePost.mutate({
-      // _id: id,
-      title: data.title,
-      body: data.body,
-    });
-  };
-
-  //DELETE
-  const deletePost = useDeletePost(
-    () => {
-      // reset();
-    },
-    () => {
-      toast({
-        title: "Delete a post",
-        description: "Successfully deleted the post.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "success",
-        position: "top",
-        icon: <DeleteIcon />,
-      });
-    },
-    () => {
-      toast({
-        title: "Delete a post",
-        description: "An error occured while deleting the post.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "error",
-        position: "top",
-        icon: <DeleteIcon />,
-      });
-    }
-  );
-
-  const triggerDeletePost = (postId: string) => {
-    // console.log(postId);
-    if (postId) deletePost.mutate(postId);
-  };
-  // const deletePost = useMutation({
-  //   mutationFn: (postId: string) =>
-  //     // console.log("deleting..."); return;
-  //     axios
-  //       .delete(`http://localhost:5000/api/posts/${postId}`)
-  //       .then(res => res.data),
-  //   onSuccess: () => {
-  //     showDeleteToast();
-  //     queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
-  //   },
-  //   onError: () =>  {
-  //     showDeleteErrorToast();
-  //   }
-  // });
-
-  // const showDeleteToast = () => {
-  //   toast({
-  //     title: "Delete a post",
-  //     description: "Successfully deleted the post.",
-  //     duration: 5000, // 5s
-  //     isClosable: true,
-  //     status: "success",
-  //     position: "top",
-  //     icon: <DeleteIcon />,
-  //   });
-  // };
-
-  // const showDeleteErrorToast = () => {
-  //   toast({
-  //     title: "Delete a post",
-  //     description: "An error occured while deleting the post.",
-  //     duration: 5000, // 5s
-  //     isClosable: true,
-  //     status: "error",
-  //     position: "top",
-  //     icon: <DeleteIcon />,
-  //   });
-  // };
-
+  if (error || !post) throw error;
+  
   return (
     <>
-      {error && <Text> We encountered a problem.</Text>}
-      {updatePost.error && (
-        <Alert mb="15px" mt="10px" status="error">
-          <AlertIcon />
-          <AlertTitle>{updatePost.error.name}</AlertTitle>
-          <AlertDescription>{updatePost.error.message}</AlertDescription>
-        </Alert>
-      )}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl
-          isRequired
-          isInvalid={errors.title ? true : false}
-          mb="40px"
-        >
-          <FormLabel htmlFor="title">Post title:</FormLabel>
-          <Input
-            id="title"
-            type="text"
-            // name="title"
-            defaultValue={post?.title || ""}
-            {...register("title", {
-              required: "Title is required",
-              minLength: {
-                value: 20,
-                message: "Title must be at least 20 characters.",
-              },
-            })}
-          />
-          <FormErrorMessage>
-            {errors.title && errors.title.message}
-          </FormErrorMessage>
-          <FormHelperText>Enter the title of the post</FormHelperText>
-        </FormControl>
+      <Grid
+        gap={2}
+        templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
+        templateColumns={{ base: "1fr", lg: "2f 1fr" }}
+      >
+        <GridItem area="main" p={4}>
+          <BlogPostDetails post={post as Post} />
+        </GridItem>
 
-        <FormControl
-          isRequired
-          isInvalid={errors.body ? true : false}
-          mb="40px"
-        >
-          <FormLabel htmlFor="body">Post content:</FormLabel>
-          <Textarea
-            id="body"
-            // name="title"
-            minH={300}
-            defaultValue={post?.body || ""}
-            // defaultValue={post?.body || ''}
-            // placeholder="Write something..."
-            {...register("body", {
-              required: "Body is required",
-              minLength: {
-                value: 50,
-                message: "Body must be at least 50 characters.",
-              },
-            })}
-          />
-          <FormErrorMessage>
-            {errors.body && errors.body.message}
-          </FormErrorMessage>
-          <FormHelperText>Write the content of the post</FormHelperText>
-        </FormControl>
-        <Flex gap="5">
-          <Spacer />
-          <Button
-            disabled={!isValid}
-            type="submit"
-            // onClick={() => triggerUpdatePost(id as string)}
-            colorScheme="green"
-            isLoading={isSubmitting}
-          >
-            Update post
-          </Button>
-
-          <Button
-            disabled={!isValid}
-            // type="submit"
-            onClick={() => triggerDeletePost(id as string)}
-            colorScheme="red"
-            isLoading={isSubmitting}
-          >
-            Delete post
-          </Button>
-        </Flex>
-      </form>
+        <GridItem area="side">
+          <Flex direction={{ base: "row", lg: "column"}} gap="4">
+            <EditPostButton postId={post._id as string}/>
+            <DeletePostButton postId={post._id as string}/>
+            </Flex>
+        </GridItem>
+      </Grid>
     </>
   );
 };

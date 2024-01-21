@@ -26,17 +26,20 @@ const usePostQueryStore = create<PostQueryStore>(set => ({
 export default usePostQueryStore;
 
 interface SearchPostQuery {
+  authorId?: string;
   searchText?: string;
   page?: number;
 }
 interface SearchPostQueryStore {
   searchPostQuery: SearchPostQuery;
   setSearchText: (searchText: string) => void;
+  setAuthorId: (authorId: string) => void;
   setPage: (page: number) => void;
 }
 
 export const useSearchPostQueryStore = create<SearchPostQueryStore>(set => ({
   searchPostQuery: {},
+  setAuthorId: (authorId) => set(() => ({ searchPostQuery: { authorId}})),
   setSearchText: (searchText) => set(() => ({ searchPostQuery: { searchText}})),
   setPage: (page) => set((store) => ({ searchPostQuery: { ...store.searchPostQuery, page }})),
 }))

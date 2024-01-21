@@ -25,8 +25,10 @@ const PostPage = () => {
     <>
       <Grid
         gap={2}
-        templateAreas={{ base: `"side1" "main" "side2"`, lg: `"side1 main side2"` }}
-        templateColumns={{ base: "1fr", lg: "1fr 2fr 1fr" }}
+        templateAreas={{ base: `"main"`, lg: `"side1 main side2"` }}
+        templateColumns={{ base: "1fr", lg: "1fr 900px 1fr" }}
+        // templateAreas={{ base: `"side1" "main" "side2"`, lg: `"side1 main side2"` }}
+        // templateColumns={{ base: "1fr", lg: "1fr 2fr 1fr" }}
       >
         <GridItem area="main" py={4} px={8}>
           <BlogPostDetails post={post} />

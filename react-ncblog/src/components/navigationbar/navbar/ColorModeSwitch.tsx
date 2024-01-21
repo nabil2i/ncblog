@@ -1,11 +1,11 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { HStack, IconButton, useColorMode } from "@chakra-ui/react";
+import { Flex, HStack, IconButton, useColorMode } from "@chakra-ui/react";
 
 const ColorModeSwitch = () => {
   const { toggleColorMode, colorMode } = useColorMode();
 
   return (
-    <HStack>
+    <Flex>
       <IconButton
         aria-label="Dark Mode"
         icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
@@ -16,7 +16,7 @@ const ColorModeSwitch = () => {
       {/* <Switch colorScheme='green' isChecked={colorMode === 'dark'} onChange={toggleColorMode}/>
       <Text whiteSpace="nowrap" display={{ base: 'none', md:'flex'}}> Dark Mode</Text>
       */}
-    </HStack>
+    </Flex>
   );
 };
 

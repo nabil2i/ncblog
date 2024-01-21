@@ -8,9 +8,9 @@ const connectDb = async () => {
 
   try {
     mongoose.set('strictQuery', false);
-    const conn = await mongoose.connect(
+    const conn = mongoose.connect(
       dbUrl,
-      { useNewUrlParser: true, useUnifiedTopology: true }
+      // { useNewUrlParser: true, useUnifiedTopology: true }
     );
     // console.log(`Connected to ${conn.connection.host}`);
 

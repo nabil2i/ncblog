@@ -8,14 +8,14 @@ import useAuth from "../components/navigationbar/useAuth";
 const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { userData } = useAuth();
+  const { state } = useAuth();
   const redirect = new URLSearchParams(location.search).get("redirect");
 
   useEffect(() => {
-    if (userData.isAuthenticated) {
+    if (state.isAuthenticated) {
       navigate(redirect || "/")
     }
-  }, [navigate, redirect, userData.isAuthenticated])
+  }, [navigate, redirect, state.isAuthenticated])
   return (
   <>
     <Box p={10}>

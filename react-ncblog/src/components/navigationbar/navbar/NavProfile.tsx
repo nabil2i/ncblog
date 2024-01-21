@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import useAuth from "../useAuth";
+import { useNavigate } from "react-router-dom";
 // import useAuth from "./navigationbar/useAuth";
 
 interface Props {
@@ -41,13 +42,15 @@ const NavLink = (props: Props) => {
 };
 
 const Profile = () => {
-  // const [userData, dispatch] = useReducer(authReducer, {});
-  // const { userData, dispatch} = useContext(AuthContext);
-  // const { userData, dispatch } = useAuth();
-  const { userData, dispatch } = useAuth();
-  // console.log(userData)
+  // const [state, dispatch] = useReducer(authReducer, {});
+  // const { state, dispatch} = useContext(AuthContext);
+  // const { state, dispatch } = useAuth();
+  const { state, dispatch } = useAuth();
+  // console.log(state)
+  
+  const navigate = useNavigate();
 
-  if (userData.isAuthenticated)
+  if (state.isAuthenticated)
     return (
       <>
         <Box>
@@ -81,12 +84,13 @@ const Profile = () => {
               </Center>
               <br />
               <Center>
-                <p>{userData.username}</p>
+                <p>{state.user?.username}</p>
               </Center>
               <br />
               <MenuDivider />
-              <MenuItem>Your Servers</MenuItem>
-              <MenuItem>Account Settings</MenuItem>
+              <MenuItem onClick={() => navigate("/blog/write")}>Create a post</MenuItem>
+              <MenuItem onClick={() => navigate("/myposts")}>My Posts</MenuItem>
+              <MenuItem onClick={() => navigate("/account")}>Account</MenuItem>
               <MenuItem onClick={() => dispatch({ type: "LOGOUT" })}>
                 Logout
               </MenuItem>

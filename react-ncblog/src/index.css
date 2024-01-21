@@ -17,3 +17,20 @@ form {
   background-color: teal.500;
   color: white;
 }
+
+.custom-active-nav-item {
+  background-color: gray.100;
+  color: teal;
+  /* padding: 5px; */
+}
+
+.arrow {
+  position: absolute;
+  margin-top: calc(100px - 7.5px);
+  margin-left: -10px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid teal;
+}

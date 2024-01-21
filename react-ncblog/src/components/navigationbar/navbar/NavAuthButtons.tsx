@@ -6,11 +6,11 @@ import useAuth from "../useAuth";
 const VARIANT_COLOR = "teal";
 
 const NavAuthButtons = () => {
-  // const [userData, dispatch] = useReducer(authReducer, {});
-  const { userData } = useAuth();
-  console.log(userData)
+  // const [state, dispatch] = useReducer(authReducer, {});
+  const { state } = useAuth();
+  // console.log(state)
 
-  if (!userData.isAuthenticated)
+  if (!state.isAuthenticated)
     return (
       <>
         <HStack>

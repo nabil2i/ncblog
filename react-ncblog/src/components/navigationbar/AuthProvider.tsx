@@ -7,28 +7,61 @@ interface LoginAction {
   type: "LOGIN";
   userData: User;
 }
+interface UpdateAccountAction {
+  type: "UPDATE_USER_ACCOUNT";
+  updatedUserData: Partial<User>;
+}
 
 interface LogoutAction {
   type: "LOGOUT";
 }
 
-export type AuthAction = LoginAction | LogoutAction;
+export type AuthAction = LoginAction | LogoutAction | UpdateAccountAction;
 
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
 }
 
-const authReducer = (state: User, action: AuthAction): User => {
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case "LOGIN": {
-      localStorage.setItem("userData", JSON.stringify(action.userData));
-      return action.userData;
+      const newState = {
+        user: action.userData,
+        isAuthenticated: true,
+      };
+      localStorage.setItem("userData", JSON.stringify(newState));
+      return newState;
     }
-    case "LOGOUT":
-      // localStorage.setItem("userData", JSON.stringify({}));
+    // case "LOGIN": {
+    //   localStorage.setItem("userData", JSON.stringify(action.userData));
+    //   return action.userData;
+    // }
+    // case "UPDATE_USER_ACCOUNT": {
+    //   localStorage.setItem("userData", JSON.stringify(action.userData));
+    //   return { ...state, };
+    // }
+    case "UPDATE_USER_ACCOUNT": {
+      const updatedUser = { ...state.user, ...action.updatedUserData };
+      const newState = {
+        user: updatedUser,
+        isAuthenticated: true,
+      };
+      localStorage.setItem("userData", JSON.stringify(newState));
+      return newState;
+    }
+    case "LOGOUT": {
+      const newState = {
+        user: null,
+        isAuthenticated: false,
+      };
       localStorage.removeItem("userData");
-      return {};
+      return newState;
+    }
+    // case "LOGOUT":
+    //   // localStorage.setItem("userData", JSON.stringify({}));
+    //   localStorage.removeItem("userData");
+    //   return {};
     default:
       return state;
   }
@@ -58,30 +91,35 @@ interface Props {
 }
 
 const AuthProvider = ({ children }: Props) => {
-  const userStoreString = localStorage.getItem("userData");
+  const userStateString = localStorage.getItem("userData");
 
-  const initialState: User = {
-    _id: "",
-    username: "",
-    email: "",
-    token: "",
+  // const initialState: User = {
+  //   _id: "",
+  //   username: "",
+  //   email: "",
+  //   token: "",
+  //   isAuthenticated: false,
+  //   img: "",
+  // };
+  const initialState: AuthState = {
+    user: null,
     isAuthenticated: false,
-    img: "",
   };
 
-  let userStore;
+  let userState;
 
   try {
-    userStore = userStoreString ? JSON.parse(userStoreString) : initialState;
+    userState = userStateString ? JSON.parse(userStateString) : initialState;
   } catch (error) {
     console.error("Error parsing user data from localStorage", error);
-    userStore = null;
+    userState = null;
   }
 
-  const [userData, dispatch] = useReducer(authReducer, userStore);
+  const [state, dispatch] = useReducer(authReducer, userState);
+  // const [state, dispatch] = useReducer(authReducer, userState);
 
   return (
-    <AuthContext.Provider value={{ userData, dispatch }}>
+    <AuthContext.Provider value={{ state, dispatch }}>
       {children}
     </AuthContext.Provider>
   );

@@ -71,7 +71,7 @@ const createNewUser = asyncHandler(async (req, res) => {
   if (user) {
     const token = user.generateAuthToken();
     
-    const userData = _.pick(user, ['_id', 'username', 'email', 'token'])
+    const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email', 'token'])
     userData.token = token;
     userData.isAuthenticated = true;
     
@@ -233,6 +233,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   });
 });
 
+
 // @desc Get current User
 // @route GET /users/me
 // @access Private
@@ -246,11 +247,13 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 // @route PUT /users/me
 // @access Private
 const updateCurrentUser = asyncHandler(async (req, res) => {
-  const { username, email, isActive, password } = req.body
-  if (!username || typeof isActive !== 'boolean')
+  const { username, email, isActive, password, firstname, lastname } = req.body
+  // if (!username || typeof isActive !== 'boolean')
+  if (!username && !email && !(firstname && lastname) && !password)
     return res.status(400).json({
       success: false,
-      error: { code: 400, message: "All fields must be provided"}
+      error: { code: 400, message: "You must provide data to update"}
+      // error: { code: 400, message: "All fields must be provided"}
     });
   
   const userId = req.user._id;
@@ -258,19 +261,36 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
 
   if (!user)
     return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "User not found"}
-    });
+  success: false,
+  error: { code: 400, message: "User not found"}
+  });
 
-  const duplicate = await User.findOne({ username }).lean().exec();
-  if (duplicate && duplicate._id.toString() !== userId) {
-    return res.status(409).json({
-      success: false, 
-      error: {
-        code: 409,
-        message: 'Username already exists',
-      }
+  if (!user.isActive)
+    return res.status(400).json({
+      success: false,
+      error: { code: 400, message: "This user cannot make this request"}
     });
+  
+  if (username) {
+    const duplicate = await User.findOne({ username }).lean().exec();
+      if (duplicate && duplicate._id.toString() !== userId) {
+        return res.status(409).json({
+          success: false, 
+          error: {
+            code: 409,
+            message: 'Username already exists',
+          }
+        });
+    }
+    user.username = username
+  }
+
+  if (firstname) {
+    user.firstname = firstname
+  }
+
+  if (firstname) {
+    user.lastname = lastname
   }
 
   if (email) {
@@ -287,19 +307,30 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
     user.email = email;
   }
 
-  user.username = username
-  user.isActive = isActive
+  
+  // user.isActive = isActive
 
   if (password) {
     const salt = await bcrypt.genSalt(10);
     const newPassword = await bcrypt.hash(password, salt);
     user.password = newPassword;
   }
+
+  // const token = user.generateAuthToken();
+  const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email',
+    // 'token'
+  ]);
+  // userData.token = token;
+  // userData.isAuthenticated = true;
   
   const updatedUser = await user.save()
-  res.status(200).json({
-    success: true,
-    message: `${updatedUser.username} updated`
+  res
+    .status(200)
+    // .cookie('token', token, { httpOnly: true})
+    .json({
+      success: true,
+      message: `${updatedUser.username} updated`,
+      data: userData
   });
 
 
@@ -363,6 +394,32 @@ const deleteCurrentUser = asyncHandler(async (req, res) => {
 });
 
 
+
+// @desc Get current User Posts
+// @route GET /users/me/posts
+// @access Private
+const getCurrentUserPosts = asyncHandler(async (req, res) => {
+  const userId = req.user._id
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      error: { code: 400, message: "User ID required"}
+    });
+  }
+
+  const userPosts = await Post
+    .find({ user: userId })
+    .populate({
+      path: 'user',
+      select: 'firstname lastname'
+    })
+    .lean().exec();
+
+  res.status(200).json({ success: true, data: userPosts });
+});
+
+
+
 function validateUser(req) {
   const schema = Joi.object({
     username: Joi.string().min(5).max(255).required(),
@@ -382,5 +439,6 @@ module.exports = {
   deleteUser,
   getCurrentUser,
   updateCurrentUser,
-  deleteCurrentUser
+  deleteCurrentUser,
+  getCurrentUserPosts
 }

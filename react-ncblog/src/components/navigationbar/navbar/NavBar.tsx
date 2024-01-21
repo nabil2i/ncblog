@@ -31,7 +31,7 @@ const NavBar = () => {
           "rgba(255, 255, 255, 1)",
           "rgba(0, 0, 0, 1)"
         )}
-        w="100%"
+        w="full"
         zIndex="999"
         // backdropFilter="saturate(180%) blur(5px)"
         // maxWidth={"1000px"}
@@ -51,13 +51,16 @@ const NavBar = () => {
           // borderColor={useColorModeValue('gray.200', 'gray.900')}
           align={"center"}
           justify="space-between"
+          w="full"
+          h="full"
         >
 
-          {/* START MobileNav */}
+          {/* START Logo */} 
           <Flex
             align="center"
             // paddingRight={4}
           >
+            {/* START MobileNav */}
             <Box
             // py={{ base: 2 }}
             // paddingLeft={{ base: 4 }}
@@ -83,19 +86,20 @@ const NavBar = () => {
                 <MobileNavDrawer onCloseMain={onClose} />
               </Show>
             </Drawer>
+            {/* END MobileNav */}
 
             <Box>
               {" "}
               <NavLogo boxSize="30px" />{" "}
             </Box>
           </Flex>
-          {/* END MobileNav */}
+          {/* END Logo */}
 
           {/* START Desktop menu */}
           <Flex
             display={{ base: "none", lg: "flex" }}
-            align={"center"}
-            height="full"
+            // align={"center"}
+            h="full"
           >
             <DesktopNav />
           </Flex>

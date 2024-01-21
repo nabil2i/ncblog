@@ -30,7 +30,7 @@ interface Props {
 
 const MobileNavDrawer = ({ onCloseMain }: Props) => {
   // const btnRef = React.useRef()
-  const { userData } = useAuth();
+  const { state } = useAuth();
 
   return (
     <>
@@ -60,7 +60,7 @@ const MobileNavDrawer = ({ onCloseMain }: Props) => {
             />
           ))}
         </DrawerBody>
-        {!userData.isAuthenticated && (
+        {!state.isAuthenticated && (
           <DrawerFooter borderTopWidth="1px">
             <NavAuthButtons />
           </DrawerFooter>

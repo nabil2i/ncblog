@@ -12,4 +12,9 @@ export default defineConfig({
   define: {
     "process.env.API_BASE_URL": `"${process.env.API_BASE_URL}"`,
   },
+  resolve: {
+    alias: {
+      process: "process/browser"
+    }
+  },
 })

@@ -29,13 +29,13 @@ import { LoginModal } from "../common/LoginModal";
 
 const BlogPostDetails = ({ post }: { post: Post }) => {
   // console.log(post);
-  const { userData } = useAuth();
+  const { state } = useAuth();
   const navigate = useNavigate();
   const [addComment, setAddComment] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleComment = () => {
-    if (userData.isAuthenticated) {
+    if (state.isAuthenticated) {
       setAddComment(true);
     } else {
       onOpen();

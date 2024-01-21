@@ -9,4 +9,5 @@ export default interface User {
   token?: string;
   isAuthenticated?: boolean
   img?: string
+  // roles?: Array<string>;
 }

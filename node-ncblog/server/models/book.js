@@ -49,6 +49,7 @@ function validateBook(book) {
     title: Joi.string().min(5).max(255).required(),
     about: Joi.string().min(5).required(),
     authorId: Joi.string().hex().length(24).required(),
+    genreId: Joi.string().hex().length(24),
     link: Joi.string().min(10)
   });
 

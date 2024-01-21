@@ -7,12 +7,12 @@ interface Props {
 }
 
 const PrivateRoute = ({ children }: Props) => {
-  const { userData } = useAuth();
-  // console.log(userData);
-  // const finalComponent = userData.token ? children : <LoginPage/>
+  const { state } = useAuth();
+  // console.log(state);
+  // const finalComponent = state.token ? children : <LoginPage/>
 
   // return finalComponent;
-  if (!userData?.isAuthenticated) {
+  if (!state?.isAuthenticated) {
     return (
       <Navigate
         to="/login"

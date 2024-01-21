@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import LoginData from "../entities/LoginData";
 import User from "../entities/User";
 import authService from "../services/authService";
-import { CACHE_KEY_USERS } from "./constants";
+import { CACHE_KEY_USER } from "./constants";
 
 const useLogin = (
   onLogin: (userData: User) => void,
@@ -18,7 +18,7 @@ const useLogin = (
     onSuccess: (userData: FetchResponse<User>) => {
      onLogin(userData.data);
       showSuccessToast();
-      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USERS] })
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USER] })
 
     },
     onError: (error: AxiosError, newPost, context) => {

@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { FetchError } from "../services/api-client";
 import postService from "../services/postService";
 import { CACHE_KEY_POSTS } from "./constants";
 
 const useDeletePost = (
-  onDeletePost: () => void,
-  showToast: () => void,
-  showErrorToast: () => void,
+  // onDeletePost: () => void,
+  onDeleteSuccess: () => void,
+  onDeleteError: (errorMessage: string) => void,
   ) => {
   const queryClient = useQueryClient();
   
@@ -13,12 +15,16 @@ const useDeletePost = (
     mutationFn: postService.delete,
 
     onSuccess: (savedPost, newPost) => {
-     onDeletePost();
-      showToast();
+    //  onDeletePost();
+      onDeleteSuccess();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
     },
-    onError: (error, newPost, context) => {
-      showErrorToast();
+    onError: (error: AxiosError, newUser, context) => {
+      const responseData = error.response?.data as FetchError;
+      const errorMessage = responseData.error.message
+
+      // Handle the error and show an error toast
+      onDeleteError(errorMessage);
     },
   });
 

@@ -36,8 +36,8 @@ const NavBar = () => {
         // backdropFilter="saturate(180%) blur(5px)"
         // maxWidth={"1000px"}
         // boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
-        borderBottom={"1px"}
-        borderColor={"gray"}
+        borderBottomWidth={1}
+        borderColor="gray.100"
       >
         <Flex
           px={{ base: 4 }}

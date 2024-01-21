@@ -27,7 +27,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import "easymde/dist/easymde.min.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineMoreVert } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -35,10 +35,10 @@ import SimpleMDE from "react-simplemde-editor";
 import Post from "../../../entities/Post";
 import useCreatePost from "../../../hooks/useCreatePost";
 import useUpdatePost from "../../../hooks/useUpdatePost";
+import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
 import useAuth from "../../navigationbar/useAuth";
 import UpdatePostAction from "./UpdatePostAction";
 import UpdatePostButton from "./UpdatePostButton";
-import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -261,7 +261,7 @@ const PostForm = ({ post }: Props) => {
                 {/* <FormLabel variant="" htmlFor="title">
                   Post title:
                 </FormLabel> */}
-                
+
                 <AutoExpandingTextarea
                   id={"title"}
                   defaultValue={post?.title as string}

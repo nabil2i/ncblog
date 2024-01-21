@@ -3,9 +3,6 @@ module.exports = function (req, res, next) {
   const roles = req.user.roles
   const lowercaseRoles = roles.map(role => role.toLowerCase());
 
-  // console.log(roles)
-  // console.log(lowercaseRoles)
-
   const userRole = "editor"
 
   if (!lowercaseRoles.includes(userRole.toLowerCase()))

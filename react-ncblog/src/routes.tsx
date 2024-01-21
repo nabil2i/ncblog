@@ -12,7 +12,7 @@ import LoginPage from "./pages/LoginPage";
 import MyPostsPage from "./pages/MyPostsPage";
 import PostPage from "./pages/PostPage";
 import SearchPage from "./pages/SearchPage";
-import SignUpPage from "./pages/SignUpPage";
+import SignUpPage from "./assets/SignUpPage";
 
 const router = createBrowserRouter([
   {

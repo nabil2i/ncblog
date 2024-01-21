@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import book1 from "../../assets/books/thepurposeoflife.jpg";
+import book1 from "../../assets/thepurposeoflife.jpg";
 import Book from "../../entities/Book";
 // import BlogPostAuthor from "./BlogPostAuthor";
 

@@ -2,20 +2,19 @@ import {
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  Button, Box,
+  Box,
+  Button,
   Flex,
   Spinner,
   useToast,
 } from "@chakra-ui/react";
+import ms from "ms";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDeleteUserAccount from "../../hooks/useDeleteUserAccount";
 import useAuth from "../navigationbar/useAuth";
-import ms from "ms";
-import User from "../../entities/User";
 
 const DeleteAccount = () => {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ const DeleteAccount = () => {
 
   const deleteAccount = useDeleteUserAccount(
     () => {
-      dispatch({type: "LOGOUT"});
+      dispatch({ type: "LOGOUT" });
       setIsOpen(false);
       navigate("/signup");
     },
@@ -57,13 +56,12 @@ const DeleteAccount = () => {
         status: "error",
         position: "top",
       });
-    },
+    }
   );
 
-
   const triggerDeleteAccount = () => {
-      setIsDeleting(true);
-      deleteAccount.mutate("");
+    setIsDeleting(true);
+    deleteAccount.mutate("");
   };
 
   return (
@@ -90,8 +88,8 @@ const DeleteAccount = () => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure you want to delete your account? This action cannot be
-              undone.
+              Are you sure you want to delete your account? This action cannot
+              be undone.
             </AlertDialogBody>
 
             <Flex m="4" gap="3" align="center" justify="flex-start">

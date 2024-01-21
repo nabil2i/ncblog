@@ -8,7 +8,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import book1 from "../../assets/books/thepurposeoflife.jpg";
+import book1 from "../../assets/thepurposeoflife.jpg";
 import Book from "../../entities/Book";
 import useAuth from "../navigationbar/useAuth";
 

@@ -1,9 +1,8 @@
 const express = require('express');
-const {Genre, validateGenre } = require('../models/genre');
+const { Genre } = require('../models/genre');
 const router = express.Router();
 const paginate = require('../middleware/paginate');
 const genresController = require('../controllers/genresController.js');
-const editor = require('../middleware/editor');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 

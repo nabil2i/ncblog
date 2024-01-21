@@ -1,9 +1,8 @@
 const express = require('express');
-const {Category, validateCategory } = require('../models/category');
+const { Category } = require('../models/category');
 const router = express.Router();
 const paginate = require('../middleware/paginate');
 const categoriesController = require('../controllers/categoriesController');
-const editor = require('../middleware/editor');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 

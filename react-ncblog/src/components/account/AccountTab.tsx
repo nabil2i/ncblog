@@ -32,7 +32,6 @@ const AccountTab = () => {
         <Flex align="center" justify="center" gap={10}>
           <Flex direction="column" flex="1" gap="3">
             <Card style={{ padding: 20, border: "1px solid #ccc" }}>
-
               <Flex align="center" justify="space-between">
                 <Flex direction="column">
                   <Text className="text-gray-500">

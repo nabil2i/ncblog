@@ -1,6 +1,5 @@
 const { logEvents } = require('./logger')
 
-
 const errorHandler = (err, req, res, next) => {
   logEvents(`${err.name}: ${err.message}\t${req.method}\t
   ${req.url}\t${req.headers.origin}`, 'errLog.log')
@@ -10,7 +9,10 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(status)
 
-  res.json({success: false, error: { code: status, message: err.message }})
+  res.json({
+    success: false,
+    error: { code: status, message: err.message }
+  })
 }
 
 module.exports = errorHandler

@@ -11,8 +11,8 @@ const { connectDb, populateDb } = require('./server/startup/db');
 
 const port = process.env.PORT || 5000;
 
-console.log("Environment: ", process.env.NODE_ENV)
-console.log("Front end domain: ", process.env.NODE_APP_FRONTEND_DOMAIN)
+process.env.NODE_ENV && console.log("Environment: ", process.env.NODE_ENV)
+// console.log("Front end domain: ", process.env.NODE_APP_FRONTEND_DOMAIN)
 
 
 connectDb()

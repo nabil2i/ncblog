@@ -16,7 +16,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../useAuth";
 import { NavLogoDrawer } from "./NavLogo";
 import NAV_ITEMS, { NavItem } from "./navitems";
 
@@ -28,7 +27,7 @@ interface Props {
 
 const MobileNavDrawer = ({ onCloseMain }: Props) => {
   // const btnRef = React.useRef()
-  const { state } = useAuth();
+  // const { state } = useAuth();
 
   return (
     <>

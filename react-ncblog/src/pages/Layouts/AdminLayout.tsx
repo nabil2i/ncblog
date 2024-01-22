@@ -79,7 +79,8 @@ const AdminLayout = () => {
           </Flex>
 
           <Box
-
+            ml={{ base: "55px"}}
+            mt="70px"
           >
             <Outlet />
           </Box>

@@ -24,7 +24,7 @@ const NavBar = () => {
   return (
     <>
       <Box
-        as="nav"
+        as="header"
         position="fixed"
         top="0"
         backgroundColor={useColorModeValue(
@@ -40,6 +40,7 @@ const NavBar = () => {
         borderColor="gray.100"
       >
         <Flex
+          as="nav"
           px={{ base: 4 }}
           minH={"60px"}
           // bg={useColorModeValue('white', 'gray.800')}

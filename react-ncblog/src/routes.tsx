@@ -13,6 +13,14 @@ import MyPostsPage from "./pages/MyPostsPage";
 import PostPage from "./pages/PostPage";
 import SearchPage from "./pages/SearchPage";
 import SignUpPage from "./assets/SignUpPage";
+import AdminLayout from "./pages/Layouts/AdminLayout";
+import AdminAddPostPage from "./pages/admin/AdminAddPostPage";
+import Dashboard from "./pages/admin/AdminDashboard";
+import AdminErrorPage from "./pages/admin/AdminErrorPage";
+import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
+import AdminPostPage from "./pages/admin/AdminPostPage";
+import PostsPage from "./pages/admin/AdminPostsPage";
+import Profile from "./pages/admin/Profile";
 
 const router = createBrowserRouter([
   {
@@ -61,30 +69,30 @@ const router = createBrowserRouter([
     ],
   },
 
-  // {
-  //   path: "admin/",
-  //   element: (
-  //     <AdminLayout />
+  {
+    path: "admin/",
+    element: (
+      <AdminLayout />
 
-  //     // <AdminPrivateRoute>
-  //     //   <AdminLayout />
-  //     // </AdminPrivateRoute>
-  //   ),
-  //   errorElement: <AdminErrorPage />,
-  //   children: [
-  //     { index: true, element: <Dashboard /> },
-  //     { path: "dashboard", element: <Dashboard/>},
-  //     { path: "profile", element: <Profile /> },
-  //     { path: "posts",
-  //       children: [
-  //         { index: true, element: <PostsPage /> },
-  //         { path: ":id", element: <AdminPostPage /> },
-  //         { path: "edit/:id", element: <AdminPostEditPage /> },
-  //         { path: "new", element: <AdminAddPostPage /> },
-  //       ]
-  //     },
-  //   ],
-  // },
+      // <AdminPrivateRoute>
+      //   <AdminLayout />
+      // </AdminPrivateRoute>
+    ),
+    errorElement: <AdminErrorPage />,
+    children: [
+      { index: true, element: <Dashboard /> },
+      { path: "dashboard", element: <Dashboard/>},
+      { path: "profile", element: <Profile /> },
+      { path: "posts",
+        children: [
+          { index: true, element: <PostsPage /> },
+          { path: ":id", element: <AdminPostPage /> },
+          { path: "edit/:id", element: <AdminPostEditPage /> },
+          { path: "new", element: <AdminAddPostPage /> },
+        ]
+      },
+    ],
+  },
 ]);
 
 export default router;

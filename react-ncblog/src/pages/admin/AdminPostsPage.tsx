@@ -20,7 +20,7 @@ const PostsPage = () => {
         <Flex justify="end" p={0}>
           <AddPostButton />
         </Flex>
-        <Box>
+        <Box alignItems="center" justifyContent="center">
           <PostsTable />
         </Box>
       </Flex>

@@ -5,7 +5,6 @@ import {
   Collapse,
   DrawerBody,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   Flex,
@@ -18,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../useAuth";
-import NavAuthButtons from "./NavAuthButtons";
 import { NavLogoDrawer } from "./NavLogo";
 import NAV_ITEMS, { NavItem } from "./navitems";
 
@@ -60,11 +58,11 @@ const MobileNavDrawer = ({ onCloseMain }: Props) => {
             />
           ))}
         </DrawerBody>
-        {!state.isAuthenticated && (
+        {/* {!state.isAuthenticated && (
           <DrawerFooter borderTopWidth="1px">
             <NavAuthButtons />
           </DrawerFooter>
-        )}
+        )} */}
       </DrawerContent>
     </>
   );
@@ -136,7 +134,7 @@ const MobileNavItem = ({
           {children &&
             children.map((child) => (
               <Box
-                key={child.label} 
+                key={child.label}
                 ml={1}
                 py={2}
                 px={4}
@@ -147,9 +145,7 @@ const MobileNavItem = ({
                   color: "white",
                 }}
               >
-                <NavLink to={child.href ?? "#"}>
-                  {child.label}
-                </NavLink>
+                <NavLink to={child.href ?? "#"}>{child.label}</NavLink>
               </Box>
             ))}
         </Stack>

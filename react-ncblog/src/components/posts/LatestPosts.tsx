@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import LatestPostsGrid from "./LatestPostsGrid";
 
 const LatestPosts = () => {
@@ -12,7 +12,7 @@ const LatestPosts = () => {
 
   return (
     <>
-      <Box as="section"textAlign="center">
+      <Box as="section" textAlign="center">
         <LatestPostsGrid />
       </Box>
       {/* {error && <Text> We encountered a problem.</Text>} */}

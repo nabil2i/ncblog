@@ -12,13 +12,15 @@ const { connectDb, populateDb } = require('./server/startup/db');
 const port = process.env.PORT || 5000;
 
 console.log("Environment: ", process.env.NODE_ENV)
+console.log("Front end domain: ", process.env.NODE_APP_FRONTEND_DOMAIN)
+
 
 connectDb()
 
 mongoose.connection.once('open', () => {
   console.log(`Connected to ${mongoose.connection.host}`);
   try {
-    console.log("Populating db")
+    // console.log("Populating db")
     // populateDb();
   } catch(error) {
     console.log(error)

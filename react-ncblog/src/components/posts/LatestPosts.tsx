@@ -13,12 +13,8 @@ const LatestPosts = () => {
   return (
     <>
       <Box as="section"textAlign="center">
-        <Heading as="h2" size="2xl">
-          {" "}
-          Latest Posts
-        </Heading>
+        <LatestPostsGrid />
       </Box>
-      <LatestPostsGrid />
       {/* {error && <Text> We encountered a problem.</Text>} */}
 
       {/* { searchText ? `Searched for: ${searchText}`: "Latest Posts" } */}

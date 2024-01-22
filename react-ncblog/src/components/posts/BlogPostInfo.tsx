@@ -1,7 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import Post from "../../entities/Post";
 import PostAuthor from "./PostAuthor";
-import BlogPostDate from "./BlogPostDate";
 
 const BlogPostInfo = ({ post }: { post: Post }) => {
   return (

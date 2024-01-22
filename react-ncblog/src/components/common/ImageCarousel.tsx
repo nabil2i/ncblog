@@ -36,7 +36,7 @@ const ImageCarousel = ({ images }: Props) => {
 
   return (
     <>
-      <div className=" h-[780px] w-full m-auto py-8 relative group">
+      <div className="h-[420px] md:h-[780px] w-full m-auto py-8 relative group">
         <div
           style={{ backgroundImage: `url(${images[currentIndex].url})` }}
           className="w-full h-full rounded-0 bg-center bg-cover duration-500 bg-no-repeat"

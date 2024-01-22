@@ -11,7 +11,7 @@ const ErrorPage = () => {
     <AuthProvider>
       <Flex direction="column" minHeight="100vh">
         <NavBar />
-        <Box px="80px" marginTop={{ base: "150px", md: "70px"}} flex="1">
+        <Box minHeight="100vh" px="80px" marginTop={{ base: "150px", md: "70px"}} flex="1">
         <Heading>Oops</Heading>
         <Text>{ isRouteErrorResponse(error) ? 'This page does not exist.' : 'An unexpected error occurred.'}</Text>
       </Box>

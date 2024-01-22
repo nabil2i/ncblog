@@ -28,7 +28,7 @@ export interface ArrayData<S> {
 
 const URL = import.meta.env.DEV ? import.meta.env.VITE_API_BASE_URL : process.env.API_BASE_URL;
 const axiosInstance = axios.create({
-  baseURL: URL,
+  baseURL: URL + '/api',
   withCredentials: true,
 });
 

@@ -32,6 +32,8 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+console.log(URL + '/api');
+
 class APIClient<T, Q> {
   endpoint: string;
 

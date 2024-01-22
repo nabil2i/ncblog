@@ -58,7 +58,7 @@ const UserBlogPostCard = ({ post }: Props) => {
             />
             {/* </Center> */}
             <HStack mt="5" spacing="3">
-              {["Islam", "Religion"].map((item) => (
+              {post.tags?.slice(0, 4).map((item) => (
                 <Tag
                   key={item}
                   color={"green.500"}

@@ -29,7 +29,7 @@ const Footer = () => {
               <Box>
                 <NavLogoDrawer boxSize="60px" fontSize="30px" />
               </Box>
-              <Box fontSize={20}>
+              <Box>
                 Conveying the message of God Almighty to the pondering souls
               </Box>
             </Flex>

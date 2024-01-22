@@ -21,7 +21,7 @@ const useLogin = (
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USER] })
 
     },
-    onError: (error: AxiosError, newPost, context) => {
+    onError: (error: AxiosError) => {
 
       const responseData = error.response?.data as FetchError
       const errorMessage = responseData.error.message

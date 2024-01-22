@@ -1,36 +1,21 @@
-import {
-  Box,
-  Button,
-  Center,
-  Divider,
-  Flex,
-  Heading,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, useDisclosure } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Post from "../../entities/Post";
 import { CustomButton } from "../common/CustomButton";
+import { LoginModal } from "../common/LoginModal";
 import useAuth from "../navigationbar/useAuth";
 import AddComment from "./AddComment";
 import BlogPostComments from "./BlogPostComments";
 import BlogPostInfo from "./BlogPostInfo";
-import { LoginModal } from "../common/LoginModal";
 
 const BlogPostDetails = ({ post }: { post: Post }) => {
   // console.log(post);
   const { state } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [addComment, setAddComment] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -69,7 +54,10 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
       {addComment && <AddComment />}
       {post.comments && (
         <Box>
-          <BlogPostComments comments={post.comments} postId={post._id as string}/>
+          <BlogPostComments
+            comments={post.comments}
+            postId={post._id as string}
+          />
         </Box>
       )}
     </>

@@ -1,16 +1,16 @@
-import { Box, Grid, GridItem, Spinner, VStack, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Spinner, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import BlogPostDetails from "../../components/posts/BlogPostDetails";
-import usePost from "../../hooks/usePost";
-import Post from "../../entities/Post";
-import EditPostButton from "../../components/admin/posts/EditPostButton";
 import DeletePostButton from "../../components/admin/posts/DeletePostButton";
+import EditPostButton from "../../components/admin/posts/EditPostButton";
+import BlogPostDetails from "../../components/posts/BlogPostDetails";
+import Post from "../../entities/Post";
+import usePost from "../../hooks/usePost";
 
 const AdminPostPage = () => {
   const { id } = useParams();
   // console.log(id)
   const { data: payload, isLoading, error } = usePost(id as string);
-  const post = payload?.data
+  const post = payload?.data;
   // console.log(post);
 
   if (isLoading)
@@ -23,7 +23,7 @@ const AdminPostPage = () => {
     );
 
   if (error || !post) throw error;
-  
+
   return (
     <>
       <Grid
@@ -36,10 +36,10 @@ const AdminPostPage = () => {
         </GridItem>
 
         <GridItem area="side">
-          <Flex direction={{ base: "row", lg: "column"}} gap="4">
-            <EditPostButton postId={post._id as string}/>
-            <DeletePostButton postId={post._id as string}/>
-            </Flex>
+          <Flex direction={{ base: "row", lg: "column" }} gap="4">
+            <EditPostButton postId={post._id as string} />
+            <DeletePostButton postId={post._id as string} />
+          </Flex>
         </GridItem>
       </Grid>
     </>

@@ -1,6 +1,5 @@
-import { Avatar, Flex, IconButton, Text } from "@chakra-ui/react";
+import { Avatar, Flex, Text } from "@chakra-ui/react";
 import useAuth from "../../navigationbar/useAuth";
-import { MdOutlineMoreHoriz } from "react-icons/md";
 
 const AvatarBox = ({ navSize }: { navSize?: string }) => {
   const { state } = useAuth();

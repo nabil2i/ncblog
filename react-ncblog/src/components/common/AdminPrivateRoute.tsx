@@ -1,9 +1,15 @@
 /// <reference types="vite/client" />
 
 import { ReactNode, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import useAuth from "../navigationbar/useAuth";
+import { useNavigate } from "react-router-dom";
+// import useAuth from "../navigationbar/useAuth";
 import jwt from "jsonwebtoken";
+
+interface TokenPayload {
+  _id: string;
+  roles: string[];
+  isActive: boolean;
+}
 
 interface Props {
   children: ReactNode;
@@ -13,7 +19,7 @@ const JWT_SECRET = process.env.REACT_APP_API_JWT_SECRET || ""; // Make sure to s
 
 const AdminPrivateRoute = ({ children }: Props) => {
   const navigate = useNavigate();
-  const { state } = useAuth();
+  // const { state } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem("token"); // You can use cookies or any other storage method
@@ -23,7 +29,7 @@ const AdminPrivateRoute = ({ children }: Props) => {
     }
 
     try {
-      const decodedToken: any = jwt.verify(token, JWT_SECRET);
+      const decodedToken: TokenPayload = jwt.verify(token, JWT_SECRET) as TokenPayload;
       const userRoles = decodedToken.roles || [];
       const userRole = "admin";
 
@@ -41,19 +47,19 @@ const AdminPrivateRoute = ({ children }: Props) => {
 
 export default AdminPrivateRoute;
 
-  // const roles = state.?user?.roles
-  // console.log(roles)  
-  // const lowercaseRoles = roles?.map((role: string) => role.toLowerCase());
-  // const userRole = "admin"
+// const roles = state.?user?.roles
+// console.log(roles)
+// const lowercaseRoles = roles?.map((role: string) => role.toLowerCase());
+// const userRole = "admin"
 
-  // if (!state?.isAuthenticated && !lowercaseRoles?.includes(userRole.toLowerCase())) {
-  //   return (
-  //     <Navigate
-  //       to="/login"
-  //       replace
-  //     />
-  //   );
-  // }
+// if (!state?.isAuthenticated && !lowercaseRoles?.includes(userRole.toLowerCase())) {
+//   return (
+//     <Navigate
+//       to="/login"
+//       replace
+//     />
+//   );
+// }
 
 // const JWT_SECRET = import.meta.env.DEV ? import.meta.env.VITE_API_JWT_SECRET : process.env.API_JWT_SECRET;
 
@@ -62,19 +68,19 @@ export default AdminPrivateRoute;
 //   for (let i = 0; i < cookies.length; i++) {
 //     const cookie = cookies[i].trim();
 //     if (cookie.startsWith(`${name}=`)) {
-  //       return cookie.substring(name.length + 1);
-  //     }
+//       return cookie.substring(name.length + 1);
+//     }
 //   }
 //   return null;
 // }
 
 // const decodeToken = (token: string) => {
-  //   try {
+//   try {
 //     const decoded = jwt.verify(token, JWT_SECRET);
 //     // return JSON.parse(atob(token.split(".")[1]));
 //     return decoded
 //   } catch (error) {
 //     return null;
-//   } 
+//   }
 
 // }

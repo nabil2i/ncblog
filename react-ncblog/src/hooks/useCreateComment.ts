@@ -13,12 +13,12 @@ const useCreateComment = (
 
   const createComment = useMutation<FetchResponse<Comment>, AxiosError, CommentForm>({
     mutationFn: apiClient.post,
-    onSuccess: (savedComment, newComment) => {
+    onSuccess: () => {
       // console.log(savedComment.data)
       onCreateComment();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
     },
-    onError: (error, newComment, context) => {
+    onError: () => {
       // console.log(error)
     },
   });

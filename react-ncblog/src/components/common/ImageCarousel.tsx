@@ -54,7 +54,7 @@ const ImageCarousel = ({ images }: Props) => {
 
         {/* Dots */}
         <div className="flex top-4 justify-center py-2">
-          {images.map((image, index) => (
+          {images.map((_image, index) => (
             <div
               key={index}
               onClick={() => goToImage(index)}

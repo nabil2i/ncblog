@@ -1,4 +1,4 @@
-import { ElementType, ReactElement } from "react";
+import { ElementType } from "react";
 import {
   FaFacebook,
   FaInstagram,
@@ -6,9 +6,6 @@ import {
   FaWhatsapp,
   FaYoutube,
 } from "react-icons/fa";
-
-// Define types for each icon
-type IconType = typeof FaFacebook | typeof FaInstagram | typeof FaTwitter | typeof FaWhatsapp | typeof FaYoutube;
 
 export interface SocialItem {
   label: string;

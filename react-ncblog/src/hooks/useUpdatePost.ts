@@ -16,12 +16,12 @@ const useUpdatePost = (postId: string,
   
   return useMutation<FetchResponse<Post>, AxiosError, PostFormData>({
     mutationFn:  apiClient.put,
-    onSuccess: (savedPost, newPost) => {
+    onSuccess: () => {
       onUpdatePost();
       showToast();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
     },
-    onError: (error: AxiosError, newPost, context) => {
+    onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError
       const errorMessage = responseData.error.message
       showErrorToast(errorMessage);

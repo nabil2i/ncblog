@@ -1,4 +1,4 @@
-import { Box, Flex, VStack } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import Footer from "../../components/common/Footer";
 import { AuthProvider, NavBar } from "../../components/navigationbar";
@@ -14,7 +14,6 @@ const Layout = () => {
         <Footer />
       </Flex>
     </AuthProvider>
-
   );
 };
 

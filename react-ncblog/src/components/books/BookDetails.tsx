@@ -7,19 +7,17 @@ import {
   Image,
   Link,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import book1 from "../../assets/thepurposeoflife.jpg";
 import Book from "../../entities/Book";
-import useAuth from "../navigationbar/useAuth";
 
 const BookDetails = ({ book }: { book: Book }) => {
   // console.log(post);
-  const { state } = useAuth();
-  const navigate = useNavigate();
+  // const { state } = useAuth();
+  // const navigate = useNavigate();
 
   return (
     <>
-      <Flex direction={{ base: "column", lg: "column"}} gap={5}>
+      <Flex direction={{ base: "column", lg: "column" }} gap={5}>
         <Flex justify="center" align="center" direction="column">
           <Image
             // objectFit='cover'

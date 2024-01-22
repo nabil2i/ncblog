@@ -27,7 +27,7 @@ const DesktopNavItem = ({ navItem }: Props) => {
   const isActive = navItem.href === location.pathname
 
   // const linkColor = useColorModeValue("gray.600", "gray.200");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
+  // const linkHoverColor = useColorModeValue("gray.800", "white");
   const linkHoverBgColor = useColorModeValue(
     `${VARIANT_COLOR}.500`,
     `${VARIANT_COLOR}.500`

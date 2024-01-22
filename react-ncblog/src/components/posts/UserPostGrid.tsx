@@ -1,11 +1,9 @@
-import { Box, Flex, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Box, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
 // import { PostQuery } from "../App";
+import useUserPosts from "../../hooks/useUserPosts";
 import PaginationBox from "../common/PaginationBox";
-import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
-import usePosts from "../../hooks/usePosts";
-import useUserPosts from "../../hooks/useUserPosts";
 import UserBlogPostCard from "./UserBlogPostCard";
 // import useUserPostQueryStore from "../store";
 
@@ -34,29 +32,29 @@ const UserPostGrid = ({ paginate }: Props) => {
       {error && (
         <Text py={8} textAlign={"center"}>
           {" "}
-          We encountered a problem. Please retry later. 
+          We encountered a problem. Please retry later.
         </Text>
       )}
 
-      <VStack paddingBottom={5} >
+      <VStack paddingBottom={5}>
         <SimpleGrid
           textAlign="center"
           columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
           spacing={3}
           padding={1}
         >
-            {isLoading &&
-              skeletons.map((skeleton) => (
-                <BlogPostCardContainer key={skeleton}>
-                  <BlogPostCardSkeleton />{" "}
-                </BlogPostCardContainer>
-              ))}
-
-            {data?.results.map((post) => (
-              <BlogPostCardContainer key={post._id}>
-                <UserBlogPostCard post={post} />
+          {isLoading &&
+            skeletons.map((skeleton) => (
+              <BlogPostCardContainer key={skeleton}>
+                <BlogPostCardSkeleton />{" "}
               </BlogPostCardContainer>
             ))}
+
+          {data?.results.map((post) => (
+            <BlogPostCardContainer key={post._id}>
+              <UserBlogPostCard post={post} />
+            </BlogPostCardContainer>
+          ))}
         </SimpleGrid>
 
         {data?.count && data.count > 1 && paginate ? (
@@ -68,15 +66,15 @@ const UserPostGrid = ({ paginate }: Props) => {
             next={data?.next as number}
             paginate={paginate}
           ></PaginationBox>
-          ) : (
-            <></>
-          )}
-  
-          {!data?.count && (
-            <VStack>
-              <Text>Nothing found.</Text>
-            </VStack>
-          )}
+        ) : (
+          <></>
+        )}
+
+        {!data?.count && (
+          <VStack>
+            <Text>Nothing found.</Text>
+          </VStack>
+        )}
       </VStack>
     </>
   );

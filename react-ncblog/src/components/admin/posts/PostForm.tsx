@@ -138,7 +138,7 @@ const PostForm = ({ post }: Props) => {
     handleSubmit,
     register,
     control,
-    reset,
+    // reset,
     setValue,
     formState: { errors },
   } = useForm<PostFormData>();

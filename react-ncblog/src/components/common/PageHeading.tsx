@@ -1,5 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react'
-import React from 'react'
+import { Flex, Text } from "@chakra-ui/react";
 
 interface Props {
   title: string;
@@ -12,13 +11,15 @@ const PageHeading = ({ title }: Props) => {
         background={"teal"}
         height="100px"
         width="100%"
-        align="center" justify="center"
+        align="center"
+        justify="center"
       >
-        <Text fontSize={30} fontWeight={700} color="white">{title}</Text>
-        
+        <Text fontSize={30} fontWeight={700} color="white">
+          {title}
+        </Text>
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default PageHeading
+export default PageHeading;

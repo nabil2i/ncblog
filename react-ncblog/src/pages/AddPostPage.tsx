@@ -1,8 +1,5 @@
-import { Text, Box } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
 import PostForm from "../components/posts/PostForm";
-import usePost from "../hooks/usePost";
-
 
 const AddPostPage = () => {
   return (

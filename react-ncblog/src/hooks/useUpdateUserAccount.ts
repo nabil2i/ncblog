@@ -16,12 +16,12 @@ const useUpdateUserAccount = (
   return useMutation<FetchResponse<User>, AxiosError, User>({
     mutationFn: userAccountService.put,
 
-    onSuccess: (savedUser: FetchResponse<User>, newUser) => {
+    onSuccess: (savedUser: FetchResponse<User>) => {
      onUpdateUser(savedUser.data);
       showToast();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USER] })
     },
-    onError: (error: AxiosError, newUser, context) => {
+    onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError;
       const errorMessage = responseData.error.message
 

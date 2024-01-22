@@ -1,11 +1,4 @@
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import {
-  Flex,
-  HStack,
-  IconButton,
-  Switch,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Flex, HStack, Switch, useColorMode } from "@chakra-ui/react";
 
 interface Props {
   navSize?: string;

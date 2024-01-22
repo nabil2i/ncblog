@@ -15,12 +15,12 @@ const useDeleteUserAccount = (
   return useMutation({
     mutationFn: userAccountService.delete,
 
-    onSuccess: (savedUser, newUser) => {
+    onSuccess: () => {
       onDeleteAccount();
       showToast();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USER] })
     },
-    onError: (error: AxiosError, newUser, context) => {
+    onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError;
       const errorMessage = responseData.error.message
 

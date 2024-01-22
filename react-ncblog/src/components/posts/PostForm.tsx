@@ -4,7 +4,6 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -18,28 +17,21 @@ import {
   FormErrorMessage,
   Grid,
   GridItem,
-  IconButton,
   Input,
-  Menu,
-  MenuButton,
-  MenuList,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import "easymde/dist/easymde.min.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { MdOutlineMoreHoriz, MdOutlineMoreVert } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
-import useAuth from "../navigationbar/useAuth";
-import useCreatePost from "../../hooks/useCreatePost";
-import UpdatePostAction from "./UpdatePostAction";
-import useUpdatePost from "../../hooks/useUpdatePost";
 import Post from "../../entities/Post";
-import UpdatePostButton from "./UpdatePostButton";
-import TextareaAutosize from 'react-textarea-autosize';
+import useCreatePost from "../../hooks/useCreatePost";
+import useUpdatePost from "../../hooks/useUpdatePost";
 import AutoExpandingTextarea from "../common/AutoExpandingTextarea";
+import useAuth from "../navigationbar/useAuth";
+import UpdatePostButton from "./UpdatePostButton";
 
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
@@ -140,7 +132,7 @@ const PostForm = ({ post }: Props) => {
     handleSubmit,
     register,
     control,
-    reset,
+    // reset,
     setValue,
     formState: { errors },
   } = useForm<PostFormData>();
@@ -193,7 +185,7 @@ const PostForm = ({ post }: Props) => {
               variant="ghost"
               fontSize={20}
             /> */}
-            <UpdatePostButton isSubmittingPost={isSubmittingPost} post={post}/>
+            <UpdatePostButton isSubmittingPost={isSubmittingPost} post={post} />
 
             {/* <Menu>
               <MenuButton

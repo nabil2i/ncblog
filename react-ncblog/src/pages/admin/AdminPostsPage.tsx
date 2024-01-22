@@ -1,7 +1,6 @@
-import { Box, Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import PostForm from "../../components/admin/posts/PostForm";
-import PostsTable from "../../components/admin/posts/PostsTable";
+import { Box, Flex } from "@chakra-ui/react";
 import AddPostButton from "../../components/admin/posts/AddPostButton";
+import PostsTable from "../../components/admin/posts/PostsTable";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -17,13 +16,12 @@ import AddPostButton from "../../components/admin/posts/AddPostButton";
 const PostsPage = () => {
   return (
     <>
-
       <Flex direction="column" p={"0"}>
         <Flex justify="end" p={0}>
           <AddPostButton />
         </Flex>
-        <Box >
-          <PostsTable />  
+        <Box>
+          <PostsTable />
         </Box>
       </Flex>
 

@@ -45,9 +45,9 @@ const BlogPostComments = ({ comments, postId }: Props) => {
     comments: PostComment[],
     postId: string,
     depth = 0,
-    maxDepth = 2
+    // maxDepth = 2
   ) => {
-    const ml = depth > maxDepth ? maxDepth * 4 : depth * 4;
+    // const ml = depth > maxDepth ? maxDepth * 4 : depth * 4;
 
     return (
       <>

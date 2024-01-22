@@ -2,24 +2,23 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CardHeader,
+  Flex,
   HStack,
   Heading,
+  IconButton,
   Image,
-  Tag,
-  Text,
-  Box,
-  Flex,
   Menu,
   MenuButton,
-  IconButton,
   MenuList,
-  CardHeader,
+  Tag,
+  Text,
 } from "@chakra-ui/react";
+import { MdOutlineMoreHoriz } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Landscape from "../../assets/landscape.jpeg";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
-import { MdOutlineMoreHoriz } from "react-icons/md";
 import DeletePostAction from "./DeletePostAction";
 import EditPostAction from "./EditPostAction";
 
@@ -30,20 +29,19 @@ interface Props {
 const UserBlogPostCard = ({ post }: Props) => {
   return (
     <Flex display="column">
-     
-        <Card textAlign="left" height="100%" key={post._id} borderRadius="4">
-          <CardHeader>
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                icon={<MdOutlineMoreHoriz />}
-              ></MenuButton>
-              <MenuList>
-                <EditPostAction postId={post._id as string} />
-                <DeletePostAction postId={post._id as string} />
-              </MenuList>
-            </Menu>
-          </CardHeader>
+      <Card textAlign="left" height="100%" key={post._id} borderRadius="4">
+        <CardHeader>
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              icon={<MdOutlineMoreHoriz />}
+            ></MenuButton>
+            <MenuList>
+              <EditPostAction postId={post._id as string} />
+              <DeletePostAction postId={post._id as string} />
+            </MenuList>
+          </Menu>
+        </CardHeader>
         <Link to={"/blog/" + post._id}>
           <CardBody>
             {/* <Center> */}
@@ -85,7 +83,7 @@ const UserBlogPostCard = ({ post }: Props) => {
             <BlogPostAuthor post={post} />
           </CardFooter>
         </Link>
-        </Card>
+      </Card>
     </Flex>
 
     // <Box m="5" as="a" href="/blog-post-thing">

@@ -1,6 +1,5 @@
 import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
 import PageHeading from "../components/common/PageHeading";
-import PostGrid from "../components/posts/PostGrid";
 import UserPostGrid from "../components/posts/UserPostGrid";
 
 const MyPostsPage = () => {

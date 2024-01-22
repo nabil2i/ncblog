@@ -14,12 +14,12 @@ const useDeletePost = (
   return useMutation({
     mutationFn: postService.delete,
 
-    onSuccess: (savedPost, newPost) => {
+    onSuccess: () => {
     //  onDeletePost();
       onDeleteSuccess();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
     },
-    onError: (error: AxiosError, newUser, context) => {
+    onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError;
       const errorMessage = responseData.error.message
 

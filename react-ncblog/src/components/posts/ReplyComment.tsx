@@ -9,7 +9,7 @@ import useCreateComment from "../../hooks/useCreateComment";
 import { CustomButton } from "../common/CustomButton";
 import useAuth from "../navigationbar/useAuth";
 
-const VARIANT_COLOR = "teal";
+// const VARIANT_COLOR = "teal";
 
 interface Props {
   replyingTo: User;

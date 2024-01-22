@@ -1,5 +1,4 @@
 import React, { Dispatch } from "react";
-import User from "../../entities/User";
 import { AuthAction, AuthState } from "./AuthProvider";
 
 // interface AuthContextType {

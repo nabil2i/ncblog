@@ -18,11 +18,11 @@ import useAuth from "../navigationbar/useAuth";
 
 const DeleteAccount = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const cancelRef = useRef<null | HTMLButtonElement>(null);
-  const { state, dispatch } = useAuth();
+  const {  dispatch } = useAuth();
   const toast = useToast();
 
   const onClose = () => {
@@ -47,7 +47,7 @@ const DeleteAccount = () => {
     },
     (errorMessage) => {
       setIsDeleting(false);
-      setError(true);
+      // setError(true);
       toast({
         title: "",
         description: "This account could not be deleted. " + errorMessage,

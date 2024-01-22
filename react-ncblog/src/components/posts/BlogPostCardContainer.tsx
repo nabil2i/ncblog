@@ -1,4 +1,4 @@
-import { Box, Center } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 interface Props {
@@ -6,7 +6,6 @@ interface Props {
 }
 const BlogPostCardContainer = ({ children }: Props) => {
   return (
-
     <Box
       as="article"
       _hover={{
@@ -20,7 +19,7 @@ const BlogPostCardContainer = ({ children }: Props) => {
       // borderWidth="1px"
       overflow="hidden"
       p="6"
-      >
+    >
       {children}
     </Box>
   );

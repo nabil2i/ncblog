@@ -3,7 +3,6 @@ import {
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
@@ -12,20 +11,19 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
+import ms from "ms";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDeletePost from "../../hooks/useDeletePost";
-import ms from "ms";
-
 
 const DeletePostAction = ({ postId }: { postId: string }) => {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const cancelRef = useRef<null | HTMLButtonElement>(null);
   const toast = useToast();
-  
+
   const onClose = () => {
     setIsOpen(false);
   };
@@ -37,7 +35,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
     },
     (errorMessage) => {
       setIsDeleting(false);
-      setError(true);
+      // setError(true);
       setIsOpen(false);
       toast({
         title: "",

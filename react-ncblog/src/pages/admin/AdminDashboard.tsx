@@ -1,14 +1,11 @@
-import { Flex } from '@chakra-ui/react'
-import React from 'react'
+import { Flex } from "@chakra-ui/react";
 
 const Dashboard = () => {
   return (
     <>
-      <Flex h="full">
-        Dashboard
-      </Flex>
+      <Flex h="full">Dashboard</Flex>
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

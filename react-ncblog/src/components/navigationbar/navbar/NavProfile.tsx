@@ -10,36 +10,14 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
-  useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
-import useAuth from "../useAuth";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../useAuth";
 // import useAuth from "./navigationbar/useAuth";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const NavLink = (props: Props) => {
-  const { children } = props;
-
-  return (
-    <Box
-      as="a"
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
-      }}
-      href={"#"}
-    >
-      {children}
-    </Box>
-  );
-};
+// interface Props {
+//   children: React.ReactNode;
+// }
 
 const Profile = () => {
   // const [state, dispatch] = useReducer(authReducer, {});
@@ -47,7 +25,7 @@ const Profile = () => {
   // const { state, dispatch } = useAuth();
   const { state, dispatch } = useAuth();
   // console.log(state)
-  
+
   const navigate = useNavigate();
 
   if (state.isAuthenticated)
@@ -88,7 +66,9 @@ const Profile = () => {
               </Center>
               <br />
               <MenuDivider />
-              <MenuItem onClick={() => navigate("/blog/write")}>Create a post</MenuItem>
+              <MenuItem onClick={() => navigate("/blog/write")}>
+                Create a post
+              </MenuItem>
               <MenuItem onClick={() => navigate("/myposts")}>My Posts</MenuItem>
               <MenuItem onClick={() => navigate("/account")}>Account</MenuItem>
               <MenuItem onClick={() => dispatch({ type: "LOGOUT" })}>
@@ -100,5 +80,26 @@ const Profile = () => {
       </>
     );
 };
+
+
+// const NavLink = (props: Props) => {
+//   const { children } = props;
+
+//   return (
+//     <Box
+//       as="a"
+//       px={2}
+//       py={1}
+//       rounded={"md"}
+//       _hover={{
+//         textDecoration: "none",
+//         bg: useColorModeValue("gray.200", "gray.700"),
+//       }}
+//       href={"#"}
+//     >
+//       {children}
+//     </Box>
+//   );
+// };
 
 export default Profile;

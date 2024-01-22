@@ -29,7 +29,7 @@ import useUpdateUserAccount from "../../hooks/useUpdateUserAccount";
 import useAuth from "../navigationbar/useAuth";
 
 const EditPassword = () => {
-  const { state, dispatch } = useAuth();
+  const { dispatch } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);

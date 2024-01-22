@@ -69,13 +69,13 @@ const SignUpForm = () => {
     handleSubmit,
     register,
     reset,
-    watch,
-    formState: { errors, isSubmitting, isValid },
+    // watch,
+    formState: { errors },
     // } = useForm();
   } = useForm<FormData>();
 
-  const password = watch("password");
-  const password2 = watch("password2");
+  // const password = watch("password");
+  // const password2 = watch("password2");
 
   const onSubmit = (data: FieldValues) => {
     // console.log(data);

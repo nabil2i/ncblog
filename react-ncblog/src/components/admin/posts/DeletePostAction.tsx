@@ -2,7 +2,6 @@ import {
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
@@ -14,13 +13,12 @@ import {
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDeletePost from "../../../hooks/useDeletePost";
-import { BsTrash } from "react-icons/bs";
 import { DeleteIcon } from "@chakra-ui/icons";
 import ms from "ms";
 
 const DeletePostAction = ({ postId }: { postId: string }) => {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const cancelRef = useRef<null | HTMLButtonElement>(null);
@@ -37,7 +35,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
     },
     (errorMessage) => {
       setIsDeleting(false);
-      setError(true);
+      // setError(true);
       setIsOpen(false); toast({
         title: "",
         description: "This could not post not be deleted. " + errorMessage,

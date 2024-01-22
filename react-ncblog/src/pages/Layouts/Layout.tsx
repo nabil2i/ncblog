@@ -8,7 +8,7 @@ const Layout = () => {
     <AuthProvider>
       <Flex direction="column" minHeight="100vh">
         <NavBar />
-        <Box flex="1" marginTop={{ base: "60px" }}>
+        <Box flex="1" marginTop={{ base: "60px" }} minHeight="100vh">
           <Outlet />
         </Box>
         <Footer />

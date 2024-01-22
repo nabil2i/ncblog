@@ -5,19 +5,20 @@ import BlogPostDate from "./BlogPostDate";
 
 const BlogPostInfo = ({ post }: { post: Post }) => {
   return (
-    <Flex direction="column">
-      <Flex gap={2}>
-        <Text whiteSpace="nowrap">
+    <Flex direction="row" align="center" gap={4} mt={8}>
+      <Flex gap={4}>
+        <PostAuthor post={post} />
+      </Flex>
+
+      {/* <Flex direction="column" justify="center">
+        <Text >
           Posted on: <BlogPostDate date={post.createdAt} />{" "}
         </Text>
-        <Text whiteSpace="nowrap">
+        <Text >
           {" "}
           Last updated: <BlogPostDate date={post.updatedAt} />{" "}
         </Text>
-      </Flex>
-      <Flex gap={4} mt={2}>
-        <PostAuthor post={post} />
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };

@@ -29,8 +29,10 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
   };
 
   return (
-    <>
-      <Heading mb={2}>{post.title}</Heading>
+    <Box>
+      <Box>
+        <Heading mb={2}>{post.title}</Heading>
+      </Box>
       <BlogPostInfo post={post} />
       {/* <Center m={5}>
         <PostImage />
@@ -60,7 +62,7 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
           />
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 

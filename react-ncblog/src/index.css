@@ -34,3 +34,15 @@ form {
   border-bottom: 10px solid transparent;
   border-right: 10px solid teal;
 }
+
+.break-word {
+  overflow-wrap: break-word;
+}
+
+.red {
+  color: red
+}
+
+html, body {
+  overflow-x:hidden 
+} 

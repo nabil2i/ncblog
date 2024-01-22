@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Flex, Spinner, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import BlogPostDetails from "../components/posts/BlogPostDetails";
 import usePost from "../hooks/usePost";
@@ -23,21 +23,30 @@ const PostPage = () => {
 
   return (
     <>
-      <Grid
+      <Flex direction="column" align="center" justify="start" mt={8}>
+        <Box width="5%" display={{ base: "none", lg: "flex" }}></Box>
+
+        <Box width="90%" maxW="680px">
+          <BlogPostDetails post={post} />
+        </Box>
+
+        <Box width="5%" display={{ base: "none", lg: "flex" }}></Box>
+      </Flex>
+      {/* <Grid
         gap={2}
         templateAreas={{ base: `"main"`, lg: `"side1 main side2"` }}
-        templateColumns={{ base: "1fr", lg: "1fr 900px 1fr" }}
+        templateColumns={{ base: "1fr", lg: "1fr 2fr 1fr" }}
         // templateAreas={{ base: `"side1" "main" "side2"`, lg: `"side1 main side2"` }}
         // templateColumns={{ base: "1fr", lg: "1fr 2fr 1fr" }}
       >
-        <GridItem area="main" py={4} px={8}>
-          <BlogPostDetails post={post} />
-        </GridItem>
+        <GridItem area="main" py={4} px={8}> */}
+      {/* <BlogPostDetails post={post} /> */}
+      {/* </GridItem> */}
 
-        {/* <GridItem area="side">
+      {/* <GridItem area="side">
           <Text>Categories</Text>
         </GridItem> */}
-      </Grid>
+      {/* </Grid> */}
     </>
   );
 };

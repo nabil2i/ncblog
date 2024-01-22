@@ -15,7 +15,7 @@ git clone https://github.com/nabil2i/ncblog.git
 npm install
 ```
 
-* In the reacr-ncblog folder, install the frontend packages:
+* In the react-ncblog folder, install the frontend packages:
 
 ```bash
 npm install
@@ -28,7 +28,7 @@ npm install
 ```
 
 
-* In the reacr-ncblo and node-ncblog folders, create a `.env` file and supply the values for the environment variables based on the `example.env` files
+* In the react-ncblog and node-ncblog folders, create a `.env` file and supply the values for the environment variables based on the `example.env` files
 
 * Install mongodb on your local machine and get a mongodb connection URI that you will supply to the .env file in node-ncblog folder:
 

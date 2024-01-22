@@ -32,7 +32,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-console.log(URL);
+// console.log(URL);
 
 class APIClient<T, Q> {
   endpoint: string;

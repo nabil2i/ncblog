@@ -1,8 +1,8 @@
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { TagDescription } from "@reduxjs/toolkit/query";
-import Post, { PostData } from "../../entities/Post";
-import { RootState } from '../store';
-import { apiSlice } from "./apiSlice";
+import Post, { PostData } from "../../../entities/Post";
+import { RootState } from '../../store';
+import { apiSlice } from "../apiSlice";
 
 export interface ServerResponse {
   success: boolean;
@@ -35,7 +35,7 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
       // validationStatus: (response, result) => {
       //   return response.Status === 200 && !result.isError
       // },
-      keepUnusedDataFor: 60,
+      // keepUnusedDataFor: 60,
       transformResponse: (responseData: ServerResponse) => {
         const postsWithIds = responseData.data.results.map(post => {
           return { ...post, id: post._id };
@@ -104,7 +104,7 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
 })
 
 // return the query return object
-export const selectPostsResult = extendedPostsApiSlice.endpoints.getPosts.select({})
+export const selectPostsResult = extendedPostsApiSlice.endpoints.getPosts.select(undefined)
 
 // Memoized selectors
 const selectPostsData = createSelector(

@@ -35,7 +35,7 @@ import SimpleMDE from "react-simplemde-editor";
 import {
   useAddNewPostMutation,
   useUpdatePostMutation,
-} from "../../../api/features/postsApiSlice";
+} from "../../../api/features/posts/postsApiSlice";
 import Post from "../../../entities/Post";
 import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
 import useAuth from "../../navigationbar/useAuth";
@@ -92,7 +92,7 @@ const PostForm = ({ post }: Props) => {
         icon: <AddIcon />,
       });
     }
-  
+
     if (isErrorAdd) {
       setSubimittingPost(false);
       setError("Could not add the post");
@@ -107,7 +107,7 @@ const PostForm = ({ post }: Props) => {
         icon: <AddIcon />,
       });
     }
-  
+
     if (isSuccessUpdate) {
       setSubimittingPost(false);
       navigate("/admin/posts/");
@@ -121,7 +121,7 @@ const PostForm = ({ post }: Props) => {
         icon: <EditIcon />,
       });
     }
-  
+
     if (isErrorUpdate) {
       setSubimittingPost(false);
       setError("Could not update the post");
@@ -136,8 +136,14 @@ const PostForm = ({ post }: Props) => {
         icon: <EditIcon />,
       });
     }
-  
-  }, [isErrorAdd, isErrorUpdate, isSuccessAdd, isSuccessUpdate, navigate, toast])
+  }, [
+    isErrorAdd,
+    isErrorUpdate,
+    isSuccessAdd,
+    isSuccessUpdate,
+    navigate,
+    toast,
+  ]);
 
   const {
     handleSubmit,

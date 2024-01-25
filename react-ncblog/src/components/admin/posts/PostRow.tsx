@@ -1,27 +1,25 @@
 import {
   Flex,
   IconButton,
+  Link,
   Menu,
   MenuButton,
   MenuList,
   Td,
   Text,
   Tr,
-  Link
 } from "@chakra-ui/react";
 import { EntityId } from "@reduxjs/toolkit";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { selectPostById } from "../../../api/features/postsApiSlice";
+import { selectPostById } from "../../../api/features/posts/postsApiSlice";
 import { RootState } from "../../../api/store";
 import BlogPostDate from "../../posts/BlogPostDate";
 import DeletePostAction from "./DeletePostAction";
 import EditPostAction from "./EditPostAction";
 
 const PostRow = ({ postId }: { postId: EntityId }) => {
-
-
   const id = postId.toString();
   // console.log(postId);
   // console.log(id);
@@ -60,7 +58,6 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                   </Text>
                 </Flex>
               </Flex>
-
             </Flex>
           </Td>
           <Td>

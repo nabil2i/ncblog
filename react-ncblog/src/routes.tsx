@@ -21,6 +21,7 @@ import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
 import PostsPage from "./pages/admin/AdminPostsPage";
 import Profile from "./pages/admin/Profile";
+import Prefetch from "./api/features/Prefetch";
 
 const router = createBrowserRouter([
   {
@@ -72,11 +73,10 @@ const router = createBrowserRouter([
   {
     path: "admin/",
     element: (
-      <AdminLayout />
-
-      // <AdminPrivateRoute>
-      //   <AdminLayout />
-      // </AdminPrivateRoute>
+      <Prefetch>
+        <AdminLayout />
+      </Prefetch>
+  
     ),
     errorElement: <AdminErrorPage />,
     children: [

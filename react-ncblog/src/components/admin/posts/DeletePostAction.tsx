@@ -1,3 +1,4 @@
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -12,10 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useDeletePost from "../../../hooks/useDeletePost";
-import { DeleteIcon } from "@chakra-ui/icons";
-import ms from "ms";
-import { useDeletePostMutation } from "../../../api/features/postsApiSlice";
+import { useDeletePostMutation } from "../../../api/features/posts/postsApiSlice";
 
 const DeletePostAction = ({ postId }: { postId: string }) => {
   // console.log(postId)
@@ -30,7 +28,8 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
     setIsOpen(false);
   };
 
-  const [deletePost, {isError, isLoading, isSuccess, error: deleteError}] = useDeletePostMutation();
+  const [deletePost, { isError, isLoading, isSuccess, error: deleteError }] =
+    useDeletePostMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -46,7 +45,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
         icon: <DeleteIcon />,
       });
     }
-  
+
     if (isError) {
       setIsDeleting(false);
       // setError(true);
@@ -61,7 +60,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
       });
     }
   }, [isError, isSuccess, navigate, toast]);
-  
+
   // const deletePost = useDeletePost(
   //   () => {
   //     setIsOpen(false);
@@ -111,10 +110,10 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
   // };
 
   const triggerDeletePost = (postId: string) => {
-    console.log('triggerid', postId)
+    console.log("triggerid", postId);
     if (postId) {
       setIsDeleting(true);
-      deletePost(postId)
+      deletePost(postId);
       // deletePost.mutate(postId);
     }
   };

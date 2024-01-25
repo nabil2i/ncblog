@@ -14,7 +14,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
-import { extendedPostsApiSlice } from "./api/features/postsApiSlice.ts";
 import { store } from "./api/store.ts";
 import "./index.css";
 import router from "./routes.tsx";
@@ -29,8 +28,6 @@ const queryClient = new QueryClient();
 //     },
 //   },
 // }
-
-store.dispatch(extendedPostsApiSlice.endpoints.getPosts.initiate({}));
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

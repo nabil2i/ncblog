@@ -11,10 +11,10 @@ import {
   Tr,
 } from "@chakra-ui/react";
 // import usePosts from "../../../hooks/usePosts";
-import { useGetPostsQuery } from "../../../api/features/postsApiSlice";
+import { EntityId } from "@reduxjs/toolkit";
+import ms from "ms";
+import { useGetPostsQuery } from "../../../api/features/posts/postsApiSlice";
 import PostRow from "./PostRow";
-import { EntityId, EntityState } from "@reduxjs/toolkit";
-import Post from "../../../entities/Post";
 
 const PostsTable = () => {
   // from postsApiSlice
@@ -24,8 +24,12 @@ const PostsTable = () => {
     isLoading,
     isSuccess,
     // error,
-  } = useGetPostsQuery({});
-  const posts = data?.posts
+  } = useGetPostsQuery(undefined, {
+    pollingInterval: ms("60s"),
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
+  const posts = data?.posts;
   // const pagination = data?.pagination;
   // console.log(posts)
 
@@ -63,7 +67,7 @@ const PostsTable = () => {
           <Td> Nothing to show</Td>
         </Tr>
       );
-  
+
       return (
         <>
           <Table>
@@ -74,7 +78,7 @@ const PostsTable = () => {
                 </Th>
               </Tr>
             </Thead>
-  
+
             <Tbody>{tableContent}</Tbody>
           </Table>
         </>
@@ -84,17 +88,3 @@ const PostsTable = () => {
 };
 
 export default PostsTable;
-
-{
-  /* <Td display={{ base: "none", lg: "flex" }}>
-      <BlogPostDate date={post.createdAt} />
-    </Td> 
-    
-      
-    <Td>
-      <Flex gap="3" align="center">
-        <EditPostButton postId={post._id as string} />
-        <DeletePostButton postId={post._id as string} />
-      </Flex> 
-    </Td>*/
-}

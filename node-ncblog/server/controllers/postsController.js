@@ -236,7 +236,10 @@ const deletePost = async (req, res) => {
   
     res.status(200).json({
       success: true,
-      message: `The post with ID ${post._id} was deleted`
+      message: `The post with ID ${post._id} was deleted`,
+      data: {
+        id: postId
+      }
     });
 
   } catch(err) {

@@ -17,14 +17,36 @@ import {
 } from "@chakra-ui/react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-import usePosts from "../../../hooks/usePosts";
+// import usePosts from "../../../hooks/usePosts";
+import { useGetPostsQuery } from "../../../api/features/postsApiSlice";
 import BlogPostDate from "../../posts/BlogPostDate";
 import DeletePostAction from "./DeletePostAction";
 import EditPostAction from "./EditPostAction";
+import PostRow from "./PostRow";
 
 const PostsTable = () => {
-  const { data: payload, error, isLoading } = usePosts();
-  const data = payload?.data;
+  // from postsApiSlice
+  const {
+    data: posts,
+    isError,
+    isLoading,
+    isSuccess,
+    error,
+  } = useGetPostsQuery({});
+  // console.log(posts)
+
+  // from postsSlice
+  // const posts = useSelector(selectAllPosts);
+  // const isLoading = useSelector(getPostsStatus);
+  // const error = useSelector(getPostsError);
+
+  // const dispatch = useDispatch<AppDispatch>();
+  // useEffect(() => {
+  //   dispatch(getPosts());
+  // }, []);
+
+  // const { data: payload, error, isLoading } = usePosts();
+  // const data = payload?.data;
 
   if (isLoading)
     return (
@@ -35,81 +57,43 @@ const PostsTable = () => {
       </Box>
     );
 
-  return (
-    <>
-      {error && <Text> We encountered a problem.</Text>}
-
-      <Table>
-        <Thead>
-          <Tr>
-            <Th fontSize={{ base: "sm", md: "md" }}>Post</Th>
-          </Tr>
-        </Thead>
-
-        <Tbody>
-          {data?.results.length === 0 ? (
+  if (isError)
+    return (<Text> We encountered a problem.</Text>);
+  
+  if (isSuccess) {
+    const { ids } = posts;
+    const tableContent = ids?.length
+      ? ids.map(postId => <PostRow key={postId} postId={postId} />)
+      : (<Tr><Td> Nothing to show</Td></Tr>)
+      
+    return (
+      <>
+        <Table>
+          <Thead>
             <Tr>
-              <Td> Nothing to show</Td>
+              <Th colSpan={2} fontSize={{ base: "sm", md: "md" }}>Post</Th>
             </Tr>
-          ) : (
-            data?.results.map((post) => (
-              <Tr key={post._id}>
-                <Td mb={2}>
-                  <Flex align="center" justify="space-between">
-                    <Flex
-                      display="column"
-                      mr={2}
-                      flexBasis={{ base: "100%", lg: "50%" }}
-                    >
-                      <Link
-                        as={NavLink}
-                        to={`/admin/posts/${post._id}`}
-                        _hover={{ color: "teal", cursor: "pointer" }}
-                        fontSize={{ base: "16px", lg: "20px" }}
-                        fontWeight={500}
-                        noOfLines={{ base: 2, lg: 1 }}
-                        whiteSpace="pre-wrap"
-                      >
-                        {post.title}
-                      </Link>
-                      <Flex align="center" mt="5px">
-                        <Text>
-                          <BlogPostDate date={post.createdAt} />
-                        </Text>
-                      </Flex>
-                    </Flex>
+          </Thead>
 
-                    <Menu>
-                      <MenuButton
-                        as={IconButton}
-                        icon={<MdOutlineMoreHoriz />}
-                      ></MenuButton>
-                      <MenuList>
-                        <EditPostAction postId={post._id as string} />
-                        <DeletePostAction postId={post._id as string} />
-                      </MenuList>
-                    </Menu>
-                  </Flex>
-                </Td>
-
-                {/* <Td display={{ base: "none", lg: "flex" }}>
-                      <BlogPostDate date={post.createdAt} />
-                    </Td> 
-                    
-                      
-                    <Td>
-                      <Flex gap="3" align="center">
-                        <EditPostButton postId={post._id as string} />
-                        <DeletePostButton postId={post._id as string} />
-                      </Flex> 
-                    </Td>*/}
-              </Tr>
-            ))
-          )}
-        </Tbody>
-      </Table>
-    </>
-  );
+          <Tbody>
+            {tableContent}
+          </Tbody>
+        </Table>
+      </>
+    );
+  }
 };
 
 export default PostsTable;
+
+{/* <Td display={{ base: "none", lg: "flex" }}>
+      <BlogPostDate date={post.createdAt} />
+    </Td> 
+    
+      
+    <Td>
+      <Flex gap="3" align="center">
+        <EditPostButton postId={post._id as string} />
+        <DeletePostButton postId={post._id as string} />
+      </Flex> 
+    </Td>*/}

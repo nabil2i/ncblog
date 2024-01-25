@@ -1,8 +1,8 @@
 import { Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { selectPostById } from "../../api/features/posts/postsApiSlice";
-import { RootState } from "../../api/store";
+import { selectPostById } from "../../app/features/posts/postsApiSlice";
+import { RootState } from "../../app/store";
 import PostForm from "../../components/admin/posts/PostForm";
 
 const AdminPostEditPage = () => {

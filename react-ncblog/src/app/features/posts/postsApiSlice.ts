@@ -1,8 +1,8 @@
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { TagDescription } from "@reduxjs/toolkit/query";
 import Post, { PostData } from "../../../entities/Post";
+import { apiSlice } from "../../api/apiSlice";
 import { RootState } from '../../store';
-import { apiSlice } from "../apiSlice";
 
 export interface ServerResponse {
   success: boolean;

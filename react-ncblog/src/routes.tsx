@@ -1,4 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
+import Prefetch from "./app/features/Prefetch";
+import SignUpPage from "./assets/SignUpPage";
 import AccountPage from "./pages/AccountPage";
 import AddPostPage from "./pages/AddPostPage";
 import BlogPage from "./pages/BlogPage";
@@ -7,13 +9,12 @@ import BooksPage from "./pages/BooksPage";
 import EditPostPage from "./pages/EditPostPage";
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
+import AdminLayout from "./pages/Layouts/AdminLayout";
 import Layout from "./pages/Layouts/Layout";
 import LoginPage from "./pages/LoginPage";
 import MyPostsPage from "./pages/MyPostsPage";
 import PostPage from "./pages/PostPage";
 import SearchPage from "./pages/SearchPage";
-import SignUpPage from "./assets/SignUpPage";
-import AdminLayout from "./pages/Layouts/AdminLayout";
 import AdminAddPostPage from "./pages/admin/AdminAddPostPage";
 import Dashboard from "./pages/admin/AdminDashboard";
 import AdminErrorPage from "./pages/admin/AdminErrorPage";
@@ -21,7 +22,6 @@ import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
 import PostsPage from "./pages/admin/AdminPostsPage";
 import Profile from "./pages/admin/Profile";
-import Prefetch from "./api/features/Prefetch";
 
 const router = createBrowserRouter([
   {
@@ -76,20 +76,20 @@ const router = createBrowserRouter([
       <Prefetch>
         <AdminLayout />
       </Prefetch>
-  
     ),
     errorElement: <AdminErrorPage />,
     children: [
       { index: true, element: <Dashboard /> },
-      { path: "dashboard", element: <Dashboard/>},
+      { path: "dashboard", element: <Dashboard /> },
       { path: "profile", element: <Profile /> },
-      { path: "posts",
+      {
+        path: "posts",
         children: [
           { index: true, element: <PostsPage /> },
           { path: ":id", element: <AdminPostPage /> },
           { path: "edit/:id", element: <AdminPostEditPage /> },
           { path: "new", element: <AdminAddPostPage /> },
-        ]
+        ],
       },
     ],
   },

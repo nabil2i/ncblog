@@ -35,7 +35,7 @@ import SimpleMDE from "react-simplemde-editor";
 import {
   useAddNewPostMutation,
   useUpdatePostMutation,
-} from "../../../api/features/posts/postsApiSlice";
+} from "../../../app/features/posts/postsApiSlice";
 import Post from "../../../entities/Post";
 import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
 import useAuth from "../../navigationbar/useAuth";

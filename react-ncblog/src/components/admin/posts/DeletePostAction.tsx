@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDeletePostMutation } from "../../../api/features/posts/postsApiSlice";
+import { useDeletePostMutation } from "../../../app/features/posts/postsApiSlice";
 
 const DeletePostAction = ({ postId }: { postId: string }) => {
   // console.log(postId)

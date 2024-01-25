@@ -13,7 +13,7 @@ import {
 // import usePosts from "../../../hooks/usePosts";
 import { EntityId } from "@reduxjs/toolkit";
 import ms from "ms";
-import { useGetPostsQuery } from "../../../api/features/posts/postsApiSlice";
+import { useGetPostsQuery } from "../../../app/features/posts/postsApiSlice";
 import PostRow from "./PostRow";
 
 const PostsTable = () => {

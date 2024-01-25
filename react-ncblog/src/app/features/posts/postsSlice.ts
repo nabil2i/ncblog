@@ -1,8 +1,8 @@
 import { EntityId, PayloadAction, createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import Post, { PostData } from "../../../entities/Post";
+import { baseUrl } from "../../api/apiSlice";
 import { RootState } from "../../store";
-import { baseUrl } from "../apiSlice";
 
 interface PostsState {
   ids: EntityId[];

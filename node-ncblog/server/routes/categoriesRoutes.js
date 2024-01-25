@@ -6,18 +6,21 @@ const categoriesController = require('../controllers/categoriesController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
+router.use(auth);
+router.use(admin);
+
 router.route('/')
   // get all categories
-  .get([auth, admin], paginate(Category), categoriesController.getAllCategories)
+  .get(paginate(Category), categoriesController.getAllCategories)
   // create a category
-  .post([auth, admin], categoriesController.createNewCategory);
+  .post(categoriesController.createNewCategory);
 
 router.route('/:id')
   // get a category
-  .get([auth, admin], categoriesController.getCategory)
+  .get(categoriesController.getCategory)
   // update a category
-  .put([auth, admin], categoriesController.updateCategory)
+  .put(categoriesController.updateCategory)
   // delete a category
-  .delete([auth, admin], categoriesController.deleteCategory);
+  .delete(categoriesController.deleteCategory);
 
 module.exports = router;

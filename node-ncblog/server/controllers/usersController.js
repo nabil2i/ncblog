@@ -69,15 +69,21 @@ const createNewUser = asyncHandler(async (req, res) => {
   await user.save();
   
   if (user) {
-    const token = user.generateAuthToken();
+    const accessToken = user.generateAuthToken();
+    const refreshToken = user.generateRefreshToken();
     
-    const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email', 'token'])
-    userData.token = token;
+    const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email', 'accessToken'])
+    userData.accessToken = accessToken;
     userData.isAuthenticated = true;
     
-    res.status(201)
-      .cookie('token', token, { httpOnly: true})
-      .json({ success: { code: 201, message: "New user created", data: userData }});
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true, // web bserver only
+      secure: true, // https only
+      sameSite: 'None',
+      maxAge: ms('7days')
+    })
+
+    res.status(200).json({ success: { code: 201, message: "New user created", data: userData }});
     // res.status(201).header('x-auth-token', token).json({
     //   success: true,
     //   message: "New user created",

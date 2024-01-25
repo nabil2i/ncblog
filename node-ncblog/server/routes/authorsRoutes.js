@@ -6,18 +6,21 @@ const authorsController = require('../controllers/authorsController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
+router.use(auth);
+router.use(admin);
+
 router.route('/')
   // get all authors
-  .get([auth, admin], paginate(Author), authorsController.getAllAuthors)
+  .get(paginate(Author), authorsController.getAllAuthors)
   // create an author
-  .post([auth, admin], authorsController.createNewAuthor);
+  .post(authorsController.createNewAuthor);
 
 router.route('/:id')
   // get an author
   .get(authorsController.getAuthor)
   // update an author
-  .put([auth, admin], authorsController.updateAuthor)
+  .put(authorsController.updateAuthor)
   // delete an author
-  .delete([auth, admin], authorsController.deleteAuthor);
+  .delete(authorsController.deleteAuthor);
 
 module.exports = router;

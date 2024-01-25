@@ -2,7 +2,9 @@ const asyncHandler = require('express-async-handler')
 const _ = require('lodash');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
-const { User } = require('../models/user')
+const { User } = require('../models/user');
+const ms = require('ms');
+const jwt = require('jsonwebtoken');
 
 // @desc Login
 // @route POST /auth
@@ -19,7 +21,7 @@ const login = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
   let user = await User.findOne({ username });
-  if (!user)
+  if (!user || !user.isActive)
     return res.status(400).json({
       success: false,
       error: { code: 400, message: 'Invalid username or password'}
@@ -32,12 +34,21 @@ const login = asyncHandler(async (req, res) => {
       error: { code: 400, message: 'Invalid username or password'}
     });
   
-  const token = user.generateAuthToken();
+  const accessToken = user.generateAuthToken();
+  const refreshToken = user.generateRefreshToken();
   
-  const userData = _.pick(user, ['_id', 'username', 'email', 'firstname', 'lastname', 'token'])
-  // userData.token = token;
+  const userData = _.pick(user, ['_id', 'username', 'email', 'firstname', 'lastname', 'accessToken'])
+  userData.accessToken = accessToken;
   userData.isAuthenticated = true;
-  res.status(200).cookie('token' ,token, { httpOnly: true }).json({
+
+  res.cookie('jwt', refreshToken, {
+    httpOnly: true, // web bserver only
+    secure: true, // https only
+    sameSite: 'None',
+    maxAge: ms('7days')
+  })
+
+  res.status(200).json({
     success: true,
     data: userData
   });
@@ -47,11 +58,70 @@ const login = asyncHandler(async (req, res) => {
   //  })
 });
 
+
+// @desc Refresh token
+// @route GET /auth/refresh
+// @access Public
+const refresh = asyncHandler(async (req, res) => {
+  const cookies = req.cookies
+
+  if (!cookies.jwt) {
+    return res.status(401).json({
+      success: false,
+      error: {
+        code: 401,
+        message: 'Unauthorized'
+      }
+    });
+  }
+
+  const refreshToken = cookies.jwt
+
+  jwt.verify(
+    refreshToken,
+    process.env.NODE_APP_JWT_REFRESH_SECRET,
+    asyncHandler(async (err, decoded) => {
+      if (err)
+        return res.status(403).json({
+          success: false,
+          error: {
+            code: 403,
+            message: 'Forbidden'
+          }
+        });
+
+      const user = await User.findOne({ username: decoded.username });
+
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          error: {
+            code: 400,
+            message: 'Unauthorized'
+          }
+        });
+      }
+
+      const accessToken = user.generateAuthToken();
+
+      res.status(200).json({
+        success: true,
+        data: { accessToken }
+      });
+    })
+  );
+
+});
+
 // @desc Logout
 // @route POST /auth/logout
 // @access Private
 const logout = asyncHandler(async (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    sameSite: 'None',
+    secure: true,
+  });
   res.status(200).json({ success: true, message: "Logout successful"});
 });
 
@@ -67,5 +137,6 @@ function validate(req) {
 
 module.exports = {
   login,
-  logout
+  logout,
+  refresh
 }

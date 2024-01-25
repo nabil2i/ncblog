@@ -6,18 +6,21 @@ const genresController = require('../controllers/genresController.js');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
+router.use(auth);
+router.use(admin);
+
 router.route('/')
   // get all genres
-  .get([auth, admin], paginate(Genre), genresController.getAllGenres)
+  .get(paginate(Genre), genresController.getAllGenres)
   // create a genre
-  .post([auth, admin], genresController.createNewGenre);
+  .post(genresController.createNewGenre);
 
 router.route('/:id')
   // get a genre
-  .get([auth, admin], genresController.getGenre)
+  .get(genresController.getGenre)
   // update a genre
-  .put([auth, admin], genresController.updateGenre)
+  .put(genresController.updateGenre)
   // delete a genre
-  .delete([auth, admin], genresController.deleteGenre);
+  .delete(genresController.deleteGenre);
 
 module.exports = router;

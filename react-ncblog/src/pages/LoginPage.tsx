@@ -32,7 +32,7 @@ const LoginPage = () => {
         justifyContent="center"
         alignContent="center"
       >
-        <GridItem area="hero">
+        <GridItem area="hero" as="section">
           <Flex minH={{ lg: "70vh" }} width="full" position={"relative"}>
             {" "}
             <Show above="lg">
@@ -61,7 +61,7 @@ const LoginPage = () => {
           </Flex>
         </GridItem>
 
-        <GridItem area="loginform" background="">
+        <GridItem area="loginform" background="" as="section">
           <Flex minH={{ lg: "70vh" }} width="full" justifyContent="center">
             <Box px={4} width="full" maxWidth="450px">
               <LoginForm />

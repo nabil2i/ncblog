@@ -20,7 +20,7 @@ const EditPostPage = () => {
 
   return (
     <>
-      <Box pt={"80px"}>
+      <Box pt={"80px"} as="section">
         <PostForm post={post} />
       </Box>
     </>

@@ -23,7 +23,7 @@ const PostPage = () => {
 
   return (
     <>
-      <Flex direction="column" align="center" justify="start" mt={8}>
+      <Flex direction="column" mt={8}>
         <Box width="5%" display={{ base: "none", lg: "flex" }}></Box>
 
         <Box width="90%" maxW="680px">

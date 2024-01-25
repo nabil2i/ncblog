@@ -8,32 +8,69 @@ import {
   Button,
   Flex,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDeletePost from "../../../hooks/useDeletePost";
+import { useDeletePostMutation } from "../../../api/features/postsApiSlice";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const DeletePostButton = ({ postId }: { postId: string }) => {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const cancelRef = useRef<null | HTMLButtonElement>(null);
+  const toast = useToast();
 
   const onClose = () => {
     setIsOpen(false);
   };
 
-  const deletePost = useDeletePost(
-    () => {
-      navigate("/admin/posts");
+  const [deletePost, {isError, isLoading, isSuccess, error: deleteError}] = useDeletePostMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/admin/posts/");
       setIsOpen(false);
-    },
-    () => {
-      setIsDeleting(false);
-      setError(true);
+      toast({
+        title: "Delete a post",
+        description: "Successfully deleted the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "success",
+        position: "top",
+        icon: <DeleteIcon />,
+      });
     }
-  );
+  
+    if (isError) {
+      setIsDeleting(false);
+      // setError(true);
+      toast({
+        title: "Delete a post",
+        description: "Could  not delete the post",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "success",
+        position: "top",
+        icon: <DeleteIcon />,
+      });
+    }
+  }, [isError, isSuccess, navigate, toast]);
+
+  
+  // const deletePost = useDeletePost(
+  //   () => {
+  //     navigate("/admin/posts");
+  //     setIsOpen(false);
+  //   },
+  //   () => {
+  //     setIsDeleting(false);
+  //     setError(true);
+  //   }
+  // );
 
   // const deletePost = (postId: string) => {
   //   // console.log("deleting..."); return;
@@ -66,7 +103,8 @@ const DeletePostButton = ({ postId }: { postId: string }) => {
   const triggerDeletePost = (postId: string) => {
     if (postId) {
       setIsDeleting(true);
-      deletePost.mutate(postId);
+      deletePost(postId)
+      // deletePost.mutate(postId);
     }
   };
 
@@ -117,7 +155,7 @@ const DeletePostButton = ({ postId }: { postId: string }) => {
         </AlertDialogOverlay>
       </AlertDialog>
 
-      <AlertDialog
+      {/* <AlertDialog
         isOpen={error}
         leastDestructiveRef={cancelRef}
         onClose={() => setError(false)}
@@ -141,7 +179,7 @@ const DeletePostButton = ({ postId }: { postId: string }) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>
-      </AlertDialog>
+      </AlertDialog> */}
     </>
   );
 };

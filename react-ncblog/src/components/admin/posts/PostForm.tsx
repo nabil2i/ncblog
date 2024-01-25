@@ -1,4 +1,4 @@
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Alert,
   AlertDescription,
@@ -27,39 +27,26 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import "easymde/dist/easymde.min.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineMoreVert } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
+import {
+  useAddNewPostMutation,
+  useUpdatePostMutation,
+} from "../../../api/features/postsApiSlice";
 import Post from "../../../entities/Post";
-import useCreatePost from "../../../hooks/useCreatePost";
-import useUpdatePost from "../../../hooks/useUpdatePost";
 import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
 import useAuth from "../../navigationbar/useAuth";
 import UpdatePostAction from "./UpdatePostAction";
 import UpdatePostButton from "./UpdatePostButton";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { z } from "zod";
 
-// if doing optimistic update
-// interface CreatePostContext {
-//   prevPosts: Post[]
-
-// }
 export interface PostFormData {
   title: string;
   body: string;
   userId?: string;
 }
-// const schema = z.object({
-//   title: z
-//     .string()
-//     .min(20, { message: "Title must be at least 20 characters." }),
-//   body: z.string().min(50, { message: "Body must be at least 50 characters." }),
-// });
-
-// type FormData = z.infer<typeof schema>;
 
 interface Props {
   post?: Post;
@@ -70,13 +57,31 @@ const PostForm = ({ post }: Props) => {
   const [error, setError] = useState("");
   const [isSubmittingPost, setSubimittingPost] = useState(false);
   const toast = useToast();
-  const createPost = useCreatePost(
-    () => {
+
+  const [
+    addNewPost,
+    {
+      isError: isErrorAdd,
+      isLoading: isLoadingAdd,
+      isSuccess: isSuccessAdd,
+      error: addPostError,
+    },
+  ] = useAddNewPostMutation();
+  const [
+    updatePost,
+    {
+      isError: isErrorUpdate,
+      isLoading: isLoadingUpdate,
+      isSuccess: isSuccessUpdate,
+      error: updatePostError,
+    },
+  ] = useUpdatePostMutation();
+
+  useEffect(() => {
+    if (isSuccessAdd) {
       // reset();
       setSubimittingPost(false);
       navigate("/admin/posts/");
-    },
-    () => {
       toast({
         title: "Add a post",
         description: "Successfully added the post.",
@@ -86,29 +91,26 @@ const PostForm = ({ post }: Props) => {
         position: "top",
         icon: <AddIcon />,
       });
-    },
-    (errorMessage) => {
-      setSubimittingPost(false);
-      setError(errorMessage);
-      // toast({
-      //   title: "Add a post",
-      //   description: "An error occured while adding the post.",
-      //   duration: 5000, // 5s
-      //   isClosable: true,
-      //   status: "error",
-      //   position: "top",
-      //   icon: <AddIcon />,
-      // });
     }
-  );
-  const updatePost = useUpdatePost(
-    post?._id as string,
-    () => {
-      // reset();
+  
+    if (isErrorAdd) {
+      setSubimittingPost(false);
+      setError("Could not add the post");
+      // setError(addPostError);
+      toast({
+        title: "Add a post",
+        description: "An error occured while adding the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "error",
+        position: "top",
+        icon: <AddIcon />,
+      });
+    }
+  
+    if (isSuccessUpdate) {
       setSubimittingPost(false);
       navigate("/admin/posts/");
-    },
-    () => {
       toast({
         title: "Update a post",
         description: "Successfully updated the post.",
@@ -116,23 +118,26 @@ const PostForm = ({ post }: Props) => {
         isClosable: true,
         status: "success",
         position: "top",
-        icon: <AddIcon />,
+        icon: <EditIcon />,
       });
-    },
-    (errorMessage) => {
-      setSubimittingPost(false);
-      setError(errorMessage);
-      // toast({
-      //   title: "Update a post",
-      //   description: "An error occured while adding the post.",
-      //   duration: 5000, // 5s
-      //   isClosable: true,
-      //   status: "error",
-      //   position: "top",
-      //   icon: <AddIcon />,
-      // });
     }
-  );
+  
+    if (isErrorUpdate) {
+      setSubimittingPost(false);
+      setError("Could not update the post");
+      // setError(updatePostError);
+      toast({
+        title: "Update a post",
+        description: "An error occured while updating the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "error",
+        position: "top",
+        icon: <EditIcon />,
+      });
+    }
+  
+  }, [isErrorAdd, isErrorUpdate, isSuccessAdd, isSuccessUpdate, navigate, toast])
 
   const {
     handleSubmit,
@@ -142,25 +147,36 @@ const PostForm = ({ post }: Props) => {
     setValue,
     formState: { errors },
   } = useForm<PostFormData>();
-  // } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: PostFormData) => {
     // console.log(data);
     setSubimittingPost(true);
     if (post) {
-      updatePost.mutate({
-        title: data.title,
-        body: data.body,
-        userId: post?.user?._id,
-      });
-    } else {
-      createPost.mutate({
+      updatePost({
+        id: post._id,
         title: data.title,
         body: data.body,
         userId: state.user?._id,
       });
+      // updatePost.mutate({
+      //   title: data.title,
+      //   body: data.body,
+      //   userId: post?.user?._id,
+      // });
+    } else {
+      addNewPost({
+        title: data.title,
+        body: data.body,
+        userId: state.user?._id,
+      });
+      // createPost.mutate({
+      //   title: data.title,
+      //   body: data.body,
+      //   userId: state.user?._id,
+      // });
     }
   };
+
   const { isOpen, onClose } = useDisclosure();
   // const icnRef = React.useRef();
 
@@ -239,14 +255,14 @@ const PostForm = ({ post }: Props) => {
             templateColumns={{ base: "1fr", lg: "2f 1fr" }}
           >
             <GridItem area="main" p={4}>
-              {createPost.error && (
+              {addPostError && (
                 <Alert mb="15px" mt="10px" status="error">
                   <AlertIcon />
                   <AlertTitle></AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              {updatePost.error && (
+              {updatePostError && (
                 <Alert mb="15px" mt="10px" status="error">
                   <AlertIcon />
                   <AlertTitle></AlertTitle>
@@ -314,3 +330,67 @@ const PostForm = ({ post }: Props) => {
 };
 
 export default PostForm;
+
+// const createPost = useCreatePost(
+//   () => {
+//     // reset();
+//     setSubimittingPost(false);
+//     navigate("/admin/posts/");
+//   },
+//   () => {
+//     toast({
+//       title: "Add a post",
+//       description: "Successfully added the post.",
+//       duration: 5000, // 5s
+//       isClosable: true,
+//       status: "success",
+//       position: "top",
+//       icon: <AddIcon />,
+//     });
+//   },
+//   (errorMessage) => {
+//     setSubimittingPost(false);
+//     setError(errorMessage);
+//     // toast({
+//     //   title: "Add a post",
+//     //   description: "An error occured while adding the post.",
+//     //   duration: 5000, // 5s
+//     //   isClosable: true,
+//     //   status: "error",
+//     //   position: "top",
+//     //   icon: <AddIcon />,
+//     // });
+//   }
+// );
+// const updatePost = useUpdatePost(
+//   post?._id as string,
+//   () => {
+//     // reset();
+//     setSubimittingPost(false);
+//     navigate("/admin/posts/");
+//   },
+//   () => {
+//     toast({
+//       title: "Update a post",
+//       description: "Successfully updated the post.",
+//       duration: 5000, // 5s
+//       isClosable: true,
+//       status: "success",
+//       position: "top",
+//       icon: <AddIcon />,
+//     });
+//   },
+//   (errorMessage) => {
+//     setSubimittingPost(false);
+//     setError(errorMessage);
+//     // toast({
+//     //   title: "Update a post",
+//     //   description: "An error occured while adding the post.",
+//     //   duration: 5000, // 5s
+//     //   isClosable: true,
+//     //   status: "error",
+//     //   position: "top",
+//     //   icon: <AddIcon />,
+//     // });
+//   }
+// );

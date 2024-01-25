@@ -26,7 +26,13 @@ export const baseUrl = import.meta.env.DEV ? import.meta.env.VITE_API_BASE_URL :
 
 export const apiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl,
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    }, 
+  }),
   tagTypes: ['Post'],
   endpoints: (builder) => ({})
 })

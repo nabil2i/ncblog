@@ -1,11 +1,6 @@
 import {
   Box,
   Flex,
-  IconButton,
-  Link,
-  Menu,
-  MenuButton,
-  MenuList,
   Spinner,
   Table,
   Tbody,
@@ -15,24 +10,23 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { MdOutlineMoreHoriz } from "react-icons/md";
-import { NavLink } from "react-router-dom";
 // import usePosts from "../../../hooks/usePosts";
 import { useGetPostsQuery } from "../../../api/features/postsApiSlice";
-import BlogPostDate from "../../posts/BlogPostDate";
-import DeletePostAction from "./DeletePostAction";
-import EditPostAction from "./EditPostAction";
 import PostRow from "./PostRow";
+import { EntityId, EntityState } from "@reduxjs/toolkit";
+import Post from "../../../entities/Post";
 
 const PostsTable = () => {
   // from postsApiSlice
   const {
-    data: posts,
+    data,
     isError,
     isLoading,
     isSuccess,
-    error,
+    // error,
   } = useGetPostsQuery({});
+  const posts = data?.posts
+  // const pagination = data?.pagination;
   // console.log(posts)
 
   // from postsSlice
@@ -57,36 +51,42 @@ const PostsTable = () => {
       </Box>
     );
 
-  if (isError)
-    return (<Text> We encountered a problem.</Text>);
-  
-  if (isSuccess) {
-    const { ids } = posts;
-    const tableContent = ids?.length
-      ? ids.map(postId => <PostRow key={postId} postId={postId} />)
-      : (<Tr><Td> Nothing to show</Td></Tr>)
-      
-    return (
-      <>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th colSpan={2} fontSize={{ base: "sm", md: "md" }}>Post</Th>
-            </Tr>
-          </Thead>
+  if (isError) return <Text> We encountered a problem.</Text>;
 
-          <Tbody>
-            {tableContent}
-          </Tbody>
-        </Table>
-      </>
-    );
+  if (isSuccess) {
+    if (posts) {
+      const { ids } = posts;
+      const tableContent = ids?.length ? (
+        ids.map((postId: EntityId) => <PostRow key={postId} postId={postId} />)
+      ) : (
+        <Tr>
+          <Td> Nothing to show</Td>
+        </Tr>
+      );
+  
+      return (
+        <>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th colSpan={2} fontSize={{ base: "sm", md: "md" }}>
+                  Post
+                </Th>
+              </Tr>
+            </Thead>
+  
+            <Tbody>{tableContent}</Tbody>
+          </Table>
+        </>
+      );
+    }
   }
 };
 
 export default PostsTable;
 
-{/* <Td display={{ base: "none", lg: "flex" }}>
+{
+  /* <Td display={{ base: "none", lg: "flex" }}>
       <BlogPostDate date={post.createdAt} />
     </Td> 
     
@@ -96,4 +96,5 @@ export default PostsTable;
         <EditPostButton postId={post._id as string} />
         <DeletePostButton postId={post._id as string} />
       </Flex> 
-    </Td>*/}
+    </Td>*/
+}

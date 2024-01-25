@@ -12,6 +12,7 @@ const ErrorPage = () => {
         <Flex direction="column" minHeight="100vh">
           <NavBar />
           <Box
+            as="main"
             minHeight="100vh"
             px="80px"
             marginTop={{ base: "150px", md: "70px" }}

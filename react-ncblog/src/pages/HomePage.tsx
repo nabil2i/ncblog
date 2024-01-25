@@ -33,7 +33,9 @@ const HomePage = () => {
         <GridItem area="main">
           <Box>
             <HeroSection />
-            <ImageCarousel images={images}/>
+            <Box as="section">
+              <ImageCarousel images={images}/>
+            </Box>
             <LatestPosts />
           </Box>
         </GridItem>

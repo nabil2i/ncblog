@@ -10,13 +10,15 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDeletePost from "../../../hooks/useDeletePost";
 import { DeleteIcon } from "@chakra-ui/icons";
 import ms from "ms";
+import { useDeletePostMutation } from "../../../api/features/postsApiSlice";
 
 const DeletePostAction = ({ postId }: { postId: string }) => {
+  // console.log(postId)
   const navigate = useNavigate();
   // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,24 +30,57 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
     setIsOpen(false);
   };
 
-  const deletePost = useDeletePost(
-    () => {
-      navigate("/admin/posts");
+  const [deletePost, {isError, isLoading, isSuccess, error: deleteError}] = useDeletePostMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/admin/posts/");
       setIsOpen(false);
-    },
-    (errorMessage) => {
-      setIsDeleting(false);
-      // setError(true);
-      setIsOpen(false); toast({
-        title: "",
-        description: "This could not post not be deleted. " + errorMessage,
-        duration: ms("5s"),
+      toast({
+        title: "Delete a post",
+        description: "Successfully deleted the post",
+        duration: 5000, // 5s
         isClosable: true,
-        status: "error",
+        status: "success",
         position: "top",
+        icon: <DeleteIcon />,
       });
     }
-  );
+  
+    if (isError) {
+      setIsDeleting(false);
+      // setError(true);
+      toast({
+        title: "Delete a post",
+        description: "Could  not delete the post",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "success",
+        position: "top",
+        icon: <DeleteIcon />,
+      });
+    }
+  }, [isError, isSuccess, navigate, toast]);
+  
+  // const deletePost = useDeletePost(
+  //   () => {
+  //     setIsOpen(false);
+  //     setIsDeleting(false);
+  //     navigate("/admin/posts");
+  //   },
+  //   (errorMessage) => {
+  //     setIsDeleting(false);
+  //     // setError(true);
+  //     setIsOpen(false); toast({
+  //       title: "",
+  //       description: "This could not post not be deleted. " + errorMessage,
+  //       duration: ms("5s"),
+  //       isClosable: true,
+  //       status: "error",
+  //       position: "top",
+  //     });
+  //   }
+  // );
 
   // const deletePost = (postId: string) => {
   //   // console.log("deleting..."); return;
@@ -76,9 +111,11 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
   // };
 
   const triggerDeletePost = (postId: string) => {
+    console.log('triggerid', postId)
     if (postId) {
       setIsDeleting(true);
-      deletePost.mutate(postId);
+      deletePost(postId)
+      // deletePost.mutate(postId);
     }
   };
 

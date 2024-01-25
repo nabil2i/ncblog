@@ -4,7 +4,7 @@ import Post, { PostData } from "../../entities/Post";
 import { RootState } from '../store';
 import { apiSlice } from "./apiSlice";
 
-interface ServerResponse {
+export interface ServerResponse {
   success: boolean;
   data: {
     count: number;
@@ -40,14 +40,26 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
         const postsWithIds = responseData.data.results.map(post => {
           return { ...post, id: post._id };
         });
-        return postsAdapter.setAll(initialState, postsWithIds)
+
+        const pagination = {
+          totalCount: responseData.data.count,
+          currentPage: responseData.data.current,
+          prevPage: responseData.data.prev,
+          nextPage: responseData.data.next,
+          perPage: responseData.data.perPage,
+        };
+
+        return { 
+          posts: postsAdapter.setAll(initialState, postsWithIds),
+          pagination
+        }
       },
       // providesTags: ['Post']
       providesTags: (result) => {
-        if (result?.ids) {
+        if (result?.posts?.ids) {
           return [
             { type: 'Post', id: 'LIST' },
-            ...result.ids.map(id => ({ type: 'Post', id: String(id) } as TagDescription<"Post">)) // Convert EntityId to string
+            ...result.posts.ids.map(id => ({ type: 'Post', id: String(id) } as TagDescription<"Post">)) // Convert EntityId to string
           ];
         } else {
           return [{ type: 'Post', id: 'LIST' }];
@@ -67,9 +79,9 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
       ]
     }),
     updatePost: builder.mutation({
-      query: (postData: PostData) => ({
-        url: "/posts",
-        method: 'PATCH',
+      query: ({id, ...postData}) => ({
+        url: `/posts/${id}`,
+        method: 'PUT',
         body: {
           ...postData
         }
@@ -79,9 +91,9 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
       ]
     }),
     deletePost: builder.mutation({
-      query: ({ id }) => ({
-        url: "/posts",
-        method: 'PATCH',
+      query: (id) => ({
+        url: `/posts/${id}`,
+        method: 'DELETE',
         body: {id}
       }),
       invalidatesTags: (arg) => [
@@ -97,7 +109,7 @@ export const selectPostsResult = extendedPostsApiSlice.endpoints.getPosts.select
 // Memoized selectors
 const selectPostsData = createSelector(
   selectPostsResult,
-  (postsResult) => postsResult.data // normalized state with ids and entities
+  (postsResult) => postsResult.data?.posts // normalized state with ids and entities
 )
 
 export const { useGetPostsQuery, useAddNewPostMutation, useUpdatePostMutation, useDeletePostMutation } = extendedPostsApiSlice

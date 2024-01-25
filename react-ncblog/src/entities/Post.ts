@@ -23,7 +23,7 @@ export interface PostData {
   title: string;
   body: string;
   // tags?: string[];
-  // userId: string;
+  userId?: string;
 }
 
 export interface PostComment {

@@ -50,7 +50,8 @@ userSchema.methods.generateAuthToken = function () {
   const accessToken = jwt.sign(
     { _id: this._id, username: this.username, roles: this.roles, isActive: this.isActive },
     process.env.NODE_APP_JWT_ACCESS_SECRET,
-    { expiresIn: '1d' }
+    { expiresIn: '10s' }
+    // { expiresIn: '1d' }
   );
   // config.get(process.env.JWT_SECRET));
   return accessToken;
@@ -60,6 +61,7 @@ userSchema.methods.generateRefreshToken = function () {
   const refreshToken = jwt.sign(
     { username: this.username},
     process.env.NODE_APP_JWT_REFRESH_SECRET,
+    // { expiresIn: '20s' }
     { expiresIn: '7d' }
   );
   // config.get(process.env.JWT_SECRET));

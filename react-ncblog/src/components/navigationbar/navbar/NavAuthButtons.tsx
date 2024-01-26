@@ -1,16 +1,17 @@
 import { Button, HStack } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import useAuth from "../useAuth";
+import { authSatus } from "../../../app/features/auth/authSlice";
 // import PropTypes from 'prop-types';
 
 const VARIANT_COLOR = "teal";
 
 const NavAuthButtons = () => {
-  // const [state, dispatch] = useReducer(authReducer, {});
-  const { state } = useAuth();
+  const isAuthenticated = useSelector(authSatus);
+  // const { state } = useAuth();
   // console.log(state)
 
-  if (!state.isAuthenticated)
+  if (!isAuthenticated)
     return (
       <>
         <HStack>

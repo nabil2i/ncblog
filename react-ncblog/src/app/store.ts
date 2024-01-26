@@ -1,9 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit"
-import { setupListeners } from "@reduxjs/toolkit/query"
-import { apiSlice } from "./api/apiSlice"
-import rootReducer from "./features"
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { apiSlice } from "./api/apiSlice";
+import rootReducer from "./features";
 
 export const store = configureStore({
+  // reducer: {
+  //   [apiSlice.reducerPath]: apiSlice.reducer,
+  //   posts: postsReducer,
+  //   auth: authReducer,
+  // },
   reducer: rootReducer,
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true

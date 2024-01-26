@@ -22,6 +22,7 @@ import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
 import PostsPage from "./pages/admin/AdminPostsPage";
 import Profile from "./pages/admin/Profile";
+import PersistLogin from "./components/auth/PersistLogin";
 
 const router = createBrowserRouter([
   {
@@ -73,9 +74,11 @@ const router = createBrowserRouter([
   {
     path: "admin/",
     element: (
-      <Prefetch>
-        <AdminLayout />
-      </Prefetch>
+      <PersistLogin>
+        <Prefetch>
+          <AdminLayout />
+        </Prefetch>
+      </PersistLogin>
     ),
     errorElement: <AdminErrorPage />,
     children: [

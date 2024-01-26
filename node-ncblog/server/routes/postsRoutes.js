@@ -9,7 +9,7 @@ const admin = require('../middleware/admin');
 
 router.route('/')
   // get all blog posts
-  .get(paginate(Post), postsController.getAllPosts)
+  .get(auth, paginate(Post), postsController.getAllPosts)
   // create a blog post
   .post([auth, editor], postsController.createNewPost);
 

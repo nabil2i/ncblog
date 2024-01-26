@@ -83,7 +83,12 @@ const createNewUser = asyncHandler(async (req, res) => {
       maxAge: ms('7days')
     })
 
-    res.status(200).json({ success: { code: 201, message: "New user created", data: userData }});
+    const data = {
+      accessToken,
+      ...userData
+    }
+
+    res.status(200).json({ success: { code: 201, message: "New user created", data }});
     // res.status(201).header('x-auth-token', token).json({
     //   success: true,
     //   message: "New user created",

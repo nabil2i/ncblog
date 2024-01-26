@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
   const authHeader = req.headers.authorization || req.headers.authorization
-
+  // console.log(authHeader)
   if (!authHeader || !authHeader.startsWith || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({
       success: false,
@@ -14,7 +14,7 @@ module.exports = function (req, res, next) {
   }
 
   const accessToken = authHeader.split(' ')[1]
-  console.log(accessToken)
+  // console.log(accessToken)
 
   jwt.verify(
     accessToken,

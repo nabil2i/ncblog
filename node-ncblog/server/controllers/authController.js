@@ -48,9 +48,14 @@ const login = asyncHandler(async (req, res) => {
     maxAge: ms('7days')
   })
 
+  const data = {
+    accessToken,
+    ...userData
+  }
+
   res.status(200).json({
     success: true,
-    data: userData
+    data
   });
   // res.status(200).header('x-auth-token', token).json({
   //   success: true,
@@ -76,6 +81,7 @@ const refresh = asyncHandler(async (req, res) => {
   }
 
   const refreshToken = cookies.jwt
+  // console.log("refresh result resh token", refreshToken)
 
   jwt.verify(
     refreshToken,

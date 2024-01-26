@@ -1,8 +1,12 @@
-import { LockIcon } from "@chakra-ui/icons";
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
   Center,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -11,78 +15,120 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../app/features/auth/authApiSlice";
+import {
+  AuthErrorResponse,
+  AuthServerResponse,
+  setCredentials,
+} from "../../app/features/auth/authSlice";
 import LoginData from "../../entities/LoginData";
-import useLogin from "../../hooks/useLogin";
-import useAuth from "../navigationbar/useAuth";
+import usePersist from "../../hooks/usePersist";
 
 const VARIANT_COLOR = "teal";
 
 const LoginForm = () => {
-  const { dispatch } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const [persist, setPersist] = usePersist();
 
-  const login = useLogin(
-    (userData) => {
-      reset();
-      // console.log(user);
-      dispatch({ type: "LOGIN", userData: userData });
-      navigate("/");
-    },
-    () => {
-      toast({
-        title: "Log in",
-        description: "Successfully logged in.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "success",
-        position: "top",
-        icon: <LockIcon />,
-      });
-    },
-    (errorMessage) => {
-      // console.log(errorMessage);
-      toast({
-        title: "Log in",
-        description: errorMessage,
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "error",
-        position: "top",
-        icon: <LockIcon />,
-      });
-    }
-  );
+  const togglePersist = () => setPersist((prev: boolean) => !prev);
+
+  // useEffect(() => {
+  //   if (isError) {
+  //     toast({
+  //       title: "Log in",
+  //       description: error,
+  //       duration: 5000, // 5s
+  //       isClosable: true,
+  //       status: "error",
+  //       position: "top",
+  //       icon: <LockIcon />,
+  //     });
+  //   }
+  // }, [error, isError, toast])
+  // const { dispatch } = useAuth();
+  // const login = useLogin(
+  //   (userData) => {
+  //     reset();
+  //     // console.log(user);
+  //     dispatch({ type: "LOGIN", userData: userData });
+  //     navigate("/");
+  //   },
+  //   () => {
+  //     toast({
+  //       title: "Log in",
+  //       description: "Successfully logged in.",
+  //       duration: 5000, // 5s
+  //       isClosable: true,
+  //       status: "success",
+  //       position: "top",
+  //       icon: <LockIcon />,
+  //     });
+  //   },
+  //   (errorMessage) => {
+  //     // console.log(errorMessage);
+  //     toast({
+  //       title: "Log in",
+  //       description: errorMessage,
+  //       duration: 5000, // 5s
+  //       isClosable: true,
+  //       status: "error",
+  //       position: "top",
+  //       icon: <LockIcon />,
+  //     });
+  //   }
+  // );
 
   const {
     handleSubmit,
     register,
     reset,
-    formState: { errors,
-      // isSubmitting, isValid 
+    formState: {
+      errors,
+      // isSubmitting, isValid
     },
   } = useForm<LoginData>();
 
-  const onSubmit = (data: FieldValues) => {
+  const onSubmit = async (data: FieldValues) => {
     // console.log(`"Form fields": ${data}`);
-    login.mutate({
-      // _id: id,
-      username: data.username,
-      password: data.password,
-    });
+    try {
+      const response = (await login({
+        username: data.username,
+        password: data.password,
+      }).unwrap()) 
+      // console.log("response:", response)
+      dispatch(setCredentials(response));
+      reset();
+      navigate("/admin/posts");
+    } catch (error) {
+      const err = error as AuthErrorResponse
+      // console.log("error", error);
+      setError(err.data.error.message);
+    }
+
+    // login.mutate({
+    //   // _id: id,
+    //   username: data.username,
+    //   password: data.password,
+    // });
   };
 
   return (
     <Box p={4} my={8} textAlign="center">
-      {/* {login.error && (
-       <Alert mb="15px" mt="10px" status="error">
-            <AlertIcon />
-            <AlertTitle></AlertTitle>
-            <AlertDescription>{login.error.response?.data  as string}</AlertDescription>
-          </Alert>
-        )} */}
+      {error && (
+        <Alert mb="15px" mt="10px" status="error">
+          <AlertIcon />
+          <AlertTitle></AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
       <Center>
         <Heading as="h2">Log in</Heading>
       </Center>
@@ -140,9 +186,9 @@ const LoginForm = () => {
 
         <HStack justifyContent="space-between" mt={4}>
           <Box>
-            {/* <Checkbox border={1} colorScheme={VARIANT_COLOR} borderColor="teal">
+            <Checkbox border={1} colorScheme={VARIANT_COLOR} borderColor="teal" onChange={togglePersist} checked={persist}>
               Remember me
-            </Checkbox> */}
+            </Checkbox>
           </Box>
           <Box color={`${VARIANT_COLOR}.500`}>
             <NavLink
@@ -160,10 +206,11 @@ const LoginForm = () => {
           width="full"
           mt={4}
           type="submit"
-          disabled={login.isLoading}
+          // disabled={login.isLoading}
+          disabled={isLoading}
           colorScheme={VARIANT_COLOR}
         >
-          {login.isLoading ? "Logging in" : "Log in"}
+          {isLoading ? "Logging in" : "Log in"}
         </Button>
       </form>
     </Box>

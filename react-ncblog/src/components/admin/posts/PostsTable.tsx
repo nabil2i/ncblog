@@ -24,7 +24,7 @@ const PostsTable = () => {
     isLoading,
     isSuccess,
     // error,
-  } = useGetPostsQuery(undefined, {
+  } = useGetPostsQuery('postsList', {
     pollingInterval: ms("60s"),
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,

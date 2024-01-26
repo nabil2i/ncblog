@@ -10,9 +10,16 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../useAuth";
+import { useSendLogoutMutation } from "../../../app/features/auth/authApiSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@reduxjs/toolkit/query";
+import { authSatus } from "../../../app/features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 // import useAuth from "./navigationbar/useAuth";
 
 // interface Props {
@@ -23,12 +30,39 @@ const Profile = () => {
   // const [state, dispatch] = useReducer(authReducer, {});
   // const { state, dispatch} = useContext(AuthContext);
   // const { state, dispatch } = useAuth();
-  const { state, dispatch } = useAuth();
+  // const { state, dispatch } = useAuth();
   // console.log(state)
+  const toast = useToast();
+  const isAuthenticated = useSelector(authSatus);
+  const dispatch = useDispatch();
+  const [sendLogout, {isError, isLoading, isSuccess, error}] = useSendLogoutMutation()
 
   const navigate = useNavigate();
 
-  if (state.isAuthenticated)
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/login')
+    }
+  }, [isSuccess, navigate])
+
+  if (isLoading) {
+    return <p>Login out...</p>
+  }
+
+  if (isError) {
+    // toast({
+    //   title: "Log in",
+    //   description: error?.data?.message,
+    //   duration: 5000, // 5s
+    //   isClosable: true,
+    //   status: "error",
+    //   position: "top",
+    // });
+    return <p>error.data.message</p>
+  }
+
+
+  if (isAuthenticated)
     return (
       <>
         <Box>
@@ -62,7 +96,7 @@ const Profile = () => {
               </Center>
               <br />
               <Center>
-                <p>{state.user?.username}</p>
+                <p>{"haha"}</p>
               </Center>
               <br />
               <MenuDivider />
@@ -71,9 +105,12 @@ const Profile = () => {
               </MenuItem>
               <MenuItem onClick={() => navigate("/myposts")}>My Posts</MenuItem>
               <MenuItem onClick={() => navigate("/account")}>Account</MenuItem>
-              <MenuItem onClick={() => dispatch({ type: "LOGOUT" })}>
+              <MenuItem onClick={() => sendLogout(0)}>
                 Logout
               </MenuItem>
+              {/* <MenuItem onClick={() => dispatch({ type: "LOGOUT" })}>
+                Logout
+              </MenuItem> */}
             </MenuList>
           </Menu>
         </Box>

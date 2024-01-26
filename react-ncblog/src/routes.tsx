@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Prefetch from "./app/features/Prefetch";
 import SignUpPage from "./assets/SignUpPage";
+import PersistLogin from "./components/auth/PersistLogin";
+import RequireAuth from "./components/common/RequireAuth";
 import AccountPage from "./pages/AccountPage";
 import AddPostPage from "./pages/AddPostPage";
 import BlogPage from "./pages/BlogPage";
@@ -22,7 +24,6 @@ import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
 import PostsPage from "./pages/admin/AdminPostsPage";
 import Profile from "./pages/admin/Profile";
-import PersistLogin from "./components/auth/PersistLogin";
 
 const router = createBrowserRouter([
   {
@@ -30,68 +31,92 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        index: true,
-        element: (
-          <HomePage />
-          // <PrivateRoute>
-          //   <HomePage />
-          // </PrivateRoute>
-        ),
-      },
-      {
-        path: "blog",
-        children: [
-          { index: true, element: <BlogPage /> },
-          { path: ":id", element: <PostPage /> },
-          { path: "write", element: <AddPostPage /> },
-        ],
-      },
-      {
-        path: "/myposts",
-        element: <MyPostsPage />,
-        children: [
-          { index: true, element: <MyPostsPage /> },
-          { path: ":id", element: <PostPage /> },
-          { path: "edit/:id", element: <EditPostPage /> },
-          { path: "write", element: <AddPostPage /> },
-        ],
-      },
-      { path: "search", element: <SearchPage /> },
-      {
-        path: "books",
-        children: [
-          { index: true, element: <BooksPage /> },
-          { path: ":id", element: <BookPage /> },
-        ],
-      },
-      { path: "account", element: <AccountPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "sign-up", element: <SignUpPage /> },
+
+      {
+        path: "",
+        element: <PersistLogin />,
+        children: [
+          {
+            path: "",
+            element: <Prefetch />,
+            children: [
+              { index: true, element: <HomePage /> },
+              {
+                path: "blog",
+                children: [
+                  { index: true, element: <BlogPage /> },
+                  { path: ":id", element: <PostPage /> },
+                  {
+                    path: "write",
+                    element: <RequireAuth allowedRoles={["Editor"]} />,
+                    children:[
+                      { index: true, element: <AddPostPage />}
+                    ]
+                  },
+                ],
+              },
+              {
+                path: "/myposts",
+                element: <RequireAuth allowedRoles={["Editor", "Admin"]} />,
+                children: [
+                  { index: true, element: <MyPostsPage /> },
+                  { path: ":id", element: <PostPage /> },
+                  { path: "edit/:id", element: <EditPostPage /> },
+                  { path: "write", element: <AddPostPage /> },
+                ],
+              },
+              { path: "search", element: <SearchPage /> },
+              {
+                path: "books",
+                children: [
+                  { index: true, element: <BooksPage /> },
+                  { path: ":id", element: <BookPage /> },
+                ],
+              },
+              { path: "account", element: <AccountPage /> },
+              //end
+            ],
+          },
+        ],
+      },
     ],
   },
 
   {
     path: "admin/",
-    element: (
-      <PersistLogin>
-        <Prefetch>
-          <AdminLayout />
-        </Prefetch>
-      </PersistLogin>
-    ),
+    element: <AdminLayout></AdminLayout>,
     errorElement: <AdminErrorPage />,
     children: [
-      { index: true, element: <Dashboard /> },
-      { path: "dashboard", element: <Dashboard /> },
-      { path: "profile", element: <Profile /> },
       {
-        path: "posts",
+        path: "",
+        element: <PersistLogin />,
         children: [
-          { index: true, element: <PostsPage /> },
-          { path: ":id", element: <AdminPostPage /> },
-          { path: "edit/:id", element: <AdminPostEditPage /> },
-          { path: "new", element: <AdminAddPostPage /> },
+          {
+            path: "",
+            element: <RequireAuth allowedRoles={["Admin"]} />,
+            children: [
+              {
+                path: "",
+                element: <Prefetch />,
+                children: [
+                  { index: true, element: <Dashboard /> },
+                  { path: "dashboard", element: <Dashboard /> },
+                  { path: "profile", element: <Profile /> },
+                  {
+                    path: "posts",
+                    children: [
+                      { index: true, element: <PostsPage /> },
+                      { path: ":id", element: <AdminPostPage /> },
+                      { path: "edit/:id", element: <AdminPostEditPage /> },
+                      { path: "new", element: <AdminAddPostPage /> },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
         ],
       },
     ],

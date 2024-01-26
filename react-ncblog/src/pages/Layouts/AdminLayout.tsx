@@ -22,7 +22,6 @@ const AdminLayout = () => {
   // console.log("navSize: ", navSize);
   // console.log("showMobileSidebar: ", showMobileSidebar);
   return (
-    <AuthProvider>
       <Box position="relative">
         <Flex
           as="header"
@@ -83,7 +82,7 @@ const AdminLayout = () => {
           </Box>
         </Flex>
       </Box>
-    </AuthProvider>
+    // </AuthProvider>
   );
 };
 

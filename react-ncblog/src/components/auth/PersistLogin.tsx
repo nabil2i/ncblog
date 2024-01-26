@@ -1,14 +1,17 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useRefreshMutation } from "../../app/features/auth/authApiSlice";
 import { selectCurrentToken } from "../../app/features/auth/authSlice";
 import usePersist from "../../hooks/usePersist";
+// { children }: { children: ReactNode }
 
-const PersistLogin = ({ children }: { children: ReactNode }) => {
+const PersistLogin = () => {
   const [persist] = usePersist();
   const token = useSelector(selectCurrentToken);
   const effectRan = useRef(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [trueSuccess, setTrueSuccess] = useState(false);
 
@@ -41,32 +44,27 @@ const PersistLogin = ({ children }: { children: ReactNode }) => {
   }, []);
 
   let content;
+
   if (!persist) {
-    // persist: no
-    console.log("no persist");
-    content = children;
+    content = <Outlet />;
   } else if (isLoading) {
     //persist: yes, token: no
-    console.log("loading");
     content = <p>Loading...</p>;
   } else if (isError) {
     //persist: yes, token: no
-    console.log("error");
-    content = (
-      <p className="errmsg">
-        {/* {error.data?.message} */}
-        <Link to="/login">Please login again</Link>.
-      </p>
-    );
+    if (location.pathname.includes("/admin")) content = <Navigate to={"/login"}></Navigate>;
+   
+    <p className="errmsg">
+      {/* {error.data?.message} */}
+      <Link to="/login">Please login again</Link>.
+    </p>
   } else if (isSuccess && trueSuccess) {
     //persist: yes, token: yes
-    console.log("success");
-    content = children;
+    content = <Outlet />;
   } else if (token && isUninitialized) {
     //persist: yes, token: yes
-    console.log("token and uninit");
     console.log(isUninitialized);
-    content = children;
+    content = <Outlet />;
   }
 
   return content;

@@ -13,13 +13,14 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../useAuth";
+// import useAuth from "../useAuth";
 import { useSendLogoutMutation } from "../../../app/features/auth/authApiSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@reduxjs/toolkit/query";
 import { authSatus } from "../../../app/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import useAuth from "../../../hooks/useAuth";
 // import useAuth from "./navigationbar/useAuth";
 
 // interface Props {
@@ -36,6 +37,9 @@ const Profile = () => {
   const isAuthenticated = useSelector(authSatus);
   const dispatch = useDispatch();
   const [sendLogout, {isError, isLoading, isSuccess, error}] = useSendLogoutMutation()
+  const { isAdmin, isEditor, firstname, lastname} = useAuth();
+
+
 
   const navigate = useNavigate();
 
@@ -96,15 +100,28 @@ const Profile = () => {
               </Center>
               <br />
               <Center>
-                <p>{"haha"}</p>
+                <p>{firstname + " " + lastname}</p>
               </Center>
               <br />
               <MenuDivider />
-              <MenuItem onClick={() => navigate("/blog/write")}>
-                Create a post
-              </MenuItem>
-              <MenuItem onClick={() => navigate("/myposts")}>My Posts</MenuItem>
+              {(isAdmin || isEditor) &&( 
+                <>
+                  <MenuItem onClick={() => navigate("/blog/write")}>
+                    Create a post
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate("/myposts")}>
+                    My Posts
+                  </MenuItem>
+                </>
+              )}
               <MenuItem onClick={() => navigate("/account")}>Account</MenuItem>
+              {isAdmin && 
+                <>
+                  <MenuItem onClick={() => navigate("/admin")}>
+                    Admin Section
+                  </MenuItem>
+                </>
+              }
               <MenuItem onClick={() => sendLogout(0)}>
                 Logout
               </MenuItem>

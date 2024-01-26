@@ -19,6 +19,8 @@ import "./index.css";
 import router from "./routes.tsx";
 import theme from "./theme.ts";
 import { disableReactDevTools} from '@fvilers/disable-react-devtools';
+import '@radix-ui/themes/styles.css';
+import { Theme } from '@radix-ui/themes';
 
 if (process.env.NODE_ENV === 'production') disableReactDevTools();
 
@@ -38,7 +40,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          <RouterProvider router={router} />
+        {/* <Theme accentColor="crimson" grayColor="sand" radius="large" scaling="95%"> */}
+            <RouterProvider router={router} />
+          {/* </Theme> */}
         </Provider>
         <ReactQueryDevtools />
       </QueryClientProvider>

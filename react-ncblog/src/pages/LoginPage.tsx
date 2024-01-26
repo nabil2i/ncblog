@@ -1,21 +1,23 @@
 import { Box, Flex, Grid, GridItem, Image, Show } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { authSatus } from "../app/features/auth/authSlice";
 import HomeHero from "../assets/islam2.jpg";
 import LoginForm from "../components/auth/LoginForm";
-import useAuth from "../components/navigationbar/useAuth";
 
 const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { state } = useAuth();
+  const isAuthenticated = useSelector(authSatus);
   const redirect = new URLSearchParams(location.search).get("redirect");
 
   useEffect(() => {
-    if (state.isAuthenticated) {
-      navigate(redirect || "/");
+    if (isAuthenticated) {
+      navigate(redirect ||"/");
     }
-  }, [navigate, redirect, state.isAuthenticated]);
+  }, [navigate, redirect, isAuthenticated]);
+
   return (
     <>
       <Box p={10}>

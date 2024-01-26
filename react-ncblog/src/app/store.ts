@@ -3,6 +3,9 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiSlice } from "./api/apiSlice";
 import rootReducer from "./features";
 
+let flag = true;
+if (process.env.NODE_ENV === 'production') flag = false;
+
 export const store = configureStore({
   // reducer: {
   //   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -11,7 +14,7 @@ export const store = configureStore({
   // },
   reducer: rootReducer,
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware),
-  devTools: true
+  devTools: flag
 })
 
 setupListeners(store.dispatch)

@@ -1,4 +1,3 @@
-const asyncHandler = require('express-async-handler') // to avoid writing try/catch 
 const _ = require('lodash');
 const Joi = require('joi');
 const auth = require('../middleware/auth');
@@ -12,9 +11,9 @@ const paginate = require('../middleware/paginate');
 // @desc Get all categories
 // @route GET /categories
 // @access Private
-const getAllCategories = asyncHandler(async (req, res) => {
+const getAllCategories = async (req, res) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
-});
+};
 
 // @desc Create a category
 // @route POST /categories

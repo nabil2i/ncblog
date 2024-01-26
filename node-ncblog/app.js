@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('express-async-errors');
 const mongoose = require('mongoose');
 const express = require('express');
 const { logEvents } = require('./server/middleware/logger')

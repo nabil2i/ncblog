@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import AddPostButton from "../../components/admin/posts/AddPostButton";
 import PostsTable from "../../components/admin/posts/PostsTable";
-import { NavBar } from "../../components/navigationbar";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -18,7 +17,6 @@ const PostsPage = () => {
   return (
     <>
       <Flex direction="column" p={"0"}>
-        <NavBar />
         <Flex justify="end" p={0}>
           <AddPostButton />
         </Flex>

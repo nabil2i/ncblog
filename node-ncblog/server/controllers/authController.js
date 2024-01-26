@@ -1,4 +1,3 @@
-const asyncHandler = require('express-async-handler') 
 const _ = require('lodash');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
@@ -9,7 +8,7 @@ const jwt = require('jsonwebtoken');
 // @desc Login
 // @route POST /auth
 // @access Public
-const login = asyncHandler(async (req, res) => {
+const login = async (req, res) => {
   const { error } = validate(req.body);
       
   if (error)
@@ -37,9 +36,9 @@ const login = asyncHandler(async (req, res) => {
   const accessToken = user.generateAuthToken();
   const refreshToken = user.generateRefreshToken();
   
-  const userData = _.pick(user, ['_id', 'username', 'email', 'firstname', 'lastname', 'accessToken'])
-  userData.accessToken = accessToken;
-  userData.isAuthenticated = true;
+  // const userData = _.pick(user, ['_id', 'username', 'email', 'firstname', 'lastname', 'accessToken'])
+  // userData.accessToken = accessToken;
+  // userData.isAuthenticated = true;
 
   res.cookie('jwt', refreshToken, {
     httpOnly: true, // web bserver only
@@ -50,7 +49,7 @@ const login = asyncHandler(async (req, res) => {
 
   const data = {
     accessToken,
-    ...userData
+    // ...userData
   }
 
   res.status(200).json({
@@ -61,13 +60,13 @@ const login = asyncHandler(async (req, res) => {
   //   success: true,
   //   data: userData
   //  })
-});
+};
 
 
 // @desc Refresh token
 // @route GET /auth/refresh
 // @access Public
-const refresh = asyncHandler(async (req, res) => {
+const refresh = async (req, res) => {
   const cookies = req.cookies
 
   if (!cookies.jwt) {
@@ -86,7 +85,7 @@ const refresh = asyncHandler(async (req, res) => {
   jwt.verify(
     refreshToken,
     process.env.NODE_APP_JWT_REFRESH_SECRET,
-    asyncHandler(async (err, decoded) => {
+    async (err, decoded) => {
       if (err)
         return res.status(403).json({
           success: false,
@@ -114,22 +113,22 @@ const refresh = asyncHandler(async (req, res) => {
         success: true,
         data: { accessToken }
       });
-    })
+    }
   );
 
-});
+};
 
 // @desc Logout
 // @route POST /auth/logout
 // @access Private
-const logout = asyncHandler(async (req, res) => {
+const logout = async (req, res) => {
   res.clearCookie('jwt', {
     httpOnly: true,
     sameSite: 'None',
     secure: true,
   });
   res.status(200).json({ success: true, message: "Logout successful"});
-});
+};
 
 
 function validate(req) {

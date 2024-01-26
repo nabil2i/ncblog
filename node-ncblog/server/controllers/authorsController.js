@@ -1,4 +1,3 @@
-const asyncHandler = require('express-async-handler') // to avoid writing try/catch 
 const _ = require('lodash');
 const { Author, validateAuthor } = require('../models/author');
 
@@ -6,9 +5,9 @@ const { Author, validateAuthor } = require('../models/author');
 // @desc Get all authors
 // @route GET /authors
 // @access Public
-const getAllAuthors = asyncHandler(async (req, res) => {
+const getAllAuthors = async (req, res) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
-});
+};
 
 // @desc Create a author
 // @route POST /authors

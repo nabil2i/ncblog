@@ -11,23 +11,30 @@ import {
 } from "@chakra-ui/react";
 import { EntityId } from "@reduxjs/toolkit";
 import { MdOutlineMoreHoriz } from "react-icons/md";
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { selectPostById } from "../../../app/features/posts/postsApiSlice";
-import { RootState } from "../../../app/store";
+import { useGetPostsQuery } from "../../../app/features/posts/postsApiSlice";
 import BlogPostDate from "../../posts/BlogPostDate";
 import DeletePostAction from "./DeletePostAction";
 import EditPostAction from "./EditPostAction";
+import { memo } from "react";
 
 const PostRow = ({ postId }: { postId: EntityId }) => {
-  const id = postId.toString();
+  // const id = postId.toString();
   // console.log(postId);
   // console.log(id);
 
   // const state = useSelector((state: RootState) => state);
   // console.log("state: ", state);
 
-  const post = useSelector((state: RootState) => selectPostById(state, id));
+  //
+  const { post } = useGetPostsQuery("postsList", {
+    selectFromResult: ({ data }) => ({
+      post: data?.posts.entities[postId],
+    }),
+  });
+
+  // // NORMAL SELECTOR
+  // const post = useSelector((state: RootState) => selectPostById(state, id));
   // console.log(post);
 
   if (post)
@@ -78,4 +85,6 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
   else return null;
 };
 
-export default PostRow;
+const memoizedPost = memo(PostRow)
+
+export default memoizedPost;

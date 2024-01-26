@@ -1,4 +1,3 @@
-const asyncHandler = require('express-async-handler') // to avoid writing try/catch 
 const _ = require('lodash');
 const Joi = require('joi');
 const auth = require('../middleware/auth');
@@ -12,9 +11,9 @@ const paginate = require('../middleware/paginate');
 // @desc Get all posts
 // @route GET /posts
 // @access Public
-const getAllPosts = asyncHandler(async (req, res) => {
+const getAllPosts = async (req, res) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
-});
+};
 
 // @desc Create a post
 // @route POST /posts
@@ -261,11 +260,11 @@ const deletePost = async (req, res) => {
 // @desc Get all posts
 // @route GET /posts/:id/comments
 // @access Private
-const getPostComments = asyncHandler(async (req, res) => {
+const getPostComments = async (req, res) => {
   const postId = req.params.id;
   const comments = await Comment.find().sort("-createdAt");
   res.status(200).json({ success: true, message: "Get all comments of the post" });
-});
+};
 
 // @desc Create a comment
 // @route POST /posts/:id/comments
@@ -333,7 +332,7 @@ const createComment = async (req, res) => {
 // @desc Create a comment
 // @route GET /posts/:id/comments/:cid
 // @access Private
-const getComment = asyncHandler(async (req, res) => {
+const getComment = async (req, res) => {
   const commentId = req.params.cid;
 
   if (!commentId) {
@@ -350,12 +349,12 @@ const getComment = asyncHandler(async (req, res) => {
     message: "Get a comment of a post",
     data: comment
   });
-});
+};
 
 // @desc Create a comment
 // @route UPDATE /posts/:id/comments/:cid
 // @access Private
-const updateComment = asyncHandler(async (req, res) => {
+const updateComment = async (req, res) => {
   const commentId = req.params.cid;
 
   if (!commentId) {
@@ -390,12 +389,12 @@ const updateComment = asyncHandler(async (req, res) => {
       success: true,
       message: `The comment with ID ${comment._id} is updated`
     });
-});
+};
 
 // @desc Create a comment
 // @route DELETE /posts/:id/comments/:cid
 // @access Private
-const deleteComment = asyncHandler(async (req, res) => {
+const deleteComment = async (req, res) => {
   const commentId = req.params.cid;
 
   if (!commentId) {
@@ -418,7 +417,7 @@ const deleteComment = asyncHandler(async (req, res) => {
     success: true,
     message: "Comment and replies deleted"
   });
-});
+};
 
 
 const deleteReplies = async (replyIds) => {

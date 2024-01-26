@@ -1,25 +1,29 @@
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import { store } from "../store";
 import { extendedPostsApiSlice } from "./posts/postsApiSlice";
-import { Outlet } from "react-router-dom";
 // import { Outlet } from 'react-router-dom';
 // { children }: { children: ReactNode }
 
 const Prefetch = () => {
   useEffect(() => {
     console.log("subscribing");
-    const posts = store.dispatch(
-      extendedPostsApiSlice.endpoints.getPosts.initiate({})
+    store.dispatch(
+      extendedPostsApiSlice.util.prefetch("getPosts", "postsList", {
+        force: true,
+      })
+      // const posts = store.dispatch(
+      //   extendedPostsApiSlice.endpoints.getPosts.initiate({})
     );
 
-    return () => {
-      console.log("unsubscribing");
-      posts.unsubscribe();
-    };
+    // return () => {
+    //   console.log("unsubscribing");
+    //   posts.unsubscribe();
+    // };
   }, []);
 
   // return children;
-  return (<Outlet />)
+  return <Outlet />;
 };
 
 export default Prefetch;

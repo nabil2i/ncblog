@@ -2,10 +2,12 @@ import { Box, Grid, GridItem, VStack  } from "@chakra-ui/react";
 import PageHeading from "../components/common/PageHeading";
 import PostGrid from "../components/posts/PostGrid";
 import usePostQueryStore from "../store";
+import useTitle from "../hooks/useTitle";
 
 const BlogPage = () => {
   const setPage = usePostQueryStore((s) => s.setPage);
-
+  useTitle('Blog');
+  
   return (
     <Box
     // mt={{ base: "50px", }}

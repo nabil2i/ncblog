@@ -1,5 +1,3 @@
-
-const asyncHandler = require('express-async-handler')
 const _ = require('lodash');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
@@ -9,7 +7,7 @@ const { Post } = require('../models/post');
 // @desc Get all users
 // @route GET /users
 // @access Private
-const getAllUsers = asyncHandler(async (req, res) => {
+const getAllUsers = async (req, res) => {
   const users = await User.find().select('-password').lean().sort('name');
   if (!users.length) {
     return res.status(400).json({
@@ -18,12 +16,12 @@ const getAllUsers = asyncHandler(async (req, res) => {
     });
   }
     res.status(200).json({ success: true, data: users });
-});
+};
 
 // @desc Create new user
 // @route POST /users
 // @access Private
-const createNewUser = asyncHandler(async (req, res) => {
+const createNewUser = async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).json({
     success: false,
@@ -72,9 +70,9 @@ const createNewUser = asyncHandler(async (req, res) => {
     const accessToken = user.generateAuthToken();
     const refreshToken = user.generateRefreshToken();
     
-    const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email', 'accessToken'])
-    userData.accessToken = accessToken;
-    userData.isAuthenticated = true;
+    // const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email', 'accessToken'])
+    // userData.accessToken = accessToken;
+    // userData.isAuthenticated = true;
     
     res.cookie('jwt', refreshToken, {
       httpOnly: true, // web bserver only
@@ -85,7 +83,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 
     const data = {
       accessToken,
-      ...userData
+      // ...userData
     }
 
     res.status(200).json({ success: { code: 201, message: "New user created", data }});
@@ -98,12 +96,12 @@ const createNewUser = asyncHandler(async (req, res) => {
     res.status(400).json({ error: {
       code: 400, message: "Invalid user details received"}});
   }
-});
+};
 
 // @desc Get a user
 // @route GET /users/:id
 // @access Private
-const getUser = asyncHandler(async (req, res) => {
+const getUser = async (req, res) => {
   const userId = req.params.id
   if (!userId) {
     return res.status(400).json({
@@ -121,12 +119,12 @@ const getUser = asyncHandler(async (req, res) => {
     }
   });
   res.status(200).json({ success: true, data: user});
-});
+};
 
 // @desc Update a user
 // @route PUT /users/:id
 // @access Private
-const updateUser = asyncHandler(async (req, res) => {
+const updateUser = async (req, res) => {
   const { username, email, isActive, password } = req.body
   if (!username || typeof isActive !== 'boolean')
     return res.status(400).json({
@@ -143,7 +141,8 @@ const updateUser = asyncHandler(async (req, res) => {
       error: { code: 400, message: "User not found"}
     });
 
-  const duplicate = await User.findOne({ username }).lean().exec();
+  const duplicate = await User.findOne({ username })
+    .collation({ locale: 'en', strength: 2}).lean().exec();
   if (duplicate && duplicate._id.toString() !== userId) {
       return res.status(409).json({
         success: false, 
@@ -203,12 +202,12 @@ const updateUser = asyncHandler(async (req, res) => {
     
   // if (!user) return res.status(400).json({ success: false, error: { code: 400, message: "The user with the given ID was not found."}});
   // res.status(200).json({ success: true, message: `${updatedUser.username} updated`});
-});
+};
 
 // @desc Delete a user
 // @route DELETE /users/:id
 // @access Private
-const deleteUser = asyncHandler(async (req, res) => {
+const deleteUser = async (req, res) => {
   const userId = req.params.id
   if (!userId) {
     return res.status(400).json({
@@ -242,22 +241,22 @@ const deleteUser = asyncHandler(async (req, res) => {
     success: true,
     message: `${user.username} with ID ${user._id} was deleted`
   });
-});
+};
 
 
 // @desc Get current User
 // @route GET /users/me
 // @access Private
-const getCurrentUser = asyncHandler(async (req, res) => {
+const getCurrentUser = async (req, res) => {
   const userId = req.user._id
   const user = await User.findById(userId).select('-password').lean().exec();
   res.status(200).json({ success: true, data: user});
-});
+};
 
 // @desc Update current user
 // @route PUT /users/me
 // @access Private
-const updateCurrentUser = asyncHandler(async (req, res) => {
+const updateCurrentUser = async (req, res) => {
   const { username, email, isActive, password, firstname, lastname } = req.body
   // if (!username || typeof isActive !== 'boolean')
   if (!username && !email && !(firstname && lastname) && !password)
@@ -283,7 +282,8 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
     });
   
   if (username) {
-    const duplicate = await User.findOne({ username }).lean().exec();
+    const duplicate = await User.findOne({ username })
+      .collation({ locale: 'en', strength: 2}).lean().exec();
       if (duplicate && duplicate._id.toString() !== userId) {
         return res.status(409).json({
           success: false, 
@@ -363,12 +363,12 @@ const updateCurrentUser = asyncHandler(async (req, res) => {
     
   // if (!user) return res.status(400).json({ success: false, error: { code: 400, message: "The user with the given ID was not found."}});
   // res.status(200).json({ success: true, message: `${updatedUser.username} updated`});
-});
+};
 
 // @desc Delete current user
 // @route DELETE /users/me
 // @access Private
-const deleteCurrentUser = asyncHandler(async (req, res) => {
+const deleteCurrentUser = async (req, res) => {
   const userId = req.user._id
   if (!userId) {
     return res.status(400).json({
@@ -402,14 +402,14 @@ const deleteCurrentUser = asyncHandler(async (req, res) => {
     success: true,
     message: `${user.username} with ID ${user._id} was deleted`
   });
-});
+};
 
 
 
 // @desc Get current User Posts
 // @route GET /users/me/posts
 // @access Private
-const getCurrentUserPosts = asyncHandler(async (req, res) => {
+const getCurrentUserPosts = async (req, res) => {
   const userId = req.user._id
   if (!userId) {
     return res.status(400).json({
@@ -427,7 +427,7 @@ const getCurrentUserPosts = asyncHandler(async (req, res) => {
     .lean().exec();
 
   res.status(200).json({ success: true, data: userPosts });
-});
+};
 
 
 

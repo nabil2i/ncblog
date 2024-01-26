@@ -106,7 +106,7 @@ const LoginForm = () => {
       // console.log("response:", response)
       dispatch(setCredentials(response));
       reset();
-      navigate("/admin/posts");
+      navigate("/");
     } catch (error) {
       const err = error as AuthErrorResponse
       // console.log("error", error);

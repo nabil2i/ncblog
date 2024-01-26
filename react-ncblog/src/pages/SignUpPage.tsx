@@ -1,8 +1,23 @@
 import { Box, Flex, Grid, GridItem, Image, Show } from "@chakra-ui/react";
 import HomeHero from "../assets/islam2.jpg";
 import SignUpForm from "../components/auth/SignUpForm";
+import { useSelector } from "react-redux";
+import { authSatus } from "../app/features/auth/authSlice";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const SignUpPage = () => (
+const SignUpPage = () => {
+  const isAuthenticated = useSelector(authSatus);
+  const redirect = new URLSearchParams(location.search).get("redirect");
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(redirect || "/");
+    }
+  }, [isAuthenticated, redirect, navigate]);
+
+  return (
   <>
     <Box p={10}>
       <Grid
@@ -26,7 +41,7 @@ const SignUpPage = () => (
                 src={HomeHero}
                 borderTopLeftRadius={{ lg: 16 }}
                 borderBottomLeftRadius={{ lg: 16 }}
-              />
+                />
               <Box
                 position={"absolute"}
                 background="rgba(0, 0, 0, 0.4)"
@@ -39,7 +54,7 @@ const SignUpPage = () => (
                 pt={150}
                 textAlign="center"
                 textColor={"white"}
-              >
+                >
                 WELCOME TO NABILCONVEYS
               </Text> */}
               </Box>
@@ -62,5 +77,7 @@ const SignUpPage = () => (
     </Box>
   </>
 );
+
+}
 
 export default SignUpPage;

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Prefetch from "./app/features/Prefetch";
-import SignUpPage from "./assets/SignUpPage";
+import SignUpPage from "./pages/SignUpPage";
 import PersistLogin from "./components/auth/PersistLogin";
 import RequireAuth from "./components/common/RequireAuth";
 import AccountPage from "./pages/AccountPage";

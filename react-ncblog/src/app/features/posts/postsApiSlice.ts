@@ -31,10 +31,12 @@ const initialState = postsAdapter.getInitialState()
 export const extendedPostsApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getPosts: builder.query({
-      query: () => '/posts',
-      // validationStatus: (response, result) => {
-      //   return response.Status === 200 && !result.isError
-      // },
+      query: () => ({
+        url: '/posts',
+        validationStatus: (response: { Status: number; }, result: { isError: boolean; }) => {
+          return response.Status === 200 && !result.isError
+        },
+      }),
       // keepUnusedDataFor: 60,
       transformResponse: (responseData: ServerResponse) => {
         const postsWithIds = responseData.data.results.map(post => {

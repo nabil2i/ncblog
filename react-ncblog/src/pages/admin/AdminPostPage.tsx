@@ -26,6 +26,15 @@ const AdminPostPage = () => {
 
   return (
     <>
+      {/* <Box
+        w="full"
+        mx="auto"
+        maxW="800px"
+        p={4}>
+
+      </Box> */}
+
+
       <Grid
         gap={2}
         templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}

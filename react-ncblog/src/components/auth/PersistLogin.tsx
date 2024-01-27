@@ -22,7 +22,7 @@ const PersistLogin = () => {
     if (effectRan.current === true || process.env.NODE_ENV !== "development") {
       // react 18 strict mode (mount, unmount, remount: useEffect runs twice)
       const verifyRefreshToken = async () => {
-        console.log("verifying refresh token");
+        // console.log("verifying refresh token");
         try {
           //const response =
           await refresh(0);
@@ -63,7 +63,7 @@ const PersistLogin = () => {
     content = <Outlet />;
   } else if (token && isUninitialized) {
     //persist: yes, token: yes
-    console.log(isUninitialized);
+    // console.log(isUninitialized);
     content = <Outlet />;
   }
 

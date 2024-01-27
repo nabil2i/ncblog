@@ -4,7 +4,7 @@ const AddPostButton = () => {
   // console.log("post id in Add button: ", postId)
   return (
     <Link href={`/admin/posts/new`}>
-      <Button colorScheme="green">Create a post</Button>
+      <Button colorScheme="gray">Create a post</Button>
     </Link>
   );
 };

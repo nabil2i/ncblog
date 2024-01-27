@@ -1,8 +1,9 @@
 import { Avatar, Flex, Text } from "@chakra-ui/react";
-import useAuth from "../../navigationbar/useAuth";
+import useAuth from "../../../hooks/useAuth";
+// import useAuth from "../../navigationbar/useAuth";
 
 const AvatarBox = ({ navSize }: { navSize?: string }) => {
-  const { state } = useAuth();
+  const { firstname, lastname, email } = useAuth();
 
   return (
     <>
@@ -16,11 +17,11 @@ const AvatarBox = ({ navSize }: { navSize?: string }) => {
         // p={4}
         p={3}
         borderWidth={navSize === "large" ? -1 : 0}
-        borderColor="gray.100"
+        // borderColor="gray.100"
         borderRadius="full"
       >
         <Flex align="center" justify="center">
-          <Avatar name="" size="sm" bg="teal.300" m={-1} />
+          <Avatar name="" size="sm" bg="teal.300" m={-1} src={"https://api.dicebear.com/7.x/bottts/png"}/>
         </Flex>
         {navSize === "large" && (
           <Flex
@@ -36,8 +37,9 @@ const AvatarBox = ({ navSize }: { navSize?: string }) => {
               pb={0}
               lineHeight={0}
               whiteSpace="nowrap"
+              color="white"
             >
-              {state?.user?.firstname + " " + state?.user?.lastname}
+              {firstname + " " + lastname}
             </Text>
             <Text
               as="small"
@@ -46,7 +48,7 @@ const AvatarBox = ({ navSize }: { navSize?: string }) => {
               lineHeight={0}
               whiteSpace="nowrap"
             >
-              {state?.user?.email}
+              {email}
             </Text>
           </Flex>
         )}

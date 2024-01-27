@@ -1,14 +1,22 @@
 import { Box, Flex, Heading, ListIcon, Text } from "@chakra-ui/react";
 import { NavLink, useLocation } from "react-router-dom";
 import { AdminNavItem } from "./adminnavitems";
+import useAdminLayout from "../useAdminLayout";
 
 interface Props {
-  navSize: string;
   item: AdminNavItem;
-  toggleMobileSidebar?: () => void;
+  // navSize: string;
+  // toggleMobileSidebar?: () => void;
 }
 
-const NavItem = ({ item, navSize, toggleMobileSidebar }: Props) => {
+const NavItem = ({
+  item,
+  // navSize,
+  // toggleMobileSidebar
+}: Props) => {
+  const { state, dispatch } = useAdminLayout();
+  const navSize = state.navSize;
+  
   const location = useLocation();
 
   const isActive = item.href && location.pathname.startsWith(item.href);
@@ -36,7 +44,8 @@ const NavItem = ({ item, navSize, toggleMobileSidebar }: Props) => {
           w="full"
           h="full"
           bg={isActive ? "teal" : ""}
-          onClick={toggleMobileSidebar}
+          // onClick={toggleMobileSidebar}
+          onClick={() => dispatch({ type: "TOGGLE_MOBILE_SIDEBAR"})}
           // color={isActive ? "white" : ""}
           // activeClassName={"custom-active-nav-item"}
           // colorScheme={isActive ? "red" : "gray.400"}

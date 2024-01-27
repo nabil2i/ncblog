@@ -21,6 +21,7 @@ import theme from "./theme.ts";
 import { disableReactDevTools} from '@fvilers/disable-react-devtools';
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
+import AdminLayoutProvider from "./components/admin/AdminLayoutProvider.tsx";
 
 if (process.env.NODE_ENV === 'production') disableReactDevTools();
 
@@ -41,7 +42,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
         {/* <Theme accentColor="crimson" grayColor="sand" radius="large" scaling="95%"> */}
+        <AdminLayoutProvider>
             <RouterProvider router={router} />
+        </AdminLayoutProvider>
           {/* </Theme> */}
         </Provider>
         <ReactQueryDevtools />

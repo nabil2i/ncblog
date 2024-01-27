@@ -1,12 +1,17 @@
 import { Flex, Heading, IconButton } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
 import ColorModeSwitch from "../navigationbar/navbar/ColorModeSwitch";
+import useAdminLayout from "./useAdminLayout";
 
-interface Props {
-  changeNavSize: () => void;
-  toggleMobileSidebar: () => void;
-}
-const AdminNavBar = ({ changeNavSize, toggleMobileSidebar }: Props) => {
+// interface Props {
+//   changeNavSize: () => void;
+//   toggleMobileSidebar: () => void;
+// }
+
+const AdminNavBar = (
+  // { changeNavSize, toggleMobileSidebar }: Props
+  ) => {
+  const { dispatch } = useAdminLayout();
   // const toast = useToast();
 
   // const showToast = () => {
@@ -28,7 +33,6 @@ const AdminNavBar = ({ changeNavSize, toggleMobileSidebar }: Props) => {
         justify="space-between"
         align="center"
         w="full"
-        minH="60px"
         pr={4}
         // backgroundColor={useColorModeValue(
         //   "rgba(255, 255, 255, 1)",
@@ -45,7 +49,8 @@ const AdminNavBar = ({ changeNavSize, toggleMobileSidebar }: Props) => {
           background="none"
           _hover={{ backgroundg: "none" }}
           icon={<FiMenu />}
-          onClick={toggleMobileSidebar}
+          // onClick={toggleMobileSidebar}
+          onClick={() => dispatch({ type: "TOGGLE_MOBILE_SIDEBAR"})}
           aria-label={""}
           display={{ base: "flex", lg: "none" }}
           color="white"
@@ -54,7 +59,8 @@ const AdminNavBar = ({ changeNavSize, toggleMobileSidebar }: Props) => {
           background="none"
           _hover={{ backgroundg: "none" }}
           icon={<FiMenu />}
-          onClick={changeNavSize}
+          // onClick={changeNavSize}
+          onClick={() => dispatch({ type: "CHANGE_NAVSIZE"})}
           aria-label={""}
           color="white"
           display={{ base: "none", lg: "flex" }}

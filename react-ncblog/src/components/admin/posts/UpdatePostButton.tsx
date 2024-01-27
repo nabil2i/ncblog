@@ -7,7 +7,7 @@ interface Props {
 }
 const UpdatePostButton = ({ isSubmittingPost, post }: Props) => {
   return (
-    <Button disabled={isSubmittingPost} type="submit" colorScheme="green">
+    <Button disabled={isSubmittingPost} type="submit" colorScheme="gray">
       {post ? "Update post" : "Create a post"}
       {isSubmittingPost && <Spinner />}
     </Button>

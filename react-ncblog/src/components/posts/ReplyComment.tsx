@@ -7,7 +7,10 @@ import { CommentForm } from "../../entities/Comment";
 import User from "../../entities/User";
 import useCreateComment from "../../hooks/useCreateComment";
 import { CustomButton } from "../common/CustomButton";
-import useAuth from "../navigationbar/useAuth";
+// import useAuth from "../navigationbar/useAuth";
+import useAuth from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { authSatus } from "../../app/features/auth/authSlice";
 
 // const VARIANT_COLOR = "teal";
 
@@ -17,7 +20,8 @@ interface Props {
   onCancelReply: () => void;
 }
 const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
-  const { state } = useAuth();
+  const { _id } = useAuth();
+  const isAuthenticated = useSelector(authSatus);
   const { id } = useParams();
   const addComment = useCreateComment(id as string, () => {
     reset();
@@ -34,7 +38,7 @@ const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
   const onSubmit = (data: CommentForm) => {
     data = {
       text: data.text,
-      userId: state.user?._id as string,
+      userId: _id,
       parentCommentId: parent,
     };
     // console.log(`"Form fields": ${JSON.stringify(data)}`);
@@ -43,11 +47,11 @@ const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
 
   return (
     <>
-      {state.isAuthenticated && (
+      {isAuthenticated && (
         <form>
           <Flex direction="column">
             {/* <Avatar
-              src={state.user?.img}
+              src={img}
               // fallback={comment.user.firstname?.slice(0, 1)}
               size="md"
               // radius="full"

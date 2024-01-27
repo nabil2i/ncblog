@@ -109,7 +109,8 @@ const DeletePostButton = ({ postId }: { postId: string }) => {
   return (
     <>
       <Button
-        colorScheme="red"
+        colorScheme="gray"
+        // variant={"outline"}
         disabled={isDeleting}
         onClick={() => setIsOpen(true)}
       >

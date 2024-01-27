@@ -15,6 +15,7 @@ import { EntityId } from "@reduxjs/toolkit";
 import ms from "ms";
 import { useGetPostsQuery } from "../../../app/features/posts/postsApiSlice";
 import PostRow from "./PostRow";
+// import { Table } from "@radix-ui/themes";
 
 const PostsTable = () => {
   // from postsApiSlice
@@ -63,9 +64,15 @@ const PostsTable = () => {
       const tableContent = ids?.length ? (
         ids.map((postId: EntityId) => <PostRow key={postId} postId={postId} />)
       ) : (
+
         <Tr>
-          <Td> Nothing to show</Td>
+          <Td colSpan={2}> Nothing to show</Td>
         </Tr>
+        // <Table.Row>
+        //   <Table.Cell colSpan={2} className="text-center">
+        //   Nothing to show
+        //   </Table.Cell>
+        // </Table.Row>
       );
 
       return (
@@ -74,13 +81,24 @@ const PostsTable = () => {
             <Thead>
               <Tr>
                 <Th colSpan={2} fontSize={{ base: "sm", md: "md" }}>
-                  Post
                 </Th>
               </Tr>
             </Thead>
 
             <Tbody>{tableContent}</Tbody>
           </Table>
+        {/* <Table.Root>
+          <Table.Header>
+            <Table.Row>
+              <Table.Cell colSpan={2} className="text-center">
+              
+              </Table.Cell>
+            </Table.Row>
+          </Table.Header>
+
+          <Table.Body>{tableContent}</Table.Body>
+        </Table.Root>
+         */}
         </>
       );
     }

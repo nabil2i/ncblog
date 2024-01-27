@@ -1,21 +1,33 @@
-import { Text } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { selectPostById } from "../../app/features/posts/postsApiSlice";
-import { RootState } from "../../app/store";
+import { useGetPostsQuery } from "../../app/features/posts/postsApiSlice";
+import EditPostNav from "../../components/admin/posts/EditPostNav";
 import PostForm from "../../components/admin/posts/PostForm";
 
 const AdminPostEditPage = () => {
   const { id } = useParams();
   const postId = id?.toString() as string;
-  const post = useSelector((state: RootState) => selectPostById(state, postId));
+  // const post = useSelector((state: RootState) => selectPostById(state, postId));
+  const { post } = useGetPostsQuery("postsList", {
+    selectFromResult: ({ data }) => ({
+      post: data?.posts.entities[postId],
+    }),
+  });
 
   // console.log("post id on edit page: ", postId)
   // const { data: payload, error } = usePost(postId as string);
   // const post = payload?.data;
 
   const content = post ? (
-    <PostForm post={post} />
+    <Box>
+      {/* <EditPostNav post={post} /> */}
+      <Flex direction="column">
+        <Flex justify="space-between" align="center"></Flex>
+        <Box>
+          <PostForm post={post} />
+        </Box>
+      </Flex>
+    </Box>
   ) : (
     <Text py={8} textAlign={"center"}>
       {" "}
@@ -24,6 +36,7 @@ const AdminPostEditPage = () => {
   );
 
   return content;
+
   // if (post) {
   //   return (
   //     <>

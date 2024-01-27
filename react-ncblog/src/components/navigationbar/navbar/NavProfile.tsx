@@ -10,6 +10,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Spinner,
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -39,8 +40,6 @@ const Profile = () => {
   const [sendLogout, {isError, isLoading, isSuccess, error}] = useSendLogoutMutation()
   const { isAdmin, isEditor, firstname, lastname} = useAuth();
 
-
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,7 +49,7 @@ const Profile = () => {
   }, [isSuccess, navigate])
 
   if (isLoading) {
-    return <p>Login out...</p>
+    return <Box m={10}><Spinner /> {" "} Login out</Box>
   }
 
   if (isError) {
@@ -80,7 +79,7 @@ const Profile = () => {
             >
               <Avatar
                 size={"sm"}
-                src={"https://avatars.dicebear.com/api/male/username.svg"}
+                src={"https://api.dicebear.com/7.x/bottts/png"}
               />
               <Icon
                 as={ChevronDownIcon}
@@ -95,7 +94,7 @@ const Profile = () => {
               <Center>
                 <Avatar
                   size={"xl"}
-                  src={"https://avatars.dicebear.com/api/male/username.svg"}
+                  src={"https://api.dicebear.com/7.x/bottts/png"}
                 />
               </Center>
               <br />

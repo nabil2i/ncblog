@@ -8,6 +8,7 @@ import {
   Td,
   Text,
   Tr,
+  Box,
 } from "@chakra-ui/react";
 import { EntityId } from "@reduxjs/toolkit";
 import { MdOutlineMoreHoriz } from "react-icons/md";
@@ -42,42 +43,60 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
       <>
         <Tr key={post._id}>
           <Td mb={2}>
-            <Flex align="center" justify="space-between">
+            <Box>
               <Flex
                 display="column"
-                mr={2}
-                flexBasis={{ base: "100%", lg: "50%" }}
+                // w="100%"
+                // mb={2}
+                // flexBasis={{ base: "100%", lg: "50%" }}
               >
-                <Link
-                  as={NavLink}
-                  to={`/admin/posts/${post._id}`}
-                  _hover={{ color: "teal", cursor: "pointer" }}
-                  fontSize={{ base: "16px", lg: "20px" }}
-                  fontWeight={500}
-                  noOfLines={{ base: 2, lg: 1 }}
-                  whiteSpace="pre-wrap"
-                >
-                  {post.title}
-                </Link>
-                <Flex align="center" mt="5px">
+                <Box>
+                  {/* <Link
+                    as={NavLink}
+                    to={`/admin/posts/${post._id}`}
+                    _hover={{ color: "teal.200", cursor: "pointer" }}
+                    fontSize={{ base: "16px", lg: "20px" }}
+                    fontWeight={500}
+                    // noOfLines={{ base: 2, lg: 2 }}
+                    // whiteSpace="pre-wrap"
+                    
+                    >
+                  </Link> */}
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo iste eveniet doloribus ipsum nostrum officiis dolorum adipisci enim corporis eos!
+                    {/* {post.title} */}
+                </Box>
+                <Flex mt="5px">
                   <Text>
                     <BlogPostDate date={post.createdAt} />
                   </Text>
                 </Flex>
               </Flex>
-            </Flex>
+
+              {/* <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<MdOutlineMoreHoriz />}
+                ></MenuButton>
+                <MenuList>
+                  <EditPostAction postId={post._id as string} />
+                  <DeletePostAction postId={post._id as string} />
+                </MenuList>
+              </Menu> */}
+            </Box>
           </Td>
           <Td>
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                icon={<MdOutlineMoreHoriz />}
-              ></MenuButton>
-              <MenuList>
-                <EditPostAction postId={post._id as string} />
-                <DeletePostAction postId={post._id as string} />
-              </MenuList>
-            </Menu>
+            <Flex justify="end">
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<MdOutlineMoreHoriz />}
+                ></MenuButton>
+                <MenuList>
+                  <EditPostAction postId={post._id as string} />
+                  <DeletePostAction postId={post._id as string} />
+                </MenuList>
+              </Menu>
+            </Flex>
           </Td>
         </Tr>
       </>

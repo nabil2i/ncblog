@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
     minlength: 2,
     maxlength: 50
   },
+  img: {
+    type: String,
+    default: 'https://api.dicebear.com/7.x/bottts/png'
+  }
 }, { timestamps: true });
 
 // instance method 
@@ -53,11 +57,13 @@ userSchema.methods.generateAuthToken = function () {
       username: this.username,
       firstname: this.firstname,
       lastname: this.lastname,
+      email: this.email,
       roles: this.roles,
-      isActive: this.isActive 
+      isActive: this.isActive,
+      img: this.img,
     },
     process.env.NODE_APP_JWT_ACCESS_SECRET,
-    { expiresIn: '15min' }
+    { expiresIn: '2d' }
     // { expiresIn: '1d' }
   );
   // config.get(process.env.JWT_SECRET));

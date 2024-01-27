@@ -30,7 +30,7 @@ import "easymde/dist/easymde.min.css";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { MdOutlineMoreVert } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
 import {
   useAddNewPostMutation,
@@ -38,9 +38,10 @@ import {
 } from "../../../app/features/posts/postsApiSlice";
 import Post from "../../../entities/Post";
 import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
-import useAuth from "../../navigationbar/useAuth";
 import UpdatePostAction from "./UpdatePostAction";
 import UpdatePostButton from "./UpdatePostButton";
+import EditPostNav from "./EditPostNav";
+import useAuth from "../../../hooks/useAuth";
 
 export interface PostFormData {
   title: string;
@@ -52,7 +53,7 @@ interface Props {
   post?: Post;
 }
 const PostForm = ({ post }: Props) => {
-  const { state } = useAuth();
+  const { _id } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isSubmittingPost, setSubimittingPost] = useState(false);
@@ -162,7 +163,7 @@ const PostForm = ({ post }: Props) => {
         id: post._id,
         title: data.title,
         body: data.body,
-        userId: state.user?._id,
+        userId: post.user?._id,
       });
       // updatePost.mutate({
       //   title: data.title,
@@ -173,7 +174,7 @@ const PostForm = ({ post }: Props) => {
       addNewPost({
         title: data.title,
         body: data.body,
-        userId: state.user?._id,
+        userId: _id,
       });
       // createPost.mutate({
       //   title: data.title,
@@ -183,153 +184,86 @@ const PostForm = ({ post }: Props) => {
     }
   };
 
-  const { isOpen, onClose } = useDisclosure();
-  // const icnRef = React.useRef();
-
   return (
     <>
       <Box>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Flex
-            // px={4}
-            position="fixed"
-            display={{ base: "flex", lg: "none" }}
-            // minH="20px"
-            bg="teal"
-            w="full"
-            zIndex="90"
-            top="55"
-            justify="flex-end"
-            // display="none"
-          >
-            {/* <IconButton
-              aria-label={"Settings"}
-              onClick={onOpen}
-              icon={<MdOutlineMoreHoriz />}
-              borderRadius="full"
-              color="gray.400"
-              variant="ghost"
-              fontSize={20}
-            /> */}
-
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                icon={<MdOutlineMoreVert />}
-                aria-label={"Settings"}
-                // borderRadius="full"
-                color="white"
-                variant="ghost"
-                fontSize={20}
-                _hover={{ bg: "none" }}
-              ></MenuButton>
-              <MenuList>
-                <UpdatePostAction
-                  post={post}
-                  isSubmittingPost={isSubmittingPost}
-                />
-              </MenuList>
-            </Menu>
-          </Flex>
-          <Drawer
-            isOpen={isOpen}
-            placement="right"
-            onClose={onClose}
-            // finalFocusRef={icnRef}
-          >
-            <DrawerOverlay />
-            <DrawerContent>
-              <DrawerCloseButton />
-              <DrawerHeader>Create your account</DrawerHeader>
-
-              <DrawerBody>
-                <Input placeholder="Type here..." />
-              </DrawerBody>
-
-              <DrawerFooter>
-                <Button variant="outline" mr={3} onClick={onClose}>
-                  Cancel
-                </Button>
-                <Button colorScheme="blue">Save</Button>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
-
-          <Grid
-            gap={2}
-            templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
-            templateColumns={{ base: "1fr", lg: "2f 1fr" }}
-          >
-            <GridItem area="main" p={4}>
-              {addPostError && (
-                <Alert mb="15px" mt="10px" status="error">
-                  <AlertIcon />
-                  <AlertTitle></AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-              {updatePostError && (
-                <Alert mb="15px" mt="10px" status="error">
-                  <AlertIcon />
-                  <AlertTitle></AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-              <FormControl
-                isRequired
-                isInvalid={errors.title ? true : false}
-                mb="40px"
-              >
-                {/* <FormLabel variant="" htmlFor="title">
-                  Post title:
-                </FormLabel> */}
-
-                <AutoExpandingTextarea
-                  id={"title"}
-                  defaultValue={post?.title as string}
-                  placeholder="Add title"
-                  register={register}
-                  setFieldValue={setValue}
-                />
-                {/* <FormErrorMessage>
-                  {errors.title && errors.title.message}
-                </FormErrorMessage> */}
-              </FormControl>
-
-              <Controller
-                name="body"
-                control={control}
-                defaultValue={post?.body as string}
-                render={({ field }) => (
-                  <SimpleMDE
-                    placeholder="Start writing something..."
-                    {...field}
-                  />
-                )}
-              />
-              <FormErrorMessage>{errors.body?.message}</FormErrorMessage>
-            </GridItem>
-
-            <GridItem
-              area="side"
-              p={4}
-              position={{ base: "fixed", lg: "sticky" }}
-              top={{ lg: 0 }}
-              alignSelf={{ lg: "flex-start" }}
+        <Box>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <EditPostNav post={post} isSubmittingPost={isSubmittingPost}/>
+            <Grid
+              gap={2}
+              templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
+              templateColumns={{ base: "1fr", lg: "2f 1fr" }}
+              pt={10} mx="auto" maxW="800px"
             >
-              <Flex
-                direction="column"
-                display={{ base: "none", lg: "flex" }}
-                gap="4"
-              >
-                <UpdatePostButton
-                  isSubmittingPost={isSubmittingPost}
-                  post={post}
+              <GridItem area="main" p={4}>
+                {addPostError && (
+                  <Alert mb="15px" mt="10px" status="error">
+                    <AlertIcon />
+                    <AlertTitle></AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                {updatePostError && (
+                  <Alert mb="15px" mt="10px" status="error">
+                    <AlertIcon />
+                    <AlertTitle></AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                <FormControl
+                  isRequired
+                  isInvalid={errors.title ? true : false}
+                  mb="40px"
+                >
+                  {/* <FormLabel variant="" htmlFor="title">
+                    Post title:
+                  </FormLabel> */}
+                  <AutoExpandingTextarea
+                    id={"title"}
+                    defaultValue={post?.title as string}
+                    placeholder="Add title"
+                    register={register}
+                    setFieldValue={setValue}
+                  />
+                  {/* <FormErrorMessage>
+                    {errors.title && errors.title.message}
+                  </FormErrorMessage> */}
+                </FormControl>
+                <Controller
+                  name="body"
+                  control={control}
+                  defaultValue={post?.body as string}
+                  render={({ field }) => (
+                    <SimpleMDE
+                      placeholder="Start writing something..."
+                      {...field}
+                    />
+                  )}
                 />
-              </Flex>
-            </GridItem>
-          </Grid>
-        </form>
+                <FormErrorMessage>{errors.body?.message}</FormErrorMessage>
+              </GridItem>
+              {/* <GridItem
+                area="side"
+                p={4}
+                position={{ base: "fixed", lg: "sticky" }}
+                top={{ lg: 0 }}
+                alignSelf={{ lg: "flex-start" }}
+              >
+                <Flex
+                  direction="column"
+                  display={{ base: "none", lg: "flex" }}
+                  gap="4"
+                >
+                  <UpdatePostButton
+                    isSubmittingPost={isSubmittingPost}
+                    post={post}
+                  />
+                </Flex>
+              </GridItem> */}
+            </Grid>
+          </form>
+        </Box>
       </Box>
     </>
   );

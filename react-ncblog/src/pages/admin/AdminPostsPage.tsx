@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import AddPostButton from "../../components/admin/posts/AddPostButton";
 import PostsTable from "../../components/admin/posts/PostsTable";
+import EditPostNav from "../../components/admin/posts/EditPostNav";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
 
@@ -16,14 +17,17 @@ import PostsTable from "../../components/admin/posts/PostsTable";
 const PostsPage = () => {
   return (
     <>
-      <Flex direction="column" p={"0"}>
-        <Flex justify="end" p={0}>
-          <AddPostButton />
+      <Box>
+        <Flex direction="column" maxW="1440px" p={4}>
+          <Flex justify="space-between" align="center">
+            <Box>Posts</Box>
+            <AddPostButton />
+          </Flex>
+          <Box>
+            <PostsTable />
+          </Box>
         </Flex>
-        <Box alignItems="center" justifyContent="center">
-          <PostsTable />
-        </Box>
-      </Flex>
+      </Box>
 
       {/* <Tabs variant="enclosed">
         <TabList>

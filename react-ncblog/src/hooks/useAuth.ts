@@ -4,14 +4,13 @@ import { selectCurrentToken } from '../app/features/auth/authSlice'
 
 interface TokenPayload {
   roles: string[];
-  isAdmin: string;
-  isRegular: string;
-  isEditor: string;
   username: string;
   _id: string;
   firstname: string;
   lastname: string;
   isActive: string;
+  email: string;
+  img: string;
 }
 const useAuth = () => {
   const token = useSelector(selectCurrentToken)
@@ -23,7 +22,7 @@ const useAuth = () => {
   if (token) {
     const decoded = jwtDecode<TokenPayload>(token)
 
-    const { username, roles, _id, firstname, lastname, isActive } = decoded
+    const { username, roles, _id, firstname, lastname, isActive, email, img } = decoded
 
     isAdmin = roles.includes('Admin' || 'admin')
     isEditor = roles.includes('Editor' || 'editor')
@@ -34,19 +33,26 @@ const useAuth = () => {
     if (isAdmin) status = "Admin"
 
     return  {
-      username,
       _id,
+      username,
       firstname,
       lastname,
+      email,
       isActive,
       roles,
+      img,
       isAdmin, isEditor, isRegular, status
     }
   }
 
   return  {
+    _id: '',
     username: '',
+    firstname: '',
+    lastname: '',
+    email: '',
     roles: [],
+    img: '',
     isAdmin, isEditor, isRegular, status
   }
 }

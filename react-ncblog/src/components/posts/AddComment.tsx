@@ -6,12 +6,16 @@ import { useParams } from "react-router-dom";
 import { CommentForm } from "../../entities/Comment";
 import useCreateComment from "../../hooks/useCreateComment";
 import { CustomButton } from "../common/CustomButton";
-import useAuth from "../navigationbar/useAuth";
+import useAuth from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { authSatus } from "../../app/features/auth/authSlice";
+// import useAuth from "../navigationbar/useAuth";
 
 // const VARIANT_COLOR = "teal";
 
 const AddComment = () => {
-  const { state } = useAuth();
+  const { _id, img } = useAuth();
+  const isAuthenticated = useSelector(authSatus);
   const { id } = useParams();
   const addComment = useCreateComment(id as string, () => {
     reset();
@@ -27,7 +31,7 @@ const AddComment = () => {
   const onSubmit = (data: CommentForm) => {
     data = {
       text: data.text,
-      userId: state.user?._id as string,
+      userId: _id,
     };
     console.log(`"Form fields": ${JSON.stringify(data)}`);
     addComment.mutate(data);
@@ -35,12 +39,12 @@ const AddComment = () => {
 
   return (
     <>
-      {state.user?.isAuthenticated && (
+      {isAuthenticated && (
         <form>
           <Flex mt="5" align="center" gap={2}>
             <Avatar
-              src={state.user?.img}
-              // fallback={comment.user.firstname?.slice(0, 1)}
+              src={img}
+              // fallback={firstname?.slice(0, 1)}
               size="md"
               // radius="full"
               className="cursor-pointer"

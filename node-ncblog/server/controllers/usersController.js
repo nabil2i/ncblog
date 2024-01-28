@@ -29,7 +29,7 @@ const createNewUser = async (req, res) => {
     error: { code: 400, message: error.details[0].message}
   });
 
-  const { username, email, password, password2 } = req.body;
+  const { username, email, firstname, lastname, password, password2 } = req.body;
   
   if (password !== password2)
     return res.status(400).json({
@@ -60,7 +60,7 @@ const createNewUser = async (req, res) => {
       }
     });
   
-  user = new User(_.pick(req.body, ['username', 'email', 'password']));
+  user = new User(_.pick(req.body, ['username', 'email', 'password', 'firstname', 'lastname']));
   
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);

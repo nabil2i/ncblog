@@ -58,7 +58,7 @@ const SignUpForm = () => {
     register,
     reset,
     // watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
   // const password = watch("password");
@@ -263,7 +263,7 @@ const SignUpForm = () => {
         </HStack>
 
         <Button width="full" mt={4} type="submit" colorScheme={VARIANT_COLOR}>
-          Sign up
+        {isSubmitting ? "Signing up" : "Sign up"}
         </Button>
       </form>
     </Box>

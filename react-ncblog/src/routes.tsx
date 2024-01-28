@@ -75,7 +75,11 @@ const router = createBrowserRouter([
                   { path: ":id", element: <BookPage /> },
                 ],
               },
-              { path: "account", element: <AccountPage /> },
+              { path: "account",
+                element: <RequireAuth />,
+                children: [
+                  {path: "", element: <AccountPage /> }
+                ]},
             ],
           },
         ],

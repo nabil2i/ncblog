@@ -1,6 +1,6 @@
 
 # NC Blog
-This project is a fullstack javascript web application  using node.js with express on the backend, and react.js on the frontend. It's a blog that proposes posts for readers. Editors on the website can add blog post, edit them, delete theem. Admins can manage resources on the website( the frontend side is still in process).
+This project is a fullstack javascript web application  using node.js with express on the backend, and react.js on the frontend. It's a blog that proposes posts for readers. Editors on the website can add blog posts, edit them, delete them. Admins can manage resources of the blog.
 
 ## Installation
 This is how you can run the app on your local machine

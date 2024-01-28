@@ -3,24 +3,24 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-// import { useNavigate } from "react-router-dom";
 import Post from "../../entities/Post";
 import { CustomButton } from "../common/CustomButton";
 import { LoginModal } from "../common/LoginModal";
-import useAuth from "../navigationbar/useAuth";
+import { authSatus } from "../../app/features/auth/authSlice";
+import { useAppSelector } from "../../app/hooks";
 import AddComment from "./AddComment";
 import BlogPostComments from "./BlogPostComments";
 import BlogPostInfo from "./BlogPostInfo";
 
 const BlogPostDetails = ({ post }: { post: Post }) => {
   // console.log(post);
-  const { state } = useAuth();
+  const isAuthenticated = useAppSelector(authSatus);
   // const navigate = useNavigate();
   const [addComment, setAddComment] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleComment = () => {
-    if (state.isAuthenticated) {
+    if (isAuthenticated) {
       setAddComment(true);
     } else {
       onOpen();
@@ -29,7 +29,7 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
   };
 
   return (
-    <Box>
+    <Box w="full">
       <Box>
         <Heading mb={2}>{post.title}</Heading>
       </Box>

@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { formatDate } from "../../utils/dateformat";
+import { formatDate } from "../../utils/date";
 
 const ElapsedDate = ({ date }: { date: Date }) => {
   const commentDate = typeof date === "string" ? new Date(date) : date;
@@ -9,7 +9,5 @@ const ElapsedDate = ({ date }: { date: Date }) => {
     </Text>
   );
 };
-
-
 
 export default ElapsedDate;

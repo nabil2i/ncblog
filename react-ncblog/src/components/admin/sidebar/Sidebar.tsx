@@ -11,7 +11,6 @@ import {
   MenuList,
   Spinner,
   useColorMode,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,22 +19,12 @@ import useAuth from "../../../hooks/useAuth";
 import LogoSearch from "../../common/LogoSearch";
 import AvatarBox from "./AvatarBox";
 import Navigation from "./Navigation";
-import useAdminLayout from "../useAdminLayout";
 
-// interface Props {
-//   navSize: string;
-//   toggleMobileSidebar: () => void;
-//   showMobileSidebar?: boolean;
-// }
-
-const Sidebar = (
-  // { navSize, toggleMobileSidebar }: Props
-  ) => {
-  const { colorMode} = useColorMode();
+const Sidebar = () => {
+  const { colorMode } = useColorMode();
   const { firstname, lastname } = useAuth();
   const navigate = useNavigate();
-  const [sendLogout, { isLoading, isSuccess}] =
-    useSendLogoutMutation();
+  const [sendLogout, { isLoading, isSuccess }] = useSendLogoutMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -60,20 +49,14 @@ const Sidebar = (
         minH="100vh"
         justify="space-between"
         bg={"#2e3238"}
-        color={ colorMode === 'light' ? "white": "white"}    
+        color={colorMode === "light" ? "white" : "white"}
       >
         <Flex direction="column" justify="flex-start">
           {/* Logo */}
-          <LogoSearch
-            // navSize={navSize}
-            // toggleMobileSidebar={toggleMobileSidebar}
-          />
+          <LogoSearch />
 
           {/* Navitems */}
-          <Navigation
-            // navSize={navSize}
-            // toggleMobileSidebar={toggleMobileSidebar}
-          />
+          <Navigation />
         </Flex>
 
         {/* Menu Avatar */}
@@ -83,14 +66,15 @@ const Sidebar = (
             rounded={"full"}
             variant={"link"}
             cursor={"pointer"}
-            _hover={{ textDecoration: 'none'}}
+            _hover={{ textDecoration: "none" }}
             minW={0}
           >
-            <AvatarBox 
-              // navSize={navSize}
-              />
+            <AvatarBox />
           </MenuButton>
-          <MenuList alignItems={"center"} color={ colorMode === 'light' ? "black": "white"}>
+          <MenuList
+            alignItems={"center"}
+            color={colorMode === "light" ? "black" : "white"}
+          >
             <br />
             <Center>
               <Avatar
@@ -99,7 +83,7 @@ const Sidebar = (
               />
             </Center>
             <br />
-            <Center    >
+            <Center>
               <p>{firstname + " " + lastname}</p>
             </Center>
             <br />

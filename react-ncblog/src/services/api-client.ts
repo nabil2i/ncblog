@@ -32,6 +32,18 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+// axiosInstance.interceptors.request.use(
+//   (config) => {
+//     const token = useSelector(selectCurrentToken);
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 // console.log(URL);
 
 class APIClient<T, Q> {
@@ -39,6 +51,7 @@ class APIClient<T, Q> {
 
   constructor(endpoint: string) {
     this.endpoint = endpoint;
+
   }
 
   getAll = (config: AxiosRequestConfig) => {
@@ -47,27 +60,27 @@ class APIClient<T, Q> {
       .then(res => res.data);
   };
 
-  get = (id: string) => {
+  get = (id: string, config?: AxiosRequestConfig) => {
     return axiosInstance
-      .get<FetchResponse<T>>(this.endpoint + '/' + id)
+      .get<FetchResponse<T>>(this.endpoint + '/' + id, config)
       .then(res => res.data);
   };
 
-  post = (data: Q) => {
+  post = (data: Q, config?: AxiosRequestConfig) => {
     return axiosInstance
-        .post<FetchResponse<T>>(this.endpoint, data)
+        .post<FetchResponse<T>>(this.endpoint, data, config)
         .then((res) => res.data);
   };
 
-  put = (data: Q) => {
+  put = (data: Q, config?: AxiosRequestConfig) => {
     return axiosInstance
-      .put<FetchResponse<T>>(this.endpoint, data)
+      .put<FetchResponse<T>>(this.endpoint, data, config)
       .then((res) => res.data);
   };
 
-  delete = (id: string) => {
+  delete = (id?: string, config?: AxiosRequestConfig) => {
     return axiosInstance
-      .delete<FetchResponse<T>>(this.endpoint + '/' + id)
+      .delete<FetchResponse<T>>(this.endpoint + '/' + id, config)
       .then(res => res.data);
   };
 

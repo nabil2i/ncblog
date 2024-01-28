@@ -1,33 +1,37 @@
-import { SkeletonText, Card, CardBody, HStack, CardFooter, Flex, SkeletonCircle, Box } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  CardBody,
+  CardFooter,
+  Flex,
+  HStack,
+  SkeletonCircle,
+  SkeletonText,
+} from "@chakra-ui/react";
 
 const BlogPostCardSkeleton = () => {
   return (
-      <Card height="100%" borderRadius='4'>
-        <CardBody>
-          <SkeletonText
-            height="200px"
-            borderRadius='xl'
-            mx='auto'
-          />
-          <HStack mt='5' spacing="3">
-            <SkeletonText width={2}/>
-            <SkeletonText width={2}/>
-          </HStack>
+    <Card height="100%" borderRadius="4">
+      <CardBody>
+        <SkeletonText height="200px" borderRadius="xl" mx="auto" />
+        <HStack mt="5" spacing="3">
+          <SkeletonText width={2} />
+          <SkeletonText width={2} />
+        </HStack>
+        <SkeletonText />
+        <SkeletonText />
+      </CardBody>
+      <CardFooter>
+        <Flex mt="4" gap="2">
+          <SkeletonCircle />
+          <Box>
             <SkeletonText />
             <SkeletonText />
-        </CardBody>
-        <CardFooter>
-          <Flex mt="4" gap='2'>
-            <SkeletonCircle />
-              <Box>
-                <SkeletonText />
-                <SkeletonText />
-              </Box>
-            </Flex>
-        </CardFooter>
+          </Box>
+        </Flex>
+      </CardFooter>
     </Card>
-
-  )
-}
+  );
+};
 
 export default BlogPostCardSkeleton;

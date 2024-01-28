@@ -11,17 +11,15 @@ import {
   MenuItem,
   MenuList,
   Spinner,
-  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 // import useAuth from "../useAuth";
-import { useSendLogoutMutation } from "../../../app/features/auth/authApiSlice";
-import { useSelector } from "react-redux";
-import { RootState } from "@reduxjs/toolkit/query";
-import { authSatus } from "../../../app/features/auth/authSlice";
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useSendLogoutMutation } from "../../../app/features/auth/authApiSlice";
+import { authSatus } from "../../../app/features/auth/authSlice";
 import useAuth from "../../../hooks/useAuth";
+import usePersist from "../../../hooks/usePersist";
 // import useAuth from "./navigationbar/useAuth";
 
 // interface Props {
@@ -34,22 +32,27 @@ const Profile = () => {
   // const { state, dispatch } = useAuth();
   // const { state, dispatch } = useAuth();
   // console.log(state)
-  const toast = useToast();
+  // const toast = useToast();
   const isAuthenticated = useSelector(authSatus);
-  const dispatch = useDispatch();
-  const [sendLogout, {isError, isLoading, isSuccess, error}] = useSendLogoutMutation()
-  const { isAdmin, isEditor, firstname, lastname} = useAuth();
-
+  // const dispatch = useDispatch();
+  const [sendLogout, { isError, isLoading, isSuccess }] =
+    useSendLogoutMutation();
+  const { isAdmin, isEditor, firstname, lastname } = useAuth();
+  const [setPersist] = usePersist();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/login')
+      navigate("/login");
     }
-  }, [isSuccess, navigate])
+  }, [isSuccess, navigate]);
 
   if (isLoading) {
-    return <Box m={10}><Spinner /> {" "} Login out</Box>
+    return (
+      <Box m={10}>
+        <Spinner /> Login out
+      </Box>
+    );
   }
 
   if (isError) {
@@ -61,9 +64,8 @@ const Profile = () => {
     //   status: "error",
     //   position: "top",
     // });
-    return <p>error.data.message</p>
+    return <p>error.data.message</p>;
   }
-
 
   if (isAuthenticated)
     return (
@@ -103,7 +105,7 @@ const Profile = () => {
               </Center>
               <br />
               <MenuDivider />
-              {(isAdmin || isEditor) &&( 
+              {(isAdmin || isEditor) && (
                 <>
                   <MenuItem onClick={() => navigate("/blog/write")}>
                     Create a post
@@ -114,16 +116,14 @@ const Profile = () => {
                 </>
               )}
               <MenuItem onClick={() => navigate("/account")}>Account</MenuItem>
-              {isAdmin && 
+              {isAdmin && (
                 <>
                   <MenuItem onClick={() => navigate("/admin")}>
                     Admin Section
                   </MenuItem>
                 </>
-              }
-              <MenuItem onClick={() => sendLogout(0)}>
-                Logout
-              </MenuItem>
+              )}
+              <MenuItem onClick={() => {sendLogout(0); setPersist(false)}}>Logout</MenuItem>
               {/* <MenuItem onClick={() => dispatch({ type: "LOGOUT" })}>
                 Logout
               </MenuItem> */}
@@ -133,7 +133,6 @@ const Profile = () => {
       </>
     );
 };
-
 
 // const NavLink = (props: Props) => {
 //   const { children } = props;

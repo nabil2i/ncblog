@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   IconButton,
   Link,
@@ -8,16 +9,15 @@ import {
   Td,
   Text,
   Tr,
-  Box,
 } from "@chakra-ui/react";
 import { EntityId } from "@reduxjs/toolkit";
+import { memo } from "react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { useGetPostsQuery } from "../../../app/features/posts/postsApiSlice";
 import BlogPostDate from "../../posts/BlogPostDate";
 import DeletePostAction from "./DeletePostAction";
 import EditPostAction from "./EditPostAction";
-import { memo } from "react";
 
 const PostRow = ({ postId }: { postId: EntityId }) => {
   // const id = postId.toString();
@@ -51,19 +51,20 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                 // flexBasis={{ base: "100%", lg: "50%" }}
               >
                 <Box>
-                  {/* <Link
+                  <Link
                     as={NavLink}
                     to={`/admin/posts/${post._id}`}
-                    _hover={{ color: "teal.200", cursor: "pointer" }}
+                    _hover={{ cursor: "pointer" }}
                     fontSize={{ base: "16px", lg: "20px" }}
                     fontWeight={500}
                     // noOfLines={{ base: 2, lg: 2 }}
                     // whiteSpace="pre-wrap"
-                    
-                    >
-                  </Link> */}
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo iste eveniet doloribus ipsum nostrum officiis dolorum adipisci enim corporis eos!
-                    {/* {post.title} */}
+                  >
+                    {post.title}
+                  </Link>
+                  {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
+                  iste eveniet doloribus ipsum nostrum officiis dolorum adipisci
+                  enim corporis eos! */}
                 </Box>
                 <Flex mt="5px">
                   <Text>
@@ -104,6 +105,6 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
   else return null;
 };
 
-const memoizedPost = memo(PostRow)
+const memoizedPost = memo(PostRow);
 
 export default memoizedPost;

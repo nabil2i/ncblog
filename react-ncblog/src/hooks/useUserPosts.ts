@@ -3,18 +3,25 @@ import ms from 'ms';
 import Post from '../entities/Post';
 import { FetchResponse, ArrayData } from '../services/api-client';
 import userpostService from "../services/postService";
-// import useUserPostQueryStore from '../store';
-import { CACHE_KEY_POSTS } from './constants';
-import useAuth from '../components/navigationbar/useAuth';
+import { CACHE_KEY_POSTS, CACHE_KEY_USER } from './constants';
+import { selectCurrentToken } from '../app/features/auth/authSlice';
+import useAuth from './useAuth';
+import { useAppSelector } from '../app/hooks';
 
 const useUserPosts = () => { 
   // const userPostQuery = useUserPostQueryStore(s => s.postQuery);
-  const { state } = useAuth();
-  const userId = state.user?._id;
+  const { _id } = useAuth();
+
+  const token = useAppSelector(selectCurrentToken);
   
   return useQuery<FetchResponse<ArrayData<Post>>>({
-    queryKey: [CACHE_KEY_POSTS, userId],
+    queryKey: [CACHE_KEY_POSTS, CACHE_KEY_USER, _id],
     queryFn: () => userpostService.getAll({
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
       // params: {
         // page: userPostQuery.page,
         // search: postQuery.searchText,

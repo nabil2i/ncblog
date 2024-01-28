@@ -8,9 +8,8 @@ import { CACHE_KEY_USER } from './constants';
 
 const useCreateUser = (
   // userId: string,
-  onCreateUser: (user: User) => void,
-  showToast: () => void,
-  showErrorToast: (errorMessage: string) => void,
+  onSuccessCreate: (data?: FetchResponse<User>) => void,
+  onErrorCreate: (errorMessage: string) => void,
   ) => {
   const queryClient = useQueryClient();
   
@@ -18,16 +17,14 @@ const useCreateUser = (
     mutationFn: userService.post,
 
     onSuccess: (savedUser: FetchResponse<User>) => {
-     onCreateUser(savedUser.data);
-      showToast();
+     onSuccessCreate(savedUser);
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USER] })
     },
     onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError;
       const errorMessage = responseData.error.message
 
-      // Handle the error and show an error toast
-      showErrorToast(errorMessage);
+      onErrorCreate(errorMessage);
     },
   });
 

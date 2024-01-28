@@ -14,7 +14,6 @@ import ms from "ms";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDeleteUserAccount from "../../hooks/useDeleteUserAccount";
-import useAuth from "../navigationbar/useAuth";
 
 const DeleteAccount = () => {
   const navigate = useNavigate();
@@ -22,7 +21,6 @@ const DeleteAccount = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const cancelRef = useRef<null | HTMLButtonElement>(null);
-  const {  dispatch } = useAuth();
   const toast = useToast();
 
   const onClose = () => {
@@ -31,11 +29,10 @@ const DeleteAccount = () => {
 
   const deleteAccount = useDeleteUserAccount(
     () => {
-      dispatch({ type: "LOGOUT" });
+      // useAppDispatch(logout())
+      // dispatch({ type: "LOGOUT" });
       setIsOpen(false);
       navigate("/signup");
-    },
-    () => {
       toast({
         title: "",
         description: "Account deleted",
@@ -61,7 +58,7 @@ const DeleteAccount = () => {
 
   const triggerDeleteAccount = () => {
     setIsDeleting(true);
-    deleteAccount.mutate("");
+    deleteAccount.mutate();
   };
 
   return (
@@ -72,7 +69,7 @@ const DeleteAccount = () => {
           disabled={isDeleting}
           onClick={() => setIsOpen(true)}
         >
-          Delete Post {isDeleting && <Spinner />}
+          Delete Account {isDeleting && <Spinner />}
         </Button>
       </Box>
 

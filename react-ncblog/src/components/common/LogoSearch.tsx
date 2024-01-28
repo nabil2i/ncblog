@@ -1,25 +1,17 @@
 import { Box, Flex, IconButton, Image, Link, Text } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
-import NabilConveys1 from "../../assets/NabilConveys1.webp";
+import NabilConveys1 from "../../assets/icons/NabilConveys1.webp";
 import useAdminLayout from "../admin/useAdminLayout";
 
 interface Props {
   boxSize?: string;
   fontSize?: string;
-  // navSize: string;
-  // toggleMobileSidebar?: () => void;
 }
 
-const LogoSearch = ({
-  boxSize,
-  fontSize,
-  // navSize,
-  // toggleMobileSidebar,
-}: Props
-) => {
+const LogoSearch = ({ boxSize, fontSize }: Props) => {
   const { state, dispatch } = useAdminLayout();
   const navSize = state.navSize;
-  
+
   return (
     <Flex
       w="full"
@@ -61,8 +53,7 @@ const LogoSearch = ({
           // mt={2}
           _hover={{ backgroundg: "none" }}
           icon={<FiMenu />}
-          // onClick={toggleMobileSidebar}
-          onClick={() => dispatch({ type: "TOGGLE_MOBILE_SIDEBAR"})}
+          onClick={() => dispatch({ type: "TOGGLE_MOBILE_SIDEBAR" })}
           aria-label={"Sidebar"}
           variant="ghost"
           color="white"

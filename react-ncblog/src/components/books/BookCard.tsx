@@ -3,16 +3,14 @@ import {
   Button,
   Card,
   CardBody,
-  CardFooter,
   Flex,
   Heading,
   Image,
   Text,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import book1 from "../../assets/thepurposeoflife.jpg";
+import book1 from "../../assets/images/thepurposeoflife.jpg";
 import Book from "../../entities/Book";
-// import BlogPostAuthor from "./BlogPostAuthor";
 
 interface Props {
   book: Book;
@@ -25,7 +23,6 @@ const BookCard = ({ book }: Props) => {
     <Link to={"/books/" + book._id}>
       <Card textAlign="left" height="100%" key={book._id} borderRadius="4">
         <CardBody>
-          {/* <Center> */}
           <Image
             // objectFit='cover'
             mt={3}
@@ -37,7 +34,6 @@ const BookCard = ({ book }: Props) => {
             objectFit="cover"
             mx="auto"
           />
-          {/* </Center> */}
 
           <Heading as="h3" my="4" fontSize="xl" noOfLines={2}>
             {book.title}
@@ -46,20 +42,18 @@ const BookCard = ({ book }: Props) => {
           <Text fontSize={"md"} noOfLines={3}>
             {book.about}
           </Text>
-        </CardBody>
-        {/* <Divider borderColor="gray.200"/> */}
-        {/* <CardHeader>
-          
-        </CardHeader> */}
-        <CardFooter as="div">
-          <Flex justify="space-between" align="center" gap={"10px"}>
-            {/* <Box display={"inline-block"}>
-              {" "}
+
+          {/* <Divider borderColor="gray.200"/> */}
+          <Flex justify="space-between" align="center" mt={4}>
+            <Box display={"inline-block"}>
               <Text>
                 {" "}
-                {book?.author?.firstname} {book?.author?.lastname}
+                by{" "}
+                <span className="font-semibold">
+                  {book?.author?.firstname} {book?.author?.lastname}
+                </span>
               </Text>
-            </Box> */}
+            </Box>
             {""}
             <Box>
               <Button
@@ -70,18 +64,9 @@ const BookCard = ({ book }: Props) => {
               </Button>
             </Box>
           </Flex>
-        </CardFooter>
+        </CardBody>
       </Card>
     </Link>
-
-    // <Box m="5" as="a" href="/blog-post-thing">
-    //   <Heading m="5" mb="0" as="h4" size="md">
-    //     Blog Post
-    //   </Heading>
-    //   <Text m="5" mt="0">
-    //     My cool blog post
-    //   </Text>
-    // </Box>
   );
 };
 

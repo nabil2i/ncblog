@@ -1,4 +1,4 @@
-import { Flex, HStack, Switch, useColorMode } from "@chakra-ui/react";
+import { Flex, Switch, useColorMode } from "@chakra-ui/react";
 
 interface Props {
   navSize?: string;
@@ -20,20 +20,20 @@ const AdminColorModeSwitch = ({ navSize }: Props) => {
     );
   }
 
-  return (
-    <HStack>
-      {/* <IconButton
-        aria-label="Dark Mode"
-        icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-        onClick={toggleColorMode}
-        variant="ghost"
-      /> */}
+  // return (
+  //   <HStack>
+  //     {/* <IconButton
+  //       aria-label="Dark Mode"
+  //       icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+  //       onClick={toggleColorMode}
+  //       variant="ghost"
+  //     /> */}
 
-      {/* <Switch colorScheme='green' isChecked={colorMode === 'dark'} onChange={toggleColorMode}/>
-      <Text whiteSpace="nowrap" display={{ base: 'none', md:'flex'}}> Dark Mode</Text>
-      */}
-    </HStack>
-  );
+  //     {/* <Switch colorScheme='green' isChecked={colorMode === 'dark'} onChange={toggleColorMode}/>
+  //     <Text whiteSpace="nowrap" display={{ base: 'none', md:'flex'}}> Dark Mode</Text>
+  //     */}
+  //   </HStack>
+  // );
 };
 
 export default AdminColorModeSwitch;

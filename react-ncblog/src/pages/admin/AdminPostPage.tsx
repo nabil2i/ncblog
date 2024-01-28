@@ -1,40 +1,64 @@
-import { Box, Flex, Grid, GridItem, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import DeletePostButton from "../../components/admin/posts/DeletePostButton";
-import EditPostButton from "../../components/admin/posts/EditPostButton";
+import { useGetPostsQuery } from "../../app/features/posts/postsApiSlice";
+import BlogDetailsActions from "../../components/admin/posts/BlogDetailsActions";
 import BlogPostDetails from "../../components/posts/BlogPostDetails";
 import Post from "../../entities/Post";
-import usePost from "../../hooks/usePost";
+import useTitle from "../../hooks/useTitle";
 
 const AdminPostPage = () => {
+  useTitle("Post");
+
   const { id } = useParams();
-  // console.log(id)
-  const { data: payload, isLoading, error } = usePost(id as string);
-  const post = payload?.data;
-  // console.log(post);
+  const postId = id?.toString() as string;
+  // const post = useAppSelector((state: RootState) => selectPostById(state, postId));
 
-  if (isLoading)
-    return (
-      <Box p={10}>
-        <VStack marginTop={2}>
-          <Spinner />
-        </VStack>
+  const { post } = useGetPostsQuery("postsList", {
+    selectFromResult: ({ data }) => ({
+      post: data?.posts.entities[postId],
+    }),
+  });
+
+  // // console.log(id)
+  // const { data: payload, isLoading, error } = usePost(id as string);
+  // const post = payload?.data;
+  // // console.log(post);
+
+  // if (isLoading)
+  //   return (
+  //     <Box p={10}>
+  //       <VStack marginTop={2}>
+  //         <Spinner />
+  //       </VStack>
+  //     </Box>
+  //   );
+
+  // if (error || !post) throw error;
+
+  const content = post ? (
+    // <Flex direction="column">
+    //   <Flex justify="space-between" align="center"></Flex>
+    //   <Box>
+    //     <PostForm post={post} />
+    //   </Box>
+    // </Flex>
+    <Box>
+      <BlogDetailsActions post={post} />
+      <Box w="full" mx="auto" maxW="800px" px={4} pt="100px">
+        <BlogPostDetails post={post as Post} />
       </Box>
-    );
+    </Box>
+  ) : (
+    <Box py={8}>
+      {" "}
+      <Spinner />
+    </Box>
+  );
 
-  if (error || !post) throw error;
+  return content;
 
   return (
     <>
-      {/* <Box
-        w="full"
-        mx="auto"
-        maxW="800px"
-        p={4}>
-
-      </Box> */}
-
-
       <Grid
         gap={2}
         templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
@@ -44,12 +68,12 @@ const AdminPostPage = () => {
           <BlogPostDetails post={post as Post} />
         </GridItem>
 
-        <GridItem area="side">
+        {/* <GridItem area="side">
           <Flex direction={{ base: "row", lg: "column" }} gap="4">
             <EditPostButton postId={post._id as string} />
             <DeletePostButton postId={post._id as string} />
           </Flex>
-        </GridItem>
+        </GridItem> */}
       </Grid>
     </>
   );

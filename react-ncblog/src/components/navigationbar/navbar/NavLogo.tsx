@@ -1,7 +1,7 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
-// import logo from '../assets/logo.webp';
+// import logo from '../assets/images/logo.webp';
 import { Link } from "react-router-dom";
-import NabilConveys1 from "../../../assets/NabilConveys1.webp";
+import NabilConveys1 from "../../../assets/icons/NabilConveys1.webp";
 // import usePostQueryStore from "../store";
 
 interface Props {
@@ -21,7 +21,11 @@ const NavLogo = ({ boxSize }: Props) => {
           // justify={{ base: 'center', md: 'start'}}
           justify={{ base: "start" }}
         >
-          <Image src={NabilConveys1} boxSize={boxSize || 30} objectFit="cover" />
+          <Image
+            src={NabilConveys1}
+            boxSize={boxSize || 30}
+            objectFit="cover"
+          />
         </Flex>
 
         <Flex display={{ base: "none", md: "flex", lg: "flex" }}>
@@ -44,7 +48,11 @@ export const NavLogoDrawer = ({ boxSize, fontSize }: Props) => {
         gap={1}
       >
         <Flex justify={{ base: "start" }}>
-          <Image src={NabilConveys1} boxSize={boxSize || 30} objectFit="cover" />
+          <Image
+            src={NabilConveys1}
+            boxSize={boxSize || 30}
+            objectFit="cover"
+          />
         </Flex>
 
         <Flex>

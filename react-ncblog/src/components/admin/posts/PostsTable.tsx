@@ -10,22 +10,19 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-// import usePosts from "../../../hooks/usePosts";
 import { EntityId } from "@reduxjs/toolkit";
 import ms from "ms";
 import { useGetPostsQuery } from "../../../app/features/posts/postsApiSlice";
 import PostRow from "./PostRow";
-// import { Table } from "@radix-ui/themes";
 
 const PostsTable = () => {
-  // from postsApiSlice
   const {
     data,
     isError,
     isLoading,
     isSuccess,
     // error,
-  } = useGetPostsQuery('postsList', {
+  } = useGetPostsQuery("postsList", {
     pollingInterval: ms("60s"),
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -34,7 +31,6 @@ const PostsTable = () => {
   // const pagination = data?.pagination;
   // console.log(posts)
 
-  // from postsSlice
   // const posts = useSelector(selectAllPosts);
   // const isLoading = useSelector(getPostsStatus);
   // const error = useSelector(getPostsError);
@@ -64,7 +60,6 @@ const PostsTable = () => {
       const tableContent = ids?.length ? (
         ids.map((postId: EntityId) => <PostRow key={postId} postId={postId} />)
       ) : (
-
         <Tr>
           <Td colSpan={2}> Nothing to show</Td>
         </Tr>
@@ -80,14 +75,13 @@ const PostsTable = () => {
           <Table>
             <Thead>
               <Tr>
-                <Th colSpan={2} fontSize={{ base: "sm", md: "md" }}>
-                </Th>
+                <Th colSpan={2} fontSize={{ base: "sm", md: "md" }}></Th>
               </Tr>
             </Thead>
 
             <Tbody>{tableContent}</Tbody>
           </Table>
-        {/* <Table.Root>
+          {/* <Table.Root>
           <Table.Header>
             <Table.Row>
               <Table.Cell colSpan={2} className="text-center">

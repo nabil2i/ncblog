@@ -8,10 +8,13 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import AccountTab from "../components/account/AccountTab";
-import PageHeading from "../components/common/PageHeading";
+import AccountTab from "../../components/account/AccountTab";
+import PageHeading from "../../components/common/PageHeading";
+import useTitle from "../../hooks/useTitle";
 
 const AccountPage = () => {
+  useTitle("Account");
+
   return (
     <>
       <Grid

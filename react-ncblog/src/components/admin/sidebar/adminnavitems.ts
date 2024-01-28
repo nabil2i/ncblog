@@ -1,5 +1,5 @@
 import { ElementType } from "react";
-import { FiBook, FiHome, FiSettings, FiSmartphone, FiAlignJustify, FiUser, FiUserPlus } from "react-icons/fi";
+import { FiAlignJustify } from "react-icons/fi";
 
 
 export interface AdminNavItem {
@@ -18,12 +18,13 @@ const ADMIN_NAV_ITEMS: Array<AdminNavItem> =  [
     type: "header",
     label: "Main",
   },
-  {
-    type: "link",
-    label: "Dashboard",
-    href: "/admin/dashboard",
-    icon: FiHome,
-  },
+  // {
+  //   type: "link",
+  //   label: "Dashboard",
+  //   href: "/admin/dashboard",
+  //   // href: "/",
+  //   icon: FiHome,
+  // },
   // {
   //   type: "link",
   //   label: "Go to main blog",

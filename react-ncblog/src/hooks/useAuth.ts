@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
-import { useSelector } from 'react-redux'
 import { selectCurrentToken } from '../app/features/auth/authSlice'
+import { useAppSelector } from '../app/hooks';
 
 interface TokenPayload {
   roles: string[];
@@ -13,7 +13,7 @@ interface TokenPayload {
   img: string;
 }
 const useAuth = () => {
-  const token = useSelector(selectCurrentToken)
+  const token = useAppSelector(selectCurrentToken)
   let isAdmin = false
   let isEditor = false
   let isRegular = false

@@ -1,18 +1,19 @@
 import { ReactNode } from "react";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import useAuth from "../navigationbar/useAuth";
+import { authSatus } from "../../app/features/auth/authSlice";
 
 interface Props {
   children: ReactNode;
 }
 
 const PrivateRoute = ({ children }: Props) => {
-  const { state } = useAuth();
+  const isAuthenticated = useSelector(authSatus);
   // console.log(state);
   // const finalComponent = state.token ? children : <LoginPage/>
 
   // return finalComponent;
-  if (!state?.isAuthenticated) {
+  if (isAuthenticated) {
     return (
       <Navigate
         to="/login"

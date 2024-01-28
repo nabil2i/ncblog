@@ -3,17 +3,19 @@ import { TagDescription } from "@reduxjs/toolkit/query";
 import Post, { PostData } from "../../../entities/Post";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from '../../store';
+import { useSelector } from "react-redux";
 
-export interface ServerResponse {
+interface DataPost {
+  count: number;
+  current: number;
+  prev: number | null;
+  next: number | null;
+  perPage: number;
+  results: Post[];
+}
+export interface ServerResponse<R> {
   success: boolean;
-  data: {
-    count: number;
-    current: number;
-    prev: number | null;
-    next: number | null;
-    perPage: number;
-    results: Post[];
-  };
+  data: R;
   message?: string;
   error?: {
     code: number,
@@ -21,9 +23,11 @@ export interface ServerResponse {
   }
 }
 
+
 const postsAdapter = createEntityAdapter<Post>({
   // selectId: (post: Post) => post.id,
-  // sortComparer: (a: Post, b: Post) => b.createdAt.localeCompare(a.createdAt)
+  // sortComparer: (a: Post, b: Post) => (
+  //   b?.createdAt.localeCompare(a?.createdAt))
 });
 
 const initialState = postsAdapter.getInitialState()
@@ -33,13 +37,15 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
     getPosts: builder.query({
       query: () => ({
         url: '/posts',
-        validationStatus: (response: { Status: number; }, result: { isError: boolean; }) => {
-          return response.Status === 200 && !result.isError
+        validationStatus: (
+          response: { Status: number; },
+          result: { isError: boolean; }) => {
+            return response.Status === 200 && !result.isError
         },
       }),
       // keepUnusedDataFor: 60,
-      transformResponse: (responseData: ServerResponse) => {
-        const postsWithIds = responseData.data.results.map(post => {
+      transformResponse: (responseData: ServerResponse<DataPost>) => {
+        const normalizedPosts = responseData.data.results.map(post => {
           return { ...post, id: post._id };
         });
 
@@ -52,21 +58,31 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
         };
 
         return { 
-          posts: postsAdapter.setAll(initialState, postsWithIds),
+          posts: postsAdapter.setAll(initialState, normalizedPosts),
           pagination
         }
       },
-      // providesTags: ['Post']
       providesTags: (result) => {
         if (result?.posts?.ids) {
           return [
             { type: 'Post', id: 'LIST' },
-            ...result.posts.ids.map(id => ({ type: 'Post', id: String(id) } as TagDescription<"Post">)) // Convert EntityId to string
+            ...result.posts.ids.map(id => ({ type: 'Post', id} as TagDescription<"Post">))
           ];
         } else {
           return [{ type: 'Post', id: 'LIST' }];
         }
       }
+    }),
+    getPost: builder.query({
+      query: (id) => ({
+        url: `posts/${id}`,
+        validationStatus: (
+          response: { Status: number; },
+          result: { isError: boolean; }) => {
+            return response.Status === 200 && !result.isError
+        },
+      }),
+      providesTags: (id) => [{ type: 'Post', id}],
     }),
     addNewPost: builder.mutation({
       query: (postData: PostData) => ({
@@ -106,7 +122,8 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
 })
 
 // return the query return object
-export const selectPostsResult = extendedPostsApiSlice.endpoints.getPosts.select(undefined)
+export const selectPostsResult = extendedPostsApiSlice.endpoints.getPosts.select('postsList')
+export const selectPostResult = (postId: string) => extendedPostsApiSlice.endpoints.getPost.select(postId)
 
 // Memoized selectors
 const selectPostsData = createSelector(
@@ -114,7 +131,18 @@ const selectPostsData = createSelector(
   (postsResult) => postsResult.data?.posts // normalized state with ids and entities
 )
 
-export const { useGetPostsQuery, useAddNewPostMutation, useUpdatePostMutation, useDeletePostMutation } = extendedPostsApiSlice
+export const selectPost = createSelector(
+  [selectPostResult],
+  (post) => post
+)
+
+export const {
+  useGetPostsQuery,
+  useAddNewPostMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+  useGetPostQuery
+} = extendedPostsApiSlice
 
 export const {
   selectAll: selectAllPosts,

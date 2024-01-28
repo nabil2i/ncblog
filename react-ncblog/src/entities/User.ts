@@ -11,3 +11,18 @@ export default interface User {
   img?: string
   // roles?: Array<string>;
 }
+
+export interface LoginData {
+  username?: string;
+  password?: string;
+  token?: string;
+}
+
+export interface FormData {
+  username: string;
+  email: string;
+  password: string;
+  password2: string;
+  firstname: string;
+  lastname: string;
+}

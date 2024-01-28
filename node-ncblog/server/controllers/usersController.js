@@ -3,6 +3,7 @@ const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const { User } = require('../models/user');
 const { Post } = require('../models/post');
+const ms = require('ms');
 
 // @desc Get all users
 // @route GET /users
@@ -177,6 +178,7 @@ const updateUser = async (req, res) => {
   }
   
   const updatedUser = await user.save()
+  
   res.status(200).json({
     success: true,
     message: `${updatedUser.username} updated`
@@ -327,22 +329,41 @@ const updateCurrentUser = async (req, res) => {
     user.password = newPassword;
   }
 
-  // const token = user.generateAuthToken();
-  const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email',
-    // 'token'
-  ]);
-  // userData.token = token;
-  // userData.isAuthenticated = true;
+  // const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email',
+
+  // ]);
   
   const updatedUser = await user.save()
-  res
-    .status(200)
-    // .cookie('token', token, { httpOnly: true})
-    .json({
-      success: true,
-      message: `${updatedUser.username} updated`,
-      data: userData
+
+  const accessToken = updatedUser.generateAuthToken();
+  const refreshToken = updatedUser.generateRefreshToken();
+  
+  res.cookie('jwt', refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None',
+    maxAge: ms('7days')
+  })
+
+  const data = {
+    accessToken,
+    // ...userData
+  }
+
+
+  res.status(200).json({
+    success: true,
+    message: `${updatedUser.username} updated`,
+    data
   });
+
+  // res
+  //   .status(200)
+  //   .json({
+  //     success: true,
+  //     message: `${updatedUser.username} updated`,
+  //     data: userData
+  // });
 
 
   // const { error } = validate(req.body);

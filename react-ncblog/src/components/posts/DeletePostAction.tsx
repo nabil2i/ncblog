@@ -79,7 +79,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
   const triggerDeletePost = (postId: string) => {
     if (postId) {
       setIsDeleting(true);
-      deletePost.mutate(postId);
+      deletePost.mutate(postId as string);
     }
   };
 

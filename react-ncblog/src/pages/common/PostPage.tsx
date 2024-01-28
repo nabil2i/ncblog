@@ -1,7 +1,8 @@
-import { Box, Flex, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Spinner, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import BlogPostDetails from "../components/posts/BlogPostDetails";
-import usePost from "../hooks/usePost";
+import BlogPostDetails from "../../components/posts/BlogPostDetails";
+import usePost from "../../hooks/usePost";
+import useTitle from "../../hooks/useTitle";
 
 const PostPage = () => {
   const { id } = useParams();
@@ -9,6 +10,8 @@ const PostPage = () => {
   // console.log(payload);
   const post = payload?.data;
   // console.log(post)
+
+  useTitle("Post");
 
   if (isLoading)
     return (
@@ -23,14 +26,10 @@ const PostPage = () => {
 
   return (
     <>
-      <Box
-        w="full"
-        mx="auto"
-        maxW="800px"
-        p={4}>
+      <Box w="full" mx="auto" maxW="800px" p={4}>
         <BlogPostDetails post={post} />
       </Box>
-    
+
       {/* <Flex direction="column" mt={8} align="center">
         <Box width="5%" display={{ base: "none", lg: "flex" }}></Box>
 

@@ -1,13 +1,15 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useGetPostsQuery } from "../../app/features/posts/postsApiSlice";
-import EditPostNav from "../../components/admin/posts/EditPostNav";
 import PostForm from "../../components/admin/posts/PostForm";
+import useTitle from "../../hooks/useTitle";
 
 const AdminPostEditPage = () => {
+  useTitle("Edit Post");
   const { id } = useParams();
   const postId = id?.toString() as string;
-  // const post = useSelector((state: RootState) => selectPostById(state, postId));
+  // const post = useAppSelector((state: RootState) => selectPostById(state, postId));
+
   const { post } = useGetPostsQuery("postsList", {
     selectFromResult: ({ data }) => ({
       post: data?.posts.entities[postId],
@@ -20,7 +22,6 @@ const AdminPostEditPage = () => {
 
   const content = post ? (
     <Box>
-      {/* <EditPostNav post={post} /> */}
       <Flex direction="column">
         <Flex justify="space-between" align="center"></Flex>
         <Box>
@@ -29,10 +30,10 @@ const AdminPostEditPage = () => {
       </Flex>
     </Box>
   ) : (
-    <Text py={8} textAlign={"center"}>
+    <Box py={8}>
       {" "}
-      Loading...
-    </Text>
+      <Spinner />
+    </Box>
   );
 
   return content;

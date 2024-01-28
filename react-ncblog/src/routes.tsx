@@ -1,29 +1,29 @@
 import { createBrowserRouter } from "react-router-dom";
 import Prefetch from "./app/features/Prefetch";
-import SignUpPage from "./pages/SignUpPage";
 import PersistLogin from "./components/auth/PersistLogin";
 import RequireAuth from "./components/common/RequireAuth";
-import AccountPage from "./pages/AccountPage";
-import AddPostPage from "./pages/AddPostPage";
-import BlogPage from "./pages/BlogPage";
-import BookPage from "./pages/BookPage";
-import BooksPage from "./pages/BooksPage";
-import EditPostPage from "./pages/EditPostPage";
-import ErrorPage from "./pages/ErrorPage";
-import HomePage from "./pages/HomePage";
-import AdminLayout from "./pages/Layouts/AdminLayout";
-import Layout from "./pages/Layouts/Layout";
-import LoginPage from "./pages/LoginPage";
-import MyPostsPage from "./pages/MyPostsPage";
-import PostPage from "./pages/PostPage";
-import SearchPage from "./pages/SearchPage";
+import AdminLayout from "./pages/_layouts/AdminLayout";
+import Layout from "./pages/_layouts/Layout";
 import AdminAddPostPage from "./pages/admin/AdminAddPostPage";
 import Dashboard from "./pages/admin/AdminDashboard";
 import AdminErrorPage from "./pages/admin/AdminErrorPage";
 import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
 import PostsPage from "./pages/admin/AdminPostsPage";
-import Profile from "./pages/admin/Profile";
+import AccountPage from "./pages/common/AccountPage";
+import AddPostPage from "./pages/common/AddPostPage";
+import BlogPage from "./pages/common/BlogPage";
+import BookPage from "./pages/common/BookPage";
+import BooksPage from "./pages/common/BooksPage";
+import EditPostPage from "./pages/common/EditPostPage";
+import ErrorPage from "./pages/common/ErrorPage";
+import HomePage from "./pages/common/HomePage";
+import LoginPage from "./pages/common/LoginPage";
+import MyPostsPage from "./pages/common/MyPostsPage";
+import PostPage from "./pages/common/PostPage";
+import SearchPage from "./pages/common/SearchPage";
+import SignUpPage from "./pages/common/SignUpPage";
+
 
 const router = createBrowserRouter([
   {
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <Prefetch />,
+            // element: <Prefetch />,
             children: [
               { index: true, element: <HomePage /> },
               {
@@ -76,7 +76,6 @@ const router = createBrowserRouter([
                 ],
               },
               { path: "account", element: <AccountPage /> },
-              //end
             ],
           },
         ],
@@ -102,8 +101,7 @@ const router = createBrowserRouter([
                 element: <Prefetch />,
                 children: [
                   { index: true, element: <Dashboard /> },
-                  { path: "dashboard", element: <Dashboard /> },
-                  { path: "profile", element: <Profile /> },
+                  { path: "", element: <Dashboard /> },
                   {
                     path: "posts",
                     children: [

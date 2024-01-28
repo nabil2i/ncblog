@@ -1,8 +1,9 @@
 import { Box, Grid, GridItem, Spinner, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import useBook from "../hooks/useBook";
-import BookDetails from "../components/books/BookDetails";
-import PageHeading from "../components/common/PageHeading";
+import BookDetails from "../../components/books/BookDetails";
+import PageHeading from "../../components/common/PageHeading";
+import useBook from "../../hooks/useBook";
+import useTitle from "../../hooks/useTitle";
 
 const BookPage = () => {
   const { id } = useParams();
@@ -10,6 +11,7 @@ const BookPage = () => {
   // console.log(payload);
   const book = payload?.data;
   // console.log(book)
+  useTitle("Post");
 
   if (isLoading)
     return (
@@ -24,7 +26,7 @@ const BookPage = () => {
 
   return (
     <>
-    <Grid
+      <Grid
         templateAreas={{ base: `"main"` }}
         templateColumns={{ base: "1fr" }}
       >
@@ -37,7 +39,6 @@ const BookPage = () => {
           </Box>
         </GridItem>
       </Grid>
-
     </>
   );
 };

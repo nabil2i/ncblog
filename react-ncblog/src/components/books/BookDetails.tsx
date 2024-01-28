@@ -7,7 +7,7 @@ import {
   Image,
   Link,
 } from "@chakra-ui/react";
-import book1 from "../../assets/thepurposeoflife.jpg";
+import book1 from "../../assets/images/thepurposeoflife.jpg";
 import Book from "../../entities/Book";
 
 const BookDetails = ({ book }: { book: Book }) => {

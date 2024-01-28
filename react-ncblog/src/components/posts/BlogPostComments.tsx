@@ -7,15 +7,15 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { authSatus } from "../../app/features/auth/authSlice";
 import { PostComment } from "../../entities/Post";
 import { CustomButton } from "../common/CustomButton";
 import { LoginModal } from "../common/LoginModal";
-import useAuth from "../navigationbar/useAuth";
 import ElapsedDate from "./ElapsedDate";
 import ReplyComment from "./ReplyComment";
 
-
-interface Props  {
+interface Props {
   comments: PostComment[];
   postId: string;
 }
@@ -23,13 +23,12 @@ interface Props  {
 const BlogPostComments = ({ comments, postId }: Props) => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { state } = useAuth();
+  const isAuthenticated = useSelector(authSatus);
   // console.log(comments)
   // console.log(postId)
 
-
   const handleReply = (commentId: string) => {
-    if (state.isAuthenticated) {
+    if (isAuthenticated) {
       setReplyingTo(commentId);
     } else {
       onOpen();
@@ -44,7 +43,7 @@ const BlogPostComments = ({ comments, postId }: Props) => {
   const renderComments = (
     comments: PostComment[],
     postId: string,
-    depth = 0,
+    depth = 0
     // maxDepth = 2
   ) => {
     // const ml = depth > maxDepth ? maxDepth * 4 : depth * 4;
@@ -52,7 +51,7 @@ const BlogPostComments = ({ comments, postId }: Props) => {
     return (
       <>
         {comments.map((comment) => (
-          <Box key={comment?._id } ml={depth * 4}>
+          <Box key={comment?._id} ml={depth * 4}>
             <Flex gap="3" mb="5" mt="5">
               <Avatar
                 src={comment?.user?.img}
@@ -107,38 +106,33 @@ const BlogPostComments = ({ comments, postId }: Props) => {
     );
   };
 
-  return (
-  <>
-    {renderComments(comments, postId)}
-    </>
-  );
+  return <>{renderComments(comments, postId)}</>;
 };
 
 export default BlogPostComments;
 
+// const renderCommentsWithVisualIndicators = (comments, depth = 0) => {
+//   return (
+//     <>
+//       {comments.map((comment, index) => (
+//         <Box key={comment._id} marginLeft={`${depth * 4}rem`}>
+//           <CommentWithVisualIndicator comment={comment} depth={depth} />
+//           {/* Rest of your comment rendering logic */}
+//         </Box>
+//       ))}
+//     </>
+//   );
+// };
 
-  // const renderCommentsWithVisualIndicators = (comments, depth = 0) => {
-  //   return (
-  //     <>
-  //       {comments.map((comment, index) => (
-  //         <Box key={comment._id} marginLeft={`${depth * 4}rem`}>
-  //           <CommentWithVisualIndicator comment={comment} depth={depth} />
-  //           {/* Rest of your comment rendering logic */}
-  //         </Box>
-  //       ))}
-  //     </>
-  //   );
-  // };
+// const CommentWithVisualIndicator = ({ comment, depth }) => {
+//   return (
+//     <Flex>
+//       <Box width="1rem" height="100%" borderLeft="1px solid gray" marginRight="1rem" />
+//       {/* Render the rest of your comment content here */}
+//     </Flex>
+//   );
+// };
 
-  // const CommentWithVisualIndicator = ({ comment, depth }) => {
-  //   return (
-  //     <Flex>
-  //       <Box width="1rem" height="100%" borderLeft="1px solid gray" marginRight="1rem" />
-  //       {/* Render the rest of your comment content here */}
-  //     </Flex>
-  //   );
-  // };
-
-  // const ReplyButton = ({ onClick }: { onClick: () => void }) => (
+// const ReplyButton = ({ onClick }: { onClick: () => void }) => (
 //   <button onClick={onClick}><Text size="2" color="gray">Reply</Text></button>
 // )

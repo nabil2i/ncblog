@@ -3,21 +3,30 @@ import { AxiosError } from "axios";
 import { FetchError } from '../services/api-client';
 import userAccountService from '../services/userAccountService';
 import { CACHE_KEY_USER } from "./constants";
+import { selectCurrentToken } from "../app/features/auth/authSlice";
+import { useAppSelector } from "../app/hooks";
 
 const useDeleteUserAccount = (
   // userId: string,
-  onDeleteAccount: () => void,
-  showToast: () => void,
-  showErrorToast: (errorMessage: string) => void,
+  onSuccessDelete: () => void,
+  onErrorDelete: (errorMessage: string) => void,
   ) => {
   const queryClient = useQueryClient();
   
+  const token = useAppSelector(selectCurrentToken);
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    }
+  }
+  
   return useMutation({
-    mutationFn: userAccountService.delete,
+    mutationFn: () => userAccountService.delete("", config),
 
     onSuccess: () => {
-      onDeleteAccount();
-      showToast();
+      onSuccessDelete();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USER] })
     },
     onError: (error: AxiosError) => {
@@ -25,7 +34,7 @@ const useDeleteUserAccount = (
       const errorMessage = responseData.error.message
 
       // Handle the error and show an error toast
-      showErrorToast(errorMessage);
+      onErrorDelete(errorMessage);
     },
   });
 

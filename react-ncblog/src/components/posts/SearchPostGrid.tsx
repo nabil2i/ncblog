@@ -40,7 +40,7 @@ const SearchPostGrid = ({ paginate }: Props) => {
   const skeletons = [1, 2, 3, 4];
   return (
     <>
-      {error && <Text py={8}> We encountered a problem.</Text>}
+      {/* {error && <Text py={8}> We encountered a problem.</Text>} */}
 
       {/* <Center>
       <Flex

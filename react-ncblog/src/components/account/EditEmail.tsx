@@ -19,28 +19,35 @@ import {
 import ms from "ms";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  AuthServerResponse,
+  setCredentials,
+} from "../../app/features/auth/authSlice";
+import { AppDispatch } from "../../app/store";
 import User from "../../entities/User";
+import useAuth from "../../hooks/useAuth";
 import useUpdateUserAccount from "../../hooks/useUpdateUserAccount";
-import useAuth from "../navigationbar/useAuth";
+import React from "react";
 
 const EditEmail = () => {
-  const { state, dispatch } = useAuth();
-  const navigate = useNavigate();
+  // const { state, dispatch } = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
+  const { email } = useAuth();
+  // const navigate = useNavigate();
   // const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const updateUserAccount = useUpdateUserAccount(
-    (userData) => {
-      // console.log(userData);
-      dispatch({ type: "UPDATE_USER_ACCOUNT", updatedUserData: userData });
+    (data) => {
+      // console.log(data);
+      dispatch(setCredentials(data as AuthServerResponse));
+      // dispatch({ type: "UPDATE_USER_ACCOUNT", updatedUserData: data});
       onClose();
       setSubmitting(false);
-      navigate("/account");
-    },
-    () => {
+      // navigate("/account");
       toast({
         title: "",
         description: "Successfully updated your account",
@@ -72,8 +79,8 @@ const EditEmail = () => {
     formState: { errors },
   } = useForm<User>();
 
-  // const initialRef = React.useRef(null)
-  // const finalRef = React.useRef(null)
+  const initialRef = React.useRef(null)
+  const finalRef = React.useRef(null)
 
   const onSubmit = (data: FieldValues) => {
     // console.log(data);
@@ -85,14 +92,10 @@ const EditEmail = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>Edit</Button>
-      {/* <Button ml={4} ref={finalRef}>
-        I'll receive focus on close
-      </Button> */}
-
+      <Button onClick={onOpen} ref={finalRef}>Edit</Button>
       <Modal
-        // initialFocusRef={initialRef}
-        // finalFocusRef={finalRef}
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
       >
@@ -107,7 +110,7 @@ const EditEmail = () => {
                 <Input
                   type="email"
                   placeholder="Enter your email address"
-                  defaultValue={state.user?.email}
+                  defaultValue={email}
                   {...register("email", {
                     required: "Email is required",
                     minLength: {

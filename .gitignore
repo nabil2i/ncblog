@@ -27,3 +27,5 @@ deprecated/
 
 #
 .env
+aPostsSlice.ts
+postsSlice.ts

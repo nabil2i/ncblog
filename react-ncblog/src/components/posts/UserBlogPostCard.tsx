@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { Link } from "react-router-dom";
-import Landscape from "../../assets/landscape.jpeg";
+import Landscape from "../../assets/images/landscape.jpeg";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
 import DeletePostAction from "./DeletePostAction";

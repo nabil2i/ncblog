@@ -4,9 +4,7 @@ import Headline from "./HeroHeadline";
 const HeroSection = () => {
   return (
     <VStack as="section">
-      {/* pt={{ base: "50px", lg: "0px"}} */}
       <Headline></Headline>
-      {/* <HeroImage></HeroImage> */}
     </VStack>
   );
 };

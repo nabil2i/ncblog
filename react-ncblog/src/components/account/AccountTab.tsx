@@ -1,12 +1,15 @@
 import { Avatar, Box, Card, Divider, Flex, Grid, Text } from "@chakra-ui/react";
-import useAuth from "../navigationbar/useAuth";
 import DeleteAccount from "./DeleteAccount";
 import EditEmail from "./EditEmail";
 import EditName from "./EditName";
 import EditPassword from "./EditPassword";
+import useAuth from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { authSatus } from "../../app/features/auth/authSlice";
 
 const AccountTab = () => {
-  const { state } = useAuth();
+  const { firstname, lastname, img, email, roles } = useAuth();
+  const isAuthenticated = useSelector(authSatus);
 
   return (
     <>
@@ -20,10 +23,10 @@ const AccountTab = () => {
           mt="5"
           display={{ base: "flex", lg: "none" }}
         >
-          {state.isAuthenticated && (
+          {isAuthenticated && (
             <Avatar
-              src={state.user?.img}
-              // fallback={state.user?.firstname?.slice(0, 1)}
+              src={img}
+              // fallback={firstname?.slice(0, 1)}
               size="9"
             />
           )}
@@ -39,7 +42,7 @@ const AccountTab = () => {
                   </Text>
                   <Text>
                     <strong>
-                      {state.user?.firstname + " " + state.user?.lastname}
+                      {firstname + " " + lastname}
                     </strong>{" "}
                     {}
                   </Text>
@@ -55,7 +58,7 @@ const AccountTab = () => {
                     <strong>Email</strong> {}
                   </Text>
                   <Text>
-                    <strong>{state.user?.email}</strong> {}
+                    <strong>{email}</strong> {}
                   </Text>
                 </Flex>
                 <EditEmail />
@@ -74,6 +77,18 @@ const AccountTab = () => {
                 </Flex>
                 <EditPassword />
               </Flex>
+
+              <Flex align="center" justify="space-between">
+                <Flex direction="column">
+                  <Text className="text-gray-500">
+                    <strong>Roles</strong> {}
+                  </Text>
+                  <Text>
+                    {roles.length > 2 && roles.slice(0, roles.length - 1).map((role) => (<strong>{role}, </strong>))}
+                    {roles.slice(roles.length - 1).map((role) => (<strong>{role}</strong>))}
+                  </Text>
+                </Flex>
+              </Flex>
             </Card>
             <DeleteAccount />
           </Flex>
@@ -86,9 +101,9 @@ const AccountTab = () => {
               gap="4"
               display={{ base: "none", lg: "flex" }}
             >
-              {state.user?.isAuthenticated && (
+              {isAuthenticated && (
                 <Avatar
-                  src={state.user?.img}
+                  src={img}
                   // fallback={userData.firstname?.slice(0, 1)}
                   size="9"
                 />

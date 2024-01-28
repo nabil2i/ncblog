@@ -5,49 +5,25 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  Flex,
   FormControl,
   FormErrorMessage,
   Grid,
   GridItem,
-  IconButton,
-  Input,
-  Menu,
-  MenuButton,
-  MenuList,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import "easymde/dist/easymde.min.css";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { MdOutlineMoreVert } from "react-icons/md";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
 import {
   useAddNewPostMutation,
   useUpdatePostMutation,
 } from "../../../app/features/posts/postsApiSlice";
-import Post from "../../../entities/Post";
-import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
-import UpdatePostAction from "./UpdatePostAction";
-import UpdatePostButton from "./UpdatePostButton";
-import EditPostNav from "./EditPostNav";
+import Post, { PostFormData } from "../../../entities/Post";
 import useAuth from "../../../hooks/useAuth";
-
-export interface PostFormData {
-  title: string;
-  body: string;
-  userId?: string;
-}
+import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
+import PostActions from "./PostActions";
 
 interface Props {
   post?: Post;
@@ -61,18 +37,12 @@ const PostForm = ({ post }: Props) => {
 
   const [
     addNewPost,
-    {
-      isError: isErrorAdd,
-      isLoading: isLoadingAdd,
-      isSuccess: isSuccessAdd,
-      error: addPostError,
-    },
+    { isError: isErrorAdd, isSuccess: isSuccessAdd, error: addPostError },
   ] = useAddNewPostMutation();
   const [
     updatePost,
     {
       isError: isErrorUpdate,
-      isLoading: isLoadingUpdate,
       isSuccess: isSuccessUpdate,
       error: updatePostError,
     },
@@ -84,7 +54,7 @@ const PostForm = ({ post }: Props) => {
       setSubimittingPost(false);
       navigate("/admin/posts/");
       toast({
-        title: "Add a post",
+        title: "",
         description: "Successfully added the post.",
         duration: 5000, // 5s
         isClosable: true,
@@ -99,7 +69,7 @@ const PostForm = ({ post }: Props) => {
       setError("Could not add the post");
       // setError(addPostError);
       toast({
-        title: "Add a post",
+        title: "",
         description: "An error occured while adding the post.",
         duration: 5000, // 5s
         isClosable: true,
@@ -113,7 +83,7 @@ const PostForm = ({ post }: Props) => {
       setSubimittingPost(false);
       navigate("/admin/posts/");
       toast({
-        title: "Update a post",
+        title: "",
         description: "Successfully updated the post.",
         duration: 5000, // 5s
         isClosable: true,
@@ -128,7 +98,7 @@ const PostForm = ({ post }: Props) => {
       setError("Could not update the post");
       // setError(updatePostError);
       toast({
-        title: "Update a post",
+        title: "",
         description: "An error occured while updating the post.",
         duration: 5000, // 5s
         isClosable: true,
@@ -189,12 +159,14 @@ const PostForm = ({ post }: Props) => {
       <Box>
         <Box>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <EditPostNav post={post} isSubmittingPost={isSubmittingPost}/>
+            <PostActions post={post} isSubmittingPost={isSubmittingPost} />
             <Grid
               gap={2}
               templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
               templateColumns={{ base: "1fr", lg: "2f 1fr" }}
-              pt={10} mx="auto" maxW="800px"
+              pt={10}
+              mx="auto"
+              maxW="800px"
             >
               <GridItem area="main" p={4}>
                 {addPostError && (
@@ -216,9 +188,6 @@ const PostForm = ({ post }: Props) => {
                   isInvalid={errors.title ? true : false}
                   mb="40px"
                 >
-                  {/* <FormLabel variant="" htmlFor="title">
-                    Post title:
-                  </FormLabel> */}
                   <AutoExpandingTextarea
                     id={"title"}
                     defaultValue={post?.title as string}

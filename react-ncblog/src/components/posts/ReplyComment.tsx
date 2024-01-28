@@ -7,7 +7,6 @@ import { CommentForm } from "../../entities/Comment";
 import User from "../../entities/User";
 import useCreateComment from "../../hooks/useCreateComment";
 import { CustomButton } from "../common/CustomButton";
-// import useAuth from "../navigationbar/useAuth";
 import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";

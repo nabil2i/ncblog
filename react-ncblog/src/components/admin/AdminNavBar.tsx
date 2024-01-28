@@ -3,28 +3,8 @@ import { FiMenu } from "react-icons/fi";
 import ColorModeSwitch from "../navigationbar/navbar/ColorModeSwitch";
 import useAdminLayout from "./useAdminLayout";
 
-// interface Props {
-//   changeNavSize: () => void;
-//   toggleMobileSidebar: () => void;
-// }
-
-const AdminNavBar = (
-  // { changeNavSize, toggleMobileSidebar }: Props
-  ) => {
+const AdminNavBar = () => {
   const { dispatch } = useAdminLayout();
-  // const toast = useToast();
-
-  // const showToast = () => {
-  //   toast({
-  //     title: "Logged out",
-  //     description: "Successfully logged out.",
-  //     duration: 3000, // 5s
-  //     isClosable: true,
-  //     status: "success",
-  //     position: "top",
-  //     icon: <UnlockIcon />,
-  //   });
-  // };
 
   return (
     <>
@@ -39,18 +19,12 @@ const AdminNavBar = (
         //   "rgba(0, 0, 0, 1)"
         // )}
         bg="teal"
-
-        // position="fixed"
-        //     top="0"
-        //     left="0"
-        //     zIndex="1"
       >
         <IconButton
           background="none"
           _hover={{ backgroundg: "none" }}
           icon={<FiMenu />}
-          // onClick={toggleMobileSidebar}
-          onClick={() => dispatch({ type: "TOGGLE_MOBILE_SIDEBAR"})}
+          onClick={() => dispatch({ type: "TOGGLE_MOBILE_SIDEBAR" })}
           aria-label={""}
           display={{ base: "flex", lg: "none" }}
           color="white"
@@ -59,8 +33,7 @@ const AdminNavBar = (
           background="none"
           _hover={{ backgroundg: "none" }}
           icon={<FiMenu />}
-          // onClick={changeNavSize}
-          onClick={() => dispatch({ type: "CHANGE_NAVSIZE"})}
+          onClick={() => dispatch({ type: "CHANGE_NAVSIZE" })}
           aria-label={""}
           color="white"
           display={{ base: "none", lg: "flex" }}

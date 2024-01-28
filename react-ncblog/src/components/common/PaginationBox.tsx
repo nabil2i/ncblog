@@ -19,7 +19,7 @@ const PaginationBox = ({
   // const [pageNumberLimit, setPageNumberLimit] = useState(3);
   // const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(3);
   // const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
-  
+
   const totalPages = Math.ceil(totalItems / itemPerPage);
 
   const pageNumbers = [];
@@ -29,30 +29,29 @@ const PaginationBox = ({
 
   return (
     <HStack spacing={2}>
-      { currentPage && 
-      <Button
-        disabled={currentPage === 1}
-        onClick={() => paginate(prev)}
-        size="sm"
-        variant={currentPage !== 1 ? "solid" : "outline"}
-        colorScheme="teal"
-        >Prev</Button>
-      }
+      {currentPage && (
+        <Button
+          disabled={currentPage === 1}
+          onClick={() => paginate(prev)}
+          size="sm"
+          variant={currentPage !== 1 ? "solid" : "outline"}
+          colorScheme="teal"
+        >
+          Prev
+        </Button>
+      )}
 
       {pageNumbers.map((page) => (
-
-          <Button
+        <Button
           key={page}
           size="sm"
           variant={page === currentPage ? "solid" : "outline"}
           colorScheme="teal"
           onClick={() => paginate(page)}
-          >
-            {page}
-          </Button>
-
-      )
-      )}
+        >
+          {page}
+        </Button>
+      ))}
 
       {/* {Array.from({ length: totalPages }, (_, index) => (
         <Button
@@ -66,15 +65,17 @@ const PaginationBox = ({
         </Button>
       ))} */}
 
-      {currentPage && 
-      <Button
-        disabled={currentPage === totalPages}
-        onClick={() => paginate(next)}
-        size="sm"
-        variant={currentPage !== totalPages ? "solid" : "outline"}
-        colorScheme="teal"
-        >Next</Button>
-      }
+      {currentPage && (
+        <Button
+          disabled={currentPage === totalPages}
+          onClick={() => paginate(next)}
+          size="sm"
+          variant={currentPage !== totalPages ? "solid" : "outline"}
+          colorScheme="teal"
+        >
+          Next
+        </Button>
+      )}
     </HStack>
   );
 };

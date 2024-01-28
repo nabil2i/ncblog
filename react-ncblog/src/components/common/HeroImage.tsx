@@ -1,5 +1,5 @@
 import { Image } from "@chakra-ui/react";
-import hero from "../assets/hero-image.webp";
+import hero from "../assets/images/hero-image.webp";
 
 const HeroImage = () => {
   return (

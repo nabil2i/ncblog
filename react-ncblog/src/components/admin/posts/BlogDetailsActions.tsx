@@ -1,17 +1,13 @@
 import { Flex } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
 import Post from "../../../entities/Post";
 import DeletePostButton from "./DeletePostButton";
-import UpdatePostButton from "./UpdatePostButton";
+import EditPostButton from "./EditPostButton";
 
 interface Props {
-  post?: Post;
-  isSubmittingPost?: boolean;
+  post: Post;
 }
 
-const EditPostNav = ({ post, isSubmittingPost }: Props) => {
-  const location = useLocation();
-  const isCreate = location.pathname.startsWith("/admin/posts/new");
+const BlogDetailsActions = ({ post }: Props) => {
   // console.log(location.pathname)
   // console.log(isCreate)
 
@@ -47,11 +43,8 @@ const EditPostNav = ({ post, isSubmittingPost }: Props) => {
         zIndex={50}
         px={2}
       >
-        <UpdatePostButton
-          post={post}
-          isSubmittingPost={isSubmittingPost as boolean}
-        />
-        {!isCreate && <DeletePostButton postId={post?._id as string} />}
+        <EditPostButton postId={post._id} />
+        <DeletePostButton postId={post?._id as string} />
         {/* <IconButton
           icon={<MdOutlineMoreVert />}
           aria-label={"Settings"}
@@ -87,4 +80,4 @@ const EditPostNav = ({ post, isSubmittingPost }: Props) => {
   );
 };
 
-export default EditPostNav;
+export default BlogDetailsActions;

@@ -1,23 +1,30 @@
 import { FetchError, FetchResponse } from './../services/api-client';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import LoginData from "../entities/LoginData";
-import User from "../entities/User";
+import User, { LoginData } from "../entities/User";
 import authService from "../services/authService";
 import { CACHE_KEY_USER } from "./constants";
+import { selectCurrentToken } from '../app/features/auth/authSlice';
+import { useAppSelector } from '../app/hooks';
 
 const useLogin = (
-  onLogin: (userData: User) => void,
-  showSuccessToast: () => void,
-  showErrorToast: (errorMessage: string) => void,
+  onSuccessLogin: (userData: User) => void,
+  onErrorLogin: (errorMessage: string) => void,
   ) => {
   const queryClient = useQueryClient();
+  const token = useAppSelector(selectCurrentToken);
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    }
+  }
   
   return useMutation<FetchResponse<User>, AxiosError, LoginData>({
-    mutationFn: authService.post,
+    mutationFn: (data) => authService.post(data, config),
     onSuccess: (userData: FetchResponse<User>) => {
-     onLogin(userData.data);
-      showSuccessToast();
+     onSuccessLogin(userData.data);
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_USER] })
 
     },
@@ -26,7 +33,7 @@ const useLogin = (
       const responseData = error.response?.data as FetchError
       const errorMessage = responseData.error.message
 
-      showErrorToast(errorMessage);
+      onErrorLogin(errorMessage);
     },
   });
 

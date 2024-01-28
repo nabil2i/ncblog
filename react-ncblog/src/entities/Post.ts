@@ -38,3 +38,9 @@ export interface PostComment {
   }
   replies: PostComment[];
 }
+
+export interface PostFormData {
+  title: string;
+  body: string;
+  userId?: string;
+}

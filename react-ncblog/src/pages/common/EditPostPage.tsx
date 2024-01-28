@@ -1,13 +1,16 @@
-import { Text, Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import usePost from "../hooks/usePost";
-import PostForm from "../components/posts/PostForm";
+import PostForm from "../../components/posts/PostForm";
+import usePost from "../../hooks/usePost";
+import useTitle from "../../hooks/useTitle";
 
 const EditPostPage = () => {
   const { id: postId } = useParams();
   // console.log("post id on edit page: ", postId)
   const { data: payload, error } = usePost(postId as string);
   const post = payload?.data;
+
+  useTitle("Edit Post");
 
   if (error || !post) {
     return (

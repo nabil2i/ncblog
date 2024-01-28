@@ -1,6 +1,7 @@
+import { Spinner } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useRefreshMutation } from "../../app/features/auth/authApiSlice";
 import { selectCurrentToken } from "../../app/features/auth/authSlice";
 import usePersist from "../../hooks/usePersist";
@@ -10,17 +11,17 @@ const PersistLogin = () => {
   const [persist] = usePersist();
   const token = useSelector(selectCurrentToken);
   const effectRan = useRef(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
 
   const [trueSuccess, setTrueSuccess] = useState(false);
 
-  const [refresh, { isError, isLoading, isUninitialized, isSuccess, error }] =
+  const [refresh, { isError, isLoading, isUninitialized, isSuccess }] =
     useRefreshMutation();
 
   useEffect(() => {
     if (effectRan.current === true || process.env.NODE_ENV !== "development") {
-      // react 18 strict mode (mount, unmount, remount: useEffect runs twice)
+      // react 18 strict mode iîdev(mount, unmount, remount: useEffect runs twice)
       const verifyRefreshToken = async () => {
         // console.log("verifying refresh token");
         try {
@@ -46,18 +47,25 @@ const PersistLogin = () => {
   let content;
 
   if (!persist) {
+    // persist
     content = <Outlet />;
   } else if (isLoading) {
     //persist: yes, token: no
-    content = <p>Loading...</p>;
+    content = <Spinner />;
   } else if (isError) {
     //persist: yes, token: no
-    if (location.pathname.includes("/admin")) content = <Navigate to={"/login"}></Navigate>;
-   
+    const path = location.pathname;
+    if (
+      path.includes("/admin") ||
+      path.includes("/myposts") ||
+      path.includes("/blog/write")
+    )
+      content = <Navigate to={"/login"}></Navigate>;
+
     <p className="errmsg">
       {/* {error.data?.message} */}
       <Link to="/login">Please login again</Link>.
-    </p>
+    </p>;
   } else if (isSuccess && trueSuccess) {
     //persist: yes, token: yes
     content = <Outlet />;

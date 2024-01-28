@@ -1,32 +1,42 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from 'axios';
-import Post from "../entities/Post";
+import Post, { PostFormData } from "../entities/Post";
 import APIClient, { FetchError } from "../services/api-client";
 import { FetchResponse } from './../services/api-client';
 import { CACHE_KEY_POSTS } from "./constants";
-import { PostFormData } from "../components/admin/posts/PostForm";
+import { selectCurrentToken } from "../app/features/auth/authSlice";
+import { useAppSelector } from "../app/hooks";
 
 const useUpdatePost = (postId: string,
-  onUpdatePost: () => void,
-  showToast: () => void,
-  showErrorToast: (errorMessage: string) => void,
+  onSuccessUpdate: () => void,
+  onErrorUpdate: (errorMessage: string) => void,
   ) => {
+
   const queryClient = useQueryClient();
   const apiClient = new APIClient<Post, PostFormData>(`/posts/${postId}`);
+
+  const token = useAppSelector(selectCurrentToken);
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    }
+  }
   
   return useMutation<FetchResponse<Post>, AxiosError, PostFormData>({
-    mutationFn:  apiClient.put,
+    mutationFn: (data) => apiClient.put(data, config),
     onSuccess: () => {
-      onUpdatePost();
-      showToast();
-      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
+      onSuccessUpdate();
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS, postId] })
     },
     onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError
       const errorMessage = responseData.error.message
-      showErrorToast(errorMessage);
+      onErrorUpdate(errorMessage);
     },
   });
 }
 
 export default useUpdatePost;
+

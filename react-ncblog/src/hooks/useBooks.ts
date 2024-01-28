@@ -1,30 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import ms from 'ms';
 import { ArrayData, FetchResponse } from '../services/api-client';
-// import { PostQuery } from './../App';
 import Book from '../entities/Book';
 import bookService from '../services/bookService';
 import { useBookQueryStore } from '../store';
 import { CACHE_KEY_BOOKS } from './constants';
-
-// const apiClient = new APIClient<Post>('/posts');
-// const usePosts = (postQuery: PostQuery) => useData<Post>(
-//   '/posts',
-//   {
-//     params: {
-//       search: postQuery.searchText,
-//       page: postQuery?.page,
-//       // perPage: postQuery?.perPage
-//     },
-//   },
-//   [ postQuery ]
-// );
-
+import { selectCurrentToken } from '../app/features/auth/authSlice';
+import { useAppSelector } from '../app/hooks';
 
 
 const useBooks = () => { 
   const bookQuery = useBookQueryStore(s => s.bookQuery);
   
+  const token = useAppSelector(selectCurrentToken);
+
   return useQuery<FetchResponse<ArrayData<Book>>>({
     queryKey: [CACHE_KEY_BOOKS, bookQuery],
     queryFn: () => bookService.getAll({
@@ -34,6 +23,12 @@ const useBooks = () => {
         // _start: (postQuery.page - 1) * postQuery.perPage,
         // _limit: postQuery.perPage,
         // perPage: postQuery.perPage,
+      },
+ 
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
       },
     }),
     // getNextPageParam: (lastPage, allPages) => {

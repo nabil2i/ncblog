@@ -13,7 +13,6 @@ import {
   HStack,
   Heading,
   Input,
-  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
@@ -22,16 +21,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../app/features/auth/authApiSlice";
 import {
   AuthErrorResponse,
-  AuthServerResponse,
   setCredentials,
 } from "../../app/features/auth/authSlice";
-import LoginData from "../../entities/LoginData";
+import { LoginData } from "../../entities/User";
 import usePersist from "../../hooks/usePersist";
 
 const VARIANT_COLOR = "teal";
 
 const LoginForm = () => {
-  const toast = useToast();
+  // const toast = useToast();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [login, { isLoading }] = useLoginMutation();
@@ -43,7 +41,7 @@ const LoginForm = () => {
   // useEffect(() => {
   //   if (isError) {
   //     toast({
-  //       title: "Log in",
+  //       title: "",
   //       description: error,
   //       duration: 5000, // 5s
   //       isClosable: true,
@@ -63,7 +61,7 @@ const LoginForm = () => {
   //   },
   //   () => {
   //     toast({
-  //       title: "Log in",
+  //       title: "",
   //       description: "Successfully logged in.",
   //       duration: 5000, // 5s
   //       isClosable: true,
@@ -75,7 +73,7 @@ const LoginForm = () => {
   //   (errorMessage) => {
   //     // console.log(errorMessage);
   //     toast({
-  //       title: "Log in",
+  //       title: "",
   //       description: errorMessage,
   //       duration: 5000, // 5s
   //       isClosable: true,
@@ -99,16 +97,16 @@ const LoginForm = () => {
   const onSubmit = async (data: FieldValues) => {
     // console.log(`"Form fields": ${data}`);
     try {
-      const response = (await login({
+      const response = await login({
         username: data.username,
         password: data.password,
-      }).unwrap()) 
+      }).unwrap();
       // console.log("response:", response)
       dispatch(setCredentials(response));
       reset();
       navigate("/");
     } catch (error) {
-      const err = error as AuthErrorResponse
+      const err = error as AuthErrorResponse;
       // console.log("error", error);
       setError(err.data.error.message);
     }
@@ -186,7 +184,13 @@ const LoginForm = () => {
 
         <HStack justifyContent="space-between" mt={4}>
           <Box>
-            <Checkbox border={1} colorScheme={VARIANT_COLOR} borderColor="teal" onChange={togglePersist} checked={persist}>
+            <Checkbox
+              border={1}
+              colorScheme={VARIANT_COLOR}
+              borderColor="teal"
+              onChange={togglePersist}
+              checked={persist}
+            >
               Remember me
             </Checkbox>
           </Box>

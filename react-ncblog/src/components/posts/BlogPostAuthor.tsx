@@ -1,9 +1,9 @@
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
-import NabilConveys2 from "../../assets/NabilConveys2.webp";
+import NabilConveys2 from "../../assets/icons/NabilConveys2.webp";
 import Post from "../../entities/Post";
 import BlogPostDate from "./BlogPostDate";
 
-const BlogPostAuthor = ({ post }: { post: Post}) => {
+const BlogPostAuthor = ({ post }: { post: Post }) => {
   return (
     <Flex mt="1" gap="2">
       <Avatar src={NabilConveys2} />

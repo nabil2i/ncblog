@@ -1,4 +1,5 @@
 
+import usePersist from "../../../hooks/usePersist";
 import { apiSlice } from "../../api/apiSlice";
 import { AuthServerResponse, setCredentials } from "../auth/authSlice";
 import { logout } from './authSlice';
@@ -7,11 +8,6 @@ interface LoginCredentials {
   username: string;
   password: string;
 }
-// const authAdapter = createEntityAdapter({
-
-// })
-
-// const initialState = authAdapter.getInitialState()
 
 const extendedAuthApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -31,14 +27,15 @@ const extendedAuthApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
+          //  const { data } = 
+          await queryFulfilled;
           // console.log(data);
           dispatch(logout());
           setTimeout(() => {
             dispatch(apiSlice.util.resetApiState()) // clear cache
           }, 1000)
         } catch (error) {
-          console.log(error)
+          // console.log(error)
         }
       }
     }),

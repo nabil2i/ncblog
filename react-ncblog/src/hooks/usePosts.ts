@@ -2,28 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import ms from 'ms';
 import Post from '../entities/Post';
 import { FetchResponse, ArrayData } from '../services/api-client';
-// import { PostQuery } from './../App';
 import postService from "../services/postService";
 import usePostQueryStore from '../store';
 import { CACHE_KEY_POSTS } from './constants';
-
-// const apiClient = new APIClient<Post>('/posts');
-// const usePosts = (postQuery: PostQuery) => useData<Post>(
-//   '/posts',
-//   {
-//     params: {
-//       search: postQuery.searchText,
-//       page: postQuery?.page,
-//       // perPage: postQuery?.perPage
-//     },
-//   },
-//   [ postQuery ]
-// );
-
+import { selectCurrentToken } from '../app/features/auth/authSlice';
+import { useAppSelector } from '../app/hooks';
 
 
 const usePosts = () => { 
   const postQuery = usePostQueryStore(s => s.postQuery);
+  const token = useAppSelector(selectCurrentToken);
   
   return useQuery<FetchResponse<ArrayData<Post>>>({
     queryKey: [CACHE_KEY_POSTS, postQuery],
@@ -35,6 +23,11 @@ const usePosts = () => {
         // _limit: postQuery.perPage,
         // perPage: postQuery.perPage,
       },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
     }),
     // getNextPageParam: (lastPage, allPages) => {
     //   return lastPage.next ? allPages.length + 1 : undefined;

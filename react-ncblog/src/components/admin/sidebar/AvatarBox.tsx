@@ -1,9 +1,11 @@
 import { Avatar, Flex, Text } from "@chakra-ui/react";
 import useAuth from "../../../hooks/useAuth";
-// import useAuth from "../../navigationbar/useAuth";
+import useAdminLayout from "../useAdminLayout";
 
-const AvatarBox = ({ navSize }: { navSize?: string }) => {
+const AvatarBox = () => {
   const { firstname, lastname, email } = useAuth();
+  const { state } = useAdminLayout();
+  const navSize = state.navSize;
 
   return (
     <>
@@ -21,7 +23,13 @@ const AvatarBox = ({ navSize }: { navSize?: string }) => {
         borderRadius="full"
       >
         <Flex align="center" justify="center">
-          <Avatar name="" size="sm" bg="teal.300" m={-1} src={"https://api.dicebear.com/7.x/bottts/png"}/>
+          <Avatar
+            name=""
+            size="sm"
+            bg="teal.300"
+            m={-1}
+            src={"https://api.dicebear.com/7.x/bottts/png"}
+          />
         </Flex>
         {navSize === "large" && (
           <Flex

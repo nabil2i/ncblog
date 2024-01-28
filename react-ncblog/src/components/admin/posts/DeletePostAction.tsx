@@ -28,8 +28,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
     setIsOpen(false);
   };
 
-  const [deletePost, { isError, isLoading, isSuccess, error: deleteError }] =
-    useDeletePostMutation();
+  const [deletePost, { isError, isSuccess }] = useDeletePostMutation();
 
   useEffect(() => {
     if (isSuccess) {

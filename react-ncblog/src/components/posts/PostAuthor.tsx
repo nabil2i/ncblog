@@ -1,5 +1,5 @@
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
-import NabilConveys2 from "../../assets/NabilConveys2.webp";
+import NabilConveys2 from "../../assets/icons/NabilConveys2.webp";
 import Post from "../../entities/Post";
 import BlogPostDate from "./BlogPostDate";
 

@@ -2,12 +2,11 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { store } from "../store";
 import { extendedPostsApiSlice } from "./posts/postsApiSlice";
-// import { Outlet } from 'react-router-dom';
 // { children }: { children: ReactNode }
 
 const Prefetch = () => {
   useEffect(() => {
-    console.log("subscribing");
+    // console.log("subscribing");
     store.dispatch(
       extendedPostsApiSlice.util.prefetch("getPosts", "postsList", {
         force: true,

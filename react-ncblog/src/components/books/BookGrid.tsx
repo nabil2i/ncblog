@@ -1,11 +1,9 @@
 import { Box, Flex, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
-// import { PostQuery } from "../App";
 import useBooks from "../../hooks/useBooks";
 import PaginationBox from "../common/PaginationBox";
 import BookCard from "./BookCard";
 import BookCardContainer from "./BookCardContainer";
 import BookCardSkeleton from "./BookCardSkeleton";
-// import usePostQueryStore from "../store";
 
 interface Props {
   paginate: (page: number) => void;
@@ -68,15 +66,15 @@ const BookGrid = ({ paginate }: Props) => {
             next={data?.next as number}
             paginate={paginate}
           ></PaginationBox>
-          ) : (
-            <></>
-          )}
-  
-          {!data?.count && (
-            <VStack>
-              <Text>Nothing found. Try a different search.</Text>
-            </VStack>
-          )}
+        ) : (
+          <></>
+        )}
+
+        {!data?.count && (
+          <VStack>
+            <Text>Nothing found. Try a different search.</Text>
+          </VStack>
+        )}
       </VStack>
     </>
   );

@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Landscape from "../../assets/landscape.jpeg";
+import Landscape from "../../assets/images/landscape.jpeg";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
 
@@ -63,15 +63,6 @@ const BlogPostCard = ({ post }: Props) => {
         </CardFooter>
       </Card>
     </Link>
-
-    // <Box m="5" as="a" href="/blog-post-thing">
-    //   <Heading m="5" mb="0" as="h4" size="md">
-    //     Blog Post
-    //   </Heading>
-    //   <Text m="5" mt="0">
-    //     My cool blog post
-    //   </Text>
-    // </Box>
   );
 };
 

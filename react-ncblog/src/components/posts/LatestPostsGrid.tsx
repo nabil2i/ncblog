@@ -37,10 +37,11 @@ const SimplePostGrid = () => {
 
       {!error && (
         <>
-          <Heading as="h2" size="2xl">
-            {" "}
+          {data?.count as number > 0 &&
+            <Heading as="h2" size="2xl"> 
             Latest Posts
-          </Heading>
+          </Heading> 
+          }
 
           <VStack paddingBottom={5} align={"center"}>
             <SimpleGrid

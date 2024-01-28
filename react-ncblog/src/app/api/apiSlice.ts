@@ -1,37 +1,8 @@
-import { AuthServerResponse } from './../features/auth/authSlice';
-
-import type { RootState } from './../store';
-import { BaseQueryFn, BaseQueryApi,  FetchArgs, FetchBaseQueryError, createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BaseQueryApi, FetchArgs, createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials } from '../features/auth/authSlice';
+import { AuthServerResponse } from './../features/auth/authSlice';
+import type { RootState } from './../store';
 
-type AuthErrorResponse = {
-  error: {
-    status: number;
-    message: string;
-  };
-};
-
-// export interface FetchResponse<R> {
-//   success: boolean;
-//   data: R;
-//   message?: string;
-// }
-// export interface FetchError {
-//   success: boolean;
-//   error: {
-//     code: number;
-//     message: string;
-//   }
-// }
-
-// export interface ArrayData<S> {
-//   count: number;
-//   current: number;
-//   prev: number;
-//   next: number;
-//   perPage: number;
-//   results: S[];
-// }
 
 export const baseUrl = import.meta.env.DEV ? import.meta.env.VITE_API_BASE_URL : process.env.API_BASE_URL;
 
@@ -87,13 +58,6 @@ const baseQueryWithReauth  = async (
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery : baseQueryWithReauth,
-  // baseQuery: fetchBaseQuery({
-  //   baseUrl,
-  //   credentials: 'include',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   }, 
-  // }),
   tagTypes: ['Post', 'Auth'],
   endpoints: (builder) => ({})
 })

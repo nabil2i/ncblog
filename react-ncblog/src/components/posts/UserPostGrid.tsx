@@ -5,7 +5,6 @@ import PaginationBox from "../common/PaginationBox";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
 import UserBlogPostCard from "./UserBlogPostCard";
-// import useUserPostQueryStore from "../store";
 
 interface Props {
   paginate?: (page: number) => void;

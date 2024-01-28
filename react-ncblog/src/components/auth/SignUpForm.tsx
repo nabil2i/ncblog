@@ -14,33 +14,21 @@ import {
 import { FieldValues, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import useCreateUser from "../../hooks/useCreateUser";
-import useAuth from "../navigationbar/useAuth";
+import { FormData } from "../../entities/User";
 
 const VARIANT_COLOR = "teal";
 
-export interface FormData {
-  username: string;
-  email: string;
-  password: string;
-  password2: string;
-  firstname: string;
-  lastname: string;
-}
-
 const SignUpForm = () => {
-  const { dispatch } = useAuth();
   // const [error, setError] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
 
   const createUser = useCreateUser(
-    (userData) => {
-      reset();
-      // console.log(user);
-      dispatch({ type: "LOGIN", userData: userData });
-      navigate("/");
-    },
     () => {
+      reset();
+      // console.log(data);
+      // dispatch({ type: "LOGIN", userData: data });
+      navigate("/login");
       toast({
         title: "Sign up",
         description: "Successfully created an account.",
@@ -71,7 +59,6 @@ const SignUpForm = () => {
     reset,
     // watch,
     formState: { errors },
-    // } = useForm();
   } = useForm<FormData>();
 
   // const password = watch("password");

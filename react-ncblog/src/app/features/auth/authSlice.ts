@@ -1,7 +1,6 @@
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { Root } from "react-dom/client";
 
 
 interface AuthState {
@@ -26,10 +25,6 @@ export interface AuthErrorResponse {
     }
   },
   status?: number,
-}
-
-export interface DataAuth {
-  accessToken: string;
 }
 
 const initialState = {

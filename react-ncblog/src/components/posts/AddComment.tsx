@@ -9,7 +9,6 @@ import { CustomButton } from "../common/CustomButton";
 import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
-// import useAuth from "../navigationbar/useAuth";
 
 // const VARIANT_COLOR = "teal";
 

@@ -1,31 +1,38 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from 'axios';
-import Post from "../entities/Post";
+import Post, { PostFormData } from "../entities/Post";
 import postService from "../services/postService";
 import { FetchError, FetchResponse } from './../services/api-client';
 import { CACHE_KEY_POSTS } from "./constants";
-import { PostFormData } from "../components/admin/posts/PostForm";
+import { selectCurrentToken } from "../app/features/auth/authSlice";
+import { useAppSelector } from "../app/hooks";
 
 const useCreatePost = (
-  onCreatePost: () => void,
-  showToast: () => void,
-  showErrorToast: (errorMessage: string) => void,
+  onSuccessCreate: () => void,
+  onErrorCreate: (errorMessage: string) => void,
   ) => {
   const queryClient = useQueryClient();
   
+  const token = useAppSelector(selectCurrentToken);
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    }
+  }
   const createPost = useMutation<FetchResponse<Post>, AxiosError, PostFormData>({
-    mutationFn: postService.post,
+    mutationFn: (data) => postService.post(data, config),
 
     onSuccess: () => {
-     onCreatePost();
-      showToast();
+     onSuccessCreate();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS] })
 
     },
     onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError
       const errorMessage = responseData.error.message
-      showErrorToast(errorMessage);
+      onErrorCreate(errorMessage);
     },
   });
 

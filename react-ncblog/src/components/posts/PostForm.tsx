@@ -4,62 +4,31 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
   Flex,
   FormControl,
   FormErrorMessage,
   Grid,
   GridItem,
-  Input,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import "easymde/dist/easymde.min.css";
+import ms from "ms";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
-import Post from "../../entities/Post";
+import Post, { PostFormData } from "../../entities/Post";
+import useAuth from "../../hooks/useAuth";
 import useCreatePost from "../../hooks/useCreatePost";
 import useUpdatePost from "../../hooks/useUpdatePost";
 import AutoExpandingTextarea from "../common/AutoExpandingTextarea";
-import useAuth from "../navigationbar/useAuth";
-import UpdatePostButton from "./UpdatePostButton";
-
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { z } from "zod";
-
-// if doing optimistic update
-// interface CreatePostContext {
-//   prevPosts: Post[]
-
-// }
-export interface PostFormData {
-  title: string;
-  body: string;
-  userId?: string;
-}
-// const schema = z.object({
-//   title: z
-//     .string()
-//     .min(20, { message: "Title must be at least 20 characters." }),
-//   body: z.string().min(50, { message: "Body must be at least 50 characters." }),
-// });
-
-// type FormData = z.infer<typeof schema>;
+import EditPostNav from "./EditPostNav";
 
 interface Props {
   post?: Post;
 }
 const PostForm = ({ post }: Props) => {
-  const { state } = useAuth();
+  const { _id } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isSubmittingPost, setSubimittingPost] = useState(false);
@@ -69,8 +38,6 @@ const PostForm = ({ post }: Props) => {
       // reset();
       setSubimittingPost(false);
       navigate("/myposts");
-    },
-    () => {
       toast({
         title: "Add a post",
         description: "Successfully added the post.",
@@ -100,18 +67,16 @@ const PostForm = ({ post }: Props) => {
     () => {
       // reset();
       setSubimittingPost(false);
-      navigate("/myposts/");
-    },
-    () => {
       toast({
         title: "Update a post",
         description: "Successfully updated the post.",
-        duration: 5000, // 5s
+        duration: ms("5s"),
         isClosable: true,
         status: "success",
         position: "top",
         icon: <AddIcon />,
       });
+      navigate("/myposts/");
     },
     (errorMessage) => {
       setSubimittingPost(false);
@@ -119,7 +84,7 @@ const PostForm = ({ post }: Props) => {
       // toast({
       //   title: "Update a post",
       //   description: "An error occured while adding the post.",
-      //   duration: 5000, // 5s
+      //   duration: 5000,
       //   isClosable: true,
       //   status: "error",
       //   position: "top",
@@ -151,85 +116,18 @@ const PostForm = ({ post }: Props) => {
       createPost.mutate({
         title: data.title,
         body: data.body,
-        userId: state.user?._id,
+        userId: _id,
       });
     }
   };
-  const { isOpen, onClose } = useDisclosure();
+  // const { isOpen, onClose } = useDisclosure();
   // const icnRef = React.useRef();
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex display="column">
-          <Flex
-            // px={4}
-            position="fixed"
-            align="center"
-            // minH="20px"
-            bg="gray.400"
-            w="full"
-            h="60px"
-            zIndex="90"
-            top="60px"
-            justify="flex-end"
-            px={5}
-            // display="none"
-          >
-            {/* <IconButton
-              aria-label={"Settings"}
-              onClick={onOpen}
-              icon={<MdOutlineMoreHoriz />}
-              borderRadius="full"
-              color="gray.400"
-              variant="ghost"
-              fontSize={20}
-            /> */}
-            <UpdatePostButton isSubmittingPost={isSubmittingPost} post={post} />
-
-            {/* <Menu>
-              <MenuButton
-                as={IconButton}
-                icon={<MdOutlineMoreVert />}
-                aria-label={"Settings"}
-                // borderRadius="full"
-                color="white"
-                variant="ghost"
-                fontSize={20}
-                _hover={{ bg: "none" }}
-              ></MenuButton>
-              <MenuList>
-                <UpdatePostAction
-                  post={post}
-                  isSubmittingPost={isSubmittingPost}
-                />
-              </MenuList>
-            </Menu> */}
-            <Drawer
-              isOpen={isOpen}
-              placement="right"
-              onClose={onClose}
-              // finalFocusRef={icnRef}
-            >
-              <DrawerOverlay />
-              <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader>Create your account</DrawerHeader>
-
-                <DrawerBody>
-                  <Input placeholder="Type here..." />
-                </DrawerBody>
-
-                <DrawerFooter>
-                  <Button variant="outline" mr={3} onClick={onClose}>
-                    Cancel
-                  </Button>
-                  <Button colorScheme="blue">Save</Button>
-                </DrawerFooter>
-              </DrawerContent>
-            </Drawer>
-          </Flex>
-
+          <EditPostNav post={post} isSubmittingPost={isSubmittingPost} />
           <Grid
             gap={2}
             templateAreas={{ base: `"main"`, lg: `"side1 main side2"` }}
@@ -255,9 +153,6 @@ const PostForm = ({ post }: Props) => {
                 isInvalid={errors.title ? true : false}
                 mb="40px"
               >
-                {/* <FormLabel variant="" htmlFor="title">
-                  Post title:
-                </FormLabel> */}
                 <AutoExpandingTextarea
                   id={"title"}
                   defaultValue={post?.title as string}
@@ -265,7 +160,6 @@ const PostForm = ({ post }: Props) => {
                   register={register}
                   setFieldValue={setValue}
                 />
-
                 {/* <FormErrorMessage>
                   {errors.title && errors.title.message}
                 </FormErrorMessage> */}

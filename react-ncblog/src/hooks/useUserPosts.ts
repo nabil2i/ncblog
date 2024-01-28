@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import ms from 'ms';
-import Post from '../entities/Post';
-import { FetchResponse, ArrayData } from '../services/api-client';
-import userpostService from "../services/postService";
-import { CACHE_KEY_POSTS, CACHE_KEY_USER } from './constants';
 import { selectCurrentToken } from '../app/features/auth/authSlice';
-import useAuth from './useAuth';
 import { useAppSelector } from '../app/hooks';
+import Post from '../entities/Post';
+import { ArrayData, FetchResponse } from '../services/api-client';
+import userpostService from "../services/postService";
+import { CACHE_KEY_USER_POSTS } from './constants';
+import useAuth from './useAuth';
 
 const useUserPosts = () => { 
   // const userPostQuery = useUserPostQueryStore(s => s.postQuery);
@@ -15,7 +15,7 @@ const useUserPosts = () => {
   const token = useAppSelector(selectCurrentToken);
   
   return useQuery<FetchResponse<ArrayData<Post>>>({
-    queryKey: [CACHE_KEY_POSTS, CACHE_KEY_USER, _id],
+    queryKey: [CACHE_KEY_USER_POSTS, _id],
     queryFn: () => userpostService.getAll({
       headers: {
         'Content-Type': 'application/json',

@@ -12,7 +12,7 @@ const EditPostPage = () => {
 
   useTitle("Edit Post");
 
-  if (error || !post) {
+  if (error) {
     return (
       <Text py={8} textAlign={"center"}>
         {" "}

@@ -71,7 +71,7 @@ const PostGrid = ({ paginate }: Props) => {
 
         {!data?.count && (
           <VStack>
-            <Text>Nothing found.</Text>
+            <Text>No posts</Text>
           </VStack>
         )}
       </VStack>

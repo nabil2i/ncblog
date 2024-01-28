@@ -15,11 +15,13 @@ import { FieldValues, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import useCreateUser from "../../hooks/useCreateUser";
 import { FormData } from "../../entities/User";
+import { useState } from "react";
 
 const VARIANT_COLOR = "teal";
 
 const SignUpForm = () => {
   // const [error, setError] = useState("");
+  const [isSigning, setIsSigning] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -28,9 +30,10 @@ const SignUpForm = () => {
       reset();
       // console.log(data);
       // dispatch({ type: "LOGIN", userData: data });
+      setIsSigning(false);
       navigate("/login");
       toast({
-        title: "Sign up",
+        title: "",
         description: "Successfully created an account.",
         duration: 5000, // 5s
         isClosable: true,
@@ -41,8 +44,9 @@ const SignUpForm = () => {
     },
     (errorMessage) => {
       // console.log(errorMessage);
+      setIsSigning(false);
       toast({
-        title: "Sign up",
+        title: "",
         description: errorMessage,
         duration: 5000, // 5s
         isClosable: true,
@@ -58,13 +62,14 @@ const SignUpForm = () => {
     register,
     reset,
     // watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormData>();
 
   // const password = watch("password");
   // const password2 = watch("password2");
 
   const onSubmit = (data: FieldValues) => {
+    setIsSigning(true);
     // console.log(data);
     // if (data.password !== data.password2) {
     //   setError("Passwords do not match");
@@ -263,7 +268,7 @@ const SignUpForm = () => {
         </HStack>
 
         <Button width="full" mt={4} type="submit" colorScheme={VARIANT_COLOR}>
-        {isSubmitting ? "Signing up" : "Sign up"}
+        {isSigning ? "Signing up" : "Sign up"}
         </Button>
       </form>
     </Box>

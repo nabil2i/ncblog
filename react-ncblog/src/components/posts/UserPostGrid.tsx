@@ -71,7 +71,7 @@ const UserPostGrid = ({ paginate }: Props) => {
 
         {!data?.count && (
           <VStack>
-            <Text>Nothing found.</Text>
+            <Text>No posts could be retrived</Text>
           </VStack>
         )}
       </VStack>

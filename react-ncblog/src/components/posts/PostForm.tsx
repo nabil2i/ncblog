@@ -20,7 +20,7 @@ import SimpleMDE from "react-simplemde-editor";
 import Post, { PostFormData } from "../../entities/Post";
 import useAuth from "../../hooks/useAuth";
 import useCreatePost from "../../hooks/useCreatePost";
-import useUpdatePost from "../../hooks/useUpdatePost";
+import useUpdateUserPost from "../../hooks/useUpdateUserPost";
 import AutoExpandingTextarea from "../common/AutoExpandingTextarea";
 import EditPostNav from "./EditPostNav";
 
@@ -62,13 +62,14 @@ const PostForm = ({ post }: Props) => {
       // });
     }
   );
-  const updatePost = useUpdatePost(
+  // const updatePost = useUpdatePost(
+  const updatePost = useUpdateUserPost(
     post?._id as string,
     () => {
       // reset();
       setSubimittingPost(false);
       toast({
-        title: "Update a post",
+        title: "",
         description: "Successfully updated the post.",
         duration: ms("5s"),
         isClosable: true,
@@ -82,7 +83,7 @@ const PostForm = ({ post }: Props) => {
       setSubimittingPost(false);
       setError(errorMessage);
       // toast({
-      //   title: "Update a post",
+      //   title: "",
       //   description: "An error occured while adding the post.",
       //   duration: 5000,
       //   isClosable: true,

@@ -2,7 +2,7 @@ module.exports = (model) => {
   return async (req, res, next) => {
     try {
       let page = parseInt(req.query.page) || 1;
-      let perPage = parseInt(req.query.perPage)  || 3;
+      let perPage = parseInt(req.query.perPage)  || 20;
       let searchTerm = req.query.search;
       let authorId = req.query.authorId;
 

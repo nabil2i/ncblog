@@ -59,6 +59,17 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery : baseQueryWithReauth,
   tagTypes: ['Post', 'Auth'],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  endpoints: () => ({})
+
+  endpoints: (builder) => ({
+    getStatus: builder.query({
+      query: () => ({
+        url: `/status`,
+        validationStatus: (
+          response: { Status: number; },
+          result: { isError: boolean; }) => {
+            return response.Status === 200 && !result.isError
+        },
+      }),
+    }),
+  })
 })

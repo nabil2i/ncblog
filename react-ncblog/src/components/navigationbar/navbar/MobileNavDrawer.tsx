@@ -18,6 +18,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import { NavLogoDrawer } from "./NavLogo";
 import NAV_ITEMS, { NavItem } from "./navitems";
+import { isExternalURL } from "../../../utils/urls";
 
 interface Props {
   onCloseMain: () => void;
@@ -88,7 +89,11 @@ const MobileNavItem = ({
   ) => {
     if (children) onToggle();
     else if (href) {
-      navigate(href);
+      if (isExternalURL(href)) {
+        window.open(href, "_blank");
+      } else {
+        navigate(href);
+      }
       onCloseMain();
     }
   };
@@ -98,7 +103,7 @@ const MobileNavItem = ({
       <Flex
         py={2}
         px={5}
-        as={NavLink}
+        as={isExternalURL(href || "") ? "a" : NavLink}
         justify={"space-between"}
         align={"center"}
         w="full"
@@ -107,7 +112,11 @@ const MobileNavItem = ({
           bg: useColorModeValue("teal.300", "#272727"),
           rounded: "10px",
           color: "white",
+          cursor: "pointer",
         }}
+        // href={isExternalURL(href || "") ? href : undefined}
+        target={isExternalURL(href || "") ? "_blank" : undefined}
+        rel={isExternalURL(href || "") ? "noopener noreferrer" : undefined}
       >
         <Text fontWeight={600}> {label} </Text>
         {children && (
@@ -137,14 +146,21 @@ const MobileNavItem = ({
                 ml={1}
                 py={2}
                 px={4}
-                width="100%"
+                width="full"
                 _hover={{
                   bg: colorMode === "light" ? "teal.300" : "#272727",
                   rounded: "10px",
                   color: "white",
+                  cursor: "pointer",
                 }}
               >
-                <NavLink to={child.href ?? "#"}>{child.label}</NavLink>
+                {isExternalURL(child.href || "") ? (
+                  <a href={child.href} target="_blank" rel="noopener noreferrer" className="w-full">
+                    {child.label}
+                  </a>
+                ) : (
+                  <NavLink className="w-full" to={child.href ?? "#"}>{child.label}</NavLink>
+                )}
               </Box>
             ))}
         </Stack>

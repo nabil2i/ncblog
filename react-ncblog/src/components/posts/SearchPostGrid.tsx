@@ -19,7 +19,7 @@ interface Props {
 }
 
 const SearchPostGrid = ({ paginate }: Props) => {
-  const { data: payload, error, isLoading } = useSearchPosts();
+  const { data: payload, isLoading } = useSearchPosts();
   const data = payload?.data;
 
   const searchText = useSearchPostQueryStore(

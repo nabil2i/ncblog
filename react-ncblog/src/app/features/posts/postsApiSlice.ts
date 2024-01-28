@@ -3,7 +3,6 @@ import { TagDescription } from "@reduxjs/toolkit/query";
 import Post, { PostData } from "../../../entities/Post";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from '../../store';
-import { useSelector } from "react-redux";
 
 interface DataPost {
   count: number;

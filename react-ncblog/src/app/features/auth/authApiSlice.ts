@@ -1,5 +1,4 @@
 
-import usePersist from "../../../hooks/usePersist";
 import { apiSlice } from "../../api/apiSlice";
 import { AuthServerResponse, setCredentials } from "../auth/authSlice";
 import { logout } from './authSlice';

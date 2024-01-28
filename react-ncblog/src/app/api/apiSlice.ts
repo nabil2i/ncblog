@@ -59,5 +59,6 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery : baseQueryWithReauth,
   tagTypes: ['Post', 'Auth'],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   endpoints: (builder) => ({})
 })

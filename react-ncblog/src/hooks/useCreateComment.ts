@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import APIClient, { FetchResponse } from "../services/api-client";
-import Comment, { CommentForm } from "../entities/Comment";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { CACHE_KEY_COMMENTS, CACHE_KEY_POSTS } from "./constants";
 import { selectCurrentToken } from "../app/features/auth/authSlice";
 import { useAppSelector } from "../app/hooks";
+import Comment, { CommentForm } from "../entities/Comment";
+import APIClient, { FetchResponse } from "../services/api-client";
+import { CACHE_KEY_COMMENTS } from "./constants";
 
 const useCreateComment = (
   postId: string,

@@ -1,7 +1,7 @@
 import { Flex, Textarea } from "@chakra-ui/react";
 import { ChangeEvent } from "react";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { PostFormData } from "../posts/PostForm";
+import { PostFormData } from "../../entities/Post";
 
 interface Props {
   id: "title" | "body" | "userId";
@@ -50,7 +50,6 @@ const AutoExpandingTextarea = ({
         fontWeight="bold"
         overflow="hidden"
         overflowY="hidden"
-        
       />
     </Flex>
   );

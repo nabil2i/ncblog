@@ -56,7 +56,7 @@ const PostGrid = ({ paginate }: Props) => {
           ))}
         </SimpleGrid>
 
-        {data?.count && data.count > 1 && paginate ? (
+        {data?.count && data.count >= 2 && paginate ? (
           <PaginationBox
             itemPerPage={data?.perPage as number}
             totalItems={data?.count as number}

@@ -7,33 +7,34 @@ import { ArrayData, FetchResponse } from '../services/api-client';
 import userpostService from "../services/postService";
 import { CACHE_KEY_USER_POSTS } from './constants';
 import useAuth from './useAuth';
+import { useUserPostQueryStore } from '../store';
 
 const useUserPosts = () => { 
-  // const userPostQuery = useUserPostQueryStore(s => s.postQuery);
+  const userPostQuery = useUserPostQueryStore(s => s.userPostQuery);
   const { _id } = useAuth();
 
   const token = useAppSelector(selectCurrentToken);
   
   return useQuery<FetchResponse<ArrayData<Post>>>({
-    queryKey: [CACHE_KEY_USER_POSTS, _id],
+    queryKey: [CACHE_KEY_USER_POSTS, userPostQuery, _id],
     queryFn: () => userpostService.getAll({
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json'
-      }
-      // params: {
-        // page: userPostQuery.page,
-        // search: postQuery.searchText,
-        // _start: (postQuery.page - 1) * postQuery.perPage,
-        // _limit: postQuery.perPage,
-        // perPage: postQuery.perPage,
-      // },
+      },
+      params: {
+        page: userPostQuery.page,
+        // search: userPostQuery.searchText,
+        // _start: (userPostQuery.page - 1) * userPostQuery.perPage,
+        // _limit: userPostQuery.perPage,
+        // perPage: userPostQuery.perPage,
+      },
     }),
     // getNextPageParam: (lastPage, allPages) => {
     //   return lastPage.next ? allPages.length + 1 : undefined;
     // },
-    staleTime: ms('24h'), // 24h
+    staleTime: ms('24h'),
     keepPreviousData: true,
   });
 };

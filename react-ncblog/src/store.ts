@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+
+// post query
 interface PostQuery {
   searchText?: string;
   page?: number;
@@ -25,6 +27,7 @@ const usePostQueryStore = create<PostQueryStore>(set => ({
 
 export default usePostQueryStore;
 
+// search query
 interface SearchPostQuery {
   authorId?: string;
   searchText?: string;
@@ -60,4 +63,22 @@ export const useBookQueryStore = create<BookQueryStore>(set => ({
   bookQuery: {},
   setSearchText: (searchText) => set(() => ({ bookQuery: {searchText}})),
   setPage: (page) => set((store) => ({ bookQuery: { ...store.bookQuery, page }})),
+}));
+
+//user posts query
+interface UserPostQuery {
+  page?: number;
+  // perPage?: number;
+}
+
+interface UserPostQueryStore {
+  userPostQuery: UserPostQuery;
+  setPage: (page: number) => void;
+  // setPerPage: (perPage: number) => void;
+}
+
+export const useUserPostQueryStore = create<UserPostQueryStore>(set => ({
+  userPostQuery: {},
+  setPage: (page) => set((store) => ({ userPostQuery: { ...store.userPostQuery, page }})),
+  // setPerPage: (perPage) => set((store) => ({ userPostQuery: { ...store.userPostQuery, perPage }})),
 }));

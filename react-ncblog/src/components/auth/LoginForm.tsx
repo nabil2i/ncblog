@@ -194,7 +194,7 @@ const LoginForm = () => {
               Remember me
             </Checkbox>
           </Box>
-          <Box color={`${VARIANT_COLOR}.500`}>
+          {/* <Box color={`${VARIANT_COLOR}.500`}>
             <NavLink
               to="/"
               color={`${VARIANT_COLOR}.500`}
@@ -203,7 +203,7 @@ const LoginForm = () => {
               {" "}
               Forgot your password?
             </NavLink>
-          </Box>
+          </Box> */}
         </HStack>
 
         <Button

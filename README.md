@@ -21,7 +21,7 @@ npm install
 npm install
 ```
 
-* In the node-ncblog folder, install the frontend packages:
+* In the node-ncblog folder, install the backend packages:
 
 ```bash
 npm install

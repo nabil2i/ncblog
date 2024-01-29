@@ -5,13 +5,14 @@ const errorHandler = (err, req, res, next) => {
   ${req.url}\t${req.headers.origin}`, 'errLog.log')
 
   console.log(err.stack)
-  const status = res.statusCode ? res.statusCode : 500
+  const status = err.statusCode ? err.statusCode : 500
 
   res.status(status)
 
   res.json({
     success: false,
     error: { code: status, message: err.message },
+    message: err.message,
     isError: true
   })
 }

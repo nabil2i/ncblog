@@ -2,6 +2,7 @@ import _ from "lodash";
 import Comment, { validateComment } from "../models/comment.js";
 import Post, { validatePost } from "../models/post.js";
 import User from "../models/user.js";
+import { makeError } from "../utils/responses.js"; 
 
 
 // @desc Get all posts
@@ -14,23 +15,16 @@ export const getAllPosts = async (req, res) => {
 // @desc Create a post
 // @route POST /posts
 // @access Private
-export const createNewPost = async (req, res) => {
+export const createNewPost = async (req, res, next) => {
   try {
     const { error } = validatePost(req.body);
-    if (error)
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: error.details[0].message}
-      });
+    if (error) next(makeError(400, error.details[0].message));
+
     // console.log(req.body);
     const { title, body, userId } = req.body;
 
     const user = await User.findById(userId);
-    if (!user)
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid user'}
-      });
+    if (!user) next(makeError(400, "Invalid user"));
     
     let newPost = new Post({
       user: userId,
@@ -48,42 +42,27 @@ export const createNewPost = async (req, res) => {
     // })
     newPost = await newPost.save();
 
-    if (!newPost)
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'An error occured' }
-      });
+    if (!newPost) next(makeError(400, "An error occured"));
 
     newPost = _.pick(newPost, ['_id', 'title', 'user']);
     res.status(201).json({success: true, data: newPost});
   } catch(err) {
     console.log(err)
     if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid post ID' }
-      });
+      next(makeError(400, "Invalid post ID"));
     }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: err.errors}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Get a post
 // @route GET /posts/:id
 // @access Public
-export const getPost = async (req, res) => {
+export const getPost = async (req, res, next) => {
   try {
     const postId = req.params.id;
 
-    if (!postId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Post ID required"}
-      })
-    }
+    if (!postId) next(makeError(400, "Post ID required"));
      
     const post = await Post.findById(postId)
       .populate([
@@ -132,49 +111,29 @@ export const getPost = async (req, res) => {
       // })
       .exec();
     
-    if (!post) return res.status(404).json({
-      success: false, 
-      error: {
-        code: 404,
-        message: 'The post with the given ID was not found'
-      }
-    });
+    if (!post) next(makeError(404, "The post with the given ID was not found"));
     
     res.status(200).json({ success: true, data: post});
   } catch(err) {
     console.log(err)
     if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid post ID'}
-      });
+      next(makeError(400, "Invalid post ID"));
     }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Update a post
 // @route PUT /posts/:id
 // @access Private
-export const updatePost = async (req, res) => {
+export const updatePost = async (req, res, next) => {
   try {
     const postId = req.params.id;
 
-    if (!postId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Post ID required"}
-      });
-    }
+    if (!postId) next(makeError(400, "Post ID required"));
 
     const { error } = validatePost(req.body);
-    if (error) return res.status(400).json({
-      success: false,
-      error: { code: 400, message: error.details[0].message}
-    });
+    if (error) next(makeError(400, error.details[0].message));
     
     const { title, body, userId } = req.body;
 
@@ -187,47 +146,30 @@ export const updatePost = async (req, res) => {
       { new: true}
     );
       
-    if (!post) return res.status(404).json({
-      success: false,
-      error: { code: 404, message: "The post with given ID doesn't exist"}
-    });
+    if (!post) next(makeError(404, "The post with given ID doesn't exist"));
       
     res.json({ success: true, message: `The post with ID ${post._id} is updated`});
   } catch(err) {
     console.log(err)
     if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid post ID'}
-      });
+      next(makeError(400, "Invalid post ID"));
     }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Delete a post
 // @route DELETE /posts/:id
 // @access Private
-export const deletePost = async (req, res) => {
+export const deletePost = async (req, res, next) => {
   try {
     const postId = req.params.id;
 
-    if (!postId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Post ID required"}
-      })
-    }
+    if (!postId) next(makeError(400, "Post ID required"));
   
     const post = await Post.findByIdAndDelete(postId);
   
-    if(!post) return res.status(404).json({
-      success: false,
-      error: { code: 404, message: 'The post with given ID is not found'}
-    })
+    if(!post) next(makeError(404, "The post with given ID is not found"));
   
     res.status(200).json({
       success: true,
@@ -240,15 +182,9 @@ export const deletePost = async (req, res) => {
   } catch(err) {
     console.log(err)
     if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid post ID'}
-      });
+      next(makeError(400, "Invalid post ID"));
     }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -265,23 +201,18 @@ export const getPostComments = async (req, res) => {
 // @desc Create a comment
 // @route POST /posts/:id/comments
 // @access Private
-export const createComment = async (req, res) => {
+export const createComment = async (req, res, next) => {
   try {
     const { error } = validateComment(req.body);
-    if (error) return res.status(400).json({
-      success: false,
-      error: { code: 400, message: error.details[0].message}
-    });
+    if (error) next(makeError(400, error.details[0].message));
+
     // console.log(req.body);
     
     const postId = req.params.id;
     const { text, userId, parentCommentId } = req.body;
 
     const post = await Post.findById(postId);
-    if (!post) return res.status(400).json({
-      success: false,
-      error: { code: 400, message: 'Invalid post'}
-    });
+    if (!post) next(makeError(400, "Invalid post"));
     
     let newComment = new Comment({
       text,
@@ -294,12 +225,7 @@ export const createComment = async (req, res) => {
 
     if (parentCommentId) {
       const parentComment = await Comment.findById(parentCommentId);
-      if (!parentComment) {
-        return res.status(400).json({
-          success: false,
-          error: { code: 400, message: 'Invalid parent comment ID'}
-        });
-      }
+      if (!parentComment)  next(makeError(400, "Invalid parent comment ID"));
 
       parentComment.replies.push(newComment);
       await parentComment.save();
@@ -312,31 +238,17 @@ export const createComment = async (req, res) => {
     res.status(201).json({success: true, data: newComment});
   } catch(err) {
     console.log(err)
-    // if (err.name === 'CastError') {
-    //   return res.status(400).json({
-    //     success: false,
-    //     error: { code: 400, message: 'Invalid post ID'}
-    //   });
-    // }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: err.errors}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Create a comment
 // @route GET /posts/:id/comments/:cid
 // @access Private
-export const getComment = async (req, res) => {
+export const getComment = async (req, res, next) => {
   const commentId = req.params.cid;
 
-  if (!commentId) {
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "Comment ID required"}
-    })
-  }
+  if (!commentId) next(makeError(400, "Comment ID required"));
 
   const comment = await Comment.findById(commentId);
 
@@ -350,21 +262,13 @@ export const getComment = async (req, res) => {
 // @desc Create a comment
 // @route UPDATE /posts/:id/comments/:cid
 // @access Private
-export const updateComment = async (req, res) => {
+export const updateComment = async (req, res, next) => {
   const commentId = req.params.cid;
 
-  if (!commentId) {
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "Comment ID required"}
-    })
-  }
+  if (!commentId) next(makeError(400, "Comment ID required"));
 
   const { error } = validateComment(req.body);
-    if (error) return res.status(400).json({
-      success: false,
-      error: { code: 400, message: error.details[0].message}
-    });
+    if (error) next(makeError(400, error.details[0].message));
     
     const { text, userId } = req.body;
 
@@ -376,10 +280,7 @@ export const updateComment = async (req, res) => {
       { new: true}
     );
       
-    if (!comment) return res.status(404).json({
-      success: false,
-      error: { code: 404, message: "The comment with given ID doesn't exist"}
-    });
+    if (!comment) return next(makeError(404, "The comment with given ID doesn't exist"));
       
     res.json({
       success: true,
@@ -390,22 +291,14 @@ export const updateComment = async (req, res) => {
 // @desc Create a comment
 // @route DELETE /posts/:id/comments/:cid
 // @access Private
-export const deleteComment = async (req, res) => {
+export const deleteComment = async (req, res, next) => {
   const commentId = req.params.cid;
 
-  if (!commentId) {
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "Comment ID required"}
-    })
-  }
+  if (!commentId) next(makeError(400, "Comment ID required"));
 
   const comment = await Comment.findById(commentId);
 
-  if(!comment) return res.status(404).json({
-    success: false,
-    error: { code: 404, message: 'The comment with given ID is not found'}
-  })
+  if(!comment) next(makeError(404, "The comment with given ID is not found"));
 
   await deleteReplies(comment.replies);
 

@@ -20,7 +20,6 @@ import users from "../routes/usersRoutes.js";
 import sessionOptions from "./sessionOptions.js";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-
 export default function(app) {
 
   const __filename = fileURLToPath(import.meta.url);

@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Author from "../models/author.js";
 import Book, { validateBook } from "../models/book.js";
-
+import {  makeError } from "../utils/responses.js";
 
 // @desc Get all books
 // @route GET /books
@@ -13,23 +13,16 @@ export const getAllBooks =async (req, res) => {
 // @desc Create a book
 // @route POST /books
 // @access Private
-export const createNewBook = async (req, res) => {
+export const createNewBook = async (req, res, next) => {
   try {
     const { error } = validateBook(req.body);
-    if (error)
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: error.details[0].message}
-      });
+    if (error) next(makeError(400, error.details[0].message));
+
     // console.log(req.body);
     const { title, about, authorId } = req.body;
 
     const author = await Author.findById(authorId);
-    if (!author)
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid author'}
-      });
+    if (!author) next(makeError(400, "Invalid author"));
     
     let newBook = new Book({
       author: authorId,
@@ -47,42 +40,24 @@ export const createNewBook = async (req, res) => {
     // })
     newBook = await newBook.save();
 
-    if (!newBook)
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'An error occured' }
-      });
+    if (!newBook) next(makeError(400, "An error occured"));
 
     newBook = _.pick(newBook, ['_id', 'title']);
     res.status(201).json({success: true, data: newBook});
   } catch(err) {
     console.log(err)
-    if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid ID' }
-      });
-    }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: err.errors}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Get a book
 // @route GET /books/:id
 // @access Public
-export const getBook = async (req, res) => {
+export const getBook = async (req, res, next) => {
   try {
     const bookId = req.params.id;
 
-    if (!bookId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Book ID required"}
-      })
-    }
+    if (!bookId) next(makeError(400, "Book ID required"));
      
     const book = await Book.findById(bookId)
       .populate([
@@ -93,49 +68,26 @@ export const getBook = async (req, res) => {
       ])
       .exec();
     
-    if (!book) return res.status(404).json({
-      success: false, 
-      error: {
-        code: 404,
-        message: 'The book with the given ID was not found'
-      }
-    });
+    if (!book) next(makeError(404, "The book with the given ID was not found"));
     
     res.status(200).json({ success: true, data: book});
   } catch(err) {
     console.log(err)
-    if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid book ID'}
-      });
-    }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Update a book
 // @route PUT /books/:id
 // @access Private
-export const updateBook = async (req, res) => {
+export const updateBook = async (req, res, next) => {
   try {
     const bookId = req.params.id;
 
-    if (!bookId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Book ID required"}
-      });
-    }
+    if (!bookId) next(makeError(400, "Book ID required"));
 
     const { error } = validateBook(req.body);
-    if (error) return res.status(400).json({
-      success: false,
-      error: { code: 400, message: error.details[0].message}
-    });
+    if (error) next(makeError(400, error.details[0].message));
     
     const { title, about, authorId } = req.body;
 
@@ -148,47 +100,27 @@ export const updateBook = async (req, res) => {
       { new: true}
     );
       
-    if (!book) return res.status(404).json({
-      success: false,
-      error: { code: 404, message: "The book with given ID doesn't exist"}
-    });
+    if (!book) next(makeError(404, "The book with given ID doesn't exist"));
       
     res.json({ success: true, message: `The book with ID ${book._id} is updated`});
   } catch(err) {
     console.log(err)
-    if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid book ID'}
-      });
-    }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Delete a book
 // @route DELETE /books/:id
 // @access Private
-export const deleteBook = async (req, res) => {
+export const deleteBook = async (req, res, next) => {
   try {
     const bookId = req.params.id;
 
-    if (!bookId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Book ID required"}
-      })
-    }
+    if (!bookId) next(makeError(400, "Book ID required"));
   
     const book = await Book.findByIdAndRemove(bookId);
   
-    if(!book) return res.status(404).json({
-      success: false,
-      error: { code: 404, message: 'The book with given ID is not found'}
-    })
+    if(!book) next(makeError(404, "The book with given ID is not found"));
   
     res.status(200).json({
       success: true,
@@ -197,15 +129,6 @@ export const deleteBook = async (req, res) => {
 
   } catch(err) {
     console.log(err)
-    if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid book ID'}
-      });
-    }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };

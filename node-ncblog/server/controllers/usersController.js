@@ -1,64 +1,36 @@
-import _ from "lodash";
-import Joi from "joi";
 import bcrypt from "bcrypt";
-import User from "../models/user.js";
-import Post from "../models/post.js";
+import Joi from "joi";
+import _ from "lodash";
 import ms from "ms";
+import Post from "../models/post.js";
+import User from "../models/user.js";
+import { makeError } from "../utils/responses.js";
 
 // @desc Get all users
 // @route GET /users
 // @access Private
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res, next) => {
   const users = await User.find().select('-password').lean().sort('name');
-  if (!users.length) {
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: 'No user found'}
-    });
-  }
+  if (!users.length) next(makeError(400, "No user found"));
     res.status(200).json({ success: true, data: users });
 };
 
 // @desc Create new user
 // @route POST /users
 // @access Private
-export const createNewUser = async (req, res) => {
+export const createNewUser = async (req, res, next) => {
   const { error } = validateUser(req.body);
-  if (error) return res.status(400).json({
-    success: false,
-    error: { code: 400, message: error.details[0].message}
-  });
+  if (error) next(makeError(400, error.details[0].message));
 
   const { username, email, firstname, lastname, password, password2 } = req.body;
   
-  if (password !== password2)
-    return res.status(400).json({
-      success: false,
-      error: {
-        code: 400,
-        message: "Passwords don't match",
-      }
-    });
+  if (password !== password2) next(makeError(400, "Passwords don't match"));
 
   let user = await User.findOne({ username });
-  if (user)
-    return res.status(409).json({
-      success: false, 
-      error: {
-        code: 409, 
-        message: 'User with this username already registrated',
-      }
-    });
+  if (user) next(makeError(409, "User with this username already registrated"));
     
   user = await User.findOne({ email });
-  if (user)
-    return res.status(409).json({
-      success: false,
-      error: {
-        code: 400, 
-        message: 'User with this email address already registrated',
-      }
-    });
+  if (user) next(makeError(409, "User with this email address already registrated"));
   
   user = new User(_.pick(req.body, ['username', 'email', 'password', 'firstname', 'lastname']));
   
@@ -86,90 +58,71 @@ export const createNewUser = async (req, res) => {
       accessToken,
       // ...userData
     }
-
-    res.status(200).json({ success: { code: 201, message: "New user created", data }});
+    res.status(201).json({ success: true, message: "New user created", data });
     // res.status(201).header('x-auth-token', token).json({
     //   success: true,
     //   message: "New user created",
     //   data: userData
     // });
-  } else {
-    res.status(400).json({ error: {
-      code: 400, message: "Invalid user details received"}});
-  }
+  } else next(makeError(400, "Invalid user details received"));
 };
 
 // @desc Get a user
 // @route GET /users/:id
 // @access Private
-export const getUser = async (req, res) => {
+export const getUser = async (req, res, next) => {
   const userId = req.params.id
-  if (!userId) {
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "User ID required"}
-    });
-  }
+  if (!userId) next(makeError(400, "User ID required"));
 
   const user = await User.findById(userId).select('-password').lean().exec();
-  if (!user) return res.status(404).json({
-    success: false, 
-    error: {
-      code: 404,
-      message: 'The user with the given ID was not found'
-    }
-  });
+  if (!user) next(makeError(404, "The user with the given ID was not found"));
+
   res.status(200).json({ success: true, data: user});
 };
 
 // @desc Update a user
 // @route PUT /users/:id
 // @access Private
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
   const { username, email, isActive, password } = req.body
-  if (!username || typeof isActive !== 'boolean')
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "All fields must be provided"}
-    });
+  if (!username && !email && !(firstname && lastname) && !password)
+  next(makeError(400, "All fields must be provided"));
   
   const userId = req.params.id
   const user = await User.findById(userId).exec()
 
-  if (!user)
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "User not found"}
-    });
+  if (!user) next(makeError(400, "User not found"));
 
-  const duplicate = await User.findOne({ username })
-    .collation({ locale: 'en', strength: 2}).lean().exec();
-  if (duplicate && duplicate._id.toString() !== userId) {
-      return res.status(409).json({
-        success: false, 
-        error: {
-          code: 409, 
-          message: 'Username already exists',
-        }
-      });
+  if (username) {
+    const duplicate = await User.findOne({ username })
+      .collation({ locale: 'en', strength: 2}).lean().exec();
+  
+    if (duplicate && duplicate._id.toString() !== userId) 
+      next(makeError(409, "Username already exists"));
+
+    user.username = username
+  }
+
+  if (firstname) {
+    user.firstname = firstname
+  }
+
+  if (lastname) {
+    user.lastname = lastname
   }
 
   if (email) {
     const duplicate = await User.findOne({ email }).lean().exec();
-    if (duplicate && duplicate._id.toString() !== userId) {
-      return res.status(409).json({
-        success: false, 
-        error: {
-          code: 409, 
-          message: 'Email already exists',
-        }
-      });
-    }
+
+    if (duplicate && duplicate._id.toString() !== userId) 
+      next(makeError(409, "Email already exists"));
+
     user.email = email
   }
 
-  user.username = username
-  user.isActive = isActive
+  if (isActive) {
+    user.isActive = isActive
+  }
 
   if (password) {
     const salt = await bcrypt.genSalt(10);
@@ -209,34 +162,18 @@ export const updateUser = async (req, res) => {
 // @desc Delete a user
 // @route DELETE /users/:id
 // @access Private
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
   const userId = req.params.id
-  if (!userId) {
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "User ID required"}
-    });
-  }
+  if (!userId) next(makeError(400, "User ID required"));
 
   // const posts = await Post.lookup(userId).lean().exec();
   const post = await Post.findOne({ user: userId }).lean().exec();
 
-  if (post) {
-    return res.status(404).json({
-      success: false,
-      error: { code: 404, message: 'User has posts'}
-    });
-  }
+  if (post) next(makeError(400, "User has posts"));
 
   const user = await User.findByIdAndRemove(userId);
     
-  if (!user) return res.status(404).json({
-    success: false,
-    error: {
-      code: 404,
-      message: 'The user with the given ID was not found'
-      }
-  });
+  if (!user) next(makeError(404, "The user with the given ID was not found"));
 
   res.clearCookie('token');
   res.status(200).json({
@@ -258,43 +195,26 @@ export const getCurrentUser = async (req, res) => {
 // @desc Update current user
 // @route PUT /users/me
 // @access Private
-export const updateCurrentUser = async (req, res) => {
+export const updateCurrentUser = async (req, res, next) => {
   const { username, email, isActive, password, firstname, lastname } = req.body
   // if (!username || typeof isActive !== 'boolean')
   if (!username && !email && !(firstname && lastname) && !password)
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "You must provide data to update"}
-      // error: { code: 400, message: "All fields must be provided"}
-    });
+  next(makeError(400, "You must provide data"));
   
   const userId = req.user._id;
   const user = await User.findById(userId).exec()
 
-  if (!user)
-    return res.status(400).json({
-  success: false,
-  error: { code: 400, message: "User not found"}
-  });
+  if (!user) next(makeError(400, "User not found"));
 
-  if (!user.isActive)
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "This user cannot make this request"}
-    });
+  if (!user.isActive) next(makeError(400, "This user cannot make this request"));
   
   if (username) {
     const duplicate = await User.findOne({ username })
       .collation({ locale: 'en', strength: 2}).lean().exec();
-      if (duplicate && duplicate._id.toString() !== userId) {
-        return res.status(409).json({
-          success: false, 
-          error: {
-            code: 409,
-            message: 'Username already exists',
-          }
-        });
-    }
+
+    if (duplicate && duplicate._id.toString() !== userId)
+      next(makeError(409, "Username already exists"));
+
     user.username = username
   }
 
@@ -302,26 +222,21 @@ export const updateCurrentUser = async (req, res) => {
     user.firstname = firstname
   }
 
-  if (firstname) {
+  if (lastname) {
     user.lastname = lastname
   }
 
   if (email) {
     const duplicate = await User.findOne({ email }).lean().exec();
-    if (duplicate && duplicate._id.toString() !== userId) {
-      return res.status(409).json({
-        success: false, 
-        error: {
-          code: 409,
-          message: 'Email already exists',
-        }
-      });
-    }
+    if (duplicate && duplicate._id.toString() !== userId)
+       next(makeError(409, "Email already exists"));
+
     user.email = email;
   }
 
-  
-  // user.isActive = isActive
+  if (isActive) {
+    user.isActive = isActive
+  }
 
   if (password) {
     const salt = await bcrypt.genSalt(10);
@@ -349,7 +264,6 @@ export const updateCurrentUser = async (req, res) => {
     accessToken,
     // ...userData
   }
-
 
   res.status(200).json({
     success: true,
@@ -389,34 +303,18 @@ export const updateCurrentUser = async (req, res) => {
 // @desc Delete current user
 // @route DELETE /users/me
 // @access Private
-export const deleteCurrentUser = async (req, res) => {
+export const deleteCurrentUser = async (req, res, next) => {
   const userId = req.user._id
-  if (!userId) {
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "User ID required"}
-    });
-  }
+  if (!userId) next(makeError(400, "User ID required"));
 
   // const posts = await Post.lookup(userId).lean().exec();
   const post = await Post.findOne({ user: userId}).lean().exec();
 
-  if (post) {
-    return res.status(404).json({
-      success: false,
-      error: { code: 404, message: 'User has posts'}
-    });
-  }
+  if (post) next(makeError(400, "User has posts"));
 
   const user = await User.findByIdAndRemove(userId);
     
-  if (!user) return res.status(404).json({
-    success: false,
-    error: {
-      code: 404,
-      message: 'The user with the given ID was not found'
-      }
-  });
+  if (!user) next(makeError(404, "The user with the given ID was not found"));
 
   res.clearCookie('token');
   res.status(200).json({
@@ -425,19 +323,12 @@ export const deleteCurrentUser = async (req, res) => {
   });
 };
 
-
-
 // @desc Get current User Posts
 // @route GET /users/me/posts
 // @access Private
-export const getCurrentUserPosts = async (req, res) => {
+export const getCurrentUserPosts = async (req, res, next) => {
   const userId = req.user._id
-  if (!userId) {
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: "User ID required"}
-    });
-  }
+  if (!userId) next(makeError(400, "User ID required"));
 
   const userPosts = await Post
     .find({ user: userId })
@@ -449,7 +340,6 @@ export const getCurrentUserPosts = async (req, res) => {
 
   res.status(200).json({ success: true, data: userPosts });
 };
-
 
 
 function validateUser(req) {

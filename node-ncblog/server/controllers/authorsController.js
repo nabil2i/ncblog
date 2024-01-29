@@ -1,6 +1,6 @@
 import _ from "lodash";
 import Author, { validateAuthor } from "../models/author.js";
-
+import {  makeError } from "../utils/responses.js";
 
 // @desc Get all authors
 // @route GET /authors
@@ -12,14 +12,10 @@ export const getAllAuthors = async (req, res) => {
 // @desc Create a author
 // @route POST /authors
 // @access Private
-export const createNewAuthor = async (req, res) => {
+export const createNewAuthor = async (req, res, next) => {
   try {
     const { error } = validateAuthor(req.body);
-    if (error)
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: error.details[0].message}
-      });
+    if (error) next(makeError(400,  error.details[0].message));
     // console.log(req.body);
     const { firstname, lastname, bio, birthDate, nationality, img, socials } = req.body;
     
@@ -29,88 +25,47 @@ export const createNewAuthor = async (req, res) => {
 
     newAuthor = await newAuthor.save();
 
-    if (!newAuthor)
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'An error occured' }
-      });
+    if (!newAuthor) next(makeError(400, "An error occured"));
 
     newAuthor = _.pick(newAuthor, ['_id', 'firstname', 'lastname']);
     res.status(201).json({success: true, data: newAuthor});
   } catch(err) {
     console.log(err)
-    if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid ID' }
-      });
-    }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: err.errors}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Get a author
 // @route GET /authors/:id
 // @access Public
-export const getAuthor = async (req, res) => {
+export const getAuthor = async (req, res, next) => {
   try {
     const authorId = req.params.id;
 
-    if (!authorId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Author ID required"}
-      })
-    }
+    if (!authorId) next(makeError(400,  "Author ID required"));
      
     const author = await Author.findById(authorId)
     
-    if (!author) return res.status(404).json({
-      success: false, 
-      error: {
-        code: 404,
-        message: 'The author with the given ID was not found'
-      }
-    });
+    if (!author) next(makeError(404, "The author with the given ID was not found"));
     
     res.status(200).json({ success: true, data: author});
   } catch(err) {
     console.log(err)
-    if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid author ID'}
-      });
-    }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Update a author
 // @route PUT /authors/:id
 // @access Private
-export const updateAuthor = async (req, res) => {
+export const updateAuthor = async (req, res, next) => {
   try {
     const authorId = req.params.id;
 
-    if (!authorId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Author ID required"}
-      });
-    }
+    if (!authorId) next(makeError(400, "Author ID required"));
 
     const { error } = validateAuthor(req.body);
-    if (error) return res.status(400).json({
-      success: false,
-      error: { code: 400, message: error.details[0].message}
-    });
+    if (error) next(makeError(400, error.details[0].message));
     
     const { firstname, lastname, bio, birthDate, nationality, img, socials} = req.body;
 
@@ -122,47 +77,27 @@ export const updateAuthor = async (req, res) => {
       { new: true}
     );
       
-    if (!author) return res.status(404).json({
-      success: false,
-      error: { code: 404, message: "The author with given ID doesn't exist"}
-    });
+    if (!author) next(makeError(404, "The author with given ID doesn't exist"));
       
     res.json({ success: true, message: `The author with ID ${author._id} is updated`});
   } catch(err) {
     console.log(err)
-    if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid author ID'}
-      });
-    }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };
 
 // @desc Delete a author
 // @route DELETE /authors/:id
 // @access Private
-export const deleteAuthor = async (req, res) => {
+export const deleteAuthor = async (req, res, next) => {
   try {
     const authorId = req.params.id;
 
-    if (!authorId) {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: "Author ID required"}
-      })
-    }
+    if (!authorId) next(makeError(400, "Author ID required"));
   
     const author = await Author.findByIdAndRemove(authorId);
   
-    if(!author) return res.status(404).json({
-      success: false,
-      error: { code: 404, message: 'The author with given ID is not found'}
-    })
+    if(!author) next(makeError(404, "The author with given ID is not found"));
   
     res.status(200).json({
       success: true,
@@ -171,15 +106,6 @@ export const deleteAuthor = async (req, res) => {
 
   } catch(err) {
     console.log(err)
-    if (err.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        error: { code: 400, message: 'Invalid author ID'}
-      });
-    }
-    res.status(500).json({
-      success: false,
-      error: { code: 500, message: 'Internal Server Error'}
-    });
+    next(makeError(500, "Internal Server Error"));
   }
 };

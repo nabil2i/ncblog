@@ -6,7 +6,7 @@ import { useAppSelector } from "../app/hooks";
 
 // const apiClient = new APIClient<Post>('/posts');
 
-const usePost = (id: string) => {
+const usePost = (postId: string) => {
   const token = useAppSelector(selectCurrentToken);
   const config = {
     headers: {
@@ -17,8 +17,8 @@ const usePost = (id: string) => {
   }
 
   return useQuery({
-    queryKey: [CACHE_KEY_POSTS, id],
-    queryFn: () => postService.get(id, config),
+    queryKey: [CACHE_KEY_POSTS, postId],
+    queryFn: () => postService.get(postId, config),
   });
 }
 

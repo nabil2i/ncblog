@@ -1,4 +1,3 @@
-import { Spinner } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
@@ -51,7 +50,7 @@ const PersistLogin = () => {
     content = <Outlet />;
   } else if (isLoading) {
     //persist: yes, token: no
-    content = <Spinner />;
+    // content = <Spinner />;
   } else if (isError) {
     //persist: yes, token: no
     const path = location.pathname;

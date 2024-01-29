@@ -3,6 +3,7 @@ import {
   Box,
   Flex,
   Icon,
+  Link,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -11,8 +12,8 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { NavLink, useLocation } from "react-router-dom";
-import usePostQueryStore from "../../../store";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { isExternalURL } from "../../../utils/urls";
 import { NavItem } from "./navitems";
 
 interface Props {
@@ -23,8 +24,8 @@ const VARIANT_COLOR = "teal";
 
 const DesktopNavItem = ({ navItem }: Props) => {
   const location = useLocation();
-  const { isOpen } = useDisclosure();
-  const isActive = navItem.href === location.pathname
+  const { isOpen, onClose } = useDisclosure();
+  const isActive = navItem.href === location.pathname;
 
   // const linkColor = useColorModeValue("gray.600", "gray.200");
   // const linkHoverColor = useColorModeValue("gray.800", "white");
@@ -33,14 +34,24 @@ const DesktopNavItem = ({ navItem }: Props) => {
     `${VARIANT_COLOR}.500`
   );
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
-  const setSearchText = usePostQueryStore((s) => s.setSearchText);
+  // const setSearchText = usePostQueryStore((s) => s.setSearchText);
+
+  const onClick = (navItem: NavItem) => {
+    console.log(navItem);
+    if (!navItem.children && navItem.href) {
+      if (isExternalURL(navItem.href)) {
+        console.log(navItem.href);
+        window.open(navItem.href, navItem.target);
+      }
+    }
+  };
 
   return (
     <Box>
-      <Popover trigger={"hover"} placement={"bottom-start"}>
+      <Popover trigger={"hover"} placement={"bottom-start"} onClose={onClose}>
         <PopoverTrigger>
           <Box
-            alignItems='center'
+            alignItems="center"
             justifyContent="center"
             // px={2}
             // py={5}
@@ -56,14 +67,32 @@ const DesktopNavItem = ({ navItem }: Props) => {
             // bg={isActive ? linkHoverBgColor : ""}
             color={isActive ? linkHoverBgColor : ""}
           >
-            <NavLink
-              to={navItem.href ?? "#"}
-              // activeClassName="active-link"
-              onClick={() => {
-                if (navItem.label === "home") {
-                  setSearchText("");
-                }
-              }}
+            <Flex
+              onClick={() => onClick(navItem)}
+              as={
+                isExternalURL(navItem.href || "")
+                  ? (Link as React.ElementType)
+                  : (NavLink as React.ElementType)
+              }
+              target={
+                isExternalURL(navItem.href || "") ? navItem.target : undefined
+              }
+              rel={
+                isExternalURL(navItem.href || "")
+                  ? "noopener noreferrer"
+                  : undefined
+              }
+              to={
+                isExternalURL(navItem.href || "")
+                  ? undefined
+                  : (navItem.href as string) || "#"
+              }
+              _hover={{ textDecoration: "none", cursor: "pointer" }}
+              // onClick={() => {
+              //   if (navItem.label === "home") {
+              //     setSearchText("");
+              //   }
+              // }}
             >
               <Flex justify={"space-between"}>
                 <Text whiteSpace={"nowrap"}>{navItem.label}</Text>
@@ -78,7 +107,7 @@ const DesktopNavItem = ({ navItem }: Props) => {
                   />
                 )}
               </Flex>
-            </NavLink>
+            </Flex>
           </Box>
         </PopoverTrigger>
 
@@ -103,19 +132,39 @@ const DesktopNavItem = ({ navItem }: Props) => {
   );
 };
 
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => (
-  <Box
-    role={"group"}
-    display={"block"}
-    p={2}
-    rounded={"md"}
-    _hover={{
-      color: "white",
-      bg: useColorModeValue(`${VARIANT_COLOR}.300`, `${VARIANT_COLOR}.500`),
-    }}
-  >
-    <NavLink to={href ?? "#"}>
-      <Stack direction={"row"} align={"center"}>
+const DesktopSubNav = ({ label, href, subLabel, target }: NavItem) => {
+  const navigate = useNavigate();
+
+  const onClick = (href: string, target?: string) => {
+    if (href && isExternalURL(href)) {
+      window.open(href, target);
+    } else {
+      navigate(href);
+    }
+  };
+
+  return (
+    <Box
+      role={"group"}
+      display={"block"}
+      p={2}
+      rounded={"md"}
+      _hover={{
+        color: "white",
+        bg: useColorModeValue(`${VARIANT_COLOR}.300`, `${VARIANT_COLOR}.500`),
+      }}
+    >
+      <Flex
+        as={isExternalURL(href || "") ? Link : NavLink}
+        onClick={() => onClick(href as string, target)}
+        // to={isExternalURL(href || "") ? href : "#"}
+        target={isExternalURL(href || "") ? target : undefined}
+        rel={isExternalURL(href || "") ? "noopener noreferrer" : undefined}
+        align={"center"}
+        justify="space-between"
+        _hover={{ textDecoration: "none" }}
+      >
+        {/* <Stack direction={"row"} align={"center"} justify="space-between"> */}
         <Box textAlign={"left"}>
           <Text
             transition={"all .3s ease"}
@@ -145,9 +194,10 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => (
             as={ChevronRightIcon}
           />
         </Flex>
-      </Stack>
-    </NavLink>
-  </Box>
-);
+        {/* </Stack> */}
+      </Flex>
+    </Box>
+  );
+};
 
 export default DesktopNavItem;

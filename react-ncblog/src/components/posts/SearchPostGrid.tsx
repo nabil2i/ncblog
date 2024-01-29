@@ -101,7 +101,7 @@ const SearchPostGrid = ({ paginate }: Props) => {
 
         {!data?.count && (
           <VStack>
-            <Text>Oops, no posts available yet.</Text>
+            <Text>Oops, try a diffent search</Text>
           </VStack>
         )}
       </VStack>

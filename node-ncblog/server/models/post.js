@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
-const Joi = require('joi');
+import mongoose from "mongoose";
+import Joi from "joi";
+import AutoIncrement from "mongoose-sequence";
 
+// const AutoIncrementCounter = AutoIncrement(mongoose);
 
-const postSchema = new mongoose.Schema({
+export const postSchema = new mongoose.Schema({
   title: {
     type: String,
     unique: true,
@@ -67,7 +68,7 @@ const postSchema = new mongoose.Schema({
 //   return '/post/' + this._id
 // })
 
-// postSchema.plugin(AutoIncrement, {
+// postSchema.plugin(AutoIncrementCounter, {
 //   inc_field: 'ticket',
 //   id: 'ticketNums',
 //   start_seq: 500
@@ -81,7 +82,7 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model('Post', postSchema);
 
-function validatePost(post) {
+export function validatePost(post) {
   const schema = Joi.object({
     title: Joi.string().min(5).max(255).required(),
     body: Joi.string().min(5).required(),
@@ -92,6 +93,4 @@ function validatePost(post) {
   return schema.validate(post);
 }
 
-exports.Post = Post;
-exports.validatePost = validatePost;
-exports.postSchema = postSchema;
+export default Post

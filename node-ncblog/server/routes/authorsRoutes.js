@@ -1,26 +1,27 @@
-const express = require('express');
-const { Author } = require('../models/author');
+import express from "express";
+import { createNewAuthor, deleteAuthor, getAllAuthors, getAuthor, updateAuthor } from "../controllers/authorsController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import paginate from "../middleware/paginate.js";
+import Author from "../models/author.js";
+
 const router = express.Router();
-const paginate = require('../middleware/paginate');
-const authorsController = require('../controllers/authorsController');
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
 
 router.use(auth);
 router.use(admin);
 
 router.route('/')
   // get all authors
-  .get(paginate(Author), authorsController.getAllAuthors)
+  .get(paginate(Author), getAllAuthors)
   // create an author
-  .post(authorsController.createNewAuthor);
+  .post(createNewAuthor);
 
 router.route('/:id')
   // get an author
-  .get(authorsController.getAuthor)
+  .get(getAuthor)
   // update an author
-  .put(authorsController.updateAuthor)
+  .put(updateAuthor)
   // delete an author
-  .delete(authorsController.deleteAuthor);
+  .delete(deleteAuthor);
 
-module.exports = router;
+export default router;

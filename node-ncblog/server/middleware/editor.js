@@ -1,4 +1,4 @@
-module.exports = function (req, res, next) {
+export default function (req, res, next) {
   // console.log(req.user)
   const roles = req.user.roles
   const lowercaseRoles = roles.map(role => role.toLowerCase());

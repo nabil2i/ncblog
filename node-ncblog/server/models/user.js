@@ -1,8 +1,11 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
-const jwt = require("jsonwebtoken");
+import mongoose from "mongoose";
+import Joi from "joi"
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-const userSchema = new mongoose.Schema({
+dotenv.config();
+
+export const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -83,7 +86,7 @@ userSchema.methods.generateRefreshToken = function () {
 
 const User = mongoose.model('User', userSchema);
 
-function validateUser(user) {
+export function validateUser(user) {
   const schema = Joi.object({
     username: Joi.string().min(5).max(20).required(),
     firstname: Joi.string().min(2).max(50).required(),
@@ -96,6 +99,4 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
-exports.User = User;
-exports.validateUser = validateUser;
-exports.userSchema = userSchema;
+export default User

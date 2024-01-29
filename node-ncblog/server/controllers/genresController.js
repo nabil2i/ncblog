@@ -1,21 +1,19 @@
-const _ = require('lodash');
-const Joi = require('joi');
-const { Genre, validateGenre } = require('../models/genre');
-const { Book, validateBook } = require('../models/book');
-const paginate = require('../middleware/paginate');
+import _ from "lodash";
+import Book from "../models/book.js";
+import Genre, { validateGenre } from "../models/genre.js";
 
 
 // @desc Get all genres
 // @route GET /genres
 // @access Private
-const getAllGenres = async (req, res) => {
+export const getAllGenres = async (req, res) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
 };
 
 // @desc Create a category
 // @route POST /genres
 // @access Private
-const createNewGenre = async (req, res) => {
+export const createNewGenre = async (req, res) => {
   try {
     const { error } = validateGenre(req.body);
     if (error)
@@ -58,7 +56,7 @@ const createNewGenre = async (req, res) => {
 // @desc Get a genre
 // @route GET /genres/:id
 // @access Private
-const getGenre = async (req, res) => {
+export const getGenre = async (req, res) => {
   try {
     const genreId = req.params.id;
 
@@ -98,7 +96,7 @@ const getGenre = async (req, res) => {
 // @desc Update a genre
 // @route PUT /genres/:id
 // @access Private
-const updateGenre = async (req, res) => {
+export const updateGenre = async (req, res) => {
   try {
     const genreId = req.params.id;
 
@@ -149,7 +147,7 @@ const updateGenre = async (req, res) => {
 // @desc Delete a genre
 // @route DELETE /genres/:id
 // @access Private
-const deleteGenre = async (req, res) => {
+export const deleteGenre = async (req, res) => {
   try {
     const genreId = req.params.id;
 
@@ -195,12 +193,3 @@ const deleteGenre = async (req, res) => {
     });
   }
 };
-
-
-module.exports = {
-  getAllGenres,
-  getGenre,
-  createNewGenre,
-  updateGenre,
-  deleteGenre,
-}

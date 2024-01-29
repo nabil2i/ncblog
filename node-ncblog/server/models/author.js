@@ -1,8 +1,7 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
+import mongoose from "mongoose";
+import Joi from "joi"
 
-
-const authorSchema = new mongoose.Schema({
+export const authorSchema = new mongoose.Schema({
   firstname: {
     type: String,
     required: true,
@@ -43,7 +42,7 @@ const authorSchema = new mongoose.Schema({
 
 const Author = mongoose.model('Author', authorSchema);
 
-function validateAuthor(author) {
+export function validateAuthor(author) {
   const schema = Joi.object({
     firstname: Joi.string().min(2).max(50).required(),
     lastname: Joi.string().min(2).max(50).required(),
@@ -54,6 +53,4 @@ function validateAuthor(author) {
   return schema.validate(author);
 }
 
-exports.Author = Author;
-exports.validateAuthor = validateAuthor;
-exports.authorSchema = authorSchema;
+export default Author

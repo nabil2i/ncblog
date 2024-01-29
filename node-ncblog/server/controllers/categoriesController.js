@@ -1,24 +1,18 @@
-const _ = require('lodash');
-const Joi = require('joi');
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
-const { User, validateUser } = require('../models/user');
-const { Category, validateCategory } = require('../models/category');
-const { Comment, validateComment } = require('../models/comment');
-const paginate = require('../middleware/paginate');
+import _ from "lodash";
+import Category, { validateCategory } from "../models/category.js";
 
 
 // @desc Get all categories
 // @route GET /categories
 // @access Private
-const getAllCategories = async (req, res) => {
+export const getAllCategories = async (req, res) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
 };
 
 // @desc Create a category
 // @route POST /categories
 // @access Private
-const createNewCategory = async (req, res) => {
+export const createNewCategory = async (req, res) => {
   try {
     const { error } = validateCategory(req.body);
     if (error)
@@ -61,7 +55,7 @@ const createNewCategory = async (req, res) => {
 // @desc Get a category
 // @route GET /categories/:id
 // @access Private
-const getCategory = async (req, res) => {
+export const getCategory = async (req, res) => {
   try {
     const categoryId = req.params.id;
 
@@ -101,7 +95,7 @@ const getCategory = async (req, res) => {
 // @desc Update a category
 // @route PUT /categories/:id
 // @access Private
-const updateCategory = async (req, res) => {
+export const updateCategory = async (req, res) => {
   try {
     const categoryId = req.params.id;
 
@@ -152,7 +146,7 @@ const updateCategory = async (req, res) => {
 // @desc Delete a category
 // @route DELETE /categories/:id
 // @access Private
-const deleteCategory = async (req, res) => {
+export const deleteCategory = async (req, res) => {
   try {
     const categoryId = req.params.id;
 
@@ -189,12 +183,3 @@ const deleteCategory = async (req, res) => {
     });
   }
 };
-
-
-module.exports = {
-  getAllCategories,
-  getCategory,
-  createNewCategory,
-  updateCategory,
-  deleteCategory,
-}

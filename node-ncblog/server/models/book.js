@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
+import mongoose from "mongoose";
+import Joi from "joi"
 
 
-const bookSchema = new mongoose.Schema({
+export const bookSchema = new mongoose.Schema({
   title: {
     type: String,
     unique: true,
@@ -44,7 +44,7 @@ const bookSchema = new mongoose.Schema({
 
 const Book = mongoose.model('Book', bookSchema);
 
-function validateBook(book) {
+export function validateBook(book) {
   const schema = Joi.object({
     title: Joi.string().min(5).max(255).required(),
     about: Joi.string().min(5).required(),
@@ -56,6 +56,4 @@ function validateBook(book) {
   return schema.validate(book);
 }
 
-exports.Book = Book;
-exports.validateBook = validateBook;
-exports.bookSchema = bookSchema;
+export default Book

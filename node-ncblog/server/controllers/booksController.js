@@ -1,19 +1,19 @@
-const _ = require('lodash');
-const { Book, validateBook } = require('../models/book');
-const { Author, validateAuthor } = require('../models/author');
+import _ from "lodash";
+import Author from "../models/author.js";
+import Book, { validateBook } from "../models/book.js";
 
 
 // @desc Get all books
 // @route GET /books
 // @access Public
-const getAllBooks =async (req, res) => {
+export const getAllBooks =async (req, res) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
 };
 
 // @desc Create a book
 // @route POST /books
 // @access Private
-const createNewBook = async (req, res) => {
+export const createNewBook = async (req, res) => {
   try {
     const { error } = validateBook(req.body);
     if (error)
@@ -73,7 +73,7 @@ const createNewBook = async (req, res) => {
 // @desc Get a book
 // @route GET /books/:id
 // @access Public
-const getBook = async (req, res) => {
+export const getBook = async (req, res) => {
   try {
     const bookId = req.params.id;
 
@@ -120,7 +120,7 @@ const getBook = async (req, res) => {
 // @desc Update a book
 // @route PUT /books/:id
 // @access Private
-const updateBook = async (req, res) => {
+export const updateBook = async (req, res) => {
   try {
     const bookId = req.params.id;
 
@@ -172,7 +172,7 @@ const updateBook = async (req, res) => {
 // @desc Delete a book
 // @route DELETE /books/:id
 // @access Private
-const deleteBook = async (req, res) => {
+export const deleteBook = async (req, res) => {
   try {
     const bookId = req.params.id;
 
@@ -209,12 +209,3 @@ const deleteBook = async (req, res) => {
     });
   }
 };
-
-
-module.exports = {
-  getAllBooks,
-  getBook,
-  createNewBook,
-  updateBook,
-  deleteBook,
-}

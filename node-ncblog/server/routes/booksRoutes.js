@@ -1,24 +1,24 @@
-const express = require('express');
-const {Book, validateBook } = require('../models/book');
+import express from "express";
+import { createNewBook, deleteBook, getAllBooks, getBook, updateBook} from "../controllers/booksController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import paginate from "../middleware/paginate.js";
+import Book from "../models/book.js";
+
 const router = express.Router();
-const paginate = require('../middleware/paginate');
-const booksController = require('../controllers/booksController');
-const editor = require('../middleware/editor');
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
 
 router.route('/')
   // get all books
-  .get(paginate(Book), booksController.getAllBooks)
+  .get(paginate(Book), getAllBooks)
   // create a book
-  .post([auth, admin], booksController.createNewBook);
+  .post([auth, admin], createNewBook);
 
 router.route('/:id')
   // get a book
-  .get(booksController.getBook)
+  .get(getBook)
   // update a book
-  .put([auth, admin], booksController.updateBook)
+  .put([auth, admin], updateBook)
   // delete a book
-  .delete([auth, admin], booksController.deleteBook);
+  .delete([auth, admin], deleteBook);
 
-module.exports = router;
+export default router;

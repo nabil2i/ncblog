@@ -1,24 +1,20 @@
-const _ = require('lodash');
-const Joi = require('joi');
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
-const { User, validateUser } = require('../models/user');
-const { Post, validatePost } = require('../models/post');
-const { Comment, validateComment } = require('../models/comment');
-const paginate = require('../middleware/paginate');
+import _ from "lodash";
+import Comment, { validateComment } from "../models/comment.js";
+import Post, { validatePost } from "../models/post.js";
+import User from "../models/user.js";
 
 
 // @desc Get all posts
 // @route GET /posts
 // @access Public
-const getAllPosts = async (req, res) => {
+export const getAllPosts = async (req, res) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
 };
 
 // @desc Create a post
 // @route POST /posts
 // @access Private
-const createNewPost = async (req, res) => {
+export const createNewPost = async (req, res) => {
   try {
     const { error } = validatePost(req.body);
     if (error)
@@ -78,7 +74,7 @@ const createNewPost = async (req, res) => {
 // @desc Get a post
 // @route GET /posts/:id
 // @access Public
-const getPost = async (req, res) => {
+export const getPost = async (req, res) => {
   try {
     const postId = req.params.id;
 
@@ -163,7 +159,7 @@ const getPost = async (req, res) => {
 // @desc Update a post
 // @route PUT /posts/:id
 // @access Private
-const updatePost = async (req, res) => {
+export const updatePost = async (req, res) => {
   try {
     const postId = req.params.id;
 
@@ -215,7 +211,7 @@ const updatePost = async (req, res) => {
 // @desc Delete a post
 // @route DELETE /posts/:id
 // @access Private
-const deletePost = async (req, res) => {
+export const deletePost = async (req, res) => {
   try {
     const postId = req.params.id;
 
@@ -260,7 +256,7 @@ const deletePost = async (req, res) => {
 // @desc Get all posts
 // @route GET /posts/:id/comments
 // @access Private
-const getPostComments = async (req, res) => {
+export const getPostComments = async (req, res) => {
   const postId = req.params.id;
   const comments = await Comment.find().sort("-createdAt");
   res.status(200).json({ success: true, message: "Get all comments of the post" });
@@ -269,7 +265,7 @@ const getPostComments = async (req, res) => {
 // @desc Create a comment
 // @route POST /posts/:id/comments
 // @access Private
-const createComment = async (req, res) => {
+export const createComment = async (req, res) => {
   try {
     const { error } = validateComment(req.body);
     if (error) return res.status(400).json({
@@ -332,7 +328,7 @@ const createComment = async (req, res) => {
 // @desc Create a comment
 // @route GET /posts/:id/comments/:cid
 // @access Private
-const getComment = async (req, res) => {
+export const getComment = async (req, res) => {
   const commentId = req.params.cid;
 
   if (!commentId) {
@@ -354,7 +350,7 @@ const getComment = async (req, res) => {
 // @desc Create a comment
 // @route UPDATE /posts/:id/comments/:cid
 // @access Private
-const updateComment = async (req, res) => {
+export const updateComment = async (req, res) => {
   const commentId = req.params.cid;
 
   if (!commentId) {
@@ -394,7 +390,7 @@ const updateComment = async (req, res) => {
 // @desc Create a comment
 // @route DELETE /posts/:id/comments/:cid
 // @access Private
-const deleteComment = async (req, res) => {
+export const deleteComment = async (req, res) => {
   const commentId = req.params.cid;
 
   if (!commentId) {
@@ -433,19 +429,3 @@ const deleteReplies = async (replyIds) => {
     }
   }
 };
-
-
-
-
-module.exports = {
-  getAllPosts,
-  getPost,
-  createNewPost,
-  updatePost,
-  deletePost,
-  getPostComments,
-  createComment,
-  getComment,
-  updateComment,
-  deleteComment,
-}

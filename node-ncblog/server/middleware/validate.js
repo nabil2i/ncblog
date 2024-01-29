@@ -1,4 +1,4 @@
-module.exports = (validator) => {
+export default validate = (validator) => {
   return (req, res, next) => {
     const { error } = validator(req.body);
     if (error)

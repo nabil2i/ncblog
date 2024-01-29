@@ -1,8 +1,7 @@
+import mongoose from "mongoose";
+import Joi from "joi";
 
-const Joi = require('joi');
-const mongoose = require('mongoose')
-
-const commentSchema = new mongoose.Schema({
+export const commentSchema = new mongoose.Schema({
   text: {
     type: String,
     required: true,
@@ -47,7 +46,7 @@ const commentSchema = new mongoose.Schema({
 
 const Comment = mongoose.model('Comment', commentSchema);
 
-function validateComment(comment) {
+export function validateComment(comment) {
   const schema = Joi.object({
     text: Joi.string().min(2).required(),
     userId: Joi.string().hex().length(24).required(),
@@ -57,6 +56,4 @@ function validateComment(comment) {
   return schema.validate(comment)
 }
 
-module.exports.Comment = Comment 
-module.exports.validateComment = validateComment 
-module.exports.commentSchema = commentSchema
+export default Comment

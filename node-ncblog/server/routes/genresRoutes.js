@@ -1,26 +1,28 @@
-const express = require('express');
-const { Genre } = require('../models/genre');
+
+import express from "express";
+import { createNewGenre, deleteGenre, getAllGenres, getGenre, updateGenre} from "../controllers/genresController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import paginate from "../middleware/paginate.js";
+import Genre from "../models/genre.js";
+
 const router = express.Router();
-const paginate = require('../middleware/paginate');
-const genresController = require('../controllers/genresController.js');
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
 
 router.use(auth);
 router.use(admin);
 
 router.route('/')
   // get all genres
-  .get(paginate(Genre), genresController.getAllGenres)
+  .get(paginate(Genre), getAllGenres)
   // create a genre
-  .post(genresController.createNewGenre);
+  .post(createNewGenre);
 
 router.route('/:id')
   // get a genre
-  .get(genresController.getGenre)
+  .get(getGenre)
   // update a genre
-  .put(genresController.updateGenre)
+  .put(updateGenre)
   // delete a genre
-  .delete(genresController.deleteGenre);
+  .delete(deleteGenre);
 
-module.exports = router;
+export default router;

@@ -1,14 +1,14 @@
-const _ = require('lodash');
-const Joi = require('joi');
-const bcrypt = require('bcrypt');
-const { User } = require('../models/user');
-const { Post } = require('../models/post');
-const ms = require('ms');
+import _ from "lodash";
+import Joi from "joi";
+import bcrypt from "bcrypt";
+import User from "../models/user.js";
+import Post from "../models/post.js";
+import ms from "ms";
 
 // @desc Get all users
 // @route GET /users
 // @access Private
-const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   const users = await User.find().select('-password').lean().sort('name');
   if (!users.length) {
     return res.status(400).json({
@@ -22,7 +22,7 @@ const getAllUsers = async (req, res) => {
 // @desc Create new user
 // @route POST /users
 // @access Private
-const createNewUser = async (req, res) => {
+export const createNewUser = async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).json({
     success: false,
@@ -102,7 +102,7 @@ const createNewUser = async (req, res) => {
 // @desc Get a user
 // @route GET /users/:id
 // @access Private
-const getUser = async (req, res) => {
+export const getUser = async (req, res) => {
   const userId = req.params.id
   if (!userId) {
     return res.status(400).json({
@@ -125,7 +125,7 @@ const getUser = async (req, res) => {
 // @desc Update a user
 // @route PUT /users/:id
 // @access Private
-const updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   const { username, email, isActive, password } = req.body
   if (!username || typeof isActive !== 'boolean')
     return res.status(400).json({
@@ -209,7 +209,7 @@ const updateUser = async (req, res) => {
 // @desc Delete a user
 // @route DELETE /users/:id
 // @access Private
-const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
   const userId = req.params.id
   if (!userId) {
     return res.status(400).json({
@@ -249,7 +249,7 @@ const deleteUser = async (req, res) => {
 // @desc Get current User
 // @route GET /users/me
 // @access Private
-const getCurrentUser = async (req, res) => {
+export const getCurrentUser = async (req, res) => {
   const userId = req.user._id
   const user = await User.findById(userId).select('-password').lean().exec();
   res.status(200).json({ success: true, data: user});
@@ -258,7 +258,7 @@ const getCurrentUser = async (req, res) => {
 // @desc Update current user
 // @route PUT /users/me
 // @access Private
-const updateCurrentUser = async (req, res) => {
+export const updateCurrentUser = async (req, res) => {
   const { username, email, isActive, password, firstname, lastname } = req.body
   // if (!username || typeof isActive !== 'boolean')
   if (!username && !email && !(firstname && lastname) && !password)
@@ -389,7 +389,7 @@ const updateCurrentUser = async (req, res) => {
 // @desc Delete current user
 // @route DELETE /users/me
 // @access Private
-const deleteCurrentUser = async (req, res) => {
+export const deleteCurrentUser = async (req, res) => {
   const userId = req.user._id
   if (!userId) {
     return res.status(400).json({
@@ -430,7 +430,7 @@ const deleteCurrentUser = async (req, res) => {
 // @desc Get current User Posts
 // @route GET /users/me/posts
 // @access Private
-const getCurrentUserPosts = async (req, res) => {
+export const getCurrentUserPosts = async (req, res) => {
   const userId = req.user._id
   if (!userId) {
     return res.status(400).json({
@@ -463,16 +463,4 @@ function validateUser(req) {
     
   });
   return schema.validate(req);
-}
-
-module.exports = {
-  getAllUsers,
-  createNewUser,
-  getUser,
-  updateUser,
-  deleteUser,
-  getCurrentUser,
-  updateCurrentUser,
-  deleteCurrentUser,
-  getCurrentUserPosts
 }

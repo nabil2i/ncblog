@@ -1,4 +1,4 @@
-module.exports = (model) => {
+const paginate = (model) => {
   return async (req, res, next) => {
     try {
       let page = parseInt(req.query.page) || 1;
@@ -261,3 +261,5 @@ module.exports = (model) => {
     }
   }
 }
+
+export default paginate

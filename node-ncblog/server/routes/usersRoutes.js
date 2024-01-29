@@ -1,39 +1,45 @@
-const _ = require('lodash');
-const Joi = require('joi');
-const bcrypt = require('bcrypt');
-// const bcrypt = require('bcryptjs');
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
-const editor = require('../middleware/editor');
-const express = require('express');
-const { User, validate } = require('../models/user');
-const router = express.Router();
-const usersController = require('../controllers/usersController');
+import express from "express";
+import {
+  createNewUser,
+  deleteCurrentUser,
+  deleteUser,
+  getAllUsers,
+  getCurrentUser,
+  getCurrentUserPosts,
+  getUser,
+  updateCurrentUser,
+  updateUser
+} from "../controllers/usersController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import editor from "../middleware/editor.js";
+
+const router = express.Router()
 
 router.route('/')
   // get all users
-  .get([auth, admin], usersController.getAllUsers)
+  .get([auth, admin], getAllUsers)
   // registration
-  .post(usersController.createNewUser)
+  .post(createNewUser)
 
 router.route('/me')
   // get logged in user data
-  .get(auth,usersController.getCurrentUser)
+  .get(auth,getCurrentUser)
   // update logged in user data
-  .put(auth,usersController.updateCurrentUser)
+  .put(auth,updateCurrentUser)
   // delete logged in user
-  .delete(auth,usersController.deleteCurrentUser);
+  .delete(auth,deleteCurrentUser);
 
 router.route('/me/posts')
   // get logged in user posts
-  .get([auth, editor],usersController.getCurrentUserPosts)
+  .get([auth, editor],getCurrentUserPosts)
 
 router.route('/:id')
 // get a user
-  .get([auth, admin], usersController.getUser)
+  .get([auth, admin], getUser)
   // update user data
-  .put([auth, admin], usersController.updateUser) 
+  .put([auth, admin], updateUser) 
   // delete a user
-  .delete([auth, admin], usersController.deleteUser);
+  .delete([auth, admin], deleteUser);
 
-module.exports = router;
+export default router;

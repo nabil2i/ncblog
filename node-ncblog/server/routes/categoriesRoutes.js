@@ -1,26 +1,27 @@
-const express = require('express');
-const { Category } = require('../models/category');
+import express from "express";
+import { createNewCategory, deleteCategory, getAllCategories, getCategory, updateCategory} from "../controllers/categoriesController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import paginate from "../middleware/paginate.js";
+import Category from "../models/category.js";
+
 const router = express.Router();
-const paginate = require('../middleware/paginate');
-const categoriesController = require('../controllers/categoriesController');
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
 
 router.use(auth);
 router.use(admin);
 
 router.route('/')
   // get all categories
-  .get(paginate(Category), categoriesController.getAllCategories)
+  .get(paginate(Category), getAllCategories)
   // create a category
-  .post(categoriesController.createNewCategory);
+  .post(createNewCategory);
 
 router.route('/:id')
   // get a category
-  .get(categoriesController.getCategory)
+  .get(getCategory)
   // update a category
-  .put(categoriesController.updateCategory)
+  .put(updateCategory)
   // delete a category
-  .delete(categoriesController.deleteCategory);
+  .delete(deleteCategory);
 
-module.exports = router;
+export default router;

@@ -1,14 +1,16 @@
-const _ = require('lodash');
-const Joi = require('joi');
-const bcrypt = require('bcrypt');
-const { User } = require('../models/user');
-const ms = require('ms');
-const jwt = require('jsonwebtoken');
+import bcrypt from "bcrypt";
+import Joi from "joi";
+import jwt from "jsonwebtoken";
+import ms from "ms";
+import User from "../models/user.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // @desc Login
 // @route POST /auth
 // @access Public
-const login = async (req, res) => {
+export const login = async (req, res) => {
   const { error } = validate(req.body);
       
   if (error)
@@ -66,7 +68,7 @@ const login = async (req, res) => {
 // @desc Refresh token
 // @route GET /auth/refresh
 // @access Public
-const refresh = async (req, res) => {
+export const refresh = async (req, res) => {
   const cookies = req.cookies
 
   if (!cookies.jwt) {
@@ -121,7 +123,7 @@ const refresh = async (req, res) => {
 // @desc Logout
 // @route POST /auth/logout
 // @access Private
-const logout = async (req, res) => {
+export const logout = async (req, res) => {
   res.clearCookie('jwt', {
     httpOnly: true,
     sameSite: 'None',
@@ -138,10 +140,4 @@ function validate(req) {
   });
 
   return schema.validate(req);
-}
-
-module.exports = {
-  login,
-  logout,
-  refresh
 }

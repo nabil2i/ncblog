@@ -1,4 +1,4 @@
-const allowedOrigins = require('./allowedOrigins')
+import  allowedOrigins from "./allowedOrigins.js";
 
 // console.log(allowedOrigins)
 
@@ -15,4 +15,5 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 
-module.exports = corsOptions
+export default corsOptions
+// module.exports = corsOptions

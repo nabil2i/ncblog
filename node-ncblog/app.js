@@ -1,14 +1,15 @@
-require('dotenv').config();
-require('express-async-errors');
-const mongoose = require('mongoose');
-const express = require('express');
-const { logEvents } = require('./server/middleware/logger')
+import dotenv from "dotenv";
+import "express-async-errors";
+import mongoose from "mongoose";
+import express from "express";
+import { logEvents } from "./server/middleware/logger.js"
+import routes from "./server/startup/routes.js" 
+import { connectToDb } from"./server/startup/db.js";
 
-const app = express();
+dotenv.config()
 
-require('./server/startup/routes')(app);
-// require('./server/startup/db')();
-const { connectDb, populateDb } = require('./server/startup/db');
+const app = express()
+routes(app);
 
 const port = process.env.PORT || 5000;
 
@@ -16,7 +17,7 @@ process.env.NODE_ENV && console.log("Environment: ", process.env.NODE_ENV)
 // console.log("Front end domain: ", process.env.NODE_APP_FRONTEND_DOMAIN)
 
 
-connectDb()
+connectToDb()
 
 mongoose.connection.once('open', () => {
   console.log(`Connected to ${mongoose.connection.host}`);
@@ -77,5 +78,5 @@ const server = app.listen(port, () => {
 //     console.error('Error starting server:', error);
 //   });
 
-  
-module.exports = server;
+export default server;
+// module.exports = server;

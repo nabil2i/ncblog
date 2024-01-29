@@ -1,20 +1,21 @@
-const express = require('express');
+import express from "express";
+import { login, refresh, logout } from "../controllers/authController.js";
+import auth from "../middleware/auth.js";
+import loginLimiter from "../middleware/loginLimiter.js";
+
 const router = express.Router();
-const authController = require('../controllers/authController');
-const auth = require('../middleware/auth');
-const loginLimiter = require('../middleware/loginLimiter')
 
 router.route('/')
   // login
-  .post(loginLimiter, authController.login)
+  .post(loginLimiter, login)
 
 router.route('/refresh')
   // refresh token
-  .get(authController.refresh)
+  .get(refresh)
 
   router.route('/logout')
   //logout
-  .post(auth, authController.logout)
+  .post(auth, logout)
 
 
-module.exports = router;
+export default router;

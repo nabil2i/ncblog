@@ -1,26 +1,30 @@
-const path = require('path')
-const express = require('express');
-const cors = require('cors');
-const corsOptions = require('./corsOptions')
-// const expressLayout = require('express-ejs-layouts');
-const methodOverride = require('method-override');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const sessionOptions = require('./sessionOptions')
-const { logger } = require('../middleware/logger');
-const errorHandler = require('../middleware/errorHandler');
-const home = require('../routes/home');
-const posts = require('../routes/postsRoutes');
-const authors = require('../routes/authorsRoutes');
-const books = require('../routes/booksRoutes');
-const genres = require('../routes/genresRoutes');
-const categories = require('../routes/categoriesRoutes');
-const users = require('../routes/usersRoutes');
-const auth = require('../routes/authRoutes');
-const error = require('../routes/error');
+import cors from "cors";
+import express from "express";
+import path from "path";
+import corsOptions from "./corsOptions.js";
+// import expressLayout from "express-ejs-layouts";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import methodOverride from "method-override";
+import errorHandler from "../middleware/errorHandler.js";
+import { logger } from "../middleware/logger.js";
+import auth from "../routes/authRoutes.js";
+import authors from "../routes/authorsRoutes.js";
+import books from "../routes/booksRoutes.js";
+import categories from "../routes/categoriesRoutes.js";
+import error from "../routes/error.js";
+import genres from "../routes/genresRoutes.js";
+import home from "../routes/home.js";
+import posts from "../routes/postsRoutes.js";
+import users from "../routes/usersRoutes.js";
+import sessionOptions from "./sessionOptions.js";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+export default function(app) {
 
-module.exports = function(app) {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
 
   app.use(cors(corsOptions));
   app.use(logger);

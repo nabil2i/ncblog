@@ -1,18 +1,18 @@
-const _ = require('lodash');
-const { Author, validateAuthor } = require('../models/author');
+import _ from "lodash";
+import Author, { validateAuthor } from "../models/author.js";
 
 
 // @desc Get all authors
 // @route GET /authors
 // @access Public
-const getAllAuthors = async (req, res) => {
+export const getAllAuthors = async (req, res) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
 };
 
 // @desc Create a author
 // @route POST /authors
 // @access Private
-const createNewAuthor = async (req, res) => {
+export const createNewAuthor = async (req, res) => {
   try {
     const { error } = validateAuthor(req.body);
     if (error)
@@ -55,7 +55,7 @@ const createNewAuthor = async (req, res) => {
 // @desc Get a author
 // @route GET /authors/:id
 // @access Public
-const getAuthor = async (req, res) => {
+export const getAuthor = async (req, res) => {
   try {
     const authorId = req.params.id;
 
@@ -95,7 +95,7 @@ const getAuthor = async (req, res) => {
 // @desc Update a author
 // @route PUT /authors/:id
 // @access Private
-const updateAuthor = async (req, res) => {
+export const updateAuthor = async (req, res) => {
   try {
     const authorId = req.params.id;
 
@@ -146,7 +146,7 @@ const updateAuthor = async (req, res) => {
 // @desc Delete a author
 // @route DELETE /authors/:id
 // @access Private
-const deleteAuthor = async (req, res) => {
+export const deleteAuthor = async (req, res) => {
   try {
     const authorId = req.params.id;
 
@@ -183,12 +183,3 @@ const deleteAuthor = async (req, res) => {
     });
   }
 };
-
-
-module.exports = {
-  getAllAuthors,
-  getAuthor,
-  createNewAuthor,
-  updateAuthor,
-  deleteAuthor,
-}

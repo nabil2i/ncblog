@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
+import mongoose from "mongoose";
+import Joi from "joi";
 
 
-const categorySchema = new mongoose.Schema({
+export const categorySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -17,7 +17,7 @@ const categorySchema = new mongoose.Schema({
 
 const Category = mongoose.model('Category', categorySchema);
 
-function validateCategory(category) {
+export function validateCategory(category) {
   const schema = Joi.object({
     name: Joi.string().min(3).max(20).required(),
   });
@@ -25,6 +25,4 @@ function validateCategory(category) {
   return schema.validate(category);
 }
 
-exports.Category = Category;
-exports.validateCategory = validateCategory;
-exports.categorySchema = categorySchema;
+export default Category

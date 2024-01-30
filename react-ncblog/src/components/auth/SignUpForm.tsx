@@ -87,7 +87,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <Box p={4} my={8} textAlign="center">
+    <Box textAlign="center">
       {/* {error && (
         <Alert mb="15px" mt="10px" status="error">
           <AlertIcon />
@@ -248,8 +248,8 @@ const SignUpForm = () => {
           </FormErrorMessage>
         </FormControl>
 
-        <HStack justifyContent="space-between" mt={4}>
-          <Spacer />
+        <HStack justifyContent="center" mt={4}>
+          {/* <Spacer /> */}
           {/* <Box>
             <Checkbox border={1} colorScheme={VARIANT_COLOR} borderColor="teal">Remember me</Checkbox>
           </Box> */}

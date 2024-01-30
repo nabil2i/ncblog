@@ -22,7 +22,7 @@ const SignUpPage = () => {
 
   return (
     <>
-      <Box p={10}>
+      <Box p={10} mx="auto" maxW="1440px">
         <Grid
           borderWidth={{ lg: 1 }}
           borderRadius={16}
@@ -37,13 +37,15 @@ const SignUpPage = () => {
           alignContent="center"
         >
           <GridItem area="hero">
-            <Flex minH={{ lg: "92vh" }} width="full" position={"relative"}>
+            <Flex minH={{ lg: "100%" }} height="full" width="full" position={"relative"}>
               {" "}
               <Show above="lg">
                 <Image
                   src={HomeHero}
                   borderTopLeftRadius={{ lg: 16 }}
                   borderBottomLeftRadius={{ lg: 16 }}
+                  overflow="cover"
+                  aspectRatio={16 / 9}
                 />
                 <Box
                   position={"absolute"}
@@ -56,12 +58,12 @@ const SignUpPage = () => {
             </Flex>
           </GridItem>
 
-          <GridItem area="signupform">
+          <GridItem area="signupform" p={8}>
             <Flex minH={{ lg: "70vh" }} width="full" justifyContent="center">
               <Box
                 // px={4}
                 width="full"
-                maxWidth="500px"
+                maxWidth="600px"
               >
                 <SignUpForm />
               </Box>

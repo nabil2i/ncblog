@@ -23,7 +23,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <Box p={10}>
+      <Box p={10} mx="auto" maxW="1440px">
         <Grid
           borderWidth={{ lg: 1 }}
           borderRadius={16}
@@ -31,20 +31,20 @@ const LoginPage = () => {
           marginTop={{ base: "100px", lg: "30px" }}
           templateAreas={{ base: `"loginform"`, lg: `"hero loginform"` }}
           templateColumns={{ base: `"1fr"`, lg: "1fr 1fr" }}
-          // templateAreas={{ base: `"loginform" "hero" `, lg: `"hero loginform"` }}
-          // templateColumns={{ base: `"1fr"  "1fr"`, lg: "1fr 1fr" }}
           gap={0}
           justifyContent="center"
           alignContent="center"
         >
           <GridItem area="hero" as="section">
-            <Flex minH={{ lg: "70vh" }} width="full" position={"relative"}>
+            <Flex minH={{ lg: "100%" }} height="full" width="full" position={"relative"}>
               {" "}
               <Show above="lg">
                 <Image
                   src={HomeHero}
                   borderTopLeftRadius={{ lg: 16 }}
                   borderBottomLeftRadius={{ lg: 16 }}
+                  overflow="cover"
+                  aspectRatio={16 / 9}
                 />
                 <Box
                   position={"absolute"}
@@ -59,7 +59,7 @@ const LoginPage = () => {
 
           <GridItem area="loginform" background="" as="section">
             <Flex minH={{ lg: "70vh" }} width="full" justifyContent="center">
-              <Box px={4} width="full" maxWidth="450px">
+              <Box px={4} width="full" maxWidth="600px">
                 <LoginForm />
               </Box>
             </Flex>

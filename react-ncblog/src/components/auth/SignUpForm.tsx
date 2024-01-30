@@ -87,7 +87,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <Box textAlign="center">
+    <Box textAlign="center" w="full">
       {/* {error && (
         <Alert mb="15px" mt="10px" status="error">
           <AlertIcon />

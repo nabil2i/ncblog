@@ -28,8 +28,8 @@ import usePersist from "../../hooks/usePersist";
 
 const VARIANT_COLOR = "teal";
 
+// const toast = useToast();
 const LoginForm = () => {
-  // const toast = useToast();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [login, { isLoading }] = useLoginMutation();
@@ -120,7 +120,7 @@ const LoginForm = () => {
   };
 
   return (
-    <Box p={4} my={8} textAlign="center">
+    <Box textAlign="center" w="full">
       {error && (
         <Alert mb="15px" mt="10px" status="error">
           <AlertIcon />

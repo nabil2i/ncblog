@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem, Image, Show } from "@chakra-ui/react";
+import { Box, Flex, Text, Grid, GridItem, Image, Show } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ const LoginPage = () => {
           borderWidth={{ lg: 1 }}
           borderRadius={16}
           boxShadow="lg"
-          marginTop={{ base: "100px", lg: "30px" }}
+          // marginTop={{ base: "100px", lg: "30px" }}
           templateAreas={{ base: `"loginform"`, lg: `"hero loginform"` }}
           templateColumns={{ base: `"1fr"`, lg: "1fr 1fr" }}
           gap={0}
@@ -36,8 +36,7 @@ const LoginPage = () => {
           alignContent="center"
         >
           <GridItem area="hero" as="section">
-            <Flex minH={{ lg: "100%" }} height="full" width="full" position={"relative"}>
-              {" "}
+            <Flex height="full" width="full" position={"relative"}>
               <Show above="lg">
                 <Image
                   src={HomeHero}
@@ -47,19 +46,28 @@ const LoginPage = () => {
                   aspectRatio={16 / 9}
                 />
                 <Box
-                  position={"absolute"}
-                  background="rgba(0, 0, 0, 0.4)"
-                  height="100%"
-                  borderTopLeftRadius={{ lg: 16 }}
-                  borderBottomLeftRadius={{ lg: 16 }}
-                ></Box>
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  position="absolute"
+                  background="rgba(0, 0, 0, 0.8)"
+                  bottom={0}
+                  w="full"
+                  p={2}
+                  // left="50%"
+                  // transform="translateX(-50%)"
+                  // borderTopLeftRadius={16 }
+                  // borderBottomLeftRadius={16}
+                >
+                  <Text fontSize={25}>NabilConveys Blog</Text>
+                </Box>
               </Show>
             </Flex>
           </GridItem>
 
           <GridItem area="loginform" background="" as="section">
             <Flex minH={{ lg: "70vh" }} width="full" justifyContent="center">
-              <Box px={4} width="full" maxWidth="600px">
+              <Box px={4} py={8} width="full" minW="400px" maxW="500px">
                 <LoginForm />
               </Box>
             </Flex>

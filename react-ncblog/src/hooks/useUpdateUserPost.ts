@@ -32,7 +32,7 @@ const useUpdateUserPost = (postId: string,
     },
     onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError
-      const errorMessage = responseData.error.message
+      const errorMessage = responseData.message
       onErrorUpdate(errorMessage);
     },
   });

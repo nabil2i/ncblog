@@ -31,9 +31,8 @@ const useDeleteUserAccount = (
     },
     onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError;
-      const errorMessage = responseData.error.message
+      const errorMessage = responseData.message
 
-      // Handle the error and show an error toast
       onErrorDelete(errorMessage);
     },
   });

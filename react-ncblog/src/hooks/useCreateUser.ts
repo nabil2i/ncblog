@@ -22,7 +22,7 @@ const useCreateUser = (
     },
     onError: (error: AxiosError) => {
       const responseData = error.response?.data as FetchError;
-      const errorMessage = responseData.error.message
+      const errorMessage = responseData.message
 
       onErrorCreate(errorMessage);
     },

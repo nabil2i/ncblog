@@ -77,12 +77,12 @@ const SignUpForm = () => {
     // }
 
     createUser.mutate({
-      username: data.username,
-      email: data.email,
+      username: data.username.trim(),
+      email: data.email.trim(),
       password: data.password,
       password2: data.password2,
-      firstname: data.firstname,
-      lastname: data.lastname,
+      firstname: data.firstname.trim(),
+      lastname: data.lastname.trim(),
     });
   };
 

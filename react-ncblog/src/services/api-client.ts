@@ -15,6 +15,8 @@ export interface FetchError {
     code: number;
     message: string;
   }
+  message: string;
+  isError: boolean;
 }
 
 export interface ArrayData<S> {

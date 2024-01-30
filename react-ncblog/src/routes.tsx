@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import Prefetch from "./app/features/Prefetch";
-import PersistLogin from "./components/auth/PersistLogin";
 import RequireAuth from "./components/common/RequireAuth";
 import AdminLayout from "./pages/_layouts/AdminLayout";
 import Layout from "./pages/_layouts/Layout";
@@ -24,7 +23,6 @@ import PostPage from "./pages/common/PostPage";
 import SearchPage from "./pages/common/SearchPage";
 import SignUpPage from "./pages/common/SignUpPage";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -36,7 +34,7 @@ const router = createBrowserRouter([
 
       {
         path: "",
-        element: <PersistLogin />,
+        // element: <PersistLogin />,
         children: [
           {
             path: "",
@@ -51,9 +49,7 @@ const router = createBrowserRouter([
                   {
                     path: "write",
                     element: <RequireAuth allowedRoles={["Editor"]} />,
-                    children:[
-                      { index: true, element: <AddPostPage />}
-                    ]
+                    children: [{ index: true, element: <AddPostPage /> }],
                   },
                 ],
               },
@@ -75,11 +71,11 @@ const router = createBrowserRouter([
                   { path: ":id", element: <BookPage /> },
                 ],
               },
-              { path: "account",
+              {
+                path: "account",
                 element: <RequireAuth />,
-                children: [
-                  {path: "", element: <AccountPage /> }
-                ]},
+                children: [{ path: "", element: <AccountPage /> }],
+              },
             ],
           },
         ],
@@ -94,7 +90,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <PersistLogin />,
+        // element: <PersistLogin />,
         children: [
           {
             path: "",

@@ -37,10 +37,10 @@ const DesktopNavItem = ({ navItem }: Props) => {
   // const setSearchText = usePostQueryStore((s) => s.setSearchText);
 
   const onClick = (navItem: NavItem) => {
-    console.log(navItem);
+    // console.log(navItem);
     if (!navItem.children && navItem.href) {
       if (isExternalURL(navItem.href)) {
-        console.log(navItem.href);
+        // console.log(navItem.href);
         window.open(navItem.href, navItem.target);
       }
     }

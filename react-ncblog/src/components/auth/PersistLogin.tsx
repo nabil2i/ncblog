@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useRefreshMutation } from "../../app/features/auth/authApiSlice";
-import { authSatus, selectCurrentToken } from "../../app/features/auth/authSlice";
+import {
+  authSatus,
+  selectCurrentToken,
+} from "../../app/features/auth/authSlice";
 import usePersist from "../../hooks/usePersist";
 // { children }: { children: ReactNode }
 

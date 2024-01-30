@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   Center,
-  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -24,7 +23,6 @@ import {
   setCredentials,
 } from "../../app/features/auth/authSlice";
 import { LoginData } from "../../entities/User";
-import usePersist from "../../hooks/usePersist";
 
 const VARIANT_COLOR = "teal";
 
@@ -34,9 +32,9 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
-  const [persist, setPersist] = usePersist();
+  // const [persist, setPersist] = usePersist();
 
-  const togglePersist = () => setPersist((prev: boolean) => !prev);
+  // const togglePersist = () => setPersist((prev: boolean) => !prev);
 
   // useEffect(() => {
   //   if (isError) {
@@ -184,7 +182,7 @@ const LoginForm = () => {
         </FormControl>
 
         <HStack justifyContent="space-between" mt={4}>
-          <Box>
+          {/* <Box>
             <Checkbox
               border={1}
               colorScheme={VARIANT_COLOR}
@@ -194,7 +192,7 @@ const LoginForm = () => {
             >
               Remember me
             </Checkbox>
-          </Box>
+          </Box> */}
           {/* <Box color={`${VARIANT_COLOR}.500`}>
             <NavLink
               to="/"

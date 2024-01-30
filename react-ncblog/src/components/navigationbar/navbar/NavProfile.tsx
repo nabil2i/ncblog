@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 import { useSendLogoutMutation } from "../../../app/features/auth/authApiSlice";
 import { authSatus } from "../../../app/features/auth/authSlice";
 import useAuth from "../../../hooks/useAuth";
-import usePersist from "../../../hooks/usePersist";
 // import useAuth from "./navigationbar/useAuth";
 
 // interface Props {
@@ -38,7 +37,7 @@ const Profile = () => {
   const [sendLogout, { isError, isLoading, isSuccess }] =
     useSendLogoutMutation();
   const { isAdmin, isEditor, firstname, lastname } = useAuth();
-  const [setPersist] = usePersist();
+  // const [setPersist] = usePersist();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -123,7 +122,14 @@ const Profile = () => {
                   </MenuItem>
                 </>
               )}
-              <MenuItem onClick={() => {sendLogout(0); setPersist(false)}}>Logout</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  sendLogout({});
+                  // setPersist(false);
+                }}
+              >
+                Logout
+              </MenuItem>
               {/* <MenuItem onClick={() => dispatch({ type: "LOGOUT" })}>
                 Logout
               </MenuItem> */}

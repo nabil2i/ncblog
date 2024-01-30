@@ -1,20 +1,14 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { makeError } from "../utils/responses.js"
 
 dotenv.config();
 
 export default function (req, res, next) {
   const authHeader = req.headers.authorization || req.headers.authorization
   // console.log(authHeader)
-  if (!authHeader || !authHeader.startsWith || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({
-      success: false,
-      error: {
-        code: 401,
-        message: 'Unauthorized'
-      }
-    });
-  }
+  if (!authHeader || !authHeader.startsWith || !authHeader.startsWith('Bearer '))
+    return next(makeError(401, "Unauthorized"));
 
   const accessToken = authHeader.split(' ')[1]
   // console.log(accessToken)
@@ -23,16 +17,9 @@ export default function (req, res, next) {
     accessToken,
     process.env.NODE_APP_JWT_ACCESS_SECRET,
     (err, decoded) => {
-      if (err) {
-        console.log(err)
-        return res.status(403).json({
-          success: false,
-          error: {
-            code: 403,
-            message: 'Forbidden'
-          }
-        });
-      }
+      // console.log(err)
+      if (err)
+        return next(makeError(403, "Forbidden"));
 
       req.user = decoded;
       next();

@@ -108,7 +108,8 @@ const LoginForm = () => {
     } catch (error) {
       const err = error as AuthErrorResponse;
       // console.log("error", error);
-      setError(err.data.error.message);
+      // console.log("error", err);
+      setError(err.data.message);
     }
 
     // login.mutate({

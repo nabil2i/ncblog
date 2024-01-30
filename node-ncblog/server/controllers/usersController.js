@@ -11,7 +11,7 @@ import { makeError } from "../utils/responses.js";
 // @access Private
 export const getAllUsers = async (req, res, next) => {
   const users = await User.find().select('-password').lean().sort('name');
-  if (!users.length) next(makeError(400, "No user found"));
+  if (!users.length) return next(makeError(400, "No user found"));
     res.status(200).json({ success: true, data: users });
 };
 
@@ -20,17 +20,17 @@ export const getAllUsers = async (req, res, next) => {
 // @access Private
 export const createNewUser = async (req, res, next) => {
   const { error } = validateUser(req.body);
-  if (error) next(makeError(400, error.details[0].message));
+  if (error) return next(makeError(400, error.details[0].message));
 
   const { username, email, firstname, lastname, password, password2 } = req.body;
   
-  if (password !== password2) next(makeError(400, "Passwords don't match"));
+  if (password !== password2) return next(makeError(400, "Passwords don't match"));
 
   let user = await User.findOne({ username });
-  if (user) next(makeError(409, "User with this username already registrated"));
+  if (user) return next(makeError(409, "User with this username already registrated"));
     
   user = await User.findOne({ email });
-  if (user) next(makeError(409, "User with this email address already registrated"));
+  if (user) return next(makeError(409, "User with this email address already registrated"));
   
   user = new User(_.pick(req.body, ['username', 'email', 'password', 'firstname', 'lastname']));
   
@@ -64,7 +64,7 @@ export const createNewUser = async (req, res, next) => {
     //   message: "New user created",
     //   data: userData
     // });
-  } else next(makeError(400, "Invalid user details received"));
+  } else return next(makeError(400, "Invalid user details received"));
 };
 
 // @desc Get a user
@@ -72,10 +72,10 @@ export const createNewUser = async (req, res, next) => {
 // @access Private
 export const getUser = async (req, res, next) => {
   const userId = req.params.id
-  if (!userId) next(makeError(400, "User ID required"));
+  if (!userId) return next(makeError(400, "User ID required"));
 
   const user = await User.findById(userId).select('-password').lean().exec();
-  if (!user) next(makeError(404, "The user with the given ID was not found"));
+  if (!user) return next(makeError(404, "The user with the given ID was not found"));
 
   res.status(200).json({ success: true, data: user});
 };
@@ -86,19 +86,19 @@ export const getUser = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
   const { username, email, isActive, password } = req.body
   if (!username && !email && !(firstname && lastname) && !password)
-  next(makeError(400, "All fields must be provided"));
+  return next(makeError(400, "All fields must be provided"));
   
   const userId = req.params.id
   const user = await User.findById(userId).exec()
 
-  if (!user) next(makeError(400, "User not found"));
+  if (!user) return next(makeError(400, "User not found"));
 
   if (username) {
     const duplicate = await User.findOne({ username })
       .collation({ locale: 'en', strength: 2}).lean().exec();
   
     if (duplicate && duplicate._id.toString() !== userId) 
-      next(makeError(409, "Username already exists"));
+      return next(makeError(409, "Username already exists"));
 
     user.username = username
   }
@@ -115,7 +115,7 @@ export const updateUser = async (req, res, next) => {
     const duplicate = await User.findOne({ email }).lean().exec();
 
     if (duplicate && duplicate._id.toString() !== userId) 
-      next(makeError(409, "Email already exists"));
+      return next(makeError(409, "Email already exists"));
 
     user.email = email
   }
@@ -164,16 +164,16 @@ export const updateUser = async (req, res, next) => {
 // @access Private
 export const deleteUser = async (req, res, next) => {
   const userId = req.params.id
-  if (!userId) next(makeError(400, "User ID required"));
+  if (!userId) return next(makeError(400, "User ID required"));
 
   // const posts = await Post.lookup(userId).lean().exec();
   const post = await Post.findOne({ user: userId }).lean().exec();
 
-  if (post) next(makeError(400, "User has posts"));
+  if (post) return next(makeError(400, "User has posts"));
 
   const user = await User.findByIdAndRemove(userId);
     
-  if (!user) next(makeError(404, "The user with the given ID was not found"));
+  if (!user) return next(makeError(404, "The user with the given ID was not found"));
 
   res.clearCookie('token');
   res.status(200).json({
@@ -199,21 +199,21 @@ export const updateCurrentUser = async (req, res, next) => {
   const { username, email, isActive, password, firstname, lastname } = req.body
   // if (!username || typeof isActive !== 'boolean')
   if (!username && !email && !(firstname && lastname) && !password)
-  next(makeError(400, "You must provide data"));
+  return next(makeError(400, "You must provide data"));
   
   const userId = req.user._id;
   const user = await User.findById(userId).exec()
 
-  if (!user) next(makeError(400, "User not found"));
+  if (!user) return next(makeError(400, "User not found"));
 
-  if (!user.isActive) next(makeError(400, "This user cannot make this request"));
+  if (!user.isActive) return next(makeError(400, "This user cannot make this request"));
   
   if (username) {
     const duplicate = await User.findOne({ username })
       .collation({ locale: 'en', strength: 2}).lean().exec();
 
     if (duplicate && duplicate._id.toString() !== userId)
-      next(makeError(409, "Username already exists"));
+      return next(makeError(409, "Username already exists"));
 
     user.username = username
   }
@@ -229,7 +229,7 @@ export const updateCurrentUser = async (req, res, next) => {
   if (email) {
     const duplicate = await User.findOne({ email }).lean().exec();
     if (duplicate && duplicate._id.toString() !== userId)
-       next(makeError(409, "Email already exists"));
+       return next(makeError(409, "Email already exists"));
 
     user.email = email;
   }
@@ -305,16 +305,16 @@ export const updateCurrentUser = async (req, res, next) => {
 // @access Private
 export const deleteCurrentUser = async (req, res, next) => {
   const userId = req.user._id
-  if (!userId) next(makeError(400, "User ID required"));
+  if (!userId) return next(makeError(400, "User ID required"));
 
   // const posts = await Post.lookup(userId).lean().exec();
   const post = await Post.findOne({ user: userId}).lean().exec();
 
-  if (post) next(makeError(400, "User has posts"));
+  if (post) return next(makeError(400, "User has posts"));
 
   const user = await User.findByIdAndRemove(userId);
     
-  if (!user) next(makeError(404, "The user with the given ID was not found"));
+  if (!user) return next(makeError(404, "The user with the given ID was not found"));
 
   res.clearCookie('token');
   res.status(200).json({
@@ -328,7 +328,7 @@ export const deleteCurrentUser = async (req, res, next) => {
 // @access Private
 export const getCurrentUserPosts = async (req, res, next) => {
   const userId = req.user._id
-  if (!userId) next(makeError(400, "User ID required"));
+  if (!userId) return next(makeError(400, "User ID required"));
 
   const userPosts = await Post
     .find({ user: userId })

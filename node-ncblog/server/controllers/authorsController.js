@@ -1,6 +1,6 @@
 import _ from "lodash";
 import Author, { validateAuthor } from "../models/author.js";
-import {  makeError } from "../utils/responses.js";
+import { makeError } from "../utils/responses.js";
 
 // @desc Get all authors
 // @route GET /authors
@@ -15,7 +15,7 @@ export const getAllAuthors = async (req, res) => {
 export const createNewAuthor = async (req, res, next) => {
   try {
     const { error } = validateAuthor(req.body);
-    if (error) next(makeError(400,  error.details[0].message));
+    if (error) return next(makeError(400,  error.details[0].message));
     // console.log(req.body);
     const { firstname, lastname, bio, birthDate, nationality, img, socials } = req.body;
     
@@ -25,13 +25,13 @@ export const createNewAuthor = async (req, res, next) => {
 
     newAuthor = await newAuthor.save();
 
-    if (!newAuthor) next(makeError(400, "An error occured"));
+    if (!newAuthor) return next(makeError(400, "An error occured"));
 
     newAuthor = _.pick(newAuthor, ['_id', 'firstname', 'lastname']);
     res.status(201).json({success: true, data: newAuthor});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -42,16 +42,16 @@ export const getAuthor = async (req, res, next) => {
   try {
     const authorId = req.params.id;
 
-    if (!authorId) next(makeError(400,  "Author ID required"));
+    if (!authorId) return next(makeError(400,  "Author ID required"));
      
     const author = await Author.findById(authorId)
     
-    if (!author) next(makeError(404, "The author with the given ID was not found"));
+    if (!author) return next(makeError(404, "The author with the given ID was not found"));
     
     res.status(200).json({ success: true, data: author});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -62,10 +62,10 @@ export const updateAuthor = async (req, res, next) => {
   try {
     const authorId = req.params.id;
 
-    if (!authorId) next(makeError(400, "Author ID required"));
+    if (!authorId) return next(makeError(400, "Author ID required"));
 
     const { error } = validateAuthor(req.body);
-    if (error) next(makeError(400, error.details[0].message));
+    if (error) return next(makeError(400, error.details[0].message));
     
     const { firstname, lastname, bio, birthDate, nationality, img, socials} = req.body;
 
@@ -77,12 +77,12 @@ export const updateAuthor = async (req, res, next) => {
       { new: true}
     );
       
-    if (!author) next(makeError(404, "The author with given ID doesn't exist"));
+    if (!author) return next(makeError(404, "The author with given ID doesn't exist"));
       
     res.json({ success: true, message: `The author with ID ${author._id} is updated`});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -93,11 +93,11 @@ export const deleteAuthor = async (req, res, next) => {
   try {
     const authorId = req.params.id;
 
-    if (!authorId) next(makeError(400, "Author ID required"));
+    if (!authorId) return next(makeError(400, "Author ID required"));
   
     const author = await Author.findByIdAndRemove(authorId);
   
-    if(!author) next(makeError(404, "The author with given ID is not found"));
+    if(!author) return next(makeError(404, "The author with given ID is not found"));
   
     res.status(200).json({
       success: true,
@@ -106,6 +106,6 @@ export const deleteAuthor = async (req, res, next) => {
 
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };

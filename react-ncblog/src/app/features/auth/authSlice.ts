@@ -13,18 +13,20 @@ export interface AuthServerResponse {
   data: {
     accessToken: string;
   }
-  message?: string;
+  message: string;
 }
 
 export interface AuthErrorResponse {
+  status: number,
   data: {
     success: boolean,
-    error: {
+    message: string,
+    isError: boolean,
+    error?: {
       code: number,
       message: string,
-    }
+    },
   },
-  status?: number,
 }
 
 const initialState = {
@@ -37,7 +39,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state: AuthState, action: PayloadAction<AuthServerResponse>) => {
-      const { data} = action.payload
+      const { data } = action.payload
       state.token = data.accessToken
       state.isAuthenticated = true
     },

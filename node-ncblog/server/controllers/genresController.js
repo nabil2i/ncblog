@@ -16,7 +16,7 @@ export const getAllGenres = async (req, res) => {
 export const createNewGenre = async (req, res, next) => {
   try {
     const { error } = validateGenre(req.body);
-    if (error) next(makeError(400, error.details[0].message));
+    if (error) return next(makeError(400, error.details[0].message));
 
     // console.log(req.body);
     const { name } = req.body;
@@ -27,13 +27,13 @@ export const createNewGenre = async (req, res, next) => {
     
     newGenre = await newGenre.save();
 
-    if (!newGenre) next(makeError(400, "An error occured"));
+    if (!newGenre) return next(makeError(400, "An error occured"));
   
     newGenre = _.pick(newGenre, ['_id', 'name']);
     res.status(201).json({success: true, data: newGenre});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -44,16 +44,16 @@ export const getGenre = async (req, res, next) => {
   try {
     const genreId = req.params.id;
 
-    if (!genreId)next(makeError(400, "Genre ID required"));
+    if (!genreId)return next(makeError(400, "Genre ID required"));
      
     const genre = await Genre.findById(genreId)
     
-    if (!genre) next(makeError(404, "The genre with the given ID was not found"));
+    if (!genre) return next(makeError(404, "The genre with the given ID was not found"));
     
     res.status(200).json({ success: true, data: genre});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -64,10 +64,10 @@ export const updateGenre = async (req, res, next) => {
   try {
     const genreId = req.params.id;
 
-    if (!genreId) next(makeError(400, "Genre ID required"));
+    if (!genreId) return next(makeError(400, "Genre ID required"));
 
     const { error } = validateGenre(req.body);
-    if (error) next(makeError(400, error.details[0].message));
+    if (error) return next(makeError(400, error.details[0].message));
     
     const { name } = req.body;
 
@@ -79,12 +79,12 @@ export const updateGenre = async (req, res, next) => {
       { new: true}
     );
       
-    if (!genre) next(makeError(404, "The genre with given ID doesn't exist"));
+    if (!genre) return next(makeError(404, "The genre with given ID doesn't exist"));
 
     res.json({ success: true, message: `The genre with ID ${genre._id} is updated`});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -95,15 +95,15 @@ export const deleteGenre = async (req, res, next) => {
   try {
     const genreId = req.params.id;
 
-    if (!genreId) next(makeError(400, "Genre ID required"));
+    if (!genreId) return next(makeError(400, "Genre ID required"));
   
     const book = await Book.findOne({ genre: genreId }).lean().exec();
 
-    if (book) next(makeError(404, "Genre has books"));
+    if (book) return next(makeError(404, "Genre has books"));
 
     const genre = await Genre.findByIdAndRemove(genreId);
   
-    if(!genre) next(makeError(404, "The genre with given ID is not found"));
+    if(!genre) return next(makeError(404, "The genre with given ID is not found"));
 
     res.status(200).json({
       success: true,
@@ -112,6 +112,6 @@ export const deleteGenre = async (req, res, next) => {
 
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };

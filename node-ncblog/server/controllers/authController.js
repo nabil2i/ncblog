@@ -1,39 +1,28 @@
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import ms from "ms";
 import User from "../models/user.js";
-import dotenv from "dotenv";
+import { makeError } from "../utils/responses.js";
 
 dotenv.config();
 
 // @desc Login
 // @route POST /auth
 // @access Public
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   const { error } = validate(req.body);
       
-  if (error)
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: error.details[0].message}
-    });
+  if (error) return next(makeError(400, error.details[0].message));
   
   const { username, password } = req.body;
 
   let user = await User.findOne({ username });
-  if (!user || !user.isActive)
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: 'Invalid username or password'}
-    });
+  if (!user || !user.isActive) return next(makeError(400, "Invalid username or password"));
   
   const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword)
-    return res.status(400).json({
-      success: false,
-      error: { code: 400, message: 'Invalid username or password'}
-    });
+  if (!validPassword) return next(makeError(400, "Invalid username or password"));
   
   const accessToken = user.generateAuthToken();
   const refreshToken = user.generateRefreshToken();
@@ -68,18 +57,10 @@ export const login = async (req, res) => {
 // @desc Refresh token
 // @route GET /auth/refresh
 // @access Public
-export const refresh = async (req, res) => {
+export const refresh = async (req, res, next) => {
   const cookies = req.cookies
 
-  if (!cookies.jwt) {
-    return res.status(401).json({
-      success: false,
-      error: {
-        code: 401,
-        message: 'Unauthorized'
-      }
-    });
-  }
+  if (!cookies.jwt) return next(makeError(401, "Unauthorized"));
 
   const refreshToken = cookies.jwt
   // console.log("refresh result resh token", refreshToken)
@@ -88,26 +69,11 @@ export const refresh = async (req, res) => {
     refreshToken,
     process.env.NODE_APP_JWT_REFRESH_SECRET,
     async (err, decoded) => {
-      if (err)
-        return res.status(403).json({
-          success: false,
-          error: {
-            code: 403,
-            message: 'Forbidden'
-          }
-        });
+      if (err) return next(makeError(403, "Forbidden"));
 
       const user = await User.findOne({ username: decoded.username });
 
-      if (!user) {
-        return res.status(401).json({
-          success: false,
-          error: {
-            code: 400,
-            message: 'Unauthorized'
-          }
-        });
-      }
+      if (!user) return next(makeError(401, "Unauthorized"));
 
       const accessToken = user.generateAuthToken();
 
@@ -117,7 +83,6 @@ export const refresh = async (req, res) => {
       });
     }
   );
-
 };
 
 // @desc Logout

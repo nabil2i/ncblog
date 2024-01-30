@@ -1,3 +1,5 @@
+import { makeError } from "../utils/responses.js"
+
 const paginate = (model) => {
   return async (req, res, next) => {
     try {
@@ -254,10 +256,7 @@ const paginate = (model) => {
       next(); 
     } catch(err) {
       // console.log(err);
-      res.status(500).json({
-        success: false,
-        error: { code: 500,  message: err.message}
-     })
+      return next(makeError(500, err.message));
     }
   }
 }

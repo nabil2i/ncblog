@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Author from "../models/author.js";
 import Book, { validateBook } from "../models/book.js";
-import {  makeError } from "../utils/responses.js";
+import { makeError } from "../utils/responses.js";
 
 // @desc Get all books
 // @route GET /books
@@ -16,13 +16,13 @@ export const getAllBooks =async (req, res) => {
 export const createNewBook = async (req, res, next) => {
   try {
     const { error } = validateBook(req.body);
-    if (error) next(makeError(400, error.details[0].message));
+    if (error) return next(makeError(400, error.details[0].message));
 
     // console.log(req.body);
     const { title, about, authorId } = req.body;
 
     const author = await Author.findById(authorId);
-    if (!author) next(makeError(400, "Invalid author"));
+    if (!author) return next(makeError(400, "Invalid author"));
     
     let newBook = new Book({
       author: authorId,
@@ -40,13 +40,13 @@ export const createNewBook = async (req, res, next) => {
     // })
     newBook = await newBook.save();
 
-    if (!newBook) next(makeError(400, "An error occured"));
+    if (!newBook) return next(makeError(400, "An error occured"));
 
     newBook = _.pick(newBook, ['_id', 'title']);
     res.status(201).json({success: true, data: newBook});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -57,7 +57,7 @@ export const getBook = async (req, res, next) => {
   try {
     const bookId = req.params.id;
 
-    if (!bookId) next(makeError(400, "Book ID required"));
+    if (!bookId) return next(makeError(400, "Book ID required"));
      
     const book = await Book.findById(bookId)
       .populate([
@@ -68,12 +68,12 @@ export const getBook = async (req, res, next) => {
       ])
       .exec();
     
-    if (!book) next(makeError(404, "The book with the given ID was not found"));
+    if (!book) return next(makeError(404, "The book with the given ID was not found"));
     
     res.status(200).json({ success: true, data: book});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -84,10 +84,10 @@ export const updateBook = async (req, res, next) => {
   try {
     const bookId = req.params.id;
 
-    if (!bookId) next(makeError(400, "Book ID required"));
+    if (!bookId) return next(makeError(400, "Book ID required"));
 
     const { error } = validateBook(req.body);
-    if (error) next(makeError(400, error.details[0].message));
+    if (error) return next(makeError(400, error.details[0].message));
     
     const { title, about, authorId } = req.body;
 
@@ -100,12 +100,12 @@ export const updateBook = async (req, res, next) => {
       { new: true}
     );
       
-    if (!book) next(makeError(404, "The book with given ID doesn't exist"));
+    if (!book) return next(makeError(404, "The book with given ID doesn't exist"));
       
     res.json({ success: true, message: `The book with ID ${book._id} is updated`});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -116,11 +116,11 @@ export const deleteBook = async (req, res, next) => {
   try {
     const bookId = req.params.id;
 
-    if (!bookId) next(makeError(400, "Book ID required"));
+    if (!bookId) return next(makeError(400, "Book ID required"));
   
     const book = await Book.findByIdAndRemove(bookId);
   
-    if(!book) next(makeError(404, "The book with given ID is not found"));
+    if(!book) return next(makeError(404, "The book with given ID is not found"));
   
     res.status(200).json({
       success: true,
@@ -129,6 +129,6 @@ export const deleteBook = async (req, res, next) => {
 
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };

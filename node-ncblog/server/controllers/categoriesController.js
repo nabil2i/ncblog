@@ -1,6 +1,6 @@
 import _ from "lodash";
 import Category, { validateCategory } from "../models/category.js";
-import {  makeError } from "../utils/responses.js";
+import { makeError } from "../utils/responses.js";
 
 // @desc Get all categories
 // @route GET /categories
@@ -15,7 +15,7 @@ export const getAllCategories = async (req, res) => {
 export const createNewCategory = async (req, res, next) => {
   try {
     const { error } = validateCategory(req.body);
-    if (error) next(makeError(400, error.details[0].message));
+    if (error) return next(makeError(400, error.details[0].message));
 
     // console.log(req.body);
     const { name } = req.body;
@@ -26,13 +26,13 @@ export const createNewCategory = async (req, res, next) => {
     
     newCategory = await newCategory.save();
 
-    if (!newCategory) next(makeError(400, "An error occured"));
+    if (!newCategory) return next(makeError(400, "An error occured"));
 
     newCategory = _.pick(newCategory, ['_id', 'name']);
     res.status(201).json({success: true, data: newCategory});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -43,16 +43,16 @@ export const getCategory = async (req, res, next) => {
   try {
     const categoryId = req.params.id;
 
-    if (!categoryId) next(makeError(400, "Category ID required"));
+    if (!categoryId) return next(makeError(400, "Category ID required"));
 
     const category = await Category.findById(categoryId)
     
-    if (!category) next(makeError(404, "The category with the given ID was not found"));
+    if (!category) return next(makeError(404, "The category with the given ID was not found"));
     
     res.status(200).json({ success: true, data: category});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -63,10 +63,10 @@ export const updateCategory = async (req, res, next) => {
   try {
     const categoryId = req.params.id;
 
-    if (!categoryId) next(makeError(400, "Category ID required"));
+    if (!categoryId) return next(makeError(400, "Category ID required"));
 
     const { error } = validateCategory(req.body);
-    if (error) next(makeError(400, error.details[0].message));
+    if (error) return next(makeError(400, error.details[0].message));
     
     const { name } = req.body;
 
@@ -78,12 +78,12 @@ export const updateCategory = async (req, res, next) => {
       { new: true}
     );
       
-    if (!category) next(makeError(400, "The category with given ID doesn't exist"));
+    if (!category) return next(makeError(400, "The category with given ID doesn't exist"));
       
     res.json({ success: true, message: `The category with ID ${category._id} is updated`});
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };
 
@@ -94,11 +94,11 @@ export const deleteCategory = async (req, res, next) => {
   try {
     const categoryId = req.params.id;
 
-    if (!categoryId) next(makeError(400, "Category ID required"));
+    if (!categoryId) return next(makeError(400, "Category ID required"));
   
     const category = await Category.findByIdAndRemove(categoryId);
   
-    if(!category) next(makeError(404, "The category with given ID is not found'"));
+    if(!category) return next(makeError(404, "The category with given ID is not found'"));
   
     res.status(200).json({
       success: true,
@@ -107,6 +107,6 @@ export const deleteCategory = async (req, res, next) => {
 
   } catch(err) {
     console.log(err)
-    next(makeError(500, "Internal Server Error"));
+    return next(makeError(500, "Internal Server Error"));
   }
 };

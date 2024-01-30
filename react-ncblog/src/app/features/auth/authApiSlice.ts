@@ -8,6 +8,7 @@ interface LoginCredentials {
   password: string;
 }
 
+
 const extendedAuthApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthServerResponse, LoginCredentials>({
@@ -19,14 +20,14 @@ const extendedAuthApiSlice = apiSlice.injectEndpoints({
         }
       })
     }),
-    sendLogout: builder.mutation({
+    sendLogout: builder.mutation<AuthServerResponse, object>({
       query: () => ({
         url: 'auth/logout',
         method: 'POST'
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          //  const { data } = 
+          // const { data } = 
           await queryFulfilled;
           // console.log(data);
           dispatch(logout());
@@ -38,7 +39,7 @@ const extendedAuthApiSlice = apiSlice.injectEndpoints({
         }
       }
     }),
-    refresh: builder.mutation({
+    refresh: builder.mutation<AuthServerResponse, object>({
       query: () => ({
         url: 'auth/refresh',
         method: 'GET',

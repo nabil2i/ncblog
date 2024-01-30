@@ -13,7 +13,7 @@ const BlogPostCardContainer = ({ children }: Props) => {
         transition: "transform .05s ease-in",
       }}
       // bg='white'
-      // minWidth="400px"
+      minWidth="400px"
       maxWidth="420px"
       // borderRadius="lg"
       // borderWidth="1px"

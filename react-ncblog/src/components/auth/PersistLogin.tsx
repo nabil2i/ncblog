@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useRefreshMutation } from "../../app/features/auth/authApiSlice";
-import { selectCurrentToken } from "../../app/features/auth/authSlice";
+import { authSatus, selectCurrentToken } from "../../app/features/auth/authSlice";
 import usePersist from "../../hooks/usePersist";
 // { children }: { children: ReactNode }
 
 const PersistLogin = () => {
-  const [persist] = usePersist();
+  const [persist, setPersist] = usePersist();
   const token = useSelector(selectCurrentToken);
+  const isAuthenticated = useSelector(authSatus);
   const effectRan = useRef(false);
   // const navigate = useNavigate();
   const location = useLocation();
@@ -19,6 +20,7 @@ const PersistLogin = () => {
     useRefreshMutation();
 
   useEffect(() => {
+    if (!isAuthenticated && token) setPersist(false);
     if (effectRan.current === true || process.env.NODE_ENV !== "development") {
       // react 18 strict mode iîdev(mount, unmount, remount: useEffect runs twice)
       const verifyRefreshToken = async () => {

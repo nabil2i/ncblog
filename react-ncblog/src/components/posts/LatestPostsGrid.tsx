@@ -16,14 +16,14 @@ const SimplePostGrid = () => {
   const data = payload?.data;
   // console.log(data);
 
-  if (isLoading)
-    return (
-      <Box p={10}>
-        <VStack marginTop={2}>
-          <Spinner />
-        </VStack>
-      </Box>
-    );
+  // if (isLoading)
+  //   return (
+  //     <Box p={10}>
+  //       <VStack marginTop={2}>
+  //         <Spinner />
+  //       </VStack>
+  //     </Box>
+  //   );
 
   const skeletons = [1, 2, 3, 4];
   return (

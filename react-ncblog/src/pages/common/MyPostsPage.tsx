@@ -5,8 +5,8 @@ import useTitle from "../../hooks/useTitle";
 import { useUserPostQueryStore } from "../../store";
 
 const MyPostsPage = () => {
-  const setPage = useUserPostQueryStore((s) => s.setPage)
-  useTitle("My Posts");
+  const setPage = useUserPostQueryStore((s) => s.setPage);
+  useTitle("Nabil Conveys - My Posts");
 
   return (
     <>
@@ -18,11 +18,12 @@ const MyPostsPage = () => {
           <GridItem area="main">
             <VStack as="section">
               <PageHeading title={"My Posts"} />
-              <UserPostGrid 
+              <UserPostGrid
                 paginate={(page) => {
                   if (page === null) return null;
                   setPage(page);
-                }}/>
+                }}
+              />
             </VStack>
           </GridItem>
         </Grid>

@@ -10,7 +10,7 @@ const EditPostPage = () => {
   const { data: payload, error } = usePost(postId as string);
   const post = payload?.data;
 
-  useTitle("Edit Post");
+  useTitle("Nabil Conveys - Edit Post");
 
   if (error) {
     return (

@@ -6,7 +6,7 @@ import { useBookQueryStore } from "../../store";
 
 const BooksPage = () => {
   const setPage = useBookQueryStore((s) => s.setPage);
-  useTitle("Books");
+  useTitle("Nabil Conveys - Books");
 
   return (
     <>

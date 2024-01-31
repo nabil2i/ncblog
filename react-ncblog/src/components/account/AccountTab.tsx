@@ -18,7 +18,7 @@ const AccountTab = () => {
         <Flex
           direction="column"
           justify="center"
-          align="center"
+          align="center" 
           gap="4"
           mt="5"
           display={{ base: "flex", lg: "none" }}
@@ -84,8 +84,8 @@ const AccountTab = () => {
                     <strong>Roles</strong> {}
                   </Text>
                   <Text>
-                    {roles.length > 2 && roles.slice(0, roles.length - 1).map((role) => (<strong>{role}, </strong>))}
-                    {roles.slice(roles.length - 1).map((role) => (<strong>{role}</strong>))}
+                    {roles.length > 2 && roles.slice(0, roles.length - 1).map((role) => (<strong key={role}>{role}, </strong>))}
+                    {roles.slice(roles.length - 1).map((role) => (<strong key={role}>{role}</strong>))}
                   </Text>
                 </Flex>
               </Flex>

@@ -1,18 +1,18 @@
-import { Box, Flex, Text, Grid, GridItem, Image, Show } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Image, Show, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authSatus } from "../../app/features/auth/authSlice";
+import HomeHero from "../../assets/images/islam2.jpg";
 import SignUpForm from "../../components/auth/SignUpForm";
 import useTitle from "../../hooks/useTitle";
-import HomeHero from "../../assets/images/islam2.jpg";
 
 const SignUpPage = () => {
   const isAuthenticated = useSelector(authSatus);
   const redirect = new URLSearchParams(location.search).get("redirect");
   const navigate = useNavigate();
 
-  useTitle("Sign Up");
+  useTitle("Nabil Conveys - Sign Up");
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -66,15 +66,9 @@ const SignUpPage = () => {
             </Flex>
           </GridItem>
 
-          <GridItem area="signupform" >
+          <GridItem area="signupform">
             <Flex minH={{ lg: "70vh" }} width="full" justifyContent="center">
-              <Box
-                px={4}
-                py={8}
-                width="full"
-                minW="400px"
-                maxW="500px"
-              >
+              <Box px={4} py={8} width="full" minW="400px" maxW="500px">
                 <SignUpForm />
               </Box>
             </Flex>

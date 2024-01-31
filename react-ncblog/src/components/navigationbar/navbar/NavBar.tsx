@@ -9,6 +9,8 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
+import useAdminLayout from "../../admin/useAdminLayout";
 import ColorModeSwitch from "./ColorModeSwitch";
 import DesktopNav from "./DesktopNav";
 import MobileNavDrawer from "./MobileNavDrawer";
@@ -19,7 +21,14 @@ import SearchInput from "./SearchInput";
 import SearchInputModalIcon from "./SearchInputModalIcon";
 
 const NavBar = () => {
+  const {  dispatch } = useAdminLayout();
+  // const onToggle = state.onToggle;
+
   const { isOpen, onClose, onToggle } = useDisclosure();
+  useEffect(() => {
+    dispatch({ type: "SET_ON_CLOSE_MAIN", onCloseMain: onClose });
+    dispatch({ type: "SET_IS_OPEN", isOpen: isOpen });
+  }, [dispatch, isOpen, onClose]);
 
   return (
     <>
@@ -55,40 +64,11 @@ const NavBar = () => {
           w="full"
           h="full"
         >
-
-          {/* START Logo */} 
+          {/* START Logo */}
           <Flex
             align="center"
             // paddingRight={4}
           >
-            {/* START MobileNav */}
-            <Box
-            // py={{ base: 2 }}
-            // paddingLeft={{ base: 4 }}
-            display={{ lg: "none" }}
-            >
-              <IconButton
-                onClick={onToggle}
-                icon={<HamburgerIcon w={7} h={7} />}
-                variant={"ghost"}
-                aria-label={"Toggle Navigation"}
-              />
-            </Box>
-            <Drawer
-              isOpen={isOpen}
-              placement="left"
-              onClose={onClose}
-              // finalFocusRef={btnRef}
-            >
-              <Show
-                above="base"
-                below="lg"
-              >
-                <MobileNavDrawer onCloseMain={onClose} />
-              </Show>
-            </Drawer>
-            {/* END MobileNav */}
-
             <Box>
               {" "}
               <NavLogo boxSize="30px" />{" "}
@@ -117,17 +97,40 @@ const NavBar = () => {
           {/* END Search */}
 
           {/* START right end of menu */}
-          <Stack
-            align="center"
-            direction={"row"}
-            gap={2}
-          >
-            <Box display={{ base: "flex", md: "none", lg: "flex"}}>
+          <Stack align="center" direction={"row"} gap={2}>
+            <Box display={{ base: "flex", md: "none", lg: "flex" }}>
               <SearchInputModalIcon />
-            </Box> 
+            </Box>
             <ColorModeSwitch />
             <NavAuthButtons />
             <Profile />
+
+            {/* START MobileNav */}
+            <Box
+              // py={{ base: 2 }}
+              // paddingLeft={{ base: 4 }}
+              display={{ lg: "none" }}
+            >
+              <IconButton
+                onClick={onToggle}
+                icon={<HamburgerIcon w={7} h={7} />}
+                variant={"ghost"}
+                aria-label={"Toggle Navigation"}
+              />
+            </Box>
+            <Drawer
+              isOpen={isOpen}
+              placement="left"
+              isFullHeight
+              onClose={onClose}
+
+              // finalFocusRef={btnRef}
+            >
+              <Show above="base" below="lg">
+                <MobileNavDrawer />
+              </Show>
+            </Drawer>
+            {/* END MobileNav */}
           </Stack>
           {/* END right end of menu */}
         </Flex>

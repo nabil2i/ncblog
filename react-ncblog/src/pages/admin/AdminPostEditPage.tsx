@@ -5,7 +5,7 @@ import PostForm from "../../components/admin/posts/PostForm";
 import useTitle from "../../hooks/useTitle";
 
 const AdminPostEditPage = () => {
-  useTitle("Edit Post");
+  useTitle("Nabil Conveys - Edit Post");
   const { id } = useParams();
   const postId = id?.toString() as string;
   // const post = useAppSelector((state: RootState) => selectPostById(state, postId));

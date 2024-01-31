@@ -1,7 +1,7 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { authSatus } from "../../app/features/auth/authSlice";
+import useAuth from "../../hooks/useAuth";
 
 interface Props {
   // children: ReactNode;
@@ -14,17 +14,24 @@ const RequireAuth = ({ allowedRoles }: Props) => {
   const isAuthenticated = useSelector(authSatus);
 
   let content;
-  
-  if (allowedRoles) {
-    content = roles.some((role) => allowedRoles.includes(role)) ? (
-      <Outlet />
-      ) : (
-        <Navigate to="/login" state={{ from: location }} replace />
-        );
-  } else if (!isAuthenticated) {
-    <Navigate to="/login" state={{ from: location }} replace />      
-  }
+  // console.log("roles", roles)
+  // console.log(isAuthenticated)
 
+  if (isAuthenticated) {
+    if (allowedRoles) {
+      // console.log("allowed roles", allowedRoles)
+
+      if (roles.some((role) => allowedRoles.includes(role))) {
+        content = <Outlet />;
+      } else {
+        content = <Navigate to="/login" state={{ from: location }} replace />;
+      }
+    } else {
+      content = <Outlet />;
+    }
+  } else {
+    content = <Navigate to="/login" state={{ from: location }} replace />;
+  }
   return content;
 };
 

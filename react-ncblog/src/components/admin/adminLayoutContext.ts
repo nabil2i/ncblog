@@ -8,7 +8,12 @@ interface AdminLayoutContextType {
 
 const initialState: AdminLayoutState = {
   navSize: "large",
-  showMobileSidebar: false
+  showMobileSidebar: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onCloseMain: () => {},
+  isOpen: true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onToggle: () => {}
 };
 
 const initialContext: AdminLayoutContextType = {

@@ -6,7 +6,7 @@ import usePostQueryStore from "../../store";
 
 const BlogPage = () => {
   const setPage = usePostQueryStore((s) => s.setPage);
-  useTitle("Blog");
+  useTitle("Nabil Conveys - Blog");
 
   return (
     <Box>

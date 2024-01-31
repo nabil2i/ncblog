@@ -3,7 +3,7 @@ import PostForm from "../../components/posts/PostForm";
 import useTitle from "../../hooks/useTitle";
 
 const AddPostPage = () => {
-  useTitle("Write a post");
+  useTitle("Nabil Conveys - Write a post");
 
   return (
     <>

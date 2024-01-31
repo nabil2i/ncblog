@@ -11,7 +11,7 @@ const BookPage = () => {
   // console.log(payload);
   const book = payload?.data;
   // console.log(book)
-  useTitle("Post");
+  useTitle("Nabil Conveys - Post");
 
   if (isLoading)
     return (

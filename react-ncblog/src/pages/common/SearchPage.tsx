@@ -10,7 +10,7 @@ const SearchPage = () => {
     (s) => s.searchPostQuery.searchText
   );
   // console.log(searchText)
-  useTitle("Search");
+  useTitle("Nabil Conveys - Search");
 
   return (
     <Grid

@@ -7,7 +7,7 @@ import Post from "../../entities/Post";
 import useTitle from "../../hooks/useTitle";
 
 const AdminPostPage = () => {
-  useTitle("Post");
+  useTitle("Nabil Conveys - Post");
 
   const { id } = useParams();
   const postId = id?.toString() as string;

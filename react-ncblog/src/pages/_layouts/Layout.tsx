@@ -4,6 +4,9 @@ import Footer from "../../components/common/Footer";
 import { NavBar } from "../../components/navigationbar";
 
 const Layout = () => {
+  // const { state, dispatch } = useAdminLayout();
+  // const onClose = state.onCloseMain;
+  // const isOpen = state.isOpen;
   // const [setPersist] = usePersist();
   // const isAuthenticated = useSelector(authSatus);
   // if (!isAuthenticated) setPersist(false);

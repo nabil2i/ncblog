@@ -114,14 +114,21 @@ const Profile = () => {
                   </MenuItem>
                 </>
               )}
-              <MenuItem onClick={() => navigate("/account")}>Account</MenuItem>
+              <MenuItem onClick={() => navigate("/account/")}>Account</MenuItem>
               {isAdmin && (
+                <>
+                  <MenuItem onClick={() => navigate("/dashboard")}>
+                    Dashboard
+                  </MenuItem>
+                </>
+              )}
+              {/* {isAdmin && (
                 <>
                   <MenuItem onClick={() => navigate("/admin")}>
                     Admin Section
                   </MenuItem>
                 </>
-              )}
+              )} */}
               <MenuItem
                 onClick={() => {
                   sendLogout({});

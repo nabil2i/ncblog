@@ -39,7 +39,7 @@ const MobileNavDrawer = () => {
 
   return (
     <>
-      {/* <DrawerOverlay /> */}
+      <DrawerOverlay />
       <DrawerContent p="0px" m="0px" w="full" h="full">
         {/* <DrawerCloseButton/> */}
         <DrawerHeader borderBottomWidth="1px">

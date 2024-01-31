@@ -3,7 +3,7 @@ import PostForm from "../../components/admin/posts/PostForm";
 import useTitle from "../../hooks/useTitle";
 
 const AdminAddPostEditPage = () => {
-  useTitle("Add Post");
+  useTitle("Nabil Conveys - Add Post");
 
   return (
     <>

@@ -13,14 +13,15 @@ import PageHeading from "../../components/common/PageHeading";
 import useTitle from "../../hooks/useTitle";
 
 const AccountPage = () => {
-  useTitle("Account");
+  useTitle("Nabil Conveys - Account");
+  // console.log("accountpage")
 
   return (
     <>
       <Grid
         templateAreas={{ base: `"main"` }}
         templateColumns={{ base: "1fr" }}
-      >
+      > 
         <GridItem area="main">
           <Box as="section">
             <PageHeading title={"Account"} />

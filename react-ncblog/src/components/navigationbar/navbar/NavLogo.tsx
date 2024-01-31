@@ -28,7 +28,9 @@ const NavLogo = ({ boxSize }: Props) => {
           />
         </Flex>
 
-        <Flex display={{ base: "none", md: "flex", lg: "flex" }}>
+        <Flex
+          // display={{ base: "none", md: "flex", lg: "flex" }}
+        >
           <Text fontSize={20} whiteSpace="nowrap" fontWeight={900}>
             NabilConveys
           </Text>

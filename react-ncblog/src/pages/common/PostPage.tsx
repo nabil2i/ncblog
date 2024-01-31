@@ -11,7 +11,7 @@ const PostPage = () => {
   const post = payload?.data;
   // console.log(post)
 
-  useTitle("Post");
+  useTitle("Nabil Conveys - Post");
 
   if (isLoading)
     return (

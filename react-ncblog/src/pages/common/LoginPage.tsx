@@ -1,11 +1,11 @@
-import { Box, Flex, Text, Grid, GridItem, Image, Show } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Image, Show, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { authSatus } from "../../app/features/auth/authSlice";
+import HomeHero from "../../assets/images/islam2.jpg";
 import LoginForm from "../../components/auth/LoginForm";
 import useTitle from "../../hooks/useTitle";
-import HomeHero from "../../assets/images/islam2.jpg";
 
 const LoginPage = () => {
   const location = useLocation();
@@ -19,7 +19,7 @@ const LoginPage = () => {
     }
   }, [navigate, redirect, isAuthenticated]);
 
-  useTitle("Login");
+  useTitle("Nabil Conveys - Login");
 
   return (
     <>
@@ -43,7 +43,8 @@ const LoginPage = () => {
                   borderTopLeftRadius={{ lg: 16 }}
                   borderBottomLeftRadius={{ lg: 16 }}
                   overflow="cover"
-                  aspectRatio={16 / 9}O
+                  aspectRatio={16 / 9}
+                  O
                 />
                 <Box
                   display="flex"

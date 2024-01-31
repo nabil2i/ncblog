@@ -35,6 +35,7 @@
     "cookies-js": "^1.2.3",
     "dateformat": "^5.0.3",
     "easymde": "^2.18.0",
+    "firebase": "^10.7.2",
     "framer-motion": "^10.18.0",
     "immer": "^10.0.2",
     "jws": "^4.0.0",

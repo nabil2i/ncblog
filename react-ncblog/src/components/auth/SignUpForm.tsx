@@ -2,20 +2,22 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   FormControl,
   FormErrorMessage,
   FormLabel,
   HStack,
   Heading,
   Input,
-  Spacer,
+  VStack,
   useToast,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-import useCreateUser from "../../hooks/useCreateUser";
 import { FormData } from "../../entities/User";
-import { useState } from "react";
+import useCreateUser from "../../hooks/useCreateUser";
+import OAuth from "./OAuth";
 
 const VARIANT_COLOR = "teal";
 
@@ -248,7 +250,11 @@ const SignUpForm = () => {
           </FormErrorMessage>
         </FormControl>
 
-        <HStack justifyContent="center" mt={4}>
+        <Button width="full" mt={4} type="submit" colorScheme={VARIANT_COLOR}>
+          {isSigning ? "Signing up" : "Sign up"}
+        </Button>
+        
+        <VStack justifyContent="center" mt={4} gap={4}>
           {/* <Spacer /> */}
           {/* <Box>
             <Checkbox border={1} colorScheme={VARIANT_COLOR} borderColor="teal">Remember me</Checkbox>
@@ -265,11 +271,10 @@ const SignUpForm = () => {
               </NavLink>
             </Box>
           </HStack>
-        </HStack>
+          <Divider /> 
+          <OAuth />
+        </VStack>
 
-        <Button width="full" mt={4} type="submit" colorScheme={VARIANT_COLOR}>
-        {isSigning ? "Signing up" : "Sign up"}
-        </Button>
       </form>
     </Box>
   );

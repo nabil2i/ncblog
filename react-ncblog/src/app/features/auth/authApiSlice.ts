@@ -8,6 +8,11 @@ interface LoginCredentials {
   password: string;
 }
 
+export interface OAuthData {
+  name: string | null;
+  email: string  | null;
+  photo: string  | null;
+}
 
 const extendedAuthApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -39,6 +44,15 @@ const extendedAuthApiSlice = apiSlice.injectEndpoints({
         }
       }
     }),
+    google: builder.mutation<AuthServerResponse, OAuthData>({
+      query: (data) => ({
+        url: "auth/google",
+        method: 'POST',
+        body: {
+          ...data
+        }
+      })
+    }),
     refresh: builder.mutation<AuthServerResponse, object>({
       query: () => ({
         url: 'auth/refresh',
@@ -60,5 +74,6 @@ const extendedAuthApiSlice = apiSlice.injectEndpoints({
 export const {
   useLoginMutation,
   useSendLogoutMutation,
-  useRefreshMutation 
+  useRefreshMutation,
+  useGoogleMutation
 } = extendedAuthApiSlice

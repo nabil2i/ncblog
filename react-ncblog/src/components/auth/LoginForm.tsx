@@ -6,12 +6,14 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   FormControl,
   FormErrorMessage,
   FormLabel,
   HStack,
   Heading,
   Input,
+  VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
@@ -23,6 +25,7 @@ import {
   setCredentials,
 } from "../../app/features/auth/authSlice";
 import { LoginData } from "../../entities/User";
+import OAuth from "./OAuth";
 
 const VARIANT_COLOR = "teal";
 
@@ -181,7 +184,19 @@ const LoginForm = () => {
           </FormErrorMessage>
         </FormControl>
 
-        <HStack justifyContent="space-between" mt={4}>
+        <Button
+          width="full"
+          mt={4}
+          type="submit"
+          // disabled={login.isLoading}
+          disabled={isLoading}
+          colorScheme={VARIANT_COLOR}
+        >
+          {isLoading ? "Logging in" : "Log in"}
+        </Button>
+
+        <VStack justifyContent="space-between" mt={4} gap={4}>
+          <HStack>
           {/* <Box>
             <Checkbox
               border={1}
@@ -203,18 +218,11 @@ const LoginForm = () => {
               Forgot your password?
             </NavLink>
           </Box> */}
-        </HStack>
+          </HStack>
 
-        <Button
-          width="full"
-          mt={4}
-          type="submit"
-          // disabled={login.isLoading}
-          disabled={isLoading}
-          colorScheme={VARIANT_COLOR}
-        >
-          {isLoading ? "Logging in" : "Log in"}
-        </Button>
+          <Divider /> 
+          <OAuth />
+        </VStack>
       </form>
     </Box>
   );

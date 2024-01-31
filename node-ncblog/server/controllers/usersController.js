@@ -54,10 +54,9 @@ export const createNewUser = async (req, res, next) => {
       maxAge: ms('7days')
     })
 
-    const data = {
-      accessToken,
-      // ...userData
-    }
+    const { password: pass, ...rest } = user._doc;
+    const data = { accessToken, ...rest };
+
     res.status(201).json({ success: true, message: "New user created", data });
     // res.status(201).header('x-auth-token', token).json({
     //   success: true,

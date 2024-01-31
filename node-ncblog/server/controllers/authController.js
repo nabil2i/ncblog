@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import ms from "ms";
 import User from "../models/user.js";
 import { makeError } from "../utils/responses.js";
+import { generatePassword, makeNames, makeUsername } from "../utils/user.js";
 
 dotenv.config();
 
@@ -30,23 +31,18 @@ export const login = async (req, res, next) => {
   // const userData = _.pick(user, ['_id', 'username', 'email', 'firstname', 'lastname', 'accessToken'])
   // userData.accessToken = accessToken;
   // userData.isAuthenticated = true;
-
+  
   res.cookie('jwt', refreshToken, {
     httpOnly: true, // web bserver only
     secure: true, // https only
     sameSite: 'None',
     maxAge: ms('7days')
   })
+  
+  const { password: pass, ...rest } = user._doc;
+  const data = { accessToken, ...rest }
 
-  const data = {
-    accessToken,
-    // ...userData
-  }
-
-  res.status(200).json({
-    success: true,
-    data
-  });
+  res.status(200).json({ success: true, data });
   // res.status(200).header('x-auth-token', token).json({
   //   success: true,
   //   data: userData
@@ -83,6 +79,69 @@ export const refresh = async (req, res, next) => {
       });
     }
   );
+};
+
+// @desc Google OAuth
+// @route POST /auth/google
+// @access Public
+export const google = async (req, res, next) => {
+  const { name, email, photo } = req.body;
+  const user = await User.findOne({ email });
+  // console.log(user)
+  if (user) {
+    // login the user
+    const accessToken = user.generateAuthToken();
+    const refreshToken = user.generateRefreshToken();
+
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: ms('7days')
+    })
+
+    const { password: pass, ...rest } = user._doc;
+    const data = { accessToken, ...rest }
+  
+    res.status(200).json({ success: true, data });
+  } else {
+    // signup the user
+    const username = await makeUsername(name);
+    if (!username) return next(makeError(500, "An error occured"));
+
+    const names = makeNames(name);
+    const firstname = names.firstname;
+    const lastname = names.lastname;
+    const img = photo;
+    const generatedPassword = generatePassword();
+
+    const newUser = new User({ username, email, firstname, lastname, img });
+    
+    const salt = await bcrypt.genSalt(10);
+    newUser.password = await bcrypt.hash(generatedPassword, salt);
+
+    await newUser.save();
+
+    if (newUser) {
+      // console.log(newUser);
+      const accessToken = newUser.generateAuthToken();
+      const refreshToken = newUser.generateRefreshToken();
+  
+      res.cookie('jwt', refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+        maxAge: ms('7days')
+      })
+  
+      const { password: pass, ...rest } = newUser._doc;
+      const data = { accessToken, ...rest }
+    
+      res.status(201).json({ success: true, data });
+    } else {
+      return next(makeError(400, 'Invalid use details'))
+    }
+  } 
 };
 
 // @desc Logout

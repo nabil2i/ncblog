@@ -18,11 +18,14 @@ export default defineConfig({
     include: "**/*.tsx",
   })],
   define: {
-    "process.env.API_BASE_URL": `"${process.env.API_BASE_URL}"`,
+    // "process.env.API_BASE_URL": `"${process.env.API_BASE_URL}"`,
+    // "process.env.VITE_FIREBASE_API_KEY": `"${process.env.VITE_FIREBASE_API_KEY}"`,
+    // 'process.env.API_BASE_URL': JSON.stringify(process.env.API_BASE_URL),
   },
   resolve: {
     alias: {
-      process: "process/browser"
+      process: "process/browser",
+      // src: path.resolve(__dirname, 'src'),
     }
   },
 })

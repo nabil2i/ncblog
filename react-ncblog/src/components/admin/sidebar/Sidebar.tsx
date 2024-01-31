@@ -22,7 +22,7 @@ import Navigation from "./Navigation";
 
 const Sidebar = () => {
   const { colorMode } = useColorMode();
-  const { firstname, lastname } = useAuth();
+  const { firstname, lastname, img } = useAuth();
   const navigate = useNavigate();
   const [sendLogout, { isLoading, isSuccess }] = useSendLogoutMutation();
 
@@ -77,10 +77,7 @@ const Sidebar = () => {
           >
             <br />
             <Center>
-              <Avatar
-                size={"xl"}
-                src={"https://api.dicebear.com/7.x/bottts/png"}
-              />
+              <Avatar size={"xl"} src={img} />
             </Center>
             <br />
             <Center>
@@ -89,7 +86,7 @@ const Sidebar = () => {
             <br />
             <MenuItem onClick={() => navigate("/")}>Go to main blog</MenuItem>
             <MenuDivider />
-            <MenuItem onClick={() => sendLogout(0)}>Logout</MenuItem>
+            <MenuItem onClick={() => sendLogout({})}>Logout</MenuItem>
           </MenuList>
         </Menu>
       </Flex>

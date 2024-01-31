@@ -36,7 +36,7 @@ const Profile = () => {
   // const dispatch = useDispatch();
   const [sendLogout, { isError, isLoading, isSuccess }] =
     useSendLogoutMutation();
-  const { isAdmin, isEditor, firstname, lastname } = useAuth();
+  const { isAdmin, isEditor, firstname, lastname, img } = useAuth();
   // const [setPersist] = usePersist();
   const navigate = useNavigate();
 
@@ -80,7 +80,7 @@ const Profile = () => {
             >
               <Avatar
                 size={"sm"}
-                src={"https://api.dicebear.com/7.x/bottts/png"}
+                src={img}
               />
               <Icon
                 as={ChevronDownIcon}
@@ -95,7 +95,7 @@ const Profile = () => {
               <Center>
                 <Avatar
                   size={"xl"}
-                  src={"https://api.dicebear.com/7.x/bottts/png"}
+                  src={img}
                 />
               </Center>
               <br />

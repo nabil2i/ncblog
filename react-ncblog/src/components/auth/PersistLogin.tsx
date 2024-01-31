@@ -30,7 +30,7 @@ const PersistLogin = () => {
         // console.log("verifying refresh token");
         try {
           //const response =
-          await refresh(0);
+          await refresh({});
           //const { accessToken } = response.data
           setTrueSuccess(true); // give time to credentials to be set
         } catch (err) {

@@ -3,7 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import useAdminLayout from "../useAdminLayout";
 
 const AvatarBox = () => {
-  const { firstname, lastname, email } = useAuth();
+  const { firstname, lastname, email, img } = useAuth();
   const { state } = useAdminLayout();
   const navSize = state.navSize;
 
@@ -28,7 +28,7 @@ const AvatarBox = () => {
             size="sm"
             bg="teal.300"
             m={-1}
-            src={"https://api.dicebear.com/7.x/bottts/png"}
+            src={img}
           />
         </Flex>
         {navSize === "large" && (

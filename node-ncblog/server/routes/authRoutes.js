@@ -1,5 +1,5 @@
 import express from "express";
-import { login, refresh, logout } from "../controllers/authController.js";
+import { google, login, logout, refresh } from "../controllers/authController.js";
 import auth from "../middleware/auth.js";
 import loginLimiter from "../middleware/loginLimiter.js";
 
@@ -12,6 +12,10 @@ router.route('/')
 router.route('/refresh')
   // refresh token
   .get(refresh)
+
+  router.route('/google')
+  //google OAuth
+  .post(google)
 
   router.route('/logout')
   //logout

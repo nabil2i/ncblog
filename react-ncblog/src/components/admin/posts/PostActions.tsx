@@ -1,17 +1,38 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Select } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
-import Post from "../../../entities/Post";
+import Post, { PostFormData } from "../../../entities/Post";
 import DeletePostButton from "./DeletePostButton";
-import UpdatePostButton from "./UpdatePostButton";
+import CreateUpdatePostButton from "./UpdatePostButton";
+import { UseFormSetValue } from "react-hook-form";
+import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
 
 interface Props {
   post?: Post;
   isSubmittingPost?: boolean;
+  setFieldValue: UseFormSetValue<PostFormData>;
 }
 
-const PostActions = ({ post, isSubmittingPost }: Props) => {
+const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
   const location = useLocation();
-  const isCreate = location.pathname.startsWith("/admin/posts/new");
+  const isCreate = location.pathname.startsWith("/dashboard/posts/new") ||
+    location.pathname.startsWith("/blog/write") ||
+    location.pathname.startsWith("/myposts/write");
+  const [selectedCategory, setSelectedCategory] = useState(""); // State to track the selected category
+
+  const categories = ["Religion", "Lifestyle", "Education", "Uncategorized"];
+
+  const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const categoryValue = event.target.value;
+    setSelectedCategory(categoryValue);
+    setFieldValue("category", categoryValue);
+  };
+
+  // useEffect(() => {
+  //   console.log(selectedCategory)
+  //   console.log()
+  // }, [selectedCategory])
+
+  
   // console.log(location.pathname)
   // console.log(isCreate)
 
@@ -47,7 +68,23 @@ const PostActions = ({ post, isSubmittingPost }: Props) => {
         zIndex={50}
         px={2}
       >
-        <UpdatePostButton
+        <Box>
+          <Select
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            variant="filled"
+            size="lg"
+            placeholder="Select a category"
+            _hover={{ cursor: "pointer" }}
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </Select>
+        </Box>
+        <CreateUpdatePostButton
           post={post}
           isSubmittingPost={isSubmittingPost as boolean}
         />

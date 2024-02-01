@@ -95,6 +95,15 @@ const router = createBrowserRouter([
                 element: <RequireAuth allowedRoles={["Admin"]} />,
                 children: [
                   { index: true, element: <DashboardPage /> },
+                  {
+                    path: "posts",
+                    children: [
+                      // { index: true, element: <PostsPage /> },
+                      { path: ":id", element: <AdminPostPage /> },
+                      { path: "edit/:id", element: <AdminPostEditPage /> },
+                      { path: "new", element: <AdminAddPostPage /> },
+                    ],
+                  },
                 ]
               }
             ],

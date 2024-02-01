@@ -14,6 +14,7 @@ import {
 import "easymde/dist/easymde.min.css";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
 import {
@@ -23,11 +24,13 @@ import {
 import Post, { PostFormData } from "../../../entities/Post";
 import useAuth from "../../../hooks/useAuth";
 import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
+import AddPostImage from "./AddPostImage";
 import PostActions from "./PostActions";
 
 interface Props {
   post?: Post;
 }
+
 const PostForm = ({ post }: Props) => {
   const { _id } = useAuth();
   const navigate = useNavigate();
@@ -52,7 +55,7 @@ const PostForm = ({ post }: Props) => {
     if (isSuccessAdd) {
       // reset();
       setSubimittingPost(false);
-      navigate("/admin/posts/");
+      navigate("/dashboard?tab=posts");
       toast({
         title: "",
         description: "Successfully added the post.",
@@ -81,7 +84,7 @@ const PostForm = ({ post }: Props) => {
 
     if (isSuccessUpdate) {
       setSubimittingPost(false);
-      navigate("/admin/posts/");
+      navigate("/dashboard?tab=posts");
       toast({
         title: "",
         description: "Successfully updated the post.",
@@ -122,15 +125,17 @@ const PostForm = ({ post }: Props) => {
     control,
     // reset,
     setValue,
-    formState: { errors },
+    // getValues,
+    formState: { errors,  },
   } = useForm<PostFormData>();
 
   const onSubmit = (data: PostFormData) => {
-    // console.log(data);
+    // const formData = getValues();
+    // console.log("data", formData);
     setSubimittingPost(true);
     if (post) {
       updatePost({
-        id: post._id,
+        ...data,
         title: data.title,
         body: data.body,
         userId: post.user?._id,
@@ -142,6 +147,7 @@ const PostForm = ({ post }: Props) => {
       // });
     } else {
       addNewPost({
+        ...data,
         title: data.title,
         body: data.body,
         userId: _id,
@@ -159,7 +165,7 @@ const PostForm = ({ post }: Props) => {
       <Box>
         <Box>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <PostActions post={post} isSubmittingPost={isSubmittingPost} />
+            <PostActions post={post} isSubmittingPost={isSubmittingPost} setFieldValue={setValue}/>
             <Grid
               gap={2}
               templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
@@ -199,11 +205,18 @@ const PostForm = ({ post }: Props) => {
                     {errors.title && errors.title.message}
                   </FormErrorMessage> */}
                 </FormControl>
+
+                {/* <Flex my={2} p={2} gap={4} align="center" border="dashed" borderWidth={2} borderRadius="4px">
+                  <Input _hover={{ cursor: "pointer"}} pl={0} height="full" type="file" accept="image/*"/>
+                  <Button>Upload image</Button>
+                </Flex> */}
+                <AddPostImage setFieldValue={setValue} />
                 <Controller
                   name="body"
                   control={control}
                   defaultValue={post?.body as string}
                   render={({ field }) => (
+                    // <ReactQuill className="h-72 mb-12" theme="snow" placeholder="Start writing something..." {...field}/>
                     <SimpleMDE
                       placeholder="Start writing something..."
                       {...field}

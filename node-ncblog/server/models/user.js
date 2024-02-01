@@ -34,6 +34,10 @@ export const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
   firstname: {
     type: String,
     required: true,
@@ -63,6 +67,7 @@ userSchema.methods.generateAuthToken = function () {
       email: this.email,
       roles: this.roles,
       isActive: this.isActive,
+      isAdmin: this.isAdmin,
       img: this.img,
     },
     process.env.NODE_APP_JWT_ACCESS_SECRET,

@@ -37,6 +37,7 @@ import { AppDispatch } from "../../app/store";
 import { app } from "../../firebase";
 import useAuth from "../../hooks/useAuth";
 import useUpdateUserAccount from "../../hooks/useUpdateUserAccount";
+import 'react-circular-progressbar/dist/styles.css';
 
 const EditProfilePicture = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -172,6 +173,8 @@ const EditProfilePicture = () => {
           // setTrueSuccess(true);
           updateUserAccount.mutate({ img: downloadURL });
           setImageFileUploading(false);
+          setImageFileUploadProgress(null);
+          setImageFileUploadError(null);
           onClose();
         });
       }

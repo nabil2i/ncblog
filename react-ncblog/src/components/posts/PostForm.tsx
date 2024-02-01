@@ -22,7 +22,8 @@ import useAuth from "../../hooks/useAuth";
 import useCreatePost from "../../hooks/useCreatePost";
 import useUpdateUserPost from "../../hooks/useUpdateUserPost";
 import AutoExpandingTextarea from "../common/AutoExpandingTextarea";
-import EditPostNav from "./EditPostNav";
+import PostActions from "./PostActions";
+import AddPostImage from "../admin/posts/AddPostImage";
 
 interface Props {
   post?: Post;
@@ -99,22 +100,26 @@ const PostForm = ({ post }: Props) => {
     register,
     control,
     // reset,
+    getValues,
     setValue,
     formState: { errors },
   } = useForm<PostFormData>();
   // } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: PostFormData) => {
-    // console.log(data);
+    const formaData = getValues();
+    console.log("data", formaData);
     setSubimittingPost(true);
     if (post) {
       updatePost.mutate({
+        ...data,
         title: data.title,
         body: data.body,
         userId: post?.user?._id,
       });
     } else {
       createPost.mutate({
+        ...data,
         title: data.title,
         body: data.body,
         userId: _id,
@@ -128,7 +133,7 @@ const PostForm = ({ post }: Props) => {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex display="column">
-          <EditPostNav post={post} isSubmittingPost={isSubmittingPost} />
+          <PostActions post={post} isSubmittingPost={isSubmittingPost} setFieldValue={setValue}/>
           <Grid
             gap={2}
             templateAreas={{ base: `"main"`, lg: `"side1 main side2"` }}
@@ -165,7 +170,7 @@ const PostForm = ({ post }: Props) => {
                   {errors.title && errors.title.message}
                 </FormErrorMessage> */}
               </FormControl>
-
+              <AddPostImage setFieldValue={setValue} />
               <Controller
                 name="body"
                 control={control}

@@ -11,6 +11,7 @@ interface TokenPayload {
   isActive: string;
   email: string;
   img: string;
+  // isAdmin: boolean;
 }
 const useAuth = () => {
   const token = useAppSelector(selectCurrentToken)

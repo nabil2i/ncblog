@@ -49,7 +49,7 @@ const UserBlogPostCard = ({ post }: Props) => {
               // objectFit='cover'
               mt={3}
               mb={3}
-              src={Landscape}
+              src={post.img}
               // boxSize="350px"
               height="200px"
               borderRadius="xl"

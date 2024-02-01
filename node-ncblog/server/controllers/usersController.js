@@ -324,7 +324,7 @@ export const deleteCurrentUser = async (req, res, next) => {
 
   const user = await User.findByIdAndRemove(userId);
     
-  if (!user) return next(makeError(404, "The user with the given ID was not found"));
+  if (!user) return next(makeError(404, "The user was not found"));
 
   res.clearCookie('token');
   res.status(200).json({

@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import Joi from "joi";
 import AutoIncrement from "mongoose-sequence";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // const AutoIncrementCounter = AutoIncrement(mongoose);
 
@@ -21,6 +24,12 @@ export const postSchema = new mongoose.Schema({
   },
   img: {
     type: String,
+    default: "https://firebasestorage.googleapis.com/v0/b/ncblog-b9e81.appspot.com/o/defaultblogimage.jpg?alt=media&token=83769dd6-ac79-45ec-88da-da6722f869f1"
+  },
+  slug: {
+    type: String,
+    required: true,
+    unique: true
   },
   // user: {
   //   type: new mongoose.Schema({
@@ -53,10 +62,17 @@ export const postSchema = new mongoose.Schema({
     type: String,
   }],
 
-  categories: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
-  }],
+  category: {
+    type: String,
+    default: "Uncategorized"
+  },
+  // category: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Category',
+  //   default: function () {
+  //     return mongoose.Types.ObjectId(process.env.NODE_APP_DEFAULT_CATEGORY);
+  //   },
+  // },
   likes: {
     type: Number,
   },
@@ -88,6 +104,9 @@ export function validatePost(post) {
     body: Joi.string().min(5).required(),
     userId: Joi.string().hex().length(24).required(),
     // userId: Joi.object.objectId().required(),
+    img: Joi.string().min(5),
+    category: Joi.string().min(5),
+    tags: Joi.string().min(5),
   });
 
   return schema.validate(post);

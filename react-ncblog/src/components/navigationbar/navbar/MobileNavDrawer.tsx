@@ -23,6 +23,7 @@ import { isExternalURL } from "../../../utils/urls";
 import DashSidebar from "../../admin/dashsidebar/DashSidebar";
 import useAuth from "../../../hooks/useAuth";
 import useAdminLayout from "../../admin/useAdminLayout";
+import ADMIN_ITEMS from "../../admin/dashsidebar/adminitems";
 
 // interface Props {
 //   onCloseMain: () => void;
@@ -67,7 +68,10 @@ const MobileNavDrawer = () => {
           { status === "Admin" &&
             <>
               <Divider />
-              <DashSidebar/>
+              <Box fontWeight={"bold"} py={2}>Administration</Box>
+              {ADMIN_ITEMS.map((navItem) =>(
+                <MobileNavItem key={navItem.label} {...navItem} />
+              ))}
             </>
           }
         </DrawerBody>

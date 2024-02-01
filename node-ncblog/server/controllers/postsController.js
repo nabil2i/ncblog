@@ -21,15 +21,21 @@ export const createNewPost = async (req, res, next) => {
     if (error) return next(makeError(400, error.details[0].message));
 
     // console.log(req.body);
-    const { title, body, userId } = req.body;
+    const { title, body, userId, img, category, tags } = req.body;
 
     const user = await User.findById(userId);
     if (!user) return next(makeError(400, "Invalid user"));
     
+    const slug = title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g, '');
+
     let newPost = new Post({
+      slug,
       user: userId,
       title,
-      body
+      body,
+      img,
+      category,
+      tags
     })
     // let newPost = new Post({
     //   user: {

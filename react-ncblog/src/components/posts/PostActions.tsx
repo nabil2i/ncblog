@@ -1,17 +1,32 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Select } from "@chakra-ui/react";
+import { UseFormSetValue } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import Post from "../../entities/Post";
-import UpdatePostButton from "./UpdatePostButton";
+import Post, { PostFormData } from "../../entities/Post";
 import DeletePostButton from "../admin/posts/DeletePostButton";
+import CreateUpdateButton from "./CreateUpdatePostButton";
+import { useState, ChangeEvent } from "react";
 
 interface Props {
   post?: Post;
   isSubmittingPost?: boolean;
+  setFieldValue: UseFormSetValue<PostFormData>;
 }
 
-const EditPostNav = ({ post, isSubmittingPost }: Props) => {
+const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
   const location = useLocation();
-  const isCreate = location.pathname.startsWith("/blog/write");
+  const isCreate =
+    location.pathname.startsWith("/blog/write") ||
+    location.pathname.startsWith("/myposts/write");
+    
+  const [selectedCategory, setSelectedCategory] = useState(""); // State to track the selected category
+
+  const categories = ["Religion", "Lifestyle", "Education", "Uncategorized"];
+
+  const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const categoryValue = event.target.value;
+    setSelectedCategory(categoryValue);
+    setFieldValue("category", categoryValue);
+  };
   // console.log(location.pathname)
   // console.log(isCreate)
 
@@ -21,7 +36,7 @@ const EditPostNav = ({ post, isSubmittingPost }: Props) => {
       position="fixed"
       align="center"
       // minH="20px"
-      bg="black"
+      bg="teal.500"
       gap={2}
       w="full"
       h="60px"
@@ -40,7 +55,23 @@ const EditPostNav = ({ post, isSubmittingPost }: Props) => {
         variant="ghost"
         fontSize={20}
       /> */}
-      <UpdatePostButton
+      <Box>
+        <Select
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          variant="filled"
+          size="lg"
+          placeholder="Select a category"
+          _hover={{ cursor: "pointer" }}
+        >
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </Select>
+      </Box>
+      <CreateUpdateButton
         isSubmittingPost={isSubmittingPost as boolean}
         post={post}
       />
@@ -63,7 +94,7 @@ const EditPostNav = ({ post, isSubmittingPost }: Props) => {
           />
         </MenuList>
       </Menu> */}
-      
+
       {/* <Drawer
         isOpen={isOpen}
         placement="right"
@@ -91,4 +122,4 @@ const EditPostNav = ({ post, isSubmittingPost }: Props) => {
   );
 };
 
-export default EditPostNav;
+export default PostActions;

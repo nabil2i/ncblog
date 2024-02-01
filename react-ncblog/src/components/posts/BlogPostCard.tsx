@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Landscape from "../../assets/images/landscape.jpeg";
+// import Landscape from "../../assets/images/landscape.jpeg";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
 
@@ -27,7 +27,7 @@ const BlogPostCard = ({ post }: Props) => {
             // objectFit='cover'
             mt={3}
             mb={3}
-            src={Landscape}
+            src={post.img}
             // boxSize="350px"
             height="200px"
             borderRadius="xl"

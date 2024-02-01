@@ -19,11 +19,11 @@ const NAV_ITEMS: Array<NavItem> =  [
     label: 'Books',
     href: '/books',
   },
-  {
-    label: 'YouTube',
-    href: 'https://youtube.com/@NabilConveys',
-    target: '_blank',
-  },
+  // {
+  //   label: 'YouTube',
+  //   href: 'https://youtube.com/@NabilConveys',
+  //   target: '_blank',
+  // },
   {
     
     label: 'Quran',

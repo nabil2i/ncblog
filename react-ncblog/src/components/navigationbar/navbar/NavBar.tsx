@@ -122,13 +122,16 @@ const NavBar = () => {
               isOpen={isOpen}
               placement="left"
               isFullHeight
+              size="full"
               onClose={onClose}
 
               // finalFocusRef={btnRef}
             >
-              <Show above="base" below="lg">
-                <MobileNavDrawer />
-              </Show>
+              <Box p={0} m={0}>
+                <Show above="base" below="lg">
+                  <MobileNavDrawer />
+                </Show>
+              </Box>
             </Drawer>
             {/* END MobileNav */}
           </Stack>

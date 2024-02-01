@@ -5,13 +5,13 @@ interface Props {
   isSubmittingPost: boolean;
   post?: Post;
 }
-const UpdatePostButton = ({ isSubmittingPost, post }: Props) => {
+const CreateUpdatePostButton = ({ isSubmittingPost, post }: Props) => {
   return (
-    <Button disabled={isSubmittingPost} type="submit" colorScheme="gray">
-      {post ? "Update post" : "Create a post"}
+    <Button disabled={isSubmittingPost} type="submit" colorScheme="gray" fontSize="lg">
+      {post ? "UpdateCreate post" : "Create a post"}
       {isSubmittingPost && <Spinner />}
     </Button>
   );
 };
 
-export default UpdatePostButton;
+export default CreateUpdatePostButton;

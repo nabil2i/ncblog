@@ -6,11 +6,14 @@ export default interface Post {
   id: EntityId;
   _id: string;
   title: string;
+  slug: string;
   body: string;
+  img?: string;
+  category?: string;
+  tags?: string[];
   createdAt?: Date;
   publishedAt?: Date;
   updatedAt?: Date;
-  tags?: string[];
   user?: {
     _id: string;
     firstname: string;
@@ -43,4 +46,7 @@ export interface PostFormData {
   title: string;
   body: string;
   userId?: string;
+  img?: string;
+  category?: string;
+  tags?: string[];
 }

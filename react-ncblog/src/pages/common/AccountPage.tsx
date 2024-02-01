@@ -1,15 +1,5 @@
-import {
-  Box,
-  Grid,
-  GridItem,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import AccountTab from "../../components/account/AccountTab";
-import PageHeading from "../../components/common/PageHeading";
 import useTitle from "../../hooks/useTitle";
 
 const AccountPage = () => {
@@ -18,10 +8,13 @@ const AccountPage = () => {
 
   return (
     <>
-      <Grid
+      <Box py={8} maxW="800px" mx="auto" px={4}>
+        <AccountTab />
+      </Box>
+      {/* <Grid
         templateAreas={{ base: `"main"` }}
         templateColumns={{ base: "1fr" }}
-      > 
+      >
         <GridItem area="main">
           <Box as="section">
             <PageHeading title={"Account"} />
@@ -42,7 +35,7 @@ const AccountPage = () => {
             </Box>
           </Box>
         </GridItem>
-      </Grid>
+      </Grid> */}
     </>
   );
 };

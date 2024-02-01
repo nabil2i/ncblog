@@ -83,9 +83,12 @@ export const getUser = async (req, res, next) => {
 // @route PUT /users/:id
 // @access Private
 export const updateUser = async (req, res, next) => {
-  const { username, email, isActive, password } = req.body
+  const { username, email, isActive, password, img } = req.body
   if (!username && !email && !(firstname && lastname) && !password)
   return next(makeError(400, "All fields must be provided"));
+
+  // const { error } = validate(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
   
   const userId = req.params.id
   const user = await User.findById(userId).exec()
@@ -93,6 +96,16 @@ export const updateUser = async (req, res, next) => {
   if (!user) return next(makeError(400, "User not found"));
 
   if (username) {
+    if (username !== username.toLowerCase()) {
+      return next(makeError(400, "Username must be lowercase"));
+    }
+    if (username.includes(' ')) {
+      return next(makeError(400, "Username must not include space"));
+    }
+    if (!username.match(/^[a-zA-Z0-9]+$/)) {
+      return next(makeError(400, "Username must be alphanumeric"));
+    }
+
     const duplicate = await User.findOne({ username })
       .collation({ locale: 'en', strength: 2}).lean().exec();
   
@@ -123,39 +136,39 @@ export const updateUser = async (req, res, next) => {
     user.isActive = isActive
   }
 
+  if (img) {
+    user.img = img
+  }
+
   if (password) {
     const salt = await bcrypt.genSalt(10);
     const newPassword = await bcrypt.hash(password, salt);
     user.password = newPassword;
   }
   
-  const updatedUser = await user.save()
-  
-  res.status(200).json({
-    success: true,
-    message: `${updatedUser.username} updated`
-  });
-
-
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
-  // // if (error) return res.status(400).json({message: error.details[0].message});
-  
-  // const salt = await bcrypt.genSalt(10);
-  // const newPassword = await bcrypt.hash(req.body.password, salt);
+  const updatedUser = await user.save();
 
   // const user = await User.findByIdAndUpdate(
   //   req.params.id,
   //   {
-  //     username: req.body.username,
-  //     email: req.body.email,
+  //    $set: {
+  //     username,
+  //     email,
   //     password: newPassword
+  //    }
   //   },
-  //   { new: true } //
-  // ).select('-password');
+  //   { new: true }
+  // )
     
-  // if (!user) return res.status(400).json({ success: false, error: { code: 400, message: "The user with the given ID was not found."}});
-  // res.status(200).json({ success: true, message: `${updatedUser.username} updated`});
+  // if (!user) return next(makeError(400, "User not found."));
+  
+  const { password: pass, ...rest } = updatedUser._doc
+  const data = { accessToken,...rest }
+
+  res.status(200).json({
+    success: true,
+    message: `${updatedUser.username} updated`
+  });
 };
 
 // @desc Delete a user
@@ -195,19 +208,32 @@ export const getCurrentUser = async (req, res) => {
 // @route PUT /users/me
 // @access Private
 export const updateCurrentUser = async (req, res, next) => {
-  const { username, email, isActive, password, firstname, lastname } = req.body
+  const { username, email, isActive, password, firstname, lastname, img } = req.body
   // if (!username || typeof isActive !== 'boolean')
-  if (!username && !email && !(firstname && lastname) && !password)
+  if (!username && !email && !(firstname && lastname) && !password && !img)
   return next(makeError(400, "You must provide data"));
-  
+
+  // const { error } = validate(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
+
   const userId = req.user._id;
-  const user = await User.findById(userId).exec()
+  const user = await User.findById(userId);
 
   if (!user) return next(makeError(400, "User not found"));
 
   if (!user.isActive) return next(makeError(400, "This user cannot make this request"));
   
   if (username) {
+    if (username !== username.toLowerCase()) {
+      return next(makeError(400, "Username must be lowercase"));
+    }
+    if (username.includes(' ')) {
+      return next(makeError(400, "Username must not include space"));
+    }
+    if (!username.match(/^[a-zA-Z0-9]+$/)) {
+      return next(makeError(400, "Username must be alphanumeric"));
+    }
+
     const duplicate = await User.findOne({ username })
       .collation({ locale: 'en', strength: 2}).lean().exec();
 
@@ -237,17 +263,32 @@ export const updateCurrentUser = async (req, res, next) => {
     user.isActive = isActive
   }
 
+  if (img) {
+    user.img = img
+  }
+
   if (password) {
     const salt = await bcrypt.genSalt(10);
     const newPassword = await bcrypt.hash(password, salt);
     user.password = newPassword;
   }
 
-  // const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email',
-
-  // ]);
-  
+  // const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email']);
   const updatedUser = await user.save()
+
+  // const user = await User.findByIdAndUpdate(
+  //   req.user._id,
+  //   {
+  //    $set: {
+  //     username,
+  //     email,
+  //     password: newPassword
+  //    }
+  //   },
+  //   { new: true }
+  // )
+    
+  // if (!user) return next(makeError(400, "User not found."));
 
   const accessToken = updatedUser.generateAuthToken();
   const refreshToken = updatedUser.generateRefreshToken();
@@ -259,44 +300,14 @@ export const updateCurrentUser = async (req, res, next) => {
     maxAge: ms('7days')
   })
 
-  const data = {
-    accessToken,
-    // ...userData
-  }
+  const { password: pass, ...rest } = updatedUser._doc
+  const data = { accessToken,...rest }
 
   res.status(200).json({
     success: true,
     message: `${updatedUser.username} updated`,
     data
   });
-
-  // res
-  //   .status(200)
-  //   .json({
-  //     success: true,
-  //     message: `${updatedUser.username} updated`,
-  //     data: userData
-  // });
-
-
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
-
-  // const salt = await bcrypt.genSalt(10);
-  // const newPassword = await bcrypt.hash(req.body.password, salt);
-
-  // const user = await User.findByIdAndUpdate(
-  //   req.user._id,
-  //   {
-  //     username: req.body.username,
-  //     email: req.body.email,
-  //     password: newPassword
-  //   },
-  //   { new: true } //
-  // ).select('-password');
-    
-  // if (!user) return res.status(400).json({ success: false, error: { code: 400, message: "The user with the given ID was not found."}});
-  // res.status(200).json({ success: true, message: `${updatedUser.username} updated`});
 };
 
 // @desc Delete current user

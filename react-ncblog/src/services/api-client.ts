@@ -80,9 +80,12 @@ class APIClient<T, Q> {
       .then((res) => res.data);
   };
 
-  delete = (id?: string, config?: AxiosRequestConfig) => {
+  delete = (id?: string, config?: AxiosRequestConfig, userId?: string) => {
+    let url = id ? `${this.endpoint}/${id}`: `${this.endpoint}`;
+    url = userId ? `${url}/${userId}` : `${url}`;
+  
     return axiosInstance
-      .delete<FetchResponse<T>>(this.endpoint + '/' + id, config)
+      .delete<FetchResponse<T>>(url, config)
       .then(res => res.data);
   };
 

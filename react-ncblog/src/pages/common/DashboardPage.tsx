@@ -38,6 +38,7 @@ const DashboardPage = () => {
               </Box>
             </Flex>
           }
+          {!tab && <Box>Dashboard</Box>}
         </Box>
       </Flex>
     </>

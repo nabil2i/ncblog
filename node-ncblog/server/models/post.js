@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Joi from "joi";
-import AutoIncrement from "mongoose-sequence";
+// import AutoIncrement from "mongoose-sequence";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -69,9 +69,7 @@ export const postSchema = new mongoose.Schema({
   // category: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: 'Category',
-  //   default: function () {
-  //     return mongoose.Types.ObjectId(process.env.NODE_APP_DEFAULT_CATEGORY);
-  //   },
+  //   default: new mongoose.Types.ObjectId(process.env.NODE_APP_DEFAULT_CATEGORY)
   // },
   likes: {
     type: Number,

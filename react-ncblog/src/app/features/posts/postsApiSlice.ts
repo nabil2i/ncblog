@@ -117,6 +117,16 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
         { type: 'Post', id: arg.id}
       ]
     }),
+    deleteCurentUserPost: builder.mutation({
+      query: ({id, userId}) => ({
+        url: `/posts/${id}/${userId}`,
+        method: 'DELETE',
+        body: {id}
+      }),
+      invalidatesTags: (arg) => [
+        { type: 'Post', id: arg.id}
+      ]
+    }),
   })
 })
 
@@ -140,7 +150,9 @@ export const {
   useAddNewPostMutation,
   useUpdatePostMutation,
   useDeletePostMutation,
-  useGetPostQuery
+  useDeleteCurentUserPostMutation,
+  useGetPostQuery,
+
 } = extendedPostsApiSlice
 
 export const {

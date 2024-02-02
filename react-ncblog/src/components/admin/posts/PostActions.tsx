@@ -2,7 +2,7 @@ import { Box, Flex, Select } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import Post, { PostFormData } from "../../../entities/Post";
 import DeletePostButton from "./DeletePostButton";
-import CreateUpdatePostButton from "./UpdatePostButton";
+import CreateUpdatePostButton from "./CreateUpdatePostButton";
 import { UseFormSetValue } from "react-hook-form";
 import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
 
@@ -73,8 +73,8 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
             value={selectedCategory}
             onChange={handleCategoryChange}
             variant="filled"
-            size="lg"
-            placeholder="Select a category"
+            fontSize="lg"
+            placeholder={post?.category || "Select a category"}
             _hover={{ cursor: "pointer" }}
           >
             {categories.map((category) => (

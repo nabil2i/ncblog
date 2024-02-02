@@ -7,7 +7,7 @@ const EditPostAction = ({ postId }: { postId: string }) => {
   const navigate = useNavigate();
 
   return (
-    <MenuItem icon={<EditIcon />} onClick={() => navigate(`/admin/posts/edit/${postId}`)}>
+    <MenuItem icon={<EditIcon />} onClick={() => navigate(`/dashboard/posts/edit/${postId}`)}>
       Edit Post
     </MenuItem>
   );

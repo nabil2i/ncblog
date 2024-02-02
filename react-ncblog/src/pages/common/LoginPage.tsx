@@ -44,7 +44,6 @@ const LoginPage = () => {
                   borderBottomLeftRadius={{ lg: 16 }}
                   overflow="cover"
                   aspectRatio={16 / 9}
-                  O
                 />
                 <Box
                   display="flex"

@@ -1,10 +1,10 @@
 import { Box, Flex, Select } from "@chakra-ui/react";
+import { ChangeEvent, useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import Post, { PostFormData } from "../../entities/Post";
-import DeletePostButton from "../admin/posts/DeletePostButton";
+import DeletePostButton from "./DeletePostButton";
 import CreateUpdateButton from "./CreateUpdatePostButton";
-import { useState, ChangeEvent } from "react";
 
 interface Props {
   post?: Post;
@@ -17,7 +17,9 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
   const isCreate =
     location.pathname.startsWith("/blog/write") ||
     location.pathname.startsWith("/myposts/write");
-    
+    const userId = post?.user?._id as string;
+    const postId = post?._id as string;
+
   const [selectedCategory, setSelectedCategory] = useState(""); // State to track the selected category
 
   const categories = ["Religion", "Lifestyle", "Education", "Uncategorized"];
@@ -61,7 +63,7 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
           onChange={handleCategoryChange}
           variant="filled"
           size="lg"
-          placeholder="Select a category"
+          placeholder={post?.category || "Select a category"}
           _hover={{ cursor: "pointer" }}
         >
           {categories.map((category) => (
@@ -75,7 +77,12 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
         isSubmittingPost={isSubmittingPost as boolean}
         post={post}
       />
-      {!isCreate && <DeletePostButton postId={post?._id as string} />}
+      {!isCreate && (
+        <DeletePostButton
+          postId={postId}
+          userId={userId}
+        />
+      )}
       {/* <Menu>
         <MenuButton
           as={IconButton}

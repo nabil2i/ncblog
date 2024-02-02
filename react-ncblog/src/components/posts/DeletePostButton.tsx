@@ -1,4 +1,3 @@
-import { DeleteIcon } from "@chakra-ui/icons";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -7,7 +6,6 @@ import {
   AlertDialogOverlay,
   Button,
   Flex,
-  MenuItem,
   Spinner,
   useToast,
 } from "@chakra-ui/react";
@@ -20,7 +18,7 @@ interface Props {
   postId: string;
   userId: string;
 }
-const DeletePostAction = ({ postId, userId }: Props) => {
+const DeletePostButton = ({ postId, userId }: Props) => {
   const navigate = useNavigate();
   // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -32,21 +30,11 @@ const DeletePostAction = ({ postId, userId }: Props) => {
     setIsOpen(false);
   };
 
-  // console.log("delete action by ", userId)
-
   const deletePost = useDeleteUserPost(
     () => {
       navigate("/myposts");
       setIsOpen(false);
       setIsDeleting(false);
-      toast({
-        title: "",
-        description: "Post deleted successfully",
-        duration: ms("5s"),
-        isClosable: true,
-        status: "success",
-        position: "top",
-      });
     },
     (errorMessage) => {
       setIsDeleting(false);
@@ -63,34 +51,6 @@ const DeletePostAction = ({ postId, userId }: Props) => {
     }
   );
 
-  // const deletePost = (postId: string) => {
-  //   // console.log("deleting..."); return;
-  //   axios
-  //     .delete(`http://localhost:5000/api/posts/${postId}`)
-  //     .then(res => {
-  //       res.data;
-  //       showToast();
-  //       redirect("/myposts");
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       showErrorToast();
-  //     })
-
-  // };
-
-  // const deletePost = async () => {
-  //   try {
-  //     setIsDeleting(true);
-  //     await axios.delete("posts/" + postId);
-  //     navigate("/myposts");
-  //     setIsOpen(false);
-  //   } catch (error) {
-  //     setIsDeleting(false);
-  //     setError(true);
-  //   }
-  // };
-
   const triggerDeletePost = () => {
     if (postId) {
       setIsDeleting(true);
@@ -103,13 +63,14 @@ const DeletePostAction = ({ postId, userId }: Props) => {
 
   return (
     <>
-      <MenuItem
-        icon={<DeleteIcon />}
+      <Button
+        colorScheme="gray"
+        // variant={"outline"}
         disabled={isDeleting}
         onClick={() => setIsOpen(true)}
       >
         Delete Post {isDeleting && <Spinner />}
-      </MenuItem>
+      </Button>
 
       <AlertDialog
         isOpen={isOpen}
@@ -138,7 +99,7 @@ const DeletePostAction = ({ postId, userId }: Props) => {
               </Button>
               <Button
                 color="red"
-                onClick={triggerDeletePost}
+                onClick={() => triggerDeletePost()}
                 isLoading={isDeleting}
               >
                 Delete
@@ -177,4 +138,4 @@ const DeletePostAction = ({ postId, userId }: Props) => {
   );
 };
 
-export default DeletePostAction;
+export default DeletePostButton;

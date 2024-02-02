@@ -5,7 +5,7 @@ import {
   deleteUser,
   getAllUsers,
   getCurrentUser,
-  getCurrentUserPosts,
+  // getCurrentUserPosts,
   getUser,
   updateCurrentUser,
   updateUser
@@ -30,9 +30,9 @@ router.route('/me')
   // delete logged in user
   .delete(auth,deleteCurrentUser);
 
-router.route('/me/posts')
-  // get logged in user posts
-  .get([auth, editor],getCurrentUserPosts)
+// router.route('/me/posts')
+//   // get logged in user posts
+//   .get([auth, editor],getCurrentUserPosts)
 
 router.route('/:id')
 // get a user

@@ -6,7 +6,7 @@ const DashboardNavigation = () => {
   return (
     <Flex
       overflowY="auto"
-      maxHeight="calc(100vh - 100px)"
+      // maxHeight="calc(100vh - 100px)"
       direction="column"
       overflowX={"hidden"}
     >

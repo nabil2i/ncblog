@@ -1,10 +1,21 @@
-import { Box, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Show,
+  Spinner,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  VStack,
+} from "@chakra-ui/react";
 // import { PostQuery } from "../App";
 import useUserPosts from "../../hooks/useUserPosts";
 import PaginationBox from "../common/PaginationBox";
-import BlogPostCardContainer from "./BlogPostCardContainer";
-import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
-import UserBlogPostCard from "./UserBlogPostCard";
+import PostRow from "./PostRow";
 
 interface Props {
   paginate?: (page: number) => void;
@@ -14,17 +25,25 @@ const UserPostGrid = ({ paginate }: Props) => {
   const { data: payload, error, isLoading } = useUserPosts();
   const data = payload?.data;
   // console.log(data);
+  const posts = data?.results;
 
-  // if (isLoading)
-  //   return (
-  //     <Box p={10}>
-  //       <VStack marginTop={2}>
-  //         <Spinner />
-  //       </VStack>
-  //     </Box>
-  //   );
+  if (isLoading)
+    return (
+      <Box p={10}>
+        <VStack marginTop={2}>
+          <Spinner />
+        </VStack>
+      </Box>
+    );
 
-  const skeletons = [1, 2, 3, 4];
+  // const skeletons = [1, 2, 3, 4];
+  const tableContent = posts ? (
+    posts.map((post) => <PostRow key={post._id} post={post} />)
+  ) : (
+    <Tr>
+      <Td colSpan={3}> Nothing to show</Td>
+    </Tr>
+  );
 
   return (
     <>
@@ -35,8 +54,36 @@ const UserPostGrid = ({ paginate }: Props) => {
         </Text>
       )}
 
-      <VStack paddingBottom={5}>
-        <SimpleGrid
+      <Flex
+        width="full"
+        direction="column"
+        align="center"
+        paddingBottom={5}
+        gap={5}
+      >
+        <Box
+          w="full"
+          className="table-auto overflow-x-auto md:mx-auto scrollbar
+           scrollbar-track-slate-100 scrollbar-thumb-slate-100
+           dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500"
+        >
+          <Table overflowX="auto">
+            <Thead>
+              <Tr>
+                <Th colSpan={3} fontSize={{ base: "sm", md: "md" }}></Th>
+              </Tr>
+              <Tr>
+                <Th>Posts</Th>
+                <Show above="lg">
+                  <Th> Category</Th>
+                </Show>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>{tableContent}</Tbody>
+          </Table>
+        </Box>
+        {/* <SimpleGrid
           textAlign="center"
           columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
           spacing={3}
@@ -54,7 +101,7 @@ const UserPostGrid = ({ paginate }: Props) => {
               <UserBlogPostCard post={post} />
             </BlogPostCardContainer>
           ))}
-        </SimpleGrid>
+        </SimpleGrid> */}
 
         {data?.count && data.count >= 2 && paginate ? (
           <PaginationBox
@@ -74,7 +121,7 @@ const UserPostGrid = ({ paginate }: Props) => {
             <Text>No posts could be retrived</Text>
           </VStack>
         )}
-      </VStack>
+      </Flex>
     </>
   );
 };

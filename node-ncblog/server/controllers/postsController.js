@@ -166,13 +166,44 @@ export const updatePost = async (req, res, next) => {
 
 // @desc Delete a post
 // @route DELETE /posts/:id
-// @access Private
+// @access Private Admin
 export const deletePost = async (req, res, next) => {
   try {
     const postId = req.params.id;
 
     if (!postId) return next(makeError(400, "Post ID required"));
   
+    const post = await Post.findByIdAndDelete(postId);
+  
+    if(!post) return next(makeError(404, "The post with given ID is not found"));
+  
+    res.status(200).json({
+      success: true,
+      message: `The post with ID ${post._id} was deleted`,
+      data: {
+        id: postId
+      }
+    });
+
+  } catch(err) {
+    console.log(err)
+    if (err.name === 'CastError') {
+      return next(makeError(400, "Invalid post ID"));
+    }
+    return next(makeError(500, "Internal Server Error"));
+  }
+};
+
+// @desc Delete a post
+// @route DELETE /posts/:id/:userId
+// @access Private Editor
+export const deleteCurrentUserPost = async (req, res, next) => {
+  const postId = req.params.id;
+  const userId = req.params.userId;
+  if (!postId) return next(makeError(400, "Post ID required"));
+
+  if (req.user._id !== userId) return next(makeError(403, "Operation not allowed"))
+  try {
     const post = await Post.findByIdAndDelete(postId);
   
     if(!post) return next(makeError(404, "The post with given ID is not found"));

@@ -1,6 +1,7 @@
 import {
   Box,
   Flex,
+  Show,
   Spinner,
   Table,
   Tbody,
@@ -72,11 +73,18 @@ const PostsTable = () => {
 
       return (
         <>
-          <Table>
+          <Table overflowX="auto">
             <Thead>
-              <Tr>
-                <Th colSpan={2} fontSize={{ base: "sm", md: "md" }}></Th>
-              </Tr>
+            <Tr>
+              <Th colSpan={3} fontSize={{ base: "sm", md: "md" }}></Th>
+            </Tr>
+            <Tr>
+              <Th>Posts</Th>
+              <Show above="lg">
+                <Th> Category</Th>
+              </Show>
+              <Th></Th>
+            </Tr>
             </Thead>
 
             <Tbody>{tableContent}</Tbody>

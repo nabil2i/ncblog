@@ -32,11 +32,12 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/admin/posts/");
+      navigate("/dashboard?tab=posts");
+      setIsDeleting(false);
       setIsOpen(false);
       toast({
-        title: "Delete a post",
-        description: "Successfully deleted the post",
+        title: "",
+        description: "Post deleted successfully",
         duration: 5000, // 5s
         isClosable: true,
         status: "success",
@@ -48,12 +49,13 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
     if (isError) {
       setIsDeleting(false);
       // setError(true);
+      setIsOpen(false);
       toast({
         title: "Delete a post",
         description: "Could  not delete the post",
         duration: 5000, // 5s
         isClosable: true,
-        status: "success",
+        status: "error",
         position: "top",
         icon: <DeleteIcon />,
       });

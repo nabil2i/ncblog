@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { Link } from "react-router-dom";
-import Landscape from "../../assets/images/landscape.jpeg";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
 import DeletePostAction from "./DeletePostAction";
@@ -38,7 +37,7 @@ const UserBlogPostCard = ({ post }: Props) => {
             ></MenuButton>
             <MenuList>
               <EditPostAction postId={post._id as string} />
-              <DeletePostAction postId={post._id as string} />
+              <DeletePostAction postId={post._id as string} userId={post.user?._id as string}/>
             </MenuList>
           </Menu>
         </CardHeader>

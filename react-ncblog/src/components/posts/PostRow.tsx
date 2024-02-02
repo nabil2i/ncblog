@@ -13,40 +13,25 @@ import {
   Tr,
   useColorMode,
 } from "@chakra-ui/react";
-import { EntityId } from "@reduxjs/toolkit";
-import { memo } from "react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-import { useGetPostsQuery } from "../../../app/features/posts/postsApiSlice";
-import BlogPostDate from "../../posts/BlogPostDate";
+import Post from "../../entities/Post";
+import BlogPostDate from "./BlogPostDate";
 import DeletePostAction from "./DeletePostAction";
 import EditPostAction from "./EditPostAction";
 
-const PostRow = ({ postId }: { postId: EntityId }) => {
-  // const id = postId.toString();
-  // console.log(postId);
-  // console.log(id);
-
-  // const state = useSelector((state: RootState) => state);
-  // console.log("state: ", state);
-
-  //
-  const { post } = useGetPostsQuery("postsList", {
-    selectFromResult: ({ data }) => ({
-      post: data?.posts.entities[postId],
-    }),
-  });
-  
+const PostRow = ({ post }: { post: Post }) => {
   const { colorMode } = useColorMode();
-
-  // // NORMAL SELECTOR
-  // const post = useSelector((state: RootState) => selectPostById(state, id));
-  // console.log(post);
 
   if (post)
     return (
       <>
-        <Tr _hover={{ cursor: "pointer", bg: colorMode === "light" ? "teal.300" : "black"}}>
+        <Tr
+          _hover={{
+            cursor: "pointer",
+            bg: colorMode === "light" ? "teal.300" : "black",
+          }}
+        >
           <Td mb={2}>
             <Box>
               <Flex
@@ -58,7 +43,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                 <Box>
                   <Link
                     as={NavLink}
-                    to={`/dashboard/posts/edit/${post._id}`}
+                    to={`/blog/${post._id}`}
                     _hover={{ cursor: "pointer" }}
                     fontSize={{ base: "16px", lg: "20px" }}
                     fontWeight={500}
@@ -99,7 +84,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                 align="center"
                 justify="center"
                 as={NavLink}
-                to={`/dashboard/posts/edit/${post._id}`}
+                to={`/blog/${post._id}`}
                 _hover={{ cursor: "pointer" }}
               >
                 <Image
@@ -116,7 +101,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                 ></MenuButton>
                 <MenuList>
                   <EditPostAction postId={post._id as string} />
-                  <DeletePostAction postId={post._id as string} />
+                  <DeletePostAction postId={post._id as string} userId={post.user?._id as string}/>
                 </MenuList>
               </Menu>
             </Flex>
@@ -127,6 +112,4 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
   else return null;
 };
 
-const memoizedPost = memo(PostRow);
-
-export default memoizedPost;
+export default PostRow;

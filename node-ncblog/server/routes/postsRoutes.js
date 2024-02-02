@@ -8,6 +8,7 @@ import {
   getComment,
   getPost,
   updateComment,
+  deleteCurrentUserPost,
   updatePost
 } from "../controllers/postsController.js";
 import admin from "../middleware/admin.js";
@@ -30,7 +31,10 @@ router.route('/:id')
   // update a blog post
   .put([auth, editor], updatePost)
   // delete a blog post
-  .delete([auth, editor], deletePost);
+  .delete([auth, admin], deletePost)
+
+  router.route('/:id/:userId')  
+  .delete([auth, editor], deleteCurrentUserPost);
 
 router.route('/:id/comments')
   // get all comments of a blog post

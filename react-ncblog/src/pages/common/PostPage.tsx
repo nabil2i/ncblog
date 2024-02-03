@@ -4,6 +4,7 @@ import BlogPostDetails from "../../components/posts/BlogPostDetails";
 import usePost from "../../hooks/usePost";
 import useTitle from "../../hooks/useTitle";
 import useBlogPost from "../../hooks/useBlogPost";
+import CallToAction from "../../components/common/CallToAction";
 
 const PostPage = () => {
   const { slug } = useParams();
@@ -33,6 +34,9 @@ const PostPage = () => {
       <Box w="full" mx="auto" maxW="800px" p={4}>
         <BlogPostDetails post={post} />
       </Box>
+      {/* <Box maxW="4xl" mx="auto" w="full">
+        <CallToAction />
+      </Box> */}
 
       {/* <Flex direction="column" mt={8} align="center">
         <Box width="5%" display={{ base: "none", lg: "flex" }}></Box>

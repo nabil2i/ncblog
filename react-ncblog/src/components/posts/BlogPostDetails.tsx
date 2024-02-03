@@ -21,6 +21,7 @@ import AddComment from "./AddComment";
 import BlogPostComments from "./BlogPostComments";
 import BlogPostInfo from "./BlogPostInfo";
 import PostImage from "./PostImage";
+import CallToAction from "../common/CallToAction";
 
 const BlogPostDetails = ({ post }: { post: Post }) => {
   const setCategory = useSearchPostQueryStore((s) => s.setCategory);
@@ -65,6 +66,10 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
       <Box>
         {/* <div className="p-3 max-w-[1440px] mw-auto w-full post-content"></div> */}
         <ReactMarkdown>{post.body}</ReactMarkdown>
+      </Box>
+      {/* <Divider orientation="horizontal" color="gray.500" my="4" /> */}
+      <Box m={5}>
+        <CallToAction />
       </Box>
       <Divider orientation="horizontal" color="gray.500" my="4" />
       <Flex justify="center">

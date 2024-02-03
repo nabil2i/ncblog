@@ -12,7 +12,7 @@ export const commentSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  parent: {
+  parentComment: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Comment',
   },
@@ -41,6 +41,14 @@ export const commentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Post",
     required: true,
+  },
+  likes: {
+    type: Array,
+    default: [],
+  },
+  numberOfLikes: {
+    type: Number,
+    default: 0
   }
 }, { timestamps: true })
 

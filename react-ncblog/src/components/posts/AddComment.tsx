@@ -1,22 +1,22 @@
-import { Avatar, Flex, FormControl, Textarea } from "@chakra-ui/react";
+import { Avatar, Box, Flex, FormControl, Textarea } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { CommentForm } from "../../entities/Comment";
-import useCreateComment from "../../hooks/useCreateComment";
-import { CustomButton } from "../common/CustomButton";
-import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
+import { CommentForm } from "../../entities/Comment";
+import Post from "../../entities/Post";
+import useAuth from "../../hooks/useAuth";
+import useCreateComment from "../../hooks/useCreateComment";
+import { CustomButton } from "../common/CustomButton";
 
 // const VARIANT_COLOR = "teal";
 
-const AddComment = () => {
+const AddComment = ({ post }: { post: Post }) => {
   const { _id, img } = useAuth();
   const isAuthenticated = useSelector(authSatus);
-  const { id } = useParams();
-  const addComment = useCreateComment(id as string, () => {
+  // const { id } = useParams();
+  const addComment = useCreateComment(post._id, post.slug, () => {
     reset();
   });
 
@@ -24,6 +24,7 @@ const AddComment = () => {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { isValid },
   } = useForm<CommentForm>();
 
@@ -32,9 +33,12 @@ const AddComment = () => {
       text: data.text,
       userId: _id,
     };
-    console.log(`"Form fields": ${JSON.stringify(data)}`);
+    // console.log(`"Form fields": ${JSON.stringify(data)}`);
     addComment.mutate(data);
   };
+
+  const remainingChars = watch("text")?.length ? 200 - watch("text").length : 200;
+  // console.log(commentText)
 
   return (
     <>
@@ -43,22 +47,27 @@ const AddComment = () => {
           <Flex mt="5" align="center" gap={2}>
             <Avatar
               src={img}
-              // fallback={firstname?.slice(0, 1)}
               size="md"
-              // radius="full"
               className="cursor-pointer"
               referrerPolicy="no-referrer"
             />
-            <FormControl
-            // isRequired isInvalid={errors.comment ? true : false}
-            >
-              <Textarea
-                focusBorderColor="teal.500"
-                placeholder="Add a comment..."
-                {...register("text", {
-                  required: true,
-                })}
-              />
+            <FormControl>
+              <Flex direction="column">
+                <Textarea
+                  focusBorderColor="teal.500"
+                  placeholder="Add a comment..."
+                  {...register("text", {
+                    required: true,
+                    maxLength: {
+                      value: 200,
+                      message: "comment must be at most 200 characters.",
+                    },
+                  })}
+                />
+                <Box color="gray">
+                  {remainingChars} characters left
+                </Box>
+              </Flex>
             </FormControl>
             <CustomButton onClick={handleSubmit(onSubmit)} disabled={!isValid}>
               <FontAwesomeIcon icon={faPaperPlane} />

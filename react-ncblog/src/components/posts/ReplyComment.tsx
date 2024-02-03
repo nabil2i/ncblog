@@ -1,28 +1,35 @@
-import { Flex, FormControl, Text, Textarea } from "@chakra-ui/react";
+import { Box, Flex, FormControl, Text, Textarea } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { CommentForm } from "../../entities/Comment";
-import User from "../../entities/User";
-import useCreateComment from "../../hooks/useCreateComment";
-import { CustomButton } from "../common/CustomButton";
-import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
+import { CommentForm } from "../../entities/Comment";
+import { SimpleUser } from "../../entities/User";
+import useAuth from "../../hooks/useAuth";
+import useCreateComment from "../../hooks/useCreateComment";
+import { CustomButton } from "../common/CustomButton";
 
 // const VARIANT_COLOR = "teal";
 
 interface Props {
-  replyingTo: User;
-  parent: string;
+  replyingTo: SimpleUser;
+  parentComment: string;
+  postId: string;
+  postSlug: string;
   onCancelReply: () => void;
 }
-const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
+const ReplyComment = ({
+  replyingTo,
+  postId,
+  postSlug,
+  parentComment,
+  onCancelReply,
+}: Props) => {
   const { _id } = useAuth();
   const isAuthenticated = useSelector(authSatus);
-  const { id } = useParams();
-  const addComment = useCreateComment(id as string, () => {
+  // const { id } = useParams();
+  const addComment = useCreateComment(postId, postSlug, () => {
     reset();
     onCancelReply();
   });
@@ -31,6 +38,7 @@ const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { isValid },
   } = useForm<CommentForm>();
 
@@ -38,11 +46,15 @@ const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
     data = {
       text: data.text,
       userId: _id,
-      parentCommentId: parent,
+      parentCommentId: parentComment,
     };
     // console.log(`"Form fields": ${JSON.stringify(data)}`);
     addComment.mutate(data);
   };
+
+  const remainingChars = watch("text")?.length
+    ? 200 - watch("text").length
+    : 200;
 
   return (
     <>
@@ -76,13 +88,20 @@ const ReplyComment = ({ replyingTo, parent, onCancelReply }: Props) => {
               <FormControl
               // isRequired isInvalid={errors.comment ? true : false}
               >
-                <Textarea
-                  focusBorderColor="teal.500"
-                  placeholder="Reply to the comment..."
-                  {...register("text", {
-                    required: true,
-                  })}
-                />
+                <Flex direction="column">
+                  <Textarea
+                    focusBorderColor="teal.500"
+                    placeholder="Reply to the comment..."
+                    {...register("text", {
+                      required: true,
+                      maxLength: {
+                        value: 200,
+                        message: "comment must be at most 200 characters.",
+                      },
+                    })}
+                  />
+                  <Box color="gray">{remainingChars} characters left</Box>
+                </Flex>
               </FormControl>
               {/* <Button type="submit" colorScheme={VARIANT_COLOR}>Comment</Button> */}
               <CustomButton

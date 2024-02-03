@@ -1,4 +1,4 @@
-import User from "../entities/User";
+import User, { UserForm } from "../entities/User";
 import APIClient from "./api-client";
 
-export default new APIClient<User, User>('/users/me');
+export default new APIClient<User, UserForm>('/users/me');

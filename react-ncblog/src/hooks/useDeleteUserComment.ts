@@ -1,17 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { selectCurrentToken } from "../app/features/auth/authSlice";
 import { useAppSelector } from "../app/hooks";
-import Comment, { CommentForm } from "../entities/Comment";
+import Comment from "../entities/Comment";
 import APIClient, { FetchResponse } from "../services/api-client";
 import { CACHE_KEY_POSTS } from "./constants";
 
-const useCreateComment = (
+interface DeleteCommentForm {
+  commentId: string;
+  commenterId: string;
+}
+
+const useDeleteUserComment = (
   postId: string,
   slug: string,
   onSuccessCreate: () => void,
   ) => {
-  const apiClient = new APIClient<Comment, CommentForm>(`/posts/${postId}/comments`);
+  const apiClient = new APIClient<FetchResponse<Comment>, DeleteCommentForm>(`/posts/${postId}/comments`);
   const queryClient = useQueryClient();
 
   const token = useAppSelector(selectCurrentToken);
@@ -22,8 +26,8 @@ const useCreateComment = (
       'Accept': 'application/json'
     }
   }
-  const createComment = useMutation<FetchResponse<Comment>, AxiosError, CommentForm>({
-    mutationFn: (data) => apiClient.post(data, config),
+  return useMutation({
+    mutationFn: ({ commentId, commenterId}: DeleteCommentForm) => apiClient.delete(commentId, config, commenterId),
     onSuccess: () => {
       onSuccessCreate();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS, slug]})
@@ -32,8 +36,6 @@ const useCreateComment = (
       // console.log(error)
     },
   });
-
-  return createComment;
 }
 
-export default useCreateComment
+export default useDeleteUserComment

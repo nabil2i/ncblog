@@ -10,10 +10,11 @@ const PostPage = () => {
   const { slug } = useParams();
   // const { id } = useParams();
   // const { data: payload, isLoading, error } = usePost(id as string);
-  const { data: payload, isLoading, error } = useBlogPost(slug as string);
+  const { data: payload, isLoading, error } = usePost(slug as string);
   // console.log(payload)
   // console.log(payload);
-  const post = payload?.data?.results[0];
+  const post = payload?.data
+  // const post = payload?.data?.results[0];
   // console.log(post)
 
   useTitle(`${post?.title}` || "Nabil Conveys - Post");

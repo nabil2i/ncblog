@@ -20,6 +20,10 @@ export default interface Post {
     lastname: string;
   }
   comments: PostComment[]
+  commentCount?: number;
+  replyCount?: number;
+  totalComments?: number;
+  totalCommentsCount?: number;
 }
 export interface PostData {
   // _id?: string;

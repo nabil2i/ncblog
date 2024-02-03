@@ -1,10 +1,10 @@
+import Joi from "joi";
 import _ from "lodash";
+import mongoose from "mongoose";
 import Comment, { validateComment } from "../models/comment.js";
 import Post, { validatePost } from "../models/post.js";
 import User from "../models/user.js";
 import { makeError } from "../utils/responses.js";
-import Joi from "joi";
-
 
 // @desc Get all posts
 // @route GET /posts
@@ -67,11 +67,20 @@ export const createNewPost = async (req, res, next) => {
 // @access Public
 export const getPost = async (req, res, next) => {
   try {
-    const postId = req.params.id;
+    let postQuery;
+    const postIdOrSlug = req.params.id;
 
-    if (!postId) return next(makeError(400, "Post ID required"));
-     
-    const post = await Post.findById(postId)
+    if (!postIdOrSlug) return next(makeError(400, "Post ID or slug is required"));
+    
+    const isObjectId = mongoose.Types.ObjectId.isValid(postIdOrSlug);
+
+    if (isObjectId) {
+      postQuery = { _id: postIdOrSlug };
+    } else {
+      postQuery = { slug: postIdOrSlug };
+    }
+
+    const post = await Post.findOne(postQuery)
       .populate([
         {
           path: 'user',
@@ -83,14 +92,14 @@ export const getPost = async (req, res, next) => {
           populate: [
             {
               path: 'user',
-              select: 'firstname lastname',
+              select: 'firstname lastname img',
             },
             {
               path: 'replies',
               options: { sort: { createdAt: -1 } },
               populate: {
                 path: 'user',
-                select: 'firstname lastname'
+                select: 'firstname lastname img'
               }
             }
           ]
@@ -120,6 +129,25 @@ export const getPost = async (req, res, next) => {
     
     if (!post) return next(makeError(404, "The post with the given ID was not found"));
     
+    // const calculateReplyCount = (comments) => {
+    //   let replyCount = 0;
+
+    //   for (const comment of comments) {
+    //     replyCount += comment.replies.length;
+    //     replyCount += calculateReplyCount(comment.replies);
+    //   }
+    //   return replyCount;
+    // };
+
+    // const commentCount = post.comments.length;
+    // const replyCount = calculateReplyCount(post.comments);
+
+    // const data = {
+    //   ...post.toObject(),
+    //   commentCount,
+    //   replyCount,
+    //   totalComments: commentCount + replyCount
+    // }
     res.status(200).json({ success: true, data: post});
   } catch(err) {
     console.log(err)
@@ -308,9 +336,12 @@ export const createComment = async (req, res, next) => {
       text,
       user: userId,
       post: postId,
-      parent: parentCommentId
     })
-
+  
+    if (parentCommentId) {
+      newComment.parentComment = parentCommentId
+    }
+    
     newComment = await newComment.save();
 
     if (parentCommentId) {
@@ -321,8 +352,9 @@ export const createComment = async (req, res, next) => {
       await parentComment.save();
     } else {
       post.comments.push(newComment);
-      await post.save();
     }
+    post.totalCommentsCount++;
+    await post.save();
 
     newComment = _.pick(newComment, ['_id', 'text']);
     res.status(201).json({success: true, data: newComment});
@@ -380,35 +412,126 @@ export const updateComment = async (req, res, next) => {
 
 // @desc Create a comment
 // @route DELETE /posts/:id/comments/:cid
-// @access Private
+// @access Private Admin
 export const deleteComment = async (req, res, next) => {
   const commentId = req.params.cid;
 
   if (!commentId) return next(makeError(400, "Comment ID required"));
 
-  const comment = await Comment.findById(commentId);
+  try {
+    const comment = await Comment.findById(commentId);
+    
+    if(!comment) return next(makeError(404, "The comment with given ID is not found"));
+    console.log(comment, "deleting replies")
+    
+    const parentPost = await Post.findById(comment.post);
 
-  if(!comment) return next(makeError(404, "The comment with given ID is not found"));
+    await deleteReplies(comment.replies, parentPost);
 
-  await deleteReplies(comment.replies);
+    if (comment.parentComment) {
+      const parentComment = await Comment.findById(comment.parentComment);
+      if (parentComment) {
+        parentComment.replies = parentComment.replies.filter(replyId => (
+          replyId.toString() !== commentId)
+        )
+        await parentComment.save();
+      }
+    } else {
+        parentPost.comments = parentPost.comments.filter(postCommentId => (
+          postCommentId.toString() !== commentId)
+        );
+        // await parentPost.save(); 
+      }
+       
+      await Comment.findByIdAndDelete(commentId);
 
-  res.status(200).json({
-    success: true,
-    message: "Comment and replies deleted"
-  });
+      parentPost.totalCommentsCount -= 1;
+      await parentPost.save(); 
+
+    res.status(200).json({
+      success: true,
+      message: "Comment and replies deleted"
+    });
+  } catch (error) {
+    return next(makeError(500, "Internal server error"));
+  }
+};
+
+// @desc Create a comment
+// @route DELETE /posts/:id/comments/:cid/!uid
+// @access Private User
+export const deleteUserComment = async (req, res, next) => {
+  const commentId = req.params.cid;
+  const commentOwnerId = req.params.uid
+
+  if (req.user._id !== commentOwnerId)
+    return next(makeError(401, "You are not authorized to make this request"));
+
+  if (!commentId) return next(makeError(400, "Comment ID required"));
+
+  try {
+    const comment = await Comment.findById(commentId);
+    
+    if(!comment) return next(makeError(404, "The comment with given ID is not found"));
+    console.log(comment, "deleting replies")
+    
+    const parentPost = await Post.findById(comment.post);
+
+    await deleteReplies(comment.replies, parentPost);
+
+    if (comment.parentComment) {
+      const parentComment = await Comment.findById(comment.parentComment);
+      if (parentComment) {
+        parentComment.replies = parentComment.replies.filter(replyId => (
+          replyId.toString() !== commentId)
+        )
+        await parentComment.save();
+      }
+    } else {
+        parentPost.comments = parentPost.comments.filter(postCommentId => (
+          postCommentId.toString() !== commentId)
+        );
+        // await parentPost.save(); 
+      }
+       
+      await Comment.findByIdAndDelete(commentId);
+
+      parentPost.totalCommentsCount -= 1;
+      await parentPost.save(); 
+
+    res.status(200).json({
+      success: true,
+      message: "Comment and replies deleted"
+    });
+  } catch (error) {
+    return next(makeError(500, "Internal server error"));
+  }
 };
 
 
-const deleteReplies = async (replyIds) => {
+const deleteReplies = async (replyIds, parentPost) => {
   if (!replyIds || replyIds.length === 0) return;
 
   // Delete each reply
   for (const replyId of replyIds) {
     const replyToDelete = await Comment.findById(replyId);
     if (replyToDelete) {
-      await deleteReplies(replyToDelete.replies);
-
-      await Comment.findByIdAndDelete(replyId);
+      await deleteReplies(replyToDelete.replies, parentPost);
+      
+      // Remove the reply from its parent comment's replies
+      if (replyToDelete.parentComment) {
+        const parentComment = await Comment.findById(replyToDelete.parentComment);
+        if (parentComment) {
+          parentComment.replies = parentComment.replies.filter(replyId => (
+            replyId.toString() !== replyToDelete._id.toString())
+            );
+            await parentComment.save();
+          }
+        }
+        // await parentPost.save();
+        // Delete the reply
+        await Comment.findByIdAndDelete(replyId);
+        parentPost.totalCommentsCount -= 1;
     }
   }
 };

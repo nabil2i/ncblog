@@ -7,13 +7,15 @@ interface Props {
   text?: string;
   textFontSize?: string;
   disabled?: boolean;
+  colorScheme?: string;
+  color?: string;
 }
 
-export const CustomButton = ({ onClick, children, text, disabled, textFontSize }: Props) => (
+export const CustomButton = ({ onClick, children, color, text, disabled, textFontSize, colorScheme }: Props) => (
   <button onClick={onClick} disabled={disabled}>
     <Flex justify="center" align="center" gap={2}>
       {children}
-      <Text fontSize={textFontSize} size="2" color="gray">
+      <Text fontSize={textFontSize} size="2" color={color || "gray"} colorScheme={colorScheme}>
         {text}
       </Text>
     </Flex>

@@ -1,8 +1,8 @@
-import { FetchError, FetchResponse } from './../services/api-client';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import User from "../entities/User";
+import User, { UserForm } from "../entities/User";
 import userService from "../services/userService";
+import { FetchError, FetchResponse } from './../services/api-client';
 import { CACHE_KEY_USER } from './constants';
 
 
@@ -13,7 +13,7 @@ const useCreateUser = (
   ) => {
   const queryClient = useQueryClient();
   
-  return useMutation<FetchResponse<User>, AxiosError, User>({
+  return useMutation<FetchResponse<User>, AxiosError, UserForm>({
     mutationFn: userService.post,
 
     onSuccess: (savedUser: FetchResponse<User>) => {

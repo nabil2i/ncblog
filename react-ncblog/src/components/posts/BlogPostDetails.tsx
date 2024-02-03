@@ -10,18 +10,17 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { authSatus } from "../../app/features/auth/authSlice";
 import { useAppSelector } from "../../app/hooks";
 import Post from "../../entities/Post";
 import { useSearchPostQueryStore } from "../../store";
+import CallToAction from "../common/CallToAction";
 import { CustomButton } from "../common/CustomButton";
 import { LoginModal } from "../common/LoginModal";
 import AddComment from "./AddComment";
 import BlogPostComments from "./BlogPostComments";
 import BlogPostInfo from "./BlogPostInfo";
 import PostImage from "./PostImage";
-import CallToAction from "../common/CallToAction";
 
 const BlogPostDetails = ({ post }: { post: Post }) => {
   const setCategory = useSearchPostQueryStore((s) => s.setCategory);
@@ -41,21 +40,23 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
     }
   };
 
+  // console.log(post)
+
   return (
     <Box w="full">
       <Box>
         <Heading mb={2}>{post.title}</Heading>
       </Box>
-      {post.category &&
+      {post.category && (
         <Button
-          onClick={() => { 
-            setCategory(post.category as string)
+          onClick={() => {
+            setCategory(post.category as string);
             // navigate(`/search?q=${post.category}`)
           }}
         >
           {post.category}
         </Button>
-      }
+      )}
 
       <Box my={4}>
         <PostImage img={post.img as string} />
@@ -72,24 +73,23 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
         <CallToAction />
       </Box>
       <Divider orientation="horizontal" color="gray.500" my="4" />
+
       <Flex justify="center">
-        <CustomButton onClick={handleComment} text="Comment">
+        <CustomButton onClick={handleComment} text={"(" + post.totalCommentsCount + ")" + "Comment"}>
           <FontAwesomeIcon icon={faPaperPlane} />
         </CustomButton>
         <LoginModal
           isOpen={isOpen}
           onClose={onClose}
-          redirectLink={`/blog/${post._id}`}
+          redirectLink={`/blog/${post.slug}`}
         />
       </Flex>
+
       <Divider orientation="horizontal" color="gray.500" my="4" />
-      {addComment && <AddComment />}
+      {addComment && <AddComment post={post} />}
       {post.comments && (
         <Box>
-          <BlogPostComments
-            comments={post.comments}
-            postId={post._id as string}
-          />
+          <BlogPostComments post={post} />
         </Box>
       )}
     </Box>

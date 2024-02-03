@@ -43,7 +43,7 @@ const PostRow = ({ post }: { post: Post }) => {
                 <Box>
                   <Link
                     as={NavLink}
-                    to={`/blog/${post._id}`}
+                    to={`/blog/${post.slug}`}
                     _hover={{ cursor: "pointer" }}
                     fontSize={{ base: "16px", lg: "20px" }}
                     fontWeight={500}
@@ -84,7 +84,7 @@ const PostRow = ({ post }: { post: Post }) => {
                 align="center"
                 justify="center"
                 as={NavLink}
-                to={`/blog/${post._id}`}
+                to={`/blog/${post.slug}`}
                 _hover={{ cursor: "pointer" }}
               >
                 <Image

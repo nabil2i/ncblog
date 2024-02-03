@@ -45,7 +45,7 @@ const paginate = (model) => {
       // console.log(model)
       const fields = Object.keys(model.schema.paths);
       const modelName = model.modelName;
-      // console.log('Fields in UserModel:', fields);
+      console.log('Fields in UserModel:', fields);
       // console.log('Modelname of UserModel:', modelName);
       
 
@@ -55,16 +55,16 @@ const paginate = (model) => {
         if (fields.includes('user')) {
           lookupStages.push({
             $lookup: {
-              from: 'authors',
-              localField: 'author',
+              from: 'users',
+              localField: 'user',
               foreignField: '_id',
-              as: 'author',
+              as: 'user',
             },
           });
 
           lookupStages.push({
             $unwind: {
-              path: '$author',
+              path: '$user',
               preserveNullAndEmptyArrays: true,
             },
           });
@@ -155,11 +155,11 @@ const paginate = (model) => {
             lastname: '$author.lastname',
           }
         }
-        // if (fields.includes('parent')){
-        //   projectFields.parent = {
-        //     _id: '$author._id',
-        //   }
-        // }
+        if (fields.includes('comment')){
+          projectFields.parent = {
+            _id: '$author._id',
+          }
+        }
 
         return {
           $project: {
@@ -169,6 +169,7 @@ const paginate = (model) => {
         }
       }
       // console.log(generateProjectStage(model));
+      console.log(generalLookupStage(model));
      
       const result = await model
         .aggregate([

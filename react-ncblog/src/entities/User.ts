@@ -3,18 +3,35 @@ import { EntityId } from "@reduxjs/toolkit";
 export default interface User {
   _id: string;
   id: EntityId;
-  username: string;
+  username?: string;
   firstname: string;
   lastname: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
   password2?: string;
-  token?: string;
+  accessToken?: string;
   isAuthenticated?: boolean;
-  img: string;
+  img?: string;
   roles?: Array<string>;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface SimpleUser {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  img?: string;
+}
+
+export interface UserForm {
+  username?: string;
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  password?: string;
+  password2?: string;
+  img?: string;
 }
 
 export interface LoginData {

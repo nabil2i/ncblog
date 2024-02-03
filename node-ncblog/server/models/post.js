@@ -72,8 +72,17 @@ export const postSchema = new mongoose.Schema({
   //   default: new mongoose.Types.ObjectId(process.env.NODE_APP_DEFAULT_CATEGORY)
   // },
   likes: {
-    type: Number,
+    type: Array,
+    default: [],
   },
+  numberOfLikes: {
+    type: Number,
+    default: 0
+  },
+  totalCommentsCount: {
+    type: Number,
+    default: 0
+  }
   },
   { timestamps: true },
 );

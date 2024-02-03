@@ -45,3 +45,4 @@ export function formatDate(commentDate: Date) {
   //   return `${Math.floor(diff / year)} years ago`;
   // }
 }
+

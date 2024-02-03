@@ -1,5 +1,26 @@
 import "@fontsource/open-sans/700.css";
+
 import "@fontsource/raleway/400.css";
+
+import "@fontsource/crimson-text"; // Defaults to weight 400
+import "@fontsource/crimson-text/400.css"; // Specify weight
+import "@fontsource/crimson-text/400-italic.css"; // Specify weight and style
+
+import "@fontsource/nunito"; // Defaults to weight 400
+import "@fontsource/nunito/400.css"; // Specify weight
+import "@fontsource/nunito/400-italic.css"; // Specify weight and style
+
+import "@fontsource/pt-serif"; // Defaults to weight 400
+import "@fontsource/pt-serif/400.css"; // Specify weight
+import "@fontsource/pt-serif/400-italic.css"; // Specify weight and style
+
+import "@fontsource/montserrat"; // Defaults to weight 400
+import "@fontsource/montserrat/400.css"; // Specify weight
+import "@fontsource/montserrat/400-italic.css"; // Specify weight and style
+
+import "@fontsource/source-sans-pro"; // Defaults to weight 400
+import "@fontsource/source-sans-pro/400.css"; // Specify weight
+import "@fontsource/source-sans-pro/400-italic.css"; // Specify weight and style
 
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";

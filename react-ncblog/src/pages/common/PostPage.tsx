@@ -1,25 +1,29 @@
-import { Box, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Flex, Spinner, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import BlogPostDetails from "../../components/posts/BlogPostDetails";
 import usePost from "../../hooks/usePost";
 import useTitle from "../../hooks/useTitle";
+import useBlogPost from "../../hooks/useBlogPost";
 
 const PostPage = () => {
-  const { id } = useParams();
-  const { data: payload, isLoading, error } = usePost(id as string);
+  const { slug } = useParams();
+  // const { id } = useParams();
+  // const { data: payload, isLoading, error } = usePost(id as string);
+  const { data: payload, isLoading, error } = useBlogPost(slug as string);
+  // console.log(payload)
   // console.log(payload);
-  const post = payload?.data;
+  const post = payload?.data?.results[0];
   // console.log(post)
 
-  useTitle("Nabil Conveys - Post");
+  useTitle(`${post?.title}` || "Nabil Conveys - Post");
 
   if (isLoading)
     return (
-      <Box p={10}>
-        <VStack marginTop={2}>
+      <Flex justify="center" align="center" minH="100vh">
+        {/* <VStack marginTop={2}> */}
           <Spinner />
-        </VStack>
-      </Box>
+        {/* </VStack> */}
+      </Flex>
     );
 
   if (error || !post) throw error;

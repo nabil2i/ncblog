@@ -3,6 +3,7 @@ import Comment, { validateComment } from "../models/comment.js";
 import Post, { validatePost } from "../models/post.js";
 import User from "../models/user.js";
 import { makeError } from "../utils/responses.js";
+import Joi from "joi";
 
 
 // @desc Get all posts
@@ -138,11 +139,11 @@ export const updatePost = async (req, res, next) => {
 
     if (!postId) return next(makeError(400, "Post ID required"));
 
-    const { error } = validatePost(req.body);
+    const { error } = validateUpdatePost(req.body);
     if (error) return next(makeError(400, error.details[0].message));
     
     const { title, body, userId, img, category, tags } = req.body;
-
+    
     const post = await Post.findByIdAndUpdate(
       postId,
       {
@@ -155,6 +156,12 @@ export const updatePost = async (req, res, next) => {
       },
       { new: true}
     );
+
+    if (title) {
+      const slug = title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g, '');
+      post.slug = slug;
+      await post.save();
+    }
       
     if (!post) return next(makeError(404, "The post with given ID doesn't exist"));
       
@@ -209,7 +216,7 @@ export const updateCurrentUserPost = async (req, res, next) => {
   if (req.user._id !== userId) return next(makeError(403, "Operation not allowed"))
 
   try {
-    const { error } = validatePost(req.body);
+    const { error } = validateUpdatePost(req.body);
     if (error) return next(makeError(400, error.details[0].message));
     
     const { title, body, img, category, tags } = req.body;
@@ -405,3 +412,16 @@ const deleteReplies = async (replyIds) => {
     }
   }
 };
+
+function validateUpdatePost(post) {
+  const schema = Joi.object({
+    title: Joi.string().min(5).max(255),
+    body: Joi.string().min(5),
+    userId: Joi.string().hex().length(24),
+    img: Joi.string().min(5),
+    category: Joi.string().min(5),
+    tags: Joi.string().min(5),
+  });
+
+  return schema.validate(post);
+}

@@ -134,8 +134,10 @@ const PostForm = ({ post }: Props) => {
     // console.log("data", formData);
     setSubmittingPost(true);
     if (post) {
+      // console.log(data)
       updatePost({
         ...data,
+        id: post._id,
         title: data.title,
         body: data.body,
         userId: post.user?._id,

@@ -24,7 +24,7 @@ const theme = extendTheme({
   // },
   fonts: {
     heading: `'Open Sans', sans-serif`,
-    body: `'Raleway', sans-serif`,
+    body: `'Source Sans Pro', 'Nunito', 'PT Serif', 'Montserrat', 'Raleway', 'Crimson', sans-serif`,
   },
   styles: {
     global: {

@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
+import { SimpleGrid, Text, VStack } from "@chakra-ui/react";
 // import { PostQuery } from "../App";
 import usePosts from "../../hooks/usePosts";
 import PaginationBox from "../common/PaginationBox";

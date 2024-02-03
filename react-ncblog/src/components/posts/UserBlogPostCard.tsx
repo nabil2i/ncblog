@@ -41,7 +41,7 @@ const UserBlogPostCard = ({ post }: Props) => {
             </MenuList>
           </Menu>
         </CardHeader>
-        <Link to={"/blog/" + post._id}>
+        <Link to={"/blog/" + post.slug}>
           <CardBody>
             {/* <Center> */}
             <Image

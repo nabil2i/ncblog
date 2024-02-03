@@ -21,6 +21,7 @@ const useSearchPosts = () => {
         search: searchPostQuery.searchText,
         authorId: searchPostQuery.authorId,
         page: searchPostQuery.page,
+        category: searchPostQuery.category,
         // _start: (postQuery.page - 1) * postQuery.perPage,
         // _limit: postQuery.perPage,
       },

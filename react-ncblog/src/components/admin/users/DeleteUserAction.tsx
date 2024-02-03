@@ -13,10 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDeletePostMutation } from "../../../app/features/posts/postsApiSlice";
+import { useDeleteUserMutation } from "../../../app/features/users/usersApiSlice";
 
-const DeletePostAction = ({ postId }: { postId: string }) => {
-  // console.log(postId)
+const DeleteUserAction = ({ userId }: { userId: string }) => {
+  // console.log(userId)
   const navigate = useNavigate();
   // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -28,16 +28,16 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
     setIsOpen(false);
   };
 
-  const [deletePost, { isError, isSuccess }] = useDeletePostMutation();
+  const [deleteUser, { isError, isSuccess }] = useDeleteUserMutation();
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/dashboard?tab=posts");
+      navigate("/dashboard?tab=users");
       setIsDeleting(false);
       setIsOpen(false);
       toast({
         title: "",
-        description: "Post deleted successfully",
+        description: "User deleted successfully",
         duration: 5000, // 5s
         isClosable: true,
         status: "success",
@@ -52,7 +52,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
       setIsOpen(false);
       toast({
         title: "",
-        description: "Could  not delete the post",
+        description: "Could  not delete the user",
         duration: 5000, // 5s
         isClosable: true,
         status: "error",
@@ -62,60 +62,11 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
     }
   }, [isError, isSuccess, navigate, toast]);
 
-  // const deletePost = useDeletePost(
-  //   () => {
-  //     setIsOpen(false);
-  //     setIsDeleting(false);
-  //     navigate("/admin/posts");
-  //   },
-  //   (errorMessage) => {
-  //     setIsDeleting(false);
-  //     // setError(true);
-  //     setIsOpen(false); toast({
-  //       title: "",
-  //       description: "This could not post not be deleted. " + errorMessage,
-  //       duration: ms("5s"),
-  //       isClosable: true,
-  //       status: "error",
-  //       position: "top",
-  //     });
-  //   }
-  // );
-
-  // const deletePost = (postId: string) => {
-  //   // console.log("deleting..."); return;
-  //   axios
-  //     .delete(`http://localhost:5000/api/posts/${postId}`)
-  //     .then(res => {
-  //       res.data;
-  //       showToast();
-  //       redirect("/admin/posts");
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       showErrorToast();
-  //     })
-
-  // };
-
-  // const deletePost = async () => {
-  //   try {
-  //     setIsDeleting(true);
-  //     await axios.delete("posts/" + postId);
-  //     navigate("/admin/posts");
-  //     setIsOpen(false);
-  //   } catch (error) {
-  //     setIsDeleting(false);
-  //     setError(true);
-  //   }
-  // };
-
-  const triggerDeletePost = (postId: string) => {
-    console.log("triggerid", postId);
-    if (postId) {
+  const triggerDeleteUser = (userId: string) => {
+    console.log("triggerid", userId);
+    if (userId) {
       setIsDeleting(true);
-      deletePost(postId);
-      // deletePost.mutate(postId);
+      deleteUser(userId);
     }
   };
 
@@ -126,7 +77,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
         disabled={isDeleting}
         onClick={() => setIsOpen(true)}
       >
-        Delete Post {isDeleting && <Spinner />}
+        Delete User {isDeleting && <Spinner />}
       </MenuItem>
 
       <AlertDialog
@@ -141,7 +92,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure you want to delete this post? This action cannot be
+              Are you sure you want to delete this user? This action cannot be
               undone.
             </AlertDialogBody>
 
@@ -156,7 +107,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
               </Button>
               <Button
                 color="red"
-                onClick={() => triggerDeletePost(postId)}
+                onClick={() => triggerDeleteUser(userId)}
                 isLoading={isDeleting}
               >
                 Delete
@@ -177,7 +128,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
               Error
             </AlertDialogHeader>
 
-            <AlertDialogBody>The post could not be deleted.</AlertDialogBody>
+            <AlertDialogBody>The user could not be deleted.</AlertDialogBody>
 
             <AlertDialogFooter>
               <Button
@@ -195,4 +146,4 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
   );
 };
 
-export default DeletePostAction;
+export default DeleteUserAction;

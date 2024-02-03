@@ -24,9 +24,10 @@ import { app } from "../../../firebase";
 
 interface Props {
   setFieldValue: UseFormSetValue<PostFormData>;
+  postImage?: string
 }
 
-const AddBPostImage = ({ setFieldValue }: Props) => {
+const AddPostImage = ({ setFieldValue, postImage }: Props) => {
   const [canSubmit, setCanSubmit] = useState(false);
   const toast = useToast();
   const [fileUrl, setFileUrl] = useState<string | null>(null);
@@ -144,7 +145,7 @@ const AddBPostImage = ({ setFieldValue }: Props) => {
           )}
         </Button>
       </Flex>
-      {fileRealUrl !== null && (
+      {((fileRealUrl !== null)) && (
         <Box>
           {/* Render your Box with the image here */}
           <Box>
@@ -152,8 +153,16 @@ const AddBPostImage = ({ setFieldValue }: Props) => {
           </Box>
         </Box>
       )}
+      {((fileRealUrl === null) && (postImage !== null)) && (
+        <Box>
+          {/* Render your Box with the image here */}
+          <Box>
+            <img src={postImage} alt="Uploaded Image" />
+          </Box>
+        </Box>
+      )}
     </>
   );
 };
 
-export default AddBPostImage;
+export default AddPostImage;

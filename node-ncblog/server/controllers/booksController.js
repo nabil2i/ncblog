@@ -118,7 +118,7 @@ export const deleteBook = async (req, res, next) => {
 
     if (!bookId) return next(makeError(400, "Book ID required"));
   
-    const book = await Book.findByIdAndRemove(bookId);
+    const book = await Book.findByIdAndDelete(bookId);
   
     if(!book) return next(makeError(404, "The book with given ID is not found"));
   

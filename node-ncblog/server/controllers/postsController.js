@@ -141,13 +141,17 @@ export const updatePost = async (req, res, next) => {
     const { error } = validatePost(req.body);
     if (error) return next(makeError(400, error.details[0].message));
     
-    const { title, body, userId } = req.body;
+    const { title, body, userId, img, category, tags } = req.body;
 
     const post = await Post.findByIdAndUpdate(
       postId,
       {
         title,
         body,
+        userId, 
+        img,
+        category,
+        tags
       },
       { new: true}
     );
@@ -185,6 +189,48 @@ export const deletePost = async (req, res, next) => {
       }
     });
 
+  } catch(err) {
+    console.log(err)
+    if (err.name === 'CastError') {
+      return next(makeError(400, "Invalid post ID"));
+    }
+    return next(makeError(500, "Internal Server Error"));
+  }
+};
+
+// @desc Update a post
+// @route PUT /posts/:id
+// @access Private
+export const updateCurrentUserPost = async (req, res, next) => {
+  const postId = req.params.id;
+  const userId = req.params.userId;
+  if (!postId) return next(makeError(400, "Post ID required"));
+
+  if (req.user._id !== userId) return next(makeError(403, "Operation not allowed"))
+
+  try {
+    const { error } = validatePost(req.body);
+    if (error) return next(makeError(400, error.details[0].message));
+    
+    const { title, body, img, category, tags } = req.body;
+
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $set: {
+          title,
+          body,
+          category,
+          img,
+          tags
+        }
+      },
+      { new: true}
+    );
+      
+    if (!post) return next(makeError(404, "The post with given ID doesn't exist"));
+      
+    res.json({ success: true, message: `The post with ID ${post._id} is updated`});
   } catch(err) {
     console.log(err)
     if (err.name === 'CastError') {
@@ -355,7 +401,7 @@ const deleteReplies = async (replyIds) => {
     if (replyToDelete) {
       await deleteReplies(replyToDelete.replies);
 
-      await Comment.findByIdAndRemove(replyId);
+      await Comment.findByIdAndDelete(replyId);
     }
   }
 };

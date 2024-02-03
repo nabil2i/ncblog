@@ -96,7 +96,7 @@ export const deleteCategory = async (req, res, next) => {
 
     if (!categoryId) return next(makeError(400, "Category ID required"));
   
-    const category = await Category.findByIdAndRemove(categoryId);
+    const category = await Category.findByIdAndDelete(categoryId);
   
     if(!category) return next(makeError(404, "The category with given ID is not found'"));
   

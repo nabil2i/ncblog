@@ -34,7 +34,7 @@ const Profile = () => {
   // const toast = useToast();
   const isAuthenticated = useSelector(authSatus);
   // const dispatch = useDispatch();
-  const [sendLogout, { isError, isLoading, isSuccess }] =
+  const [sendLogout, { isError, isSuccess }] =
     useSendLogoutMutation();
   const { isAdmin, isEditor, firstname, lastname, img } = useAuth();
   // const [setPersist] = usePersist();
@@ -46,13 +46,13 @@ const Profile = () => {
     }
   }, [isSuccess, navigate]);
 
-  if (isLoading) {
-    return (
-      <Box m={10}>
-        <Spinner /> Login out
-      </Box>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Box m={10}>
+  //       <Spinner /> Login out
+  //     </Box>
+  //   );
+  // }
 
   if (isError) {
     // toast({

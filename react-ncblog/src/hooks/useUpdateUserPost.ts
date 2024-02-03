@@ -8,12 +8,13 @@ import { FetchResponse } from './../services/api-client';
 import { CACHE_KEY_USER_POSTS } from "./constants";
 
 const useUpdateUserPost = (postId: string,
+  userId: string,
   onSuccessUpdate: () => void,
   onErrorUpdate: (errorMessage: string) => void,
   ) => {
 
   const queryClient = useQueryClient();
-  const apiClient = new APIClient<Post, PostFormData>(`/posts/${postId}`);
+  const apiClient = new APIClient<Post, PostFormData>(`/posts/${postId}/${userId}`);
 
   const token = useAppSelector(selectCurrentToken);
   const config = {

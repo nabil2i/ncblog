@@ -95,7 +95,7 @@ export const deleteAuthor = async (req, res, next) => {
 
     if (!authorId) return next(makeError(400, "Author ID required"));
   
-    const author = await Author.findByIdAndRemove(authorId);
+    const author = await Author.findByIdAndDelete(authorId);
   
     if(!author) return next(makeError(404, "The author with given ID is not found"));
   

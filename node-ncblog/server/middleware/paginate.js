@@ -41,6 +41,134 @@ const paginate = (model) => {
       if (category) {
         matchConditions.category = category
       }
+
+      // console.log(model)
+      const fields = Object.keys(model.schema.paths);
+      const modelName = model.modelName;
+      // console.log('Fields in UserModel:', fields);
+      // console.log('Modelname of UserModel:', modelName);
+      
+
+      const generalLookupStage = (model) => {
+        const lookupStages = [];
+        
+        if (fields.includes('user')) {
+          lookupStages.push({
+            $lookup: {
+              from: 'authors',
+              localField: 'author',
+              foreignField: '_id',
+              as: 'author',
+            },
+          });
+
+          lookupStages.push({
+            $unwind: {
+              path: '$author',
+              preserveNullAndEmptyArrays: true,
+            },
+          });
+        }
+
+        if (fields.includes('author')) {
+          lookupStages.push({
+            $lookup: {
+              from: 'authors',
+              localField: 'author',
+              foreignField: '_id',
+              as: 'author',
+            },
+          });
+          lookupStages.push({
+            $unwind: {
+              path: '$author',
+              preserveNullAndEmptyArrays: true,
+            },
+          })
+        }
+
+        return lookupStages;
+      }
+
+      const generateProjectStage = (model) => {
+        const commonFields = {
+          _id: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        }
+
+        const projectFields = {};
+        if (modelName === "Post") {
+          projectFields.title = 1,
+          projectFields.body = 1,
+          projectFields.slug = 1,
+          projectFields.tags = 1,
+          projectFields.user = 1,
+          projectFields.likes = 1,
+          projectFields.img = 1,
+          projectFields.comments = 1,
+          projectFields.category = 1
+        } else if (modelName === "Category") {
+          projectFields.name = 1
+        } else if (modelName === "Comment") {
+        } else if (modelName === "Genre") {
+          projectFields.name = 1
+        } else if (modelName === "Comment") {
+          projectFields.text = 1,
+          projectFields.user = 1,
+          projectFields.parent = 1,
+          projectFields.replies = 1
+        } else if (modelName === "Genre") {
+          projectFields.name = 1
+        } else if (modelName === "User") {
+          projectFields.slug = 1,
+          projectFields.username = 1,
+          projectFields.email = 1,
+          projectFields.roles = 1,
+          projectFields.isActive = 1,
+          projectFields.isAdmin = 1,
+          projectFields.firstname = 1,
+          projectFields.lastname = 1,
+          projectFields.img = 1
+        } else if (modelName === "Book") {
+          projectFields.title = 1,
+          projectFields.about = 1,
+          projectFields.genre = 1,
+          projectFields.img = 1,
+          projectFields.author = 1,
+          projectFields.publishedYear = 1,
+          projectFields.isbn = 1,
+          projectFields.link = 1
+        }
+        
+        if (fields.includes('user')){
+          projectFields.user = {
+            _id: '$user._id',
+            firstname: '$user.firstname',
+            lastname: '$user.lastname',
+          }
+        }
+        if (fields.includes('author')){
+          projectFields.author = {
+            _id: '$author._id',
+            firstname: '$author.firstname',
+            lastname: '$author.lastname',
+          }
+        }
+        // if (fields.includes('parent')){
+        //   projectFields.parent = {
+        //     _id: '$author._id',
+        //   }
+        // }
+
+        return {
+          $project: {
+            ...commonFields,
+            ...projectFields
+          }
+        }
+      }
+      // console.log(generateProjectStage(model));
      
       const result = await model
         .aggregate([
@@ -56,53 +184,13 @@ const paginate = (model) => {
                 { $sort: { updatedAt: sortOrder } },
                 { $skip: startIndex },
                 { $limit: perPage },
-                { $lookup: {
-                  from: 'users',
-                  localField: 'user',
-                  foreignField: '_id',
-                  as: 'user',
-                },
-              },
-              { $unwind: {
-                  path: '$user',
-                  preserveNullAndEmptyArrays: true
-                },
-              },
-              { $lookup: {
-                from: 'authors',
-                localField: 'author',
-                foreignField: '_id',
-                as: 'author',
-              },
-          },
-            { $unwind: {
-                path: '$author',
-                preserveNullAndEmptyArrays: true,
-              },
-            },
-            { $project: {
-                _id: 1,
-                title: 1,
-                body: 1,
-                createdAt: 1,
-                updatedAt: 1,
-                user: {
-                  _id: '$user._id',
-                  firstname: '$user.firstname',
-                  lastname: '$user.lastname',
-                },
-                comments: 1,
-                category: 1,
-                slug:1,
-                tags: 1,
-                likes: 1,
-                img: 1,
-              }
-            },
+                ...generalLookupStage(model),
+                generateProjectStage(model)
               ]
             }
           }
         ]);
+
       const totalItems = await model.countDocuments();
       const now = new Date();
       const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());

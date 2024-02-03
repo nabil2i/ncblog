@@ -35,7 +35,7 @@ const PostForm = ({ post }: Props) => {
   const { _id } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const [isSubmittingPost, setSubimittingPost] = useState(false);
+  const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
 
   const [
@@ -54,7 +54,7 @@ const PostForm = ({ post }: Props) => {
   useEffect(() => {
     if (isSuccessAdd) {
       // reset();
-      setSubimittingPost(false);
+      setSubmittingPost(false);
       navigate("/dashboard?tab=posts");
       toast({
         title: "",
@@ -68,7 +68,7 @@ const PostForm = ({ post }: Props) => {
     }
 
     if (isErrorAdd) {
-      setSubimittingPost(false);
+      setSubmittingPost(false);
       setError("Could not add the post");
       // setError(addPostError);
       toast({
@@ -83,7 +83,7 @@ const PostForm = ({ post }: Props) => {
     }
 
     if (isSuccessUpdate) {
-      setSubimittingPost(false);
+      setSubmittingPost(false);
       navigate("/dashboard?tab=posts");
       toast({
         title: "",
@@ -97,7 +97,7 @@ const PostForm = ({ post }: Props) => {
     }
 
     if (isErrorUpdate) {
-      setSubimittingPost(false);
+      setSubmittingPost(false);
       setError("Could not update the post");
       // setError(updatePostError);
       toast({
@@ -132,7 +132,7 @@ const PostForm = ({ post }: Props) => {
   const onSubmit = (data: PostFormData) => {
     // const formData = getValues();
     // console.log("data", formData);
-    setSubimittingPost(true);
+    setSubmittingPost(true);
     if (post) {
       updatePost({
         ...data,
@@ -210,7 +210,7 @@ const PostForm = ({ post }: Props) => {
                   <Input _hover={{ cursor: "pointer"}} pl={0} height="full" type="file" accept="image/*"/>
                   <Button>Upload image</Button>
                 </Flex> */}
-                <AddPostImage setFieldValue={setValue} />
+                <AddPostImage setFieldValue={setValue} postImage={post?.img}/>
                 <Controller
                   name="body"
                   control={control}
@@ -256,7 +256,7 @@ export default PostForm;
 // const createPost = useCreatePost(
 //   () => {
 //     // reset();
-//     setSubimittingPost(false);
+//     setSubmittingPost(false);
 //     navigate("/admin/posts/");
 //   },
 //   () => {
@@ -271,7 +271,7 @@ export default PostForm;
 //     });
 //   },
 //   (errorMessage) => {
-//     setSubimittingPost(false);
+//     setSubmittingPost(false);
 //     setError(errorMessage);
 //     // toast({
 //     //   title: "Add a post",
@@ -288,7 +288,7 @@ export default PostForm;
 //   post?._id as string,
 //   () => {
 //     // reset();
-//     setSubimittingPost(false);
+//     setSubmittingPost(false);
 //     navigate("/admin/posts/");
 //   },
 //   () => {
@@ -303,7 +303,7 @@ export default PostForm;
 //     });
 //   },
 //   (errorMessage) => {
-//     setSubimittingPost(false);
+//     setSubmittingPost(false);
 //     setError(errorMessage);
 //     // toast({
 //     //   title: "Update a post",

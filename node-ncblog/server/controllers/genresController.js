@@ -101,7 +101,7 @@ export const deleteGenre = async (req, res, next) => {
 
     if (book) return next(makeError(404, "Genre has books"));
 
-    const genre = await Genre.findByIdAndRemove(genreId);
+    const genre = await Genre.findByIdAndDelete(genreId);
   
     if(!genre) return next(makeError(404, "The genre with given ID is not found"));
 

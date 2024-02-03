@@ -39,10 +39,23 @@ const ADMIN_NAV_ITEMS: Array<AdminNavItem> =  [
   },
   {
     type: "link",
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: FiAlignJustify,
+  },
+  {
+    type: "link",
     label: "Posts",
     href: "/dashboard?tab=posts",
     icon: FiAlignJustify,
     tab: "posts"
+  },
+  {
+    type: "link",
+    label: "Users",
+    href: "/dashboard?tab=users",
+    icon: FiAlignJustify,
+    tab: "users"
   },
   // {
   //   type: "link",

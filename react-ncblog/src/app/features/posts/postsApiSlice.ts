@@ -11,6 +11,10 @@ interface DataPost {
   next: number | null;
   perPage: number;
   results: Post[];
+  stats: {
+    totlaItems: number,
+    lastMonthItems: number,
+  }
 }
 export interface ServerResponse<R> {
   success: boolean;
@@ -56,9 +60,11 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
           perPage: responseData.data.perPage,
         };
 
+        const stats = responseData.data.stats
         return { 
           posts: postsAdapter.setAll(initialState, normalizedPosts),
-          pagination
+          pagination,
+          stats
         }
       },
       providesTags: (result) => {

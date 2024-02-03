@@ -24,7 +24,7 @@ const Sidebar = () => {
   const { colorMode } = useColorMode();
   const { firstname, lastname, img } = useAuth();
   const navigate = useNavigate();
-  const [sendLogout, { isLoading, isSuccess }] = useSendLogoutMutation();
+  const [sendLogout, { isSuccess }] = useSendLogoutMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -32,13 +32,13 @@ const Sidebar = () => {
     }
   }, [isSuccess, navigate]);
 
-  if (isLoading) {
-    return (
-      <Box m={10}>
-        <Spinner /> Login out
-      </Box>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Box m={10}>
+  //       <Spinner /> Login out
+  //     </Box>
+  //   );
+  // }
 
   return (
     <>

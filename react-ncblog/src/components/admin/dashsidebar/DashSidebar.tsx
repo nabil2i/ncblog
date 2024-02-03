@@ -9,13 +9,13 @@ const DashSidebar = () => {
       <Flex
         direction="column"
         w="full"
-        // position="fixed"
+        position="sticky"
         maxW="300px"
-        // h="full"
-        // minH="100vh"
+        h="full"
+        minH="100vh"
         justify="space-between"
-        bg={"gray.200"}
-        // bg={"#2e3238"}
+        // bg={"gray.200"}
+        bg={"#2e3238"}
         color={colorMode === "light" ? "white" : "white"}
       >
         <Flex direction="column" justify="flex-start">

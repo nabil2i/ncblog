@@ -9,6 +9,8 @@ import AdminErrorPage from "./pages/admin/AdminErrorPage";
 import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
 import PostsPage from "./pages/admin/AdminPostsPage";
+import DashboardPage from "./pages/admin/DashboardPage";
+import AccountPage from "./pages/common/AccountPage";
 import AddPostPage from "./pages/common/AddPostPage";
 import BlogPage from "./pages/common/BlogPage";
 import BookPage from "./pages/common/BookPage";
@@ -21,8 +23,6 @@ import MyPostsPage from "./pages/common/MyPostsPage";
 import PostPage from "./pages/common/PostPage";
 import SearchPage from "./pages/common/SearchPage";
 import SignUpPage from "./pages/common/SignUpPage";
-import DashboardPage from "./pages/common/DashboardPage";
-import AccountPage from "./pages/common/AccountPage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +47,7 @@ const router = createBrowserRouter([
                 children: [
                   { index: true, element: <BlogPage /> },
                   { path: ":id", element: <PostPage /> },
+                  // { path: ":slug", element: <PostPage /> },
                   {
                     path: "write",
                     element: <RequireAuth allowedRoles={["Editor"]} />,
@@ -86,9 +87,9 @@ const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    element: <AccountPage />
-                  }
-                ]
+                    element: <AccountPage />,
+                  },
+                ],
               },
               {
                 path: "dashboard",
@@ -104,8 +105,8 @@ const router = createBrowserRouter([
                       { path: "new", element: <AdminAddPostPage /> },
                     ],
                   },
-                ]
-              }
+                ],
+              },
             ],
           },
         ],

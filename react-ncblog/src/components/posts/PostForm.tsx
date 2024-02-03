@@ -32,15 +32,15 @@ const PostForm = ({ post }: Props) => {
   const { _id } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const [isSubmittingPost, setSubimittingPost] = useState(false);
+  const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
   const createPost = useCreatePost(
     () => {
       // reset();
-      setSubimittingPost(false);
+      setSubmittingPost(false);
       navigate("/myposts");
       toast({
-        title: "Add a post",
+        title: "",
         description: "Successfully added the post.",
         duration: 5000, // 5s
         isClosable: true,
@@ -50,7 +50,7 @@ const PostForm = ({ post }: Props) => {
       });
     },
     (errorMessage) => {
-      setSubimittingPost(false);
+      setSubmittingPost(false);
       setError(errorMessage);
       // toast({
       //   title: "Add a post",
@@ -66,9 +66,10 @@ const PostForm = ({ post }: Props) => {
   // const updatePost = useUpdatePost(
   const updatePost = useUpdateUserPost(
     post?._id as string,
+    post?.user?._id as string,
     () => {
       // reset();
-      setSubimittingPost(false);
+      setSubmittingPost(false);
       toast({
         title: "",
         description: "Successfully updated the post.",
@@ -81,7 +82,7 @@ const PostForm = ({ post }: Props) => {
       navigate("/myposts/");
     },
     (errorMessage) => {
-      setSubimittingPost(false);
+      setSubmittingPost(false);
       setError(errorMessage);
       // toast({
       //   title: "",
@@ -109,7 +110,7 @@ const PostForm = ({ post }: Props) => {
   const onSubmit = (data: PostFormData) => {
     const formaData = getValues();
     console.log("data", formaData);
-    setSubimittingPost(true);
+    setSubmittingPost(true);
     if (post) {
       updatePost.mutate({
         ...data,
@@ -170,7 +171,7 @@ const PostForm = ({ post }: Props) => {
                   {errors.title && errors.title.message}
                 </FormErrorMessage> */}
               </FormControl>
-              <AddPostImage setFieldValue={setValue} />
+              <AddPostImage setFieldValue={setValue} postImage={post?.img}/>
               <Controller
                 name="body"
                 control={control}

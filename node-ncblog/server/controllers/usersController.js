@@ -8,16 +8,17 @@ import { makeError } from "../utils/responses.js";
 
 // @desc Get all users
 // @route GET /users
-// @access Private
+// @access Private Admin Only
 export const getAllUsers = async (req, res, next) => {
-  const users = await User.find().select('-password').lean().sort('name');
-  if (!users.length) return next(makeError(400, "No user found"));
-    res.status(200).json({ success: true, data: users });
+  res.status(200).json({ success: true, data: res.paginatedResults});
+  // const users = await User.find().select('-password').lean().sort('name');
+  // if (!users.length) return next(makeError(400, "No user found"));
+    // res.status(200).json({ success: true, data: users });
 };
 
 // @desc Create new user
 // @route POST /users
-// @access Private
+// @access Public
 export const createNewUser = async (req, res, next) => {
   const { error } = validateUser(req.body);
   if (error) return next(makeError(400, error.details[0].message));
@@ -176,14 +177,15 @@ export const updateUser = async (req, res, next) => {
 // @access Private
 export const deleteUser = async (req, res, next) => {
   const userId = req.params.id
+  // console.log(userId)
   if (!userId) return next(makeError(400, "User ID required"));
 
   // const posts = await Post.lookup(userId).lean().exec();
   const post = await Post.findOne({ user: userId }).lean().exec();
-
+  // console.log(post)
   if (post) return next(makeError(400, "User has posts"));
 
-  const user = await User.findByIdAndRemove(userId);
+  const user = await User.findByIdAndDelete(userId);
     
   if (!user) return next(makeError(404, "The user with the given ID was not found"));
 
@@ -322,7 +324,7 @@ export const deleteCurrentUser = async (req, res, next) => {
 
   if (post) return next(makeError(400, "User has posts"));
 
-  const user = await User.findByIdAndRemove(userId);
+  const user = await User.findByIdAndDelete(userId);
     
   if (!user) return next(makeError(404, "The user was not found"));
 

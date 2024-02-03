@@ -22,9 +22,9 @@ const ADMIN_ITEMS: Array<AdminItem> =  [
   },
   {
     type: "link",
-    label: "Account",
-    href: "/dashboard?tab=profile",
-    icon: FiAlignJustify,
+    label: "Users",
+    href: "/dashboard?tab=users",
+    // icon: FiHome,
   },
   {
     type: "link",
@@ -66,9 +66,9 @@ const ADMIN_ITEMS: Array<AdminItem> =  [
   },
   {
     type: "link",
-    label: "Categories",
-    href: "/admin/categories",
-    // icon: FiHome,
+    label: "Account",
+    href: "/dashboard?tab=profile",
+    icon: FiAlignJustify,
   },
   // {
   //   type: "header",

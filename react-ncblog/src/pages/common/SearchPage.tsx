@@ -3,6 +3,7 @@ import PageHeading from "../../components/common/PageHeading";
 import SearchPostGrid from "../../components/posts/SearchPostGrid";
 import useTitle from "../../hooks/useTitle";
 import { useSearchPostQueryStore } from "../../store";
+import CallToAction from "../../components/common/CallToAction";
 
 const SearchPage = () => {
   const setPage = useSearchPostQueryStore((s) => s.setPage);
@@ -21,12 +22,17 @@ const SearchPage = () => {
         {searchText && (
           <Box as="section">
             <PageHeading title={"Search"} />
-            <SearchPostGrid
-              paginate={(page) => {
-                if (page === null) return null;
-                setPage(page);
-              }}
-            />
+            <Box maxW="1440px" mx="auto">
+              <SearchPostGrid
+                paginate={(page) => {
+                  if (page === null) return null;
+                  setPage(page);
+                }}
+              />
+              <Box m={5}>
+                <CallToAction />
+              </Box>
+            </Box>
           </Box>
         )}
       </GridItem>

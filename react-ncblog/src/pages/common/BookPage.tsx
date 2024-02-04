@@ -4,6 +4,7 @@ import BookDetails from "../../components/books/BookDetails";
 import PageHeading from "../../components/common/PageHeading";
 import useBook from "../../hooks/useBook";
 import useTitle from "../../hooks/useTitle";
+import CallToAction from "../../components/common/CallToAction";
 
 const BookPage = () => {
   const { id } = useParams();
@@ -33,8 +34,11 @@ const BookPage = () => {
         <GridItem area="main">
           <Box as="section">
             <PageHeading title={book.title} />
-            <Box p={10}>
+            <Box maxW="1440px" mx="auto">
               <BookDetails book={book} />
+              <Box m={5}>
+                <CallToAction />
+              </Box>
             </Box>
           </Box>
         </GridItem>

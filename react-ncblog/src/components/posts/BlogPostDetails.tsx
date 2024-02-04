@@ -86,12 +86,12 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
       </Flex>
 
       <Divider orientation="horizontal" color="gray.500" my="4" />
-      {addComment && <AddComment post={post} />}
       {post.comments && (
         <Box>
           <BlogPostComments post={post} />
         </Box>
       )}
+      {addComment && <AddComment post={post} />}
     </Box>
   );
 };

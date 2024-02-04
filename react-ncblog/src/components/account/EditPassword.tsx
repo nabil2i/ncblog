@@ -157,7 +157,7 @@ const EditPassword = () => {
               </FormErrorMessage>
 
               <FormControl mt={4}>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Confirm password</FormLabel>
                 <Input
                   type="password"
                   placeholder="Confirm your password"

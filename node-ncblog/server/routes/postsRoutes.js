@@ -7,6 +7,7 @@ import {
   getAllPosts,
   getComment,
   deleteUserComment,
+  updateUserComment,
   getPost,
   updateComment,
   deleteCurrentUserPost,
@@ -54,6 +55,8 @@ router.route('/:id/comments/:cid')
   .delete([auth, admin], deleteComment);
 
 router.route('/:id/comments/:cid/:uid') 
+  // delete a comment of a blog post
+  .put([auth], updateUserComment)
   // delete a comment of a blog post
   .delete([auth], deleteUserComment);
 

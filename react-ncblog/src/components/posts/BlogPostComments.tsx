@@ -7,11 +7,13 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { FaHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
 import Post, { PostComment } from "../../entities/Post";
 import useAuth from "../../hooks/useAuth";
 import useDeleteComment from "../../hooks/useDeleteUserComment";
+import useLikeComment from "../../hooks/useLikeComment";
 import { CustomButton } from "../common/CustomButton";
 import { LoginModal } from "../common/LoginModal";
 import ElapsedDate from "./ElapsedDate";
@@ -25,6 +27,7 @@ const BlogPostComments = ({ post }: Props) => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   // const [commentToDelete, setCommentToDelete] = useState<string>("");
   // const [commenterId, setCommenterId] = useState<string>("");
+  const [commentLike, setCommentLike] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useSelector(authSatus);
   const { _id } = useAuth();
@@ -42,8 +45,19 @@ const BlogPostComments = ({ post }: Props) => {
     }
   };
 
+  const likeComment = useLikeComment(post._id, post.slug, commentLike);
+
+  const handleLike = async (commentId: string) => {
+    if (isAuthenticated) {
+      setCommentLike(commentId);
+      likeComment.mutate();
+    } else {
+      onOpen();
+    }
+  };
+
   const deleteComment = useDeleteComment(post._id, post.slug, () => {
-    console.log("deleted");
+    // console.log("deleted");
   });
 
   // const handleDelete = () => {
@@ -94,23 +108,55 @@ const BlogPostComments = ({ post }: Props) => {
                     <Text size="3" fontWeight={700}>
                       {comment?.user?.firstname + " " + comment?.user?.lastname}
                     </Text>
+                    <ElapsedDate date={comment?.createdAt} />
                   </Flex>
                   <Text size="2">{comment.text}</Text>
                 </Box>
-                <Flex gap={4}>
-                  <ElapsedDate date={comment?.createdAt} />
-                  {isAuthenticated && <CustomButton
-                    onClick={() => handleReply(comment._id)}
-                    text={"Reply"}
-                  />}
-                  {isAuthenticated && (_id === comment.user._id) && (
+                <Flex gap={2}>
+                  {isAuthenticated && (
+                    <CustomButton
+                      onClick={() => handleReply(comment._id)}
+                      text={""}
+                    />
+                  )}
+                  <Flex>
+                    {isAuthenticated && (
+                      <CustomButton
+                        onClick={() => handleLike(comment._id)}
+                        // text={"Like"}
+                      >
+                        <FaHeart
+                          className={`text-gray-400 hover:text-teal-500
+                        ${
+                          isAuthenticated &&
+                          comment.likes.includes(_id) &&
+                          "text-teal-500"
+                        }`}
+                        />
+                      </CustomButton>
+                    )}
+                    {comment.numberOfLikes > 0 && (
+                      <Text whiteSpace="nowrap">
+                        {comment.numberOfLikes +
+                          " " +
+                          (comment.numberOfLikes === 1 ? "like" : "likes")}
+                      </Text>
+                    )}
+                  </Flex>
+                  {isAuthenticated && (
+                    <CustomButton
+                      onClick={() => handleReply(comment._id)}
+                      text={"Reply"}
+                    />
+                  )}
+                  {isAuthenticated && _id === comment.user._id && (
                     <CustomButton
                       color="red.400"
                       onClick={() => {
                         deleteComment.mutate({
                           commentId: comment._id,
-                          commenterId: comment.user._id
-                        })
+                          commenterId: comment.user._id,
+                        });
                       }}
                       text={"Delete"}
                     />
@@ -121,7 +167,7 @@ const BlogPostComments = ({ post }: Props) => {
                   onClose={onClose}
                   redirectLink={`/blog/${postId}`}
                 />
-                {(replyingTo === comment._id) && (
+                {replyingTo === comment._id && (
                   <ReplyComment
                     postId={post._id}
                     postSlug={post.slug}

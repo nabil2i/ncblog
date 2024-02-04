@@ -64,4 +64,13 @@ export function validateComment(comment) {
   return schema.validate(comment)
 }
 
+export function validateUpdateComment(comment) {
+  const schema = Joi.object({
+    text: Joi.string().min(2).required(),
+    userId: Joi.string().hex().length(24),
+    parentCommentId: Joi.string().hex().length(24),
+  })
+  return schema.validate(comment)
+}
+
 export default Comment

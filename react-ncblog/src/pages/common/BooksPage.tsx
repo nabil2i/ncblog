@@ -3,6 +3,7 @@ import BookGrid from "../../components/books/BookGrid";
 import PageHeading from "../../components/common/PageHeading";
 import useTitle from "../../hooks/useTitle";
 import { useBookQueryStore } from "../../store";
+import CallToAction from "../../components/common/CallToAction";
 
 const BooksPage = () => {
   const setPage = useBookQueryStore((s) => s.setPage);
@@ -18,12 +19,16 @@ const BooksPage = () => {
           <GridItem area="main">
             <VStack as="section">
               <PageHeading title={"Books"} />
-              <BookGrid
-                paginate={(page) => {
-                  if (page === null) return null;
-                  setPage(page);
-                }}
-              ></BookGrid>
+              <Box mx="auto" maxW="1440px">
+                <BookGrid
+                  paginate={(page) => {
+                    if (page === null) return null;
+                    setPage(page);
+                  }}/>
+                <Box m={5}>
+                  <CallToAction />
+                </Box>
+              </Box>
             </VStack>
           </GridItem>
         </Grid>

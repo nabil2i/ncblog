@@ -34,7 +34,7 @@ const useBooks = () => {
     // getNextPageParam: (lastPage, allPages) => {
     //   return lastPage.next ? allPages.length + 1 : undefined;
     // },
-    staleTime: ms('24h'), // 24h
+    staleTime: ms('24h'),
     keepPreviousData: true,
   });
 };

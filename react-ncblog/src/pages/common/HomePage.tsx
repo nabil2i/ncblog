@@ -7,6 +7,7 @@ import image2 from "../../assets/images/landscape.jpeg";
 import image1 from "../../assets/images/login.jpg";
 import image5 from "../../assets/images/pof.jpg";
 import image3 from "../../assets/images/pol.jpg";
+import CallToAction from "../../components/common/CallToAction";
 
 const HomePage = () => {
   // const setPage = usePostQueryStore((s) => s.setPage);
@@ -31,7 +32,12 @@ const HomePage = () => {
             <Box as="section">
               <ImageCarousel images={images} />
             </Box>
-            <LatestPosts />
+            <Box maxW="1440px" mx="auto" w="full">
+              <LatestPosts />
+              <Box m={5}>
+                <CallToAction />
+              </Box>
+            </Box>
           </Box>
         </GridItem>
       </Grid>

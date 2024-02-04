@@ -44,6 +44,8 @@ export interface PostComment {
     img?: string;
   }
   replies: PostComment[];
+  numberOfLikes: number;
+  likes: string[];
 }
 
 export interface PostFormData {

@@ -1,8 +1,8 @@
 import Joi from "joi";
 import _ from "lodash";
 import mongoose from "mongoose";
-import Comment, { validateComment } from "../models/comment.js";
-import Post, { validatePost } from "../models/post.js";
+import Comment, { validateComment, validateUpdateComment } from "../models/comment.js";
+import Post, { validatePost, validateUpdatePost } from "../models/post.js";
 import User from "../models/user.js";
 import { makeError } from "../utils/responses.js";
 
@@ -389,16 +389,48 @@ export const updateComment = async (req, res, next) => {
 
   if (!commentId) return next(makeError(400, "Comment ID required"));
 
-  const { error } = validateComment(req.body);
+  const { error } = validateUpdateComment(req.body);
     if (error) return next(makeError(400, error.details[0].message));
     
-    const { text, userId } = req.body;
+    const { text, userId, parentCommentId } = req.body;
 
     const comment = await Comment.findByIdAndUpdate(
       commentId,
       {
-        text, userId
+        text, userId, parentCommentId
       },
+      { new: true}
+    );
+      
+    if (!comment) return next(makeError(404, "The comment with given ID doesn't exist"));
+      
+    res.json({
+      success: true,
+      message: `The comment with ID ${comment._id} is updated`
+    });
+};
+
+// @desc Create a comment
+// @route UPDATE /posts/:id/comments/:cid/:uid
+// @access Private
+export const updateUserComment = async (req, res, next) => {
+  const commentId = req.params.cid;
+
+  const commentOwnerId = req.params.uid
+
+  if (req.user._id !== commentOwnerId)
+    return next(makeError(401, "You are not authorized to make this request"));
+
+  if (!commentId) return next(makeError(400, "Comment ID required"));
+
+  const { error } = validateUpdateComment(req.body);
+    if (error) return next(makeError(400, error.details[0].message));
+    
+    const { text, userId, parentCommentId } = req.body;
+
+    const comment = await Comment.findByIdAndUpdate(
+      commentId,
+      { $set: { text } },
       { new: true}
     );
       
@@ -536,15 +568,58 @@ const deleteReplies = async (replyIds, parentPost) => {
   }
 };
 
-function validateUpdatePost(post) {
-  const schema = Joi.object({
-    title: Joi.string().min(5).max(255),
-    body: Joi.string().min(5),
-    userId: Joi.string().hex().length(24),
-    img: Joi.string().min(5),
-    category: Joi.string().min(5),
-    tags: Joi.string().min(5),
-  });
 
-  return schema.validate(post);
-}
+// const getCommentsForPost = async (postId) => {
+//   // Fetch comments for the post with hierarchical structure
+//   const comments = await Comment.find({ post: postId })
+//     .sort({ createdAt: 1 }) // Sort in ascending order by creation date
+//     .populate('user') // Populate user data as needed
+//     .populate('replies.user') // Populate user data for reply comments
+
+//   // Organize comments in a hierarchical structure
+//   const commentMap = new Map();
+//   const topLevelComments = [];
+
+//   comments.forEach((comment) => {
+//     const parentId = comment.parentComment;
+
+//     if (!parentId) {
+//       // Top-level comment
+//       topLevelComments.push(comment);
+//     } else {
+//       // Reply comment
+//       const parentComment = commentMap.get(parentId);
+//       if (parentComment) {
+//         if (!parentComment.replies) {
+//           parentComment.replies = [];
+//         }
+//         parentComment.replies.push(comment);
+//       }
+//     }
+
+//     // Store the comment in the map for future reference
+//     commentMap.set(comment._id, comment);
+//   });
+
+//   // Flatten the comments into a single array with the desired order
+//   const flattenedComments = [];
+
+//   const flattenComment = (comment) => {
+//     flattenedComments.push(comment);
+//     if (comment.replies) {
+//       comment.replies.forEach((reply) => {
+//         flattenComment(reply);
+//       });
+//     }
+//   };
+
+//   topLevelComments.forEach((comment) => {
+//     flattenComment(comment);
+//   });
+
+//   return flattenedComments;
+// };
+
+// // Usage example
+// const postId = 'your-post-id';
+// const orderedComments = await getCommentsForPost(postId);

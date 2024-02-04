@@ -17,6 +17,7 @@ import genres from "../routes/genresRoutes.js";
 import home from "../routes/home.js";
 import posts from "../routes/postsRoutes.js";
 import users from "../routes/usersRoutes.js";
+import comments from "../routes/commentsRoutes.js";
 import sessionOptions from "./sessionOptions.js";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -47,6 +48,7 @@ export default function(app) {
   app.use('/api/genres', genres);
   app.use('/api/categories', categories);
   app.use('/api/users', users);
+  app.use('/api/comments', comments);
   app.use('/api/auth', auth);
   app.all('*', error);
   app.use(errorHandler)

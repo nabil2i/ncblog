@@ -119,4 +119,17 @@ export function validatePost(post) {
   return schema.validate(post);
 }
 
+export function validateUpdatePost(post) {
+  const schema = Joi.object({
+    title: Joi.string().min(5).max(255),
+    body: Joi.string().min(5),
+    userId: Joi.string().hex().length(24),
+    img: Joi.string().min(5),
+    category: Joi.string().min(5),
+    tags: Joi.string().min(5),
+  });
+
+  return schema.validate(post);
+}
+
 export default Post

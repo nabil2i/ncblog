@@ -4,8 +4,8 @@ import Post from "../../entities/Post";
 import BlogPostDate from "./BlogPostDate";
 
 const BlogPostAuthor = ({ post }: { post: Post }) => {
-  console.log(post)
-  return (
+  // console.log(post)
+  return (  
     <Flex mt="1" gap="2">
       <Avatar src={NabilConveys2} />
       <Box>

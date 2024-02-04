@@ -10,7 +10,7 @@ const CallToAction = () => {
         className="border border-teal-500 rounded-tl-3xl rounded-br-3xl"
         p={4}
       >
-        <Flex direction="column" gap={2} flex="1">
+        <Flex direction="column"  justify="center"gap={2} flex="1" mx={{ base: "8", md: 0}}>
           <Box textAlign="center" fontSize={22}>
             Learn to share Islam with confidence as Prophet Muhammad (peace be
             upon him) instructed

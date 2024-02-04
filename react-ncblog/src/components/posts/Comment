@@ -1,0 +1,149 @@
+import { Flex, Avatar, FormControl, Textarea, Button } from '@chakra-ui/react';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Box } from 'framer-motion';
+import moment from 'moment';
+import React from 'react'
+import { FaHeart } from 'react-icons/fa';
+import { CustomButton } from '../common/CustomButton';
+import { LoginModal } from '../common/LoginModal';
+import ReplyComment from './ReplyComment';
+
+const Comment = () => {
+  return (
+    <>
+      <Flex gap="3" mb="5" mt="5">
+        <Avatar
+          src={comment?.user?.img}
+          size="xs"
+          className="cursor-pointer"
+          referrerPolicy="no-referrer"
+        />
+        <Flex direction="column" gap="1" width={"100%"}>
+          <Box
+            borderRadius={"lg"}
+            bg={colorMode === "light" ? "gray.100" : "gray.700"}
+            p={4}
+          >
+            <Flex gap="3" align="center">
+              <Text size="3" fontWeight={700}>
+                {comment?.user?.firstname + " " + comment?.user?.lastname}
+              </Text>
+              {/* <ElapsedDate date={comment?.createdAt} /> */}
+              <Text size="2" color="gray">
+                {moment(comment.createdAt).fromNow()}
+              </Text>
+            </Flex>
+            { isEditing ? (
+              <form>
+                <FormControl>
+                  <Flex direction="column">
+                    <Textarea
+                      focusBorderColor="teal.500"
+                      placeholder="Add a comment..."
+                      // {...register("text", {
+                      //   required: true,
+                      //   maxLength: {
+                      //     value: 200,
+                      //     message: "comment must be at most 200 characters.",
+                      //   },
+                      // })}
+                    />
+                    <Box color="gray">
+                      {/* {remainingChars} characters left */}
+                    </Box>
+                  </Flex>
+                </FormControl>
+                <Flex align="center">
+                  <CustomButton >
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                  </CustomButton>
+                  <Button onClick={handleCancelEdit}>Cancel</Button>
+                </Flex>
+              </form>
+              ) : (
+              <Text size="2">{comment.text}</Text>
+            )}
+          </Box>
+          { !isEditing && (
+          <Flex gap={2}>
+            {isAuthenticated && (
+              <CustomButton
+                onClick={() => handleReply(comment._id)}
+                text={""}
+              />
+            )}
+            <Flex>
+              {isAuthenticated && (
+                <CustomButton
+                  onClick={() => handleLike(comment._id)}
+                  // text={"Like"}
+                >
+                  <FaHeart
+                    className={`text-gray-400 hover:text-teal-500
+                  ${
+                    isAuthenticated &&
+                    comment.likes.includes(_id) &&
+                    "text-teal-500"
+                  }`}
+                  />
+                </CustomButton>
+              )}
+              {comment.numberOfLikes > 0 && (
+                <Text whiteSpace="nowrap">
+                  {comment.numberOfLikes +
+                    " " +
+                    (comment.numberOfLikes === 1 ? "like" : "likes")}
+                </Text>
+              )}
+            </Flex>
+            {isAuthenticated && (
+              <CustomButton
+                onClick={() => handleReply(comment._id)}
+                text={"Reply"}
+              />
+            )}
+            {isAuthenticated && (_id === comment.user._id || status === "Admin") && (
+              <CustomButton
+                color="teal.200"
+                onClick={() => {
+                  handleEditComment(comment._id, comment.user._id)
+                }}
+                text={"Edit"}
+              />
+            )}
+            {isAuthenticated && _id === comment.user._id && (
+              <CustomButton
+                color="red.400"
+                onClick={() => {
+                  deleteComment.mutate({
+                    commentId: comment._id,
+                    commenterId: comment.user._id,
+                  });
+                }}
+                text={"Delete"}
+              />
+            )}
+          </Flex>
+          )}
+          <LoginModal
+            isOpen={isOpen}
+            onClose={onClose}
+            redirectLink={`/blog/${postId}`}
+          />
+          {replyingTo === comment._id && (
+            <ReplyComment
+              postId={post._id}
+              postSlug={post.slug}
+              replyingTo={comment.user}
+              parentComment={comment._id}
+              onCancelReply={handleCancelReply}
+            />
+          )}
+        </Flex>
+      </Flex>
+    </>
+  )
+}
+
+export default Comment

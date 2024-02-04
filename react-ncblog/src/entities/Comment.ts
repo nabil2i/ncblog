@@ -6,7 +6,7 @@ export default interface Comment {
 }
 
 export interface CommentForm {
-  userId: string;
+  userId?: string;
   text: string;
   parentCommentId?: string;
 }

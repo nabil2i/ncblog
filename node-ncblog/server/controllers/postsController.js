@@ -417,8 +417,12 @@ export const updateUserComment = async (req, res, next) => {
   const commentId = req.params.cid;
 
   const commentOwnerId = req.params.uid
+  const editorId = req.user._id
+  console.log("editor", editorId)
+  console.log("commentowner", commentOwnerId)
+  console.log(req.user.isAdmin)
 
-  if (req.user._id !== commentOwnerId)
+  if (!(req.user.isAdmin || editorId === commentOwnerId))
     return next(makeError(401, "You are not authorized to make this request"));
 
   if (!commentId) return next(makeError(400, "Comment ID required"));

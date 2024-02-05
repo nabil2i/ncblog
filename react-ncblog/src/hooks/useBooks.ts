@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import ms from 'ms';
-import { ArrayData, FetchResponse } from '../services/api-client';
+import { selectCurrentToken } from '../app/features/auth/authSlice';
+import { useAppSelector } from '../app/hooks';
 import Book from '../entities/Book';
+import { ArrayData, FetchResponse } from '../services/api-client';
 import bookService from '../services/bookService';
 import { useBookQueryStore } from '../store';
 import { CACHE_KEY_BOOKS } from './constants';
-import { selectCurrentToken } from '../app/features/auth/authSlice';
-import { useAppSelector } from '../app/hooks';
 
 
 const useBooks = () => { 
@@ -20,9 +20,9 @@ const useBooks = () => {
       params: {
         page: bookQuery.page,
         // search: postQuery.searchText,
-        // _start: (postQuery.page - 1) * postQuery.perPage,
-        // _limit: postQuery.perPage,
-        // perPage: postQuery.perPage,
+        // _start: (postQuery.page - 1) * postQuery.limit,
+        // _limit: postQuery.limit,
+        // limit: postQuery.limit,
       },
  
       headers: {

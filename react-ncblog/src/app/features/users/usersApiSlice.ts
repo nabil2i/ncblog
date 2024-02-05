@@ -9,7 +9,7 @@ interface DataUser {
   current: number;
   prev: number | null;
   next: number | null;
-  perPage: number;
+  limit: number;
   results: User[];
   stats: {
     totlaItems: number,
@@ -38,14 +38,19 @@ const initialState = usersAdapter.getInitialState()
 export const extendedUsersApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getUsers: builder.query({
-      query: () => ({
+      query: (arg) => ({
         url: '/users',
+        params: {
+          limit: arg?.limit,
+          page: arg?.page
+        },
         validationStatus: (
           response: { Status: number; },
           result: { isError: boolean; }) => {
             return response.Status === 200 && !result.isError
-        },
-      }),
+          },
+        }),
+      serializeQueryArgs: ({ queryArgs }) => queryArgs,
       // keepUnusedDataFor: 60,
       transformResponse: (responseData: ServerResponse<DataUser>) => {
         // const normalizedUsers = responseData.data.results.reduce((acc, user) => {
@@ -57,11 +62,11 @@ export const extendedUsersApiSlice = apiSlice.injectEndpoints({
         });
 
         const pagination = {
-          totalCount: responseData.data.count,
-          currentPage: responseData.data.current,
-          prevPage: responseData.data.prev,
-          nextPage: responseData.data.next,
-          perPage: responseData.data.perPage,
+          count: responseData.data.count,
+          current: responseData.data.current,
+          prev: responseData.data.prev,
+          next: responseData.data.next,
+          limit: responseData.data.limit,
         };
 
         const stats = responseData.data.stats

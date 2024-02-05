@@ -18,9 +18,9 @@ const useBlogPost = (slug: string) => {
         slug,
         // page: postQuery.page,
         // search: postQuery.searchText,
-        // _start: (postQuery.page - 1) * postQuery.perPage,
-        // _limit: postQuery.perPage,
-        // perPage: postQuery.perPage,
+        // _start: (postQuery.page - 1) * postQuery.limit,
+        // _limit: postQuery.limit,
+        // limit: postQuery.limit,
       },
       headers: {
         'Content-Type': 'application/json',

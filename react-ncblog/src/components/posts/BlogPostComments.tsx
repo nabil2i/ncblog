@@ -1,4 +1,9 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Avatar,
   Box,
   Button,
@@ -11,10 +16,10 @@ import {
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FaHeart } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
+import { useAppSelector } from "../../app/hooks";
 import Post, { PostComment } from "../../entities/Post";
 import useAuth from "../../hooks/useAuth";
 import useDeleteUserComment from "../../hooks/useDeleteUserComment";
@@ -31,18 +36,17 @@ interface Props {
 const BlogPostComments = ({ post }: Props) => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  // const [commentToDelete, setCommentToDelete] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
   const [theCommentId, setTheCommentId] = useState<string>("");
   const [editedContent, setEditedContent] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const isAuthenticated = useSelector(authSatus);
+  const [isAlertOpen, setAlertOpen] = useState(false);
+  const cancelRef = useRef(null);
+  const isAuthenticated = useAppSelector(authSatus);
   const { _id, status } = useAuth();
-  // console.log(comments)
-  // console.log(postId)
 
-  // console.log("to delete", commentToDelete)
-  // console.log("commenter", commenterId)
+  const onCloseAlert = () => setAlertOpen(false);
+
 
   const handleReply = (commentId: string) => {
     if (isAuthenticated) {
@@ -52,13 +56,16 @@ const BlogPostComments = ({ post }: Props) => {
     }
   };
 
-  const likeComment = useLikeComment(post._id, post.slug, theCommentId);
+  const likeComment = useLikeComment(theCommentId, post.slug, () => {
+    setTheCommentId("");
+  });
 
   const handleLike = async (commentId: string) => {
     if (isAuthenticated) {
+      // console.log("received comment id",commentId);
       setTheCommentId(commentId);
+      // console.log("comment id set", theCommentId);
       likeComment.mutate();
-      setTheCommentId("");
     } else {
       onOpen();
     }
@@ -79,29 +86,26 @@ const BlogPostComments = ({ post }: Props) => {
     }
   };
 
-  const deleteComment = useDeleteUserComment(post._id, post.slug, () => {
-    // console.log("deleted");
-  });
-
   const editComment = useUpdateUserComment(
     post._id,
     post.slug,
     theCommentId,
     userId,
-    () => {setIsEditing(false), setTheCommentId("")}
+    () => {
+      setIsEditing(false);
+      setTheCommentId("");
+    }
+    // (comment: Comment) => {
+    //   setIsEditing(false);
+    //   setTheCommentId("");
+    //   // Update the comment ?
+    //   // onEdit(comment, comment.text)
+    // }
   );
 
-  // const handleDelete = () => {
-  //   if (isAuthenticated) {
-  //     //delete the comment and all its children
-  //     deleteComment.mutate({
-  //       commentId: commentToDelete,
-  //       commenterId,
-  //     });
-  //   } else {
-  //     onOpen();
-  //   }
-  // };
+  const deleteComment = useDeleteUserComment(post._id, post.slug, () => {
+    // console.log("deleted");
+  });
 
   const handleCancelReply = () => setReplyingTo(null);
   const handleCancelEdit = () => {
@@ -155,14 +159,6 @@ const BlogPostComments = ({ post }: Props) => {
                           focusBorderColor="teal.500"
                           value={editedContent}
                           onChange={(e) => setEditedContent(e.target.value)}
-                          // placeholder="Add a comment..."
-                          // {...register("text", {
-                          //   required: true,
-                          //   maxLength: {
-                          //     value: 200,
-                          //     message: "comment must be at most 200 characters.",
-                          //   },
-                          // })}
                         />
                         <Box color="gray">
                           {/* {remainingChars} characters left */}
@@ -218,12 +214,12 @@ const BlogPostComments = ({ post }: Props) => {
                         </Text>
                       )}
                     </Flex>
-                    {isAuthenticated && (
+                    {/* {isAuthenticated && (
                       <CustomButton
                         onClick={() => handleReply(comment._id)}
                         text={"Reply"}
                       />
-                    )}
+                    )} */}
                     {isAuthenticated &&
                       (_id === comment.user._id || status === "Admin") && (
                         <CustomButton
@@ -242,6 +238,7 @@ const BlogPostComments = ({ post }: Props) => {
                       <CustomButton
                         color="red.400"
                         onClick={() => {
+                          // setAlertOpen(true);
                           deleteComment.mutate({
                             commentId: comment._id,
                             commenterId: comment.user._id,
@@ -250,6 +247,54 @@ const BlogPostComments = ({ post }: Props) => {
                         text={"Delete"}
                       />
                     )}
+                    <Box>
+                      <AlertDialog
+                        isOpen={isAlertOpen}
+                        onClose={onCloseAlert}
+                        leastDestructiveRef={cancelRef}
+                      >
+                        <AlertDialogOverlay>
+                          <AlertDialogContent>
+                            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                              Confirm Deletion
+                            </AlertDialogHeader>
+
+                            <AlertDialogBody>
+                              Are you sure you want to delete this comment? This
+                              action cannot be undone.
+                            </AlertDialogBody>
+
+                            <Flex
+                              m="4"
+                              gap="3"
+                              align="center"
+                              justify="flex-start"
+                            >
+                              <Button
+                                variant="soft"
+                                color="gray"
+                                onClick={onCloseAlert}
+                                ref={cancelRef}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                color="red"
+                                onClick={() => {
+                                  onCloseAlert();
+                                  deleteComment.mutate({
+                                    commentId: comment._id,
+                                    commenterId: comment.user._id,
+                                  });
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </Flex>
+                          </AlertDialogContent>
+                        </AlertDialogOverlay>
+                      </AlertDialog>
+                    </Box>
                   </Flex>
                 )}
                 <LoginModal

@@ -1,18 +1,12 @@
-import {
-  Box,
-  Heading,
-  SimpleGrid,
-  Spinner,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import usePosts from "../../hooks/usePosts";
+import { Heading, SimpleGrid, VStack } from "@chakra-ui/react";
+import useLatestPosts from "../../hooks/useLatestPosts";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
 
 const SimplePostGrid = () => {
-  const { data: payload, error, isLoading } = usePosts();
+  const { data: payload, error, isLoading } = useLatestPosts();
+  // const { data: payload, error, isLoading } = usePosts();
   const data = payload?.data;
   // console.log(data);
 
@@ -28,20 +22,20 @@ const SimplePostGrid = () => {
   const skeletons = [1, 2, 3];
   return (
     <>
-      {error && (
+      {/* {error && (
         <Text textAlign={"center"}>
           {" "}
           We encountered a problem. Please retry later.
         </Text>
-      )}
+      )} */}
 
       {!error && (
         <>
-          {data?.count as number > 0 &&
-            <Heading as="h2" size="2xl"> 
-            Latest Posts
-          </Heading> 
-          }
+          {(data?.count as number) > 0 && (
+            <Heading as="h2" size="2xl">
+              Latest Posts
+            </Heading>
+          )}
 
           <VStack paddingBottom={5} align={"center"}>
             <SimpleGrid
@@ -57,7 +51,7 @@ const SimplePostGrid = () => {
                   </BlogPostCardContainer>
                 ))}
 
-              {data?.results.slice(0, 3).map((post) => (
+              {data?.results.map((post) => (
                 <BlogPostCardContainer key={post._id}>
                   <BlogPostCard post={post} />
                 </BlogPostCardContainer>

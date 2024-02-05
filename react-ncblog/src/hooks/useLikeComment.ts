@@ -5,13 +5,14 @@ import APIClient from "../services/api-client";
 import { CACHE_KEY_POSTS } from "./constants";
 
 const useLikeComment = (
-  postId: string,
-  slug: string,
   commentId: string,
+  slug: string,
+  onSuccessLikeComment: () => void
   ) => {
   const apiClient = new APIClient(`/comments/like/${commentId}`);
   const queryClient = useQueryClient();
-  
+  // console.log("commentId from mutation", commentId)
+
   const token = useAppSelector(selectCurrentToken);
   const config = {
     headers: {
@@ -23,6 +24,7 @@ const useLikeComment = (
   const createComment = useMutation({
     mutationFn: (data) => apiClient.put(data, config),
     onSuccess: () => {
+      onSuccessLikeComment();
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS, slug]})
     },
     onError: () => {

@@ -1,13 +1,13 @@
-import { ArrayData } from './../services/api-client';
 import { useQuery } from '@tanstack/react-query';
 import ms from 'ms';
+import { selectCurrentToken } from '../app/features/auth/authSlice';
+import { useAppSelector } from '../app/hooks';
 import Post from '../entities/Post';
 import { FetchResponse } from '../services/api-client';
 import postService from "../services/postService";
 import { useSearchPostQueryStore } from '../store';
+import { ArrayData } from './../services/api-client';
 import { CACHE_KEY_POSTS } from './constants';
-import { selectCurrentToken } from '../app/features/auth/authSlice';
-import { useAppSelector } from '../app/hooks';
 
 
 const useSearchPosts = () => { 
@@ -22,8 +22,8 @@ const useSearchPosts = () => {
         authorId: searchPostQuery.authorId,
         page: searchPostQuery.page,
         category: searchPostQuery.category,
-        // _start: (postQuery.page - 1) * postQuery.perPage,
-        // _limit: postQuery.perPage,
+        // _start: (postQuery.page - 1) * postQuery.limit,
+        // _limit: postQuery.limit,
       },
     headers: {
       'Content-Type': 'application/json',

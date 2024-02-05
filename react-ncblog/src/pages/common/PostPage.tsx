@@ -5,6 +5,7 @@ import usePost from "../../hooks/usePost";
 import useTitle from "../../hooks/useTitle";
 import useBlogPost from "../../hooks/useBlogPost";
 import CallToAction from "../../components/common/CallToAction";
+import LatestPosts from "../../components/posts/LatestPosts";
 
 const PostPage = () => {
   const { slug } = useParams();
@@ -34,6 +35,7 @@ const PostPage = () => {
     <>
       <Box w="full" mx="auto" maxW="800px" p={4}>
         <BlogPostDetails post={post} />
+        <LatestPosts/>
       </Box>
       {/* <Box maxW="4xl" mx="auto" w="full">
         <CallToAction />

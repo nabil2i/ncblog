@@ -24,7 +24,7 @@ export interface ArrayData<S> {
   current: number;
   prev: number;
   next: number;
-  perPage: number;
+  limit: number;
   results: S[];
 }
 
@@ -74,9 +74,10 @@ class APIClient<T, Q> {
         .then((res) => res.data);
   };
 
-  put = (data: Q, config?: AxiosRequestConfig) => {
+  put = (data: Q, config?: AxiosRequestConfig, itemId?: string) => {
+    const url = itemId ? `${this.endpoint}/${itemId}`: `${this.endpoint}`;
     return axiosInstance
-      .put<FetchResponse<T>>(this.endpoint, data, config)
+      .put<FetchResponse<T>>(url, data, config)
       .then((res) => res.data);
   };
 

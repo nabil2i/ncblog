@@ -418,9 +418,9 @@ export const updateUserComment = async (req, res, next) => {
 
   const commentOwnerId = req.params.uid
   const editorId = req.user._id
-  console.log("editor", editorId)
-  console.log("commentowner", commentOwnerId)
-  console.log(req.user.isAdmin)
+  // console.log("editor", editorId)
+  // console.log("commentowner", commentOwnerId)
+  // console.log(req.user.isAdmin)
 
   if (!(req.user.isAdmin || editorId === commentOwnerId))
     return next(makeError(401, "You are not authorized to make this request"));
@@ -458,7 +458,7 @@ export const deleteComment = async (req, res, next) => {
     const comment = await Comment.findById(commentId);
     
     if(!comment) return next(makeError(404, "The comment with given ID is not found"));
-    console.log(comment, "deleting replies")
+    // console.log(comment, "deleting replies")
     
     const parentPost = await Post.findById(comment.post);
 
@@ -500,7 +500,7 @@ export const deleteUserComment = async (req, res, next) => {
   const commentId = req.params.cid;
   const commentOwnerId = req.params.uid
 
-  if (req.user._id !== commentOwnerId)
+  if (!(req.user.isAdmin || req.user._id === commentOwnerId))
     return next(makeError(401, "You are not authorized to make this request"));
 
   if (!commentId) return next(makeError(400, "Comment ID required"));
@@ -509,7 +509,7 @@ export const deleteUserComment = async (req, res, next) => {
     const comment = await Comment.findById(commentId);
     
     if(!comment) return next(makeError(404, "The comment with given ID is not found"));
-    console.log(comment, "deleting replies")
+    // console.log(comment, "deleting replies")
     
     const parentPost = await Post.findById(comment.post);
 
@@ -573,10 +573,10 @@ const deleteReplies = async (replyIds, parentPost) => {
 };
 
 
-// const getCommentsForPost = async (postId) => {
+// export const getCommentsForPost = async (postId) => {
 //   // Fetch comments for the post with hierarchical structure
 //   const comments = await Comment.find({ post: postId })
-//     .sort({ createdAt: 1 }) // Sort in ascending order by creation date
+//     .sort({ createdAt: -1 }) // Sort in ascending order by creation date
 //     .populate('user') // Populate user data as needed
 //     .populate('replies.user') // Populate user data for reply comments
 
@@ -623,7 +623,3 @@ const deleteReplies = async (replyIds, parentPost) => {
 
 //   return flattenedComments;
 // };
-
-// // Usage example
-// const postId = 'your-post-id';
-// const orderedComments = await getCommentsForPost(postId);

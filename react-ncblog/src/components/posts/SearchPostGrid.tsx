@@ -2,17 +2,16 @@ import {
   Box,
   Heading,
   SimpleGrid,
-  Spinner,
   Text,
   useColorMode,
   VStack,
 } from "@chakra-ui/react";
+import useSearchPosts from "../../hooks/useSearchPosts";
 import { useSearchPostQueryStore } from "../../store";
 import PaginationBox from "../common/PaginationBox";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
 import BlogPostCardSkeleton from "./BlogPostCardSkeleton";
-import useSearchPosts from "../../hooks/useSearchPosts";
 
 interface Props {
   paginate: (page: number) => void;
@@ -88,7 +87,7 @@ const SearchPostGrid = ({ paginate }: Props) => {
 
         {data?.count && data.count > 1 ? (
           <PaginationBox
-            itemPerPage={data?.perPage as number}
+            itemPerPage={data?.limit as number}
             totalItems={data?.count as number}
             currentPage={data?.current as number}
             prev={data?.prev as number}

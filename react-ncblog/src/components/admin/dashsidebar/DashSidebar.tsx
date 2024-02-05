@@ -8,9 +8,10 @@ const DashSidebar = () => {
     <>
       <Flex
         direction="column"
-        w="full"
+        // w="full"
         position="sticky"
-        maxW="300px"
+        w="250px"
+        maxW="250px"
         h="full"
         minH="100vh"
         justify="space-between"

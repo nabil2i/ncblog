@@ -27,9 +27,9 @@ const useUserPosts = () => {
         page: userPostQuery.page,
         authorId: _id,
         // search: userPostQuery.searchText,
-        // _start: (userPostQuery.page - 1) * userPostQuery.perPage,
-        // _limit: userPostQuery.perPage,
-        // perPage: userPostQuery.perPage,
+        // _start: (userPostQuery.page - 1) * userPostQuery.limit,
+        // _limit: userPostQuery.limit,
+        // limit: userPostQuery.limit,
       },
     }),
     // getNextPageParam: (lastPage, allPages) => {

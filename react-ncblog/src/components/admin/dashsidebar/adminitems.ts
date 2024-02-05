@@ -48,6 +48,12 @@ const ADMIN_ITEMS: Array<AdminItem> =  [
   },
   {
     type: "link",
+    label: "Comments",
+    href: "/dashboard?tab=comments",
+    icon: FiAlignJustify,
+  },
+  {
+    type: "link",
     label: "Genres",
     href: "/dashboard?tab=genres",
     // icon: FiHome,

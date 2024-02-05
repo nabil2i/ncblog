@@ -28,5 +28,4 @@ deprecated/
 #
 .env
 _postSlice
-postsSlice.ts
 _postSlice.ts

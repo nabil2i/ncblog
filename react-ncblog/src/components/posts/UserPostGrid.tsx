@@ -105,7 +105,7 @@ const UserPostGrid = ({ paginate }: Props) => {
 
         {data?.count && data.count >= 2 && paginate ? (
           <PaginationBox
-            itemPerPage={data?.perPage as number}
+            itemPerPage={data?.limit as number}
             totalItems={data?.count as number}
             currentPage={data?.current as number}
             prev={data?.prev as number}

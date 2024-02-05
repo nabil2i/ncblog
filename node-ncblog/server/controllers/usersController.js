@@ -84,7 +84,7 @@ export const getUser = async (req, res, next) => {
 // @route PUT /users/:id
 // @access Private
 export const updateUser = async (req, res, next) => {
-  const { username, email, isActive, password, img } = req.body
+  const { username, email, isActive, password, img, isAdmin, roles } = req.body
   if (!username && !email && !(firstname && lastname) && !password)
   return next(makeError(400, "All fields must be provided"));
 
@@ -139,6 +139,14 @@ export const updateUser = async (req, res, next) => {
 
   if (img) {
     user.img = img
+  }
+
+  if (isAdmin) {
+    user.isAdmin = isAdmin
+  }
+
+  if (roles) {
+    user.roles = roles
   }
 
   if (password) {

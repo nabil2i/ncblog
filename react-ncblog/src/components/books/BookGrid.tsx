@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Flex, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import useBooks from "../../hooks/useBooks";
 import PaginationBox from "../common/PaginationBox";
 import BookCard from "./BookCard";
@@ -59,7 +59,7 @@ const BookGrid = ({ paginate }: Props) => {
 
         {data?.count && data.count > 1 ? (
           <PaginationBox
-            itemPerPage={data?.perPage as number}
+            itemPerPage={data?.limit as number}
             totalItems={data?.count as number}
             currentPage={data?.current as number}
             prev={data?.prev as number}

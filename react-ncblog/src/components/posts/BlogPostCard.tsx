@@ -2,6 +2,7 @@ import {
   Card,
   CardBody,
   CardFooter,
+  Flex,
   HStack,
   Heading,
   Image,
@@ -45,6 +46,10 @@ const BlogPostCard = ({ post }: Props) => {
                 {item}
               </Tag>
             ))}
+
+            {post.category && (
+              <Tag color={"green.500"}>{post.category}</Tag>
+            )}
           </HStack>
           <Heading as="h3" my="4" fontSize="xl" noOfLines={2}>
             {post.title}
@@ -59,7 +64,9 @@ const BlogPostCard = ({ post }: Props) => {
           
         </CardHeader> */}
         <CardFooter>
-          <BlogPostAuthor post={post} />
+          <Flex>
+            <BlogPostAuthor post={post} />
+          </Flex>
         </CardFooter>
       </Card>
     </Link>

@@ -11,7 +11,7 @@ const useUpdateUserComment = (
   slug: string,
   commentId: string,
   userId: string,
-  onSuccessCreate: () => void,
+  onSuccessCreate: (comment?: Comment) => void,
   ) => {
   const apiClient = new APIClient<Comment, CommentForm>(`/posts/${postId}/comments/${commentId}/${userId}`);
   const queryClient = useQueryClient();
@@ -26,8 +26,8 @@ const useUpdateUserComment = (
   }
   const createComment = useMutation<FetchResponse<Comment>, AxiosError, CommentForm>({
     mutationFn: (data) => apiClient.put(data, config),
-    onSuccess: () => {
-      onSuccessCreate();
+    onSuccess: (responseData: FetchResponse<Comment>) => {
+      onSuccessCreate(responseData.data);
       queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS, slug]})
     },
     onError: () => {

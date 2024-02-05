@@ -57,6 +57,13 @@ const ADMIN_NAV_ITEMS: Array<AdminNavItem> =  [
     icon: FiAlignJustify,
     tab: "users"
   },
+  {
+    type: "link",
+    label: "Comments",
+    href: "/dashboard?tab=comments",
+    icon: FiAlignJustify,
+    tab: "comments"
+  },
   // {
   //   type: "link",
   //   label: "Books",

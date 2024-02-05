@@ -5,6 +5,7 @@ import AccountTab from "../../components/account/AccountTab";
 import DashSidebar from "../../components/admin/dashsidebar/DashSidebar";
 import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
+import DashComments from "./DashComments";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -30,11 +31,15 @@ const DashboardPage = () => {
         >
           <DashSidebar />
         </Box>
-        <Box w="full">
-          {tab === "profile" && <AccountTab />}
-          {tab === "posts" && <DashPosts />}
-          {tab === "users" && <DashUsers />}
-          {!tab && <Box>Dashboard</Box>}
+        <Box w="full" position="relative">
+          {/* <Flex w="full" position="fixed" bg="teal" justify="center" minH="30px"> NabilConveys Blog Admin Panel</Flex> */}
+          <Box maxW="1440px" mx="auto" w="full">
+            {tab === "profile" && <AccountTab />}
+            {tab === "posts" && <DashPosts />}
+            {tab === "users" && <DashUsers />}
+            {tab === "comments" && <DashComments />}
+            {!tab && <Box>Dashboard</Box>}
+          </Box>
         </Box>
       </Flex>
       {/* <Box w="full">

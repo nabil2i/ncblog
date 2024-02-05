@@ -14,28 +14,29 @@ import {
 } from "@chakra-ui/react";
 import { EntityId } from "@reduxjs/toolkit";
 import ms from "ms";
-import { useGetUsersQuery } from "../../../app/features/users/usersApiSlice";
+import { useGetCommentsQuery } from "../../../app/features/comments/commentsApiSlice";
 import {
   paginate,
   selectCurrentPage,
   selectLimit,
-} from "../../../app/features/users/usersSlice";
+} from "../../../app/features/comments/commentsSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import PaginationBox from "../../common/PaginationBox";
-import UserRow from "./UserRow";
+import CommentRow from "./CommentRow";
 
-const UsersTable = () => {
+const CommentsTable = () => {
   const page = Number(useAppSelector(selectCurrentPage));
   const limit = Number(useAppSelector(selectLimit));
   const dispatch = useAppDispatch();
+  // const [startIndex, setStartIndex] = useState<number>(0);
   const {
     data,
     isError,
     isLoading,
     isSuccess,
     // error,
-  } = useGetUsersQuery({
-    data: "usersList",
+  } = useGetCommentsQuery({
+    data: "commentsList",
     limit,
     // startIndex,
     page,
@@ -43,24 +44,38 @@ const UsersTable = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
-  const users = data?.users;
+  const comments = data?.comments;
   const pagination = data?.pagination;
+  // console.log(data);
+  // const existingComments = useGetCommentsQuery({
+  //   data: "commentsList", // Make sure to use the same data key
+  //   limit: commentLimit,
+  //   startIndex,
+  // });
 
   const showOnLargeScreen = useBreakpointValue({ base: false, lg: true });
   // const pagination = data?.pagination;
-  // console.log(users)
+  // console.log(comments)
 
-  // const users = useSelector(selectAllUsers);
-  // const isLoading = useSelector(getUsersStatus);
-  // const error = useSelector(getUsersError);
+  // const comments = useSelector(selectAllComments);
+  // const isLoading = useSelector(getCommentsStatus);
+  // const error = useSelector(getCommentsError);
 
   // const dispatch = useDispatch<AppDispatch>();
   // useEffect(() => {
-  //   dispatch(getUsers());
+  //   dispatch(getComments());
   // }, []);
 
-  // const { data: payload, error, isLoading } = useUsers();
+  // const { data: payload, error, isLoading } = useComments();
   // const data = payload?.data;
+
+  // const [fetchNextUsers] = useGetUsersLazyQuery();
+
+  // const nextUrl = data.nextUrl;
+
+  // const getNextData = () => {
+  //   fetchNextUsers({ nexturl })
+  // }
 
   if (isLoading)
     return (
@@ -74,13 +89,24 @@ const UsersTable = () => {
   if (isError) return <Text> We encountered a problem.</Text>;
 
   if (isSuccess) {
-    if (users) {
-      const { ids } = users;
+    if (comments) {
+      // const newCommentIds = comments.ids ?? [];
+      // const existingCommentIds = existingComments.data?.comments?.ids ?? [];
+      // const combinedIds = [...existingCommentIds, ...newCommentIds];
+      // const uniqueIds = Array.from(new Set(combinedIds));
+
+      // const tableContent = uniqueIds.length ? (
+      //   uniqueIds.map((commentId: EntityId) => (
+      //     <CommentRow key={commentId} commentId={commentId} />
+      //   ))
+      const { ids } = comments;
       const tableContent = ids?.length ? (
-        ids.map((userId: EntityId) => <UserRow key={userId} userId={userId} />)
+        ids.map((commentId: EntityId) => (
+          <CommentRow key={commentId} commentId={commentId} />
+        ))
       ) : (
         <Tr>
-          <Td colSpan={6} textAlign="center"> Nothing to show</Td>
+          <Td colSpan={5} textAlign="center"> Nothing to show</Td>
         </Tr>
         // <Table.Row>
         //   <Table.Cell colSpan={2} className="text-center">
@@ -95,22 +121,22 @@ const UsersTable = () => {
             <Table>
               <Thead>
                 <Tr>
-                  <Th colSpan={6} fontSize={{ base: "sm", md: "md" }}></Th>
+                  <Th colSpan={5} fontSize={{ base: "sm", md: "md" }}></Th>
                 </Tr>
                 <Tr>
-                  <Th></Th>
-                  <Th>Name</Th>
+                  <Th>Date Updated</Th>
+                  <Th>Comment Content</Th>
                   {showOnLargeScreen && (
                     <>
-                      <Th>Date created</Th>
-                      <Th>Email</Th>
-                      <Th>Roles</Th>
+                      <Th>Number Of Llikes</Th>
+                      {/* <Th>PostId</Th>
+                  <Th>UserId</Th> */}
+                      <Th>User name</Th>
                     </>
                   )}
                   <Th>Actions</Th>
                 </Tr>
               </Thead>
-
               <Tbody>{tableContent}</Tbody>
             </Table>
           </TableContainer>
@@ -128,22 +154,15 @@ const UsersTable = () => {
           ) : (
             <></>
           )}
-          {/* <Table.Root>
-          <Table.Header>
-            <Table.Row>
-              <Table.Cell colSpan={2} className="text-center">
-              
-              </Table.Cell>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>{tableContent}</Table.Body>
-        </Table.Root>
-         */}
+          {/* {startIndex < data.stats.totlaItems && (
+              <Button onClick={() => setStartIndex(startIndex + commentLimit)}>
+                Show More
+              </Button>
+            )}  */}
         </>
       );
     }
   }
 };
 
-export default UsersTable;
+export default CommentsTable;

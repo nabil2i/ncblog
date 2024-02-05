@@ -9,7 +9,7 @@ import usePostQueryStore from '../store';
 import { CACHE_KEY_POSTS } from './constants';
 
 
-const usePosts = () => { 
+const useLatestPosts = () => { 
   const postQuery = usePostQueryStore(s => s.postQuery);
   const token = useAppSelector(selectCurrentToken);
   
@@ -17,11 +17,10 @@ const usePosts = () => {
     queryKey: [CACHE_KEY_POSTS, postQuery],
     queryFn: () => postService.getAll({
       params: {
-        page: postQuery.page,
+        limit: 3,
         // search: postQuery.searchText,
         // _start: (postQuery.page - 1) * postQuery.limit,
         // _limit: postQuery.limit,
-        // limit: postQuery.limit,
       },
       headers: {
         'Content-Type': 'application/json',
@@ -37,4 +36,4 @@ const usePosts = () => {
   });
 };
 
-export default usePosts;
+export default useLatestPosts;

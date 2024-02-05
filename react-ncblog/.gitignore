@@ -29,5 +29,4 @@ dist-ssr
 *.local
 
 MobileNav
-postsSlice.ts
 aPostsSlice.ts

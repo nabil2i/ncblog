@@ -6,12 +6,10 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  Show,
-  Hide,
   Td,
   Tr,
-  useColorMode,
   useBreakpointValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import { EntityId } from "@reduxjs/toolkit";
 import dateFormat from "dateformat";
@@ -35,7 +33,7 @@ const UserRow = ({ userId }: { userId: EntityId }) => {
   const { colorMode } = useColorMode();
   const roles = user?.roles ? user.roles : ["No role"];
   const role = getRole(roles);
-  console.log(user?.img);
+  // console.log(user?.img);
   // console.log(role);
 
   // // NORMAL SELECTOR
@@ -56,14 +54,18 @@ const UserRow = ({ userId }: { userId: EntityId }) => {
           </Td>
           <Td whiteSpace={"nowrap"}>
             <Flex direction="column" gap={2}>
-              <Box fontSize={{ base: "20", lg: "initial"}}>{user.firstname + " " + user.lastname}</Box>
+              <Box fontSize={{ base: "20", lg: "initial" }}>
+                {user.firstname + " " + user.lastname}
+              </Box>
               <Flex display={{ lg: "none" }} direction="column" gap={3}>
-                <Box color="gray">{dateFormat(user.createdAt, "mmm dS, yyyy")}</Box>
-                <Box >{user.email}</Box>
+                <Box color="gray">
+                  {dateFormat(user.createdAt, "mmm dS, yyyy")}
+                </Box>
+                <Box>{user.email}</Box>
               </Flex>
             </Flex>
           </Td>
-          {showOnLargeScreen &&
+          {showOnLargeScreen && (
             <>
               <Td whiteSpace={"nowrap"}>
                 {dateFormat(user.createdAt, "mmm dS, yyyy")}
@@ -73,7 +75,7 @@ const UserRow = ({ userId }: { userId: EntityId }) => {
                 <RoleBadge role={role} />
               </Td>
             </>
-          }
+          )}
           <Td>
             <Flex align="center" gap={4}>
               <Menu>
@@ -82,7 +84,7 @@ const UserRow = ({ userId }: { userId: EntityId }) => {
                   icon={<MdOutlineMoreHoriz />}
                 ></MenuButton>
                 <MenuList>
-                  {/* <EditUserAction userId={user._id as string} /> */}
+                  {/* <ChangeRolesAction user={user} /> */}
                   <DeleteUserAction userId={user._id as string} />
                 </MenuList>
               </Menu>

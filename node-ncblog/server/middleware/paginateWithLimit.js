@@ -4,7 +4,6 @@ import { makeError } from "../utils/responses.js";
 const paginate = (model) => {
   return async (req, res, next) => {
     try {
-      let page = parseInt(req.query.page) || 1;
       let limit = parseInt(req.query.limit)  || 10;
       let searchTerm = req.query.search;
       let authorId = req.query.authorId;
@@ -13,7 +12,7 @@ const paginate = (model) => {
       let category = req.query.category;
       let slug = req.query.slug;
   
-      const startIndex = (page - 1) * limit;
+      const startIndex = parseInt(req.query.startIndex) || 0;
       const matchConditions = {};
   
       if (searchTerm) {
@@ -209,19 +208,19 @@ const paginate = (model) => {
 
 
       const count = result[0].totalCount[0] ? result[0].totalCount[0].count : 0;
-      const totalPages = Math.ceil(count / limit);
+      // const totalPages = Math.ceil(count / limit);
       const results = result[0].items;
 
-      const prevPage = page >= 2 ? parseInt(page) - 1 : null;
-      const nextPage = parseInt(page) + 1;
-      const hasNextPage = nextPage <= totalPages;
+      // const prevPage = page >= 2 ? parseInt(page) - 1 : null;
+      // const nextPage = parseInt(page) + 1;
+      // const hasNextPage = nextPage <= totalPages;
 
       const data = {
         count,
-        current: page,
-        prev: prevPage,
-        next: hasNextPage ? nextPage : null,
-        limit: limit,
+        // current: page,
+        // prev: prevPage,
+        // next: hasNextPage ? nextPage : null,
+        // limit: limit,
         results,
         stats
       }

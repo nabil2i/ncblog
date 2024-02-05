@@ -9,7 +9,7 @@ interface DataPost {
   current: number;
   prev: number | null;
   next: number | null;
-  perPage: number;
+  limit: number;
   results: Post[];
   stats: {
     totlaItems: number,
@@ -38,14 +38,19 @@ const initialState = postsAdapter.getInitialState()
 export const extendedPostsApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getPosts: builder.query({
-      query: () => ({
+      query: (arg) => ({
         url: '/posts',
+        params: {
+          limit: arg?.limit,
+          page: arg?.page
+        },
         validationStatus: (
           response: { Status: number; },
           result: { isError: boolean; }) => {
             return response.Status === 200 && !result.isError
         },
       }),
+      serializeQueryArgs: ({ queryArgs }) => queryArgs,
       // keepUnusedDataFor: 60,
       transformResponse: (responseData: ServerResponse<DataPost>) => {
         const normalizedPosts = responseData.data.results.map(post => {
@@ -53,11 +58,11 @@ export const extendedPostsApiSlice = apiSlice.injectEndpoints({
         });
 
         const pagination = {
-          totalCount: responseData.data.count,
-          currentPage: responseData.data.current,
-          prevPage: responseData.data.prev,
-          nextPage: responseData.data.next,
-          perPage: responseData.data.perPage,
+          count: responseData.data.count,
+          current: responseData.data.current,
+          prev: responseData.data.prev,
+          next: responseData.data.next,
+          limit: responseData.data.limit,
         };
 
         const stats = responseData.data.stats

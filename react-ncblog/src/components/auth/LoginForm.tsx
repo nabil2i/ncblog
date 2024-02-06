@@ -110,6 +110,7 @@ const LoginForm = () => {
       const err = error as AuthErrorResponse;
       // console.log("error", error);
       // console.log("error", err);
+      console.log(err.data)
       setError(err.data.message);
     }
 

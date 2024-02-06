@@ -4,7 +4,9 @@ import { AuthServerResponse } from './../features/auth/authSlice';
 import type { RootState } from './../store';
 
 
-export const baseUrl = import.meta.env.DEV ? import.meta.env.VITE_API_BASE_URL : process.env.API_BASE_URL;
+export const baseUrl = import.meta.env.DEV
+  ? import.meta.env.VITE_API_BASE_URL
+  : import.meta.env.VITE_API_BASE_URL;
 
 const baseQuery = fetchBaseQuery({
   baseUrl,

@@ -1,8 +1,10 @@
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, useColorMode } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import onereason from "../../assets/images/onereason.png"
+import onereason from "../../assets/images/onereason.png";
 
 const CallToActionOneReason = () => {
+  const { colorMode } = useColorMode();
+
   return (
     <>
       <Flex
@@ -12,7 +14,7 @@ const CallToActionOneReason = () => {
         p={4}
       >
         <Flex bg="black" p={4} borderRadius={"20px"} flex="1" justify="center">
-          <Image objectFit="cover" src={onereason} minH="200px"/>
+          <Image objectFit="cover" src={onereason} minH="200px" />
         </Flex>
         <Flex
           direction="column"
@@ -30,10 +32,12 @@ const CallToActionOneReason = () => {
             to={"https://onereason.org/"}
             target="_blank"
             bg="teal"
+            color="white"
+            _hover={{ bg: colorMode === "light" ? "gray" : "gray" }}
             borderRadius={"full"}
             fontFamily={"Nunito"}
             fontSize={25}
-            color="white"
+            // color="white"
           >
             Find out more on OneReason.org
           </Button>

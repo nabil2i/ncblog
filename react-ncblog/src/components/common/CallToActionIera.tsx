@@ -1,8 +1,10 @@
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, useColorMode } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import iera from "../../assets/images/iera.png"
+import iera from "../../assets/images/iera.png";
 
 const CallToActionIera = () => {
+  const { colorMode } = useColorMode();
+
   return (
     <>
       <Flex
@@ -11,7 +13,13 @@ const CallToActionIera = () => {
         className="border border-teal-500 rounded-tl-3xl rounded-br-3xl"
         p={4}
       >
-        <Flex direction="column"  justify="center"gap={2} flex="1" mx={{ base: "8", md: 0}}>
+        <Flex
+          direction="column"
+          justify="center"
+          gap={2}
+          flex="1"
+          mx={{ base: "8", md: 0 }}
+        >
           <Box textAlign="center" fontSize={22}>
             Learn to share Islam with confidence as Prophet Muhammad (peace be
             upon him) instructed
@@ -22,6 +30,7 @@ const CallToActionIera = () => {
             target="_blank"
             bg="teal"
             color="white"
+            _hover={{ bg: colorMode === "light" ? "gray" : "gray" }}
             borderRadius={"full"}
             fontFamily={"Nunito"}
             fontSize={25}
@@ -32,7 +41,8 @@ const CallToActionIera = () => {
         <Flex bg="white" p={4} borderRadius={"20px"} flex="1" justify="center">
           <Image
             objectFit="cover"
-            src={iera
+            src={
+              iera
               // "https://iera.org/wp-content/uploads/2023/02/iERA-Share-Islam-white-01.png"
             }
           />

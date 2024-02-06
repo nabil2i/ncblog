@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
 import image4 from "../../assets/images/hero-image.webp";
 import image2 from "../../assets/images/landscape.jpeg";
 import image1 from "../../assets/images/login.jpg";
@@ -21,24 +21,27 @@ const HomePage = () => {
   ];
 
   return (
-    <Box as="main">
+    // <Box as="main">
+    <Box>
       <Grid
-        templateAreas={{ base: `"main"`, lg: `"main"` }}
-        templateColumns={{ base: "1fr", lg: "1fr" }}
+        templateAreas={{ base: `"main"` }}
+        templateColumns={{ base: "1fr" }}
       >
         <GridItem area="main">
-          <Box>
-            <HeroSection />
-            <Box as="section">
-              <ImageCarousel images={images} />
-            </Box>
-            <Box maxW="1440px" mx="auto" w="full">
-              <LatestPosts />
+          <Box as="section">
+            <ImageCarousel images={images} />
+          </Box>
+          <VStack as="section">
+            <Box mx="auto" maxW="1440px">
+              <HeroSection />
+              <Box maxW="1440px" mx="auto" w="full">
+                <LatestPosts />
+              </Box>
               <Box m={5}>
                 <CallToActionOneReason />
               </Box>
             </Box>
-          </Box>
+          </VStack>
         </GridItem>
       </Grid>
     </Box>

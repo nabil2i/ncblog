@@ -1,5 +1,5 @@
 import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
-import CallToAction from "../../components/common/CallToActionIera";
+import CallToActionIera from "../../components/common/CallToActionIera";
 import PageHeading from "../../components/common/PageHeading";
 import PostGrid from "../../components/posts/PostGrid";
 import useTitle from "../../hooks/useTitle";
@@ -26,7 +26,7 @@ const BlogPage = () => {
                 }}
               />
               <Box m={5}>
-                <CallToAction />
+                <CallToActionIera />
               </Box>
             </Box>
           </VStack>

@@ -13,12 +13,12 @@ import BookPage from "./pages/common/BookPage";
 import BooksPage from "./pages/common/BooksPage";
 import EditPostPage from "./pages/common/EditPostPage";
 import ErrorPage from "./pages/common/ErrorPage";
-import HomePage from "./pages/common/HomePage";
 import LoginPage from "./pages/common/LoginPage";
 import MyPostsPage from "./pages/common/MyPostsPage";
 import PostPage from "./pages/common/PostPage";
 import SearchPage from "./pages/common/SearchPage";
 import SignUpPage from "./pages/common/SignUpPage";
+import HomePage from "./pages/common/HomePage";
 
 const router = createBrowserRouter([
   {

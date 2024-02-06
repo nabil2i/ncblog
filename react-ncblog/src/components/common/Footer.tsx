@@ -13,7 +13,7 @@ import SOCIAL_ITEMS from "./socialitems";
 const Footer = () => {
   const emailAddress = import.meta.env.DEV
     ? import.meta.env.VITE_REACT_APP_EMAIL_ADDRESS
-    : process.env.VITE_REACT_APP_EMAIL_ADDRESS;
+    : import.meta.env.VITE_REACT_APP_EMAIL_ADDRESS;
 
   return (
     <Box as="footer" background={"black"} color="white" w="100%">
@@ -54,6 +54,7 @@ const Footer = () => {
               <Link href="/">Home</Link>
               <Link href="/blog">Blog</Link>
               <Link href="/books">Books</Link>
+              <Link href="/about">About</Link>
               {/* <Link href="#">Conditions of Use</Link>
               <Link href="#">Privacy & Policy</Link> */}
             </Flex>

@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Image, useColorMode } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import onereason from "../../assets/images/onereason.png";
+import onereason from "../../assets/images/onereason.jpg";
 
 const CallToActionOneReason = () => {
   const { colorMode } = useColorMode();
@@ -12,8 +12,9 @@ const CallToActionOneReason = () => {
         direction={{ base: "column", md: "row" }}
         className="border border-teal-500 rounded-tl-3xl rounded-br-3xl"
         p={4}
+        w="full"
       >
-        <Flex bg="white" p={4} borderRadius={"20px"} flex="1" justify="center">
+        <Flex bg="white" p={4} borderRadius={"20px"} flex="1" justify="center" w="full">
           <Image objectFit="cover" src={onereason} />
         </Flex>
         <Flex

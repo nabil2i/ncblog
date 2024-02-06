@@ -24,7 +24,7 @@ const AboutPage = () => {
               {/* <Box w="full">
                     <Image src={ncblog} boxSize={"500px"} />
                   </Box> */}
-              <Flex direction="column" mt={5} gap={4}>
+              <Flex direction="column" mt={5} gap={4} p={5}>
                 <Flex direction="column" gap={4}>
                   <Heading textAlign="center">Nabil Conveys Blog</Heading>
                   <Text>

@@ -1,11 +1,10 @@
-import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import image4 from "../../assets/images/hero-image.webp";
 import image2 from "../../assets/images/landscape.jpeg";
 import image1 from "../../assets/images/login.jpg";
 import image5 from "../../assets/images/pof.jpg";
 import image3 from "../../assets/images/pol.jpg";
 import CallToActionOneReason from "../../components/common/CallToActionOneReason";
-import HeroSection from "../../components/common/HeroSection";
 import ImageCarousel from "../../components/common/ImageCarousel";
 import LatestPosts from "../../components/posts/LatestPosts";
 
@@ -32,13 +31,13 @@ const HomePage = () => {
           <Box as="section">
             <ImageCarousel images={images} />
           </Box>
-          
-              <Box maxW="1440px" mx="auto" w="full">
-                <LatestPosts />
-              </Box>
-              <Flex m={5}>
-                <CallToActionOneReason />
-              </Flex>
+
+          <Box maxW="1440px" mx="auto" w="full">
+            <LatestPosts />
+          </Box>
+          <Flex m={5}>
+            <CallToActionOneReason />
+          </Flex>
         </GridItem>
       </Grid>
     </Box>

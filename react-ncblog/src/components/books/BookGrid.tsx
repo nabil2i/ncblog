@@ -23,7 +23,7 @@ const BookGrid = ({ paginate }: Props) => {
   //     </Box>
   //   );
 
-  const skeletons = [1, 2, 3, 4];
+  const skeletons = [1, 2, 3];
 
   return (
     <>
@@ -44,7 +44,7 @@ const BookGrid = ({ paginate }: Props) => {
           <Flex justify="center" align="center">
             {isLoading &&
               skeletons.map((skeleton) => (
-                <Flex maxW="1440px" mx="auto">
+                <Flex maxW="800" mx="auto">
                   <BookCardContainer key={skeleton}>
                     <BookCardSkeleton />{" "}
                   </BookCardContainer>

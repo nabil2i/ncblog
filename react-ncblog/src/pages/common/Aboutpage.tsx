@@ -45,9 +45,9 @@ const AboutPage = () => {
                   <Box>See you soon</Box>
                 </Flex>
               </Flex>
-            </Box>
-            <Box m={5}>
-              <CallToActionOneReason />
+              <Flex m={5}>
+                <CallToActionOneReason />
+              </Flex>
             </Box>
           </VStack>
         </GridItem>

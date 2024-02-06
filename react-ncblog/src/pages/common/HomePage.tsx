@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
 import image4 from "../../assets/images/hero-image.webp";
 import image2 from "../../assets/images/landscape.jpeg";
 import image1 from "../../assets/images/login.jpg";
@@ -37,9 +37,9 @@ const HomePage = () => {
               <Box maxW="1440px" mx="auto" w="full">
                 <LatestPosts />
               </Box>
-              <Box m={5}>
+              <Flex m={5}>
                 <CallToActionOneReason />
-              </Box>
+              </Flex>
             </Box>
           </VStack>
         </GridItem>

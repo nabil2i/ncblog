@@ -8,7 +8,7 @@ import { getAuth } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 const getEnvVariable = (key: string) => {
-  const variable = import.meta.env.DEV ? import.meta.env[`VITE_${key}`] : process.env[key];
+  const variable = import.meta.env.DEV ? import.meta.env[`VITE_${key}`] : import.meta.env[key];
   if (!variable) {
     throw new Error(`Environment variable ${key} is missing.`);
   }

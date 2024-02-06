@@ -26,12 +26,6 @@ const firebaseConfig = {
   storageBucket,
   messagingSenderId,
   appId,
-  // apiKey: "AIzaSyDQWWDM2uCTBF6h7VvCw9f_uRfA8YdW4G0",
-  // authDomain: "ncblog-b9e81.firebaseapp.com",
-  // projectId: "ncblog-b9e81",
-  // storageBucket: "ncblog-b9e81.appspot.com",
-  // messagingSenderId: "117161873166",
-  // appId: "1:117161873166:web:fd0177a65f57cc17d1d15f"
 };
 
 // Initialize Firebase

@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "app.js",
     "dev": "nodemon app.js",
-    "build": "npm install && npm install --prefix react-ncblog && npm run build --prefix react-ncblog"
+    "build": ""
   },
   "keywords": [],
   "author": "",

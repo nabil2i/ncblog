@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "npm run dev --prefix node-ncblog",
     "client": "npm run dev --prefix react-ncblog",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm install --prefix node-ncblog && npm install --prefix react-ncblog && npm run build --prefix react-ncblog"
   },
   "author": "",
   "license": "ISC",

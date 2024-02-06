@@ -15,7 +15,7 @@ export const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    // required: true,
+    required: true,
     unique: true,
     minlength: 5,
     maxlength: 255
@@ -28,13 +28,17 @@ export const userSchema = new mongoose.Schema({
   },
   roles: [{
     type: String,
-    default: "Normal"
+    default: "Standard"
   }],
   isActive: {
     type: Boolean,
     default: true
   },
   isAdmin: {
+    type: Boolean,
+    default: false
+  },
+  isSuperAdmin: {
     type: Boolean,
     default: false
   },

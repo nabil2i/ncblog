@@ -12,7 +12,7 @@ interface DataPost {
   limit: number;
   results: Post[];
   stats: {
-    totlaItems: number,
+    totalItems: number,
     lastMonthItems: number,
   }
 }

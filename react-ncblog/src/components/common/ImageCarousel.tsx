@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Box } from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 import "react-slideshow-image/dist/styles.css";
@@ -16,15 +17,24 @@ const ImageCarousel = ({ images }: Props) => {
     setCurrentIndex(newIndex);
   };
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     const isLastImage = currentIndex === images.length - 1;
     const newIndex = isLastImage ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
-  };
+  }, [currentIndex, images.length]);
 
   const goToImage = (index: number) => {
     setCurrentIndex(index);
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      nextImage();
+    }, 7000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [currentIndex, nextImage]);
 
   // const settings = {
   //   dots: true,
@@ -36,7 +46,7 @@ const ImageCarousel = ({ images }: Props) => {
 
   return (
     <>
-      <div className="h-[250px] md:h-[780px] w-full m-auto py-8 relative group">
+      <div className="h-[450px] md:h-[880px] w-full m-auto py-8 relative group">
         <div
           style={{ backgroundImage: `url(${images[currentIndex].url})` }}
           className="w-full h-full rounded-0 bg-center bg-cover duration-500 bg-no-repeat"
@@ -64,6 +74,7 @@ const ImageCarousel = ({ images }: Props) => {
             </div>
           ))}
         </div>
+        <Box bg="rgba(0, 0, 0, 0.35)" p="2" rounded="md" position="absolute" top="10" left="4" color="white">Scroll down to see the latest posts</Box>
       </div>
     </>
   );

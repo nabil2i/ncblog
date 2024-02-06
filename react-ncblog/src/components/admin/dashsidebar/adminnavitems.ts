@@ -1,6 +1,8 @@
 import { ElementType } from "react";
-import { FiAlignJustify } from "react-icons/fi";
-
+import { BsFilePost } from "react-icons/bs";
+import { FiAlignJustify, FiMessageSquare, FiSave, FiUsers } from "react-icons/fi";
+import { HiAnnotation, HiOutlineAnnotation, HiOutlineDocument, HiOutlineDocumentText, HiOutlineUserGroup } from "react-icons/hi";
+import { MdOutlineDashboard } from "react-icons/md";
 
 export interface AdminNavItem {
   type: string;
@@ -40,28 +42,30 @@ const ADMIN_NAV_ITEMS: Array<AdminNavItem> =  [
   {
     type: "link",
     label: "Dashboard",
-    href: "/dashboard",
-    icon: FiAlignJustify,
+    href: "/dashboard?tab=dash",
+    icon: MdOutlineDashboard,
+    tab: "dash"
   },
   {
     type: "link",
     label: "Posts",
     href: "/dashboard?tab=posts",
-    icon: FiAlignJustify,
+    icon: HiOutlineDocumentText,
     tab: "posts"
   },
   {
     type: "link",
     label: "Users",
     href: "/dashboard?tab=users",
-    icon: FiAlignJustify,
+    icon: HiOutlineUserGroup,
     tab: "users"
   },
   {
     type: "link",
     label: "Comments",
     href: "/dashboard?tab=comments",
-    icon: FiAlignJustify,
+    icon: HiOutlineAnnotation,
+    // icon: FiMessageSquare,
     tab: "comments"
   },
   // {

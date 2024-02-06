@@ -1,7 +1,8 @@
 import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import iera from "../../assets/images/iera.png"
 
-const CallToAction = () => {
+const CallToActionIera = () => {
   return (
     <>
       <Flex
@@ -27,11 +28,11 @@ const CallToAction = () => {
             iERA Online Training
           </Button>
         </Flex>
-        <Flex bg="black" p={4} borderRadius={"20px"} flex="1">
+        <Flex bg="white" p={4} borderRadius={"20px"} flex="1" justify="center">
           <Image
             objectFit="cover"
-            src={
-              "https://iera.org/wp-content/uploads/2023/02/iERA-Share-Islam-white-01.png"
+            src={iera
+              // "https://iera.org/wp-content/uploads/2023/02/iERA-Share-Islam-white-01.png"
             }
           />
         </Flex>
@@ -40,4 +41,4 @@ const CallToAction = () => {
   );
 };
 
-export default CallToAction;
+export default CallToActionIera;

@@ -1,8 +1,11 @@
 import { Flex, List, ListItem } from "@chakra-ui/react";
+import useAuth from "../../../hooks/useAuth";
 import DesktopNavItem from "./DesktopNavItem";
 import NAV_ITEMS from "./navitems";
 
 const DesktopNav = () => {
+  const { status } = useAuth();
+
   return (
     <Flex
       direction={"row"}
@@ -23,6 +26,15 @@ const DesktopNav = () => {
             <DesktopNavItem navItem={navItem} />
           </ListItem>
         ))}
+        {/* {status === "Admin" &&
+        <ListItem
+            flex={1}
+            mx={4}
+            listStyleType="none"
+            // display="inline-block"
+          >
+            Dashboard
+          </ListItem>} */}
       </List>
       {/* {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}

@@ -14,7 +14,7 @@ import { authSatus } from "../../app/features/auth/authSlice";
 import { useAppSelector } from "../../app/hooks";
 import Post from "../../entities/Post";
 import { useSearchPostQueryStore } from "../../store";
-import CallToAction from "../common/CallToAction";
+import CallToAction from "../common/CallToActionIera";
 import { CustomButton } from "../common/CustomButton";
 import { LoginModal } from "../common/LoginModal";
 import AddComment from "./AddComment";
@@ -75,7 +75,10 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
       <Divider orientation="horizontal" color="gray.500" my="4" />
 
       <Flex justify="center">
-        <CustomButton onClick={handleComment} text={"(" + post.totalCommentsCount + ")" + "Comment"}>
+        <CustomButton
+          onClick={handleComment}
+          text={"(" + post.totalCommentsCount + ")" + "Comment"}
+        >
           <FontAwesomeIcon icon={faPaperPlane} />
         </CustomButton>
         <LoginModal

@@ -7,7 +7,7 @@ const Headline = () => {
         {" "}
         Welcome to NabilConveys
       </Heading>
-      <Text m="0" mt="1">
+      <Text m="0" mt="1" fontSize="xl">
         {" "}
         Conveying the message of God Almighty to the pondering souls.
       </Text>

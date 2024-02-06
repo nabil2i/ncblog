@@ -6,7 +6,7 @@ const Dashcomments = () => {
   return (
     <Flex direction="column" maxW="1440px" p={4}>
       <Flex justify="space-between" align="center">
-        <Box>comments</Box>
+        <Box as="h1" fontSize={50}>Comments</Box>
         {/* <AddUserButton /> */}
       </Flex>
       <Box>

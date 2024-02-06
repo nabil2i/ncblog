@@ -1,9 +1,9 @@
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { TagDescription } from "@reduxjs/toolkit/query";
+import ms from "ms";
 import Comment from "../../../entities/Comment";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from '../../store';
-import ms from "ms";
 
 interface DataComment {
   count: number;
@@ -13,7 +13,7 @@ interface DataComment {
   limit: number;
   results: Comment[];
   stats: {
-    totlaItems: number,
+    totalItems: number,
     lastMonthItems: number,
   }
 }

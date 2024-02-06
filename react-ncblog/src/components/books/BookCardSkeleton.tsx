@@ -1,26 +1,32 @@
 import {
+  Box,
   Card,
   CardBody,
   CardFooter,
-  HStack,
+  Flex,
+  Skeleton,
   SkeletonText,
 } from "@chakra-ui/react";
 
 const BookCardSkeleton = () => {
   return (
-    <Card height="100%" borderRadius="4">
+    <Card textAlign="left" height="full" borderRadius="4">
       <CardBody>
-        <SkeletonText height="200px" borderRadius="xl" mx="auto" />
-        <HStack mt="5" spacing="3">
-          <SkeletonText width={2} />
-          <SkeletonText width={2} />
-        </HStack>
+        <Skeleton mt={3} mb={3} height="200px" borderRadius="xl" mx="auto" />
+
+        <Box mb={8}>
+          <SkeletonText height="40px" />
+        </Box>
+
         <SkeletonText />
         <SkeletonText />
+
+        <Flex justify="space-between" align="center" mt={4}>
+          <SkeletonText height="1" width="150px" />
+          <SkeletonText height="1" width="20" />
+        </Flex>
       </CardBody>
-      <CardFooter>
-        <SkeletonText />
-      </CardFooter>
+      <CardFooter></CardFooter>
     </Card>
   );
 };

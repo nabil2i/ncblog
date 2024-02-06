@@ -6,6 +6,7 @@ import DashSidebar from "../../components/admin/dashsidebar/DashSidebar";
 import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
 import DashComments from "./DashComments";
+import DashBoard from "./DashBoard";
 
 const DashboardPage = () => {
   const location = useLocation();
@@ -21,6 +22,8 @@ const DashboardPage = () => {
       setTab(tabFromUrl);
     }
   }, [location.search]);
+  // console.log(tab);
+
   return (
     <>
       <Flex direction={{ base: "column", lg: "row" }}>
@@ -38,7 +41,7 @@ const DashboardPage = () => {
             {tab === "posts" && <DashPosts />}
             {tab === "users" && <DashUsers />}
             {tab === "comments" && <DashComments />}
-            {!tab && <Box>Dashboard</Box>}
+            {tab === "dash" && <DashBoard />}
           </Box>
         </Box>
       </Flex>

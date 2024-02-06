@@ -1,9 +1,9 @@
 import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
+import CallToAction from "../../components/common/CallToActionIera";
 import PageHeading from "../../components/common/PageHeading";
 import PostGrid from "../../components/posts/PostGrid";
 import useTitle from "../../hooks/useTitle";
 import usePostQueryStore from "../../store";
-import CallToAction from "../../components/common/CallToAction";
 
 const BlogPage = () => {
   const setPage = usePostQueryStore((s) => s.setPage);
@@ -24,7 +24,7 @@ const BlogPage = () => {
                   if (page === null) return null;
                   setPage(page);
                 }}
-                />
+              />
               <Box m={5}>
                 <CallToAction />
               </Box>

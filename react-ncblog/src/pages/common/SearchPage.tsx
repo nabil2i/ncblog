@@ -1,9 +1,9 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
+import CallToAction from "../../components/common/CallToActionIera";
 import PageHeading from "../../components/common/PageHeading";
 import SearchPostGrid from "../../components/posts/SearchPostGrid";
 import useTitle from "../../hooks/useTitle";
 import { useSearchPostQueryStore } from "../../store";
-import CallToAction from "../../components/common/CallToAction";
 
 const SearchPage = () => {
   const setPage = useSearchPostQueryStore((s) => s.setPage);

@@ -21,13 +21,14 @@ const DashboardNavItem = ({ item }: Props) => {
       setTab(tabFromUrl);
     }
   }, [location.search])
-  
+  // console.log(tab, "from dashboard navigation")
   
   const { state, dispatch } = useAdminLayout();
   const onCloseMain = state.onCloseMain
   const navSize = state.navSize;
 
-  const isActive = tab === item.tab;
+  const isActive = tab === item.tab || (!tab && location.pathname === 'dashboard');
+  // console.log(isActive)
   // const isActive = item.href && location.pathname.startsWith(item.href);
 
   const { label } = item;

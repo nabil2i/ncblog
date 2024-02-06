@@ -12,7 +12,7 @@ interface DataUser {
   limit: number;
   results: User[];
   stats: {
-    totlaItems: number,
+    totalItems: number,
     lastMonthItems: number,
   }
 }

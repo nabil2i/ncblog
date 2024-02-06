@@ -17,8 +17,8 @@ const ADMIN_ITEMS: Array<AdminItem> =  [
   {
     type: "link",
     label: "Dashboard",
-    href: "/dashboard",
-    icon: FiAlignJustify,
+    href: "/dashboard?tab=dash",
+    // icon: FiAlignJustify,
   },
   {
     type: "link",
@@ -30,7 +30,7 @@ const ADMIN_ITEMS: Array<AdminItem> =  [
     type: "link",
     label: "Posts",
     href: "/dashboard?tab=posts",
-    icon: FiAlignJustify,
+    // icon: FiAlignJustify,
     // children: [
     //   {
     //     type: "link",
@@ -50,20 +50,20 @@ const ADMIN_ITEMS: Array<AdminItem> =  [
     type: "link",
     label: "Comments",
     href: "/dashboard?tab=comments",
-    icon: FiAlignJustify,
+    // icon: FiAlignJustify,
   },
-  {
-    type: "link",
-    label: "Genres",
-    href: "/dashboard?tab=genres",
-    // icon: FiHome,
-  },
-  {
-    type: "link",
-    label: "Categories",
-    href: "/dashboard?tab=categories",
-    // icon: FiHome,
-  },
+  // {
+  //   type: "link",
+  //   label: "Genres",
+  //   href: "/dashboard?tab=genres",
+  //   // icon: FiHome,
+  // },
+  // {
+  //   type: "link",
+  //   label: "Categories",
+  //   href: "/dashboard?tab=categories",
+  //   // icon: FiHome,
+  // },
   {
     type: "link",
     label: "Books",
@@ -74,7 +74,7 @@ const ADMIN_ITEMS: Array<AdminItem> =  [
     type: "link",
     label: "Account",
     href: "/dashboard?tab=profile",
-    icon: FiAlignJustify,
+    // icon: FiAlignJustify,
   },
   // {
   //   type: "header",

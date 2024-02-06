@@ -6,7 +6,7 @@ const DashPosts = () => {
   return (
     <Flex direction="column" maxW="1440px" p={4}>
       <Flex justify="space-between" align="center">
-        <Box>Posts</Box>
+        <Box as="h1" fontSize={50}>Posts</Box>
         <AddPostButton />
       </Flex>
       <Box>

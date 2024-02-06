@@ -106,7 +106,10 @@ const CommentsTable = () => {
         ))
       ) : (
         <Tr>
-          <Td colSpan={5} textAlign="center"> Nothing to show</Td>
+          <Td colSpan={5} textAlign="center">
+            {" "}
+            Nothing to show
+          </Td>
         </Tr>
         // <Table.Row>
         //   <Table.Cell colSpan={2} className="text-center">
@@ -154,7 +157,7 @@ const CommentsTable = () => {
           ) : (
             <></>
           )}
-          {/* {startIndex < data.stats.totlaItems && (
+          {/* {startIndex < data.stats.totalItems && (
               <Button onClick={() => setStartIndex(startIndex + commentLimit)}>
                 Show More
               </Button>

@@ -4,11 +4,13 @@ const RoleBadge = ({ role }: { role: string }) => {
   const therole = role.toLowerCase();
   // console.log(role);
   const color =
-    therole === "admin"
+    therole === "superadmin"
+      ? "teal"
+      : therole === "admin"
       ? "green"
       : therole === "editor"
       ? "purple"
-      : therole === "regular"
+      : therole === "standard"
       ? "default"
       : "red";
   return (
@@ -20,7 +22,7 @@ const RoleBadge = ({ role }: { role: string }) => {
         px={2}
         borderRadius={"4px"}
       >
-        {role}
+        {role || "No role"}
       </Badge>
     </>
   );

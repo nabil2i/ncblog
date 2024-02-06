@@ -1,15 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import Prefetch from "./app/features/Prefetch";
 import RequireAuth from "./components/common/RequireAuth";
-import AdminLayout from "./pages/_layouts/AdminLayout";
 import Layout from "./pages/_layouts/Layout";
 import AdminAddPostPage from "./pages/admin/AdminAddPostPage";
-import Dashboard from "./pages/admin/AdminDashboard";
-import AdminErrorPage from "./pages/admin/AdminErrorPage";
 import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
-import PostsPage from "./pages/admin/AdminPostsPage";
 import DashboardPage from "./pages/admin/DashboardPage";
+import AboutPage from "./pages/common/Aboutpage";
 import AccountPage from "./pages/common/AccountPage";
 import AddPostPage from "./pages/common/AddPostPage";
 import BlogPage from "./pages/common/BlogPage";
@@ -73,6 +69,10 @@ const router = createBrowserRouter([
                   { path: ":id", element: <BookPage /> },
                 ],
               },
+              {
+                path: "about",
+                element: <AboutPage />,
+              },
               // {
               //   path: "account",
               //   element: <RequireAuth />,
@@ -114,42 +114,42 @@ const router = createBrowserRouter([
     ],
   },
 
-  {
-    path: "admin/",
-    element: <AdminLayout></AdminLayout>,
-    errorElement: <AdminErrorPage />,
-    children: [
-      {
-        path: "",
-        // element: <PersistLogin />,
-        children: [
-          {
-            path: "",
-            element: <RequireAuth allowedRoles={["Admin"]} />,
-            children: [
-              {
-                path: "",
-                element: <Prefetch />,
-                children: [
-                  { index: true, element: <Dashboard /> },
-                  { path: "", element: <Dashboard /> },
-                  {
-                    path: "posts",
-                    children: [
-                      { index: true, element: <PostsPage /> },
-                      { path: ":id", element: <AdminPostPage /> },
-                      { path: "edit/:id", element: <AdminPostEditPage /> },
-                      { path: "new", element: <AdminAddPostPage /> },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   path: "admin/",
+  //   element: <AdminLayout></AdminLayout>,
+  //   errorElement: <AdminErrorPage />,
+  //   children: [
+  //     {
+  //       path: "",
+  //       // element: <PersistLogin />,
+  //       children: [
+  //         {
+  //           path: "",
+  //           element: <RequireAuth allowedRoles={["Admin"]} />,
+  //           children: [
+  //             {
+  //               path: "",
+  //               element: <Prefetch />,
+  //               children: [
+  //                 { index: true, element: <Dashboard /> },
+  //                 { path: "", element: <Dashboard /> },
+  //                 {
+  //                   path: "posts",
+  //                   children: [
+  //                     { index: true, element: <PostsPage /> },
+  //                     { path: ":id", element: <AdminPostPage /> },
+  //                     { path: "edit/:id", element: <AdminPostEditPage /> },
+  //                     { path: "new", element: <AdminAddPostPage /> },
+  //                   ],
+  //                 },
+  //               ],
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 ]);
 
 export default router;

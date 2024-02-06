@@ -1,13 +1,13 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-import HeroSection from "../../components/common/HeroSection";
-import ImageCarousel from "../../components/common/ImageCarousel";
-import LatestPosts from "../../components/posts/LatestPosts";
 import image4 from "../../assets/images/hero-image.webp";
 import image2 from "../../assets/images/landscape.jpeg";
 import image1 from "../../assets/images/login.jpg";
 import image5 from "../../assets/images/pof.jpg";
 import image3 from "../../assets/images/pol.jpg";
-import CallToAction from "../../components/common/CallToAction";
+import CallToActionOneReason from "../../components/common/CallToActionOneReason";
+import HeroSection from "../../components/common/HeroSection";
+import ImageCarousel from "../../components/common/ImageCarousel";
+import LatestPosts from "../../components/posts/LatestPosts";
 
 const HomePage = () => {
   // const setPage = usePostQueryStore((s) => s.setPage);
@@ -35,7 +35,7 @@ const HomePage = () => {
             <Box maxW="1440px" mx="auto" w="full">
               <LatestPosts />
               <Box m={5}>
-                <CallToAction />
+                <CallToActionOneReason />
               </Box>
             </Box>
           </Box>

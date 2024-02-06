@@ -1,11 +1,9 @@
-import { Box, Flex, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import BlogPostDetails from "../../components/posts/BlogPostDetails";
+import LatestPosts from "../../components/posts/LatestPosts";
 import usePost from "../../hooks/usePost";
 import useTitle from "../../hooks/useTitle";
-import useBlogPost from "../../hooks/useBlogPost";
-import CallToAction from "../../components/common/CallToAction";
-import LatestPosts from "../../components/posts/LatestPosts";
 
 const PostPage = () => {
   const { slug } = useParams();
@@ -14,7 +12,7 @@ const PostPage = () => {
   const { data: payload, isLoading, error } = usePost(slug as string);
   // console.log(payload)
   // console.log(payload);
-  const post = payload?.data
+  const post = payload?.data;
   // const post = payload?.data?.results[0];
   // console.log(post)
 
@@ -24,7 +22,7 @@ const PostPage = () => {
     return (
       <Flex justify="center" align="center" minH="100vh">
         {/* <VStack marginTop={2}> */}
-          <Spinner />
+        <Spinner />
         {/* </VStack> */}
       </Flex>
     );
@@ -35,7 +33,7 @@ const PostPage = () => {
     <>
       <Box w="full" mx="auto" maxW="800px" p={4}>
         <BlogPostDetails post={post} />
-        <LatestPosts/>
+        <LatestPosts />
       </Box>
       {/* <Box maxW="4xl" mx="auto" w="full">
         <CallToAction />

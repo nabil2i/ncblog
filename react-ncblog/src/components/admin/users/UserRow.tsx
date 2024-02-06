@@ -62,6 +62,7 @@ const UserRow = ({ userId }: { userId: EntityId }) => {
                   {dateFormat(user.createdAt, "mmm dS, yyyy")}
                 </Box>
                 <Box>{user.email}</Box>
+                <RoleBadge role={role} />
               </Flex>
             </Flex>
           </Td>

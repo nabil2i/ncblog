@@ -117,7 +117,7 @@ const Profile = () => {
               <MenuItem onClick={() => navigate("/account/")}>Account</MenuItem>
               {isAdmin && (
                 <>
-                  <MenuItem onClick={() => navigate("/dashboard")}>
+                  <MenuItem onClick={() => navigate("/dashboard?tab=dash")}>
                     Dashboard
                   </MenuItem>
                 </>

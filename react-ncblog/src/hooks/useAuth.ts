@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { selectCurrentToken } from '../app/features/auth/authSlice'
+import { selectCurrentToken } from '../app/features/auth/authSlice';
 import { useAppSelector } from '../app/hooks';
 
 interface TokenPayload {
@@ -15,9 +15,10 @@ interface TokenPayload {
 }
 const useAuth = () => {
   const token = useAppSelector(selectCurrentToken)
+  let isSuperAdmin = false
   let isAdmin = false
   let isEditor = false
-  let isRegular = false
+  let isStandard = false
   let status = ""
 
   if (token) {
@@ -25,13 +26,15 @@ const useAuth = () => {
 
     const { username, roles, _id, firstname, lastname, isActive, email, img } = decoded
 
+    isSuperAdmin = roles.includes('SuperAdmin' || 'superadmin')
     isAdmin = roles.includes('Admin' || 'admin')
     isEditor = roles.includes('Editor' || 'editor')
-    isRegular = roles.includes('Regular' || 'regular')
+    isStandard = roles.includes('Standard' || 'standard')
 
-    if (isRegular) status = "Regular"
+    if (isStandard) status = "Standard"
     if (isEditor) status = "Editor"
     if (isAdmin) status = "Admin"
+    if (isSuperAdmin) status = "SuperAdmin"
 
     return  {
       _id,
@@ -42,7 +45,8 @@ const useAuth = () => {
       isActive,
       roles,
       img,
-      isAdmin, isEditor, isRegular, status
+      isSuperAdmin,
+      isAdmin, isEditor, isStandard, status
     }
   }
 
@@ -54,7 +58,8 @@ const useAuth = () => {
     email: '',
     roles: [],
     img: '',
-    isAdmin, isEditor, isRegular, status
+    isSuperAdmin,
+    isAdmin, isEditor, isStandard, status
   }
 }
 

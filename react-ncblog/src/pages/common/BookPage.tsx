@@ -1,10 +1,11 @@
 import { Box, Grid, GridItem, Spinner, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import BookDetails from "../../components/books/BookDetails";
+import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 import PageHeading from "../../components/common/PageHeading";
 import useBook from "../../hooks/useBook";
 import useTitle from "../../hooks/useTitle";
-import CallToAction from "../../components/common/CallToAction";
+import BookCardSkeleton from "../../components/books/BookCardSkeleton";
 
 const BookPage = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const BookPage = () => {
             <Box maxW="1440px" mx="auto">
               <BookDetails book={book} />
               <Box m={5}>
-                <CallToAction />
+                <CallToActionOneReason />
               </Box>
             </Box>
           </Box>

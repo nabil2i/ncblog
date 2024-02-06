@@ -153,7 +153,7 @@ const BlogPostComments = ({ post }: Props) => {
                     </Text>
                   </Flex>
                   {isEditing && theCommentId === comment._id ? (
-                    <Box>
+                    <Flex direction="column" gap={4}>
                       <Flex direction="column">
                         <Textarea
                           focusBorderColor="teal.500"
@@ -177,7 +177,7 @@ const BlogPostComments = ({ post }: Props) => {
                         </CustomButton>
                         <Button onClick={handleCancelEdit}>Cancel</Button>
                       </Flex>
-                    </Box>
+                    </Flex>
                   ) : (
                     <Text size="2">{comment.text}</Text>
                   )}

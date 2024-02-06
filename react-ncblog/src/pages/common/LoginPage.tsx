@@ -54,12 +54,14 @@ const LoginPage = () => {
                   bottom={0}
                   w="full"
                   p={2}
+                  borderBottomLeftRadius={{ lg: 16 }}
                   // left="50%"
                   // transform="translateX(-50%)"
                   // borderTopLeftRadius={16 }
-                  // borderBottomLeftRadius={16}
                 >
-                  <Text fontSize={25}>NabilConveys Blog</Text>
+                  <Text fontSize={25} color="white">
+                    NabilConveys Blog
+                  </Text>
                 </Box>
               </Show>
             </Flex>

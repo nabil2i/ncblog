@@ -1,7 +1,5 @@
 import { ElementType } from "react";
-import { BsFilePost } from "react-icons/bs";
-import { FiAlignJustify, FiMessageSquare, FiSave, FiUsers } from "react-icons/fi";
-import { HiAnnotation, HiOutlineAnnotation, HiOutlineDocument, HiOutlineDocumentText, HiOutlineUserGroup } from "react-icons/hi";
+import { HiOutlineAnnotation, HiOutlineDocumentText, HiOutlineUserGroup } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
 
 export interface AdminNavItem {

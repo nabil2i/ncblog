@@ -4,8 +4,6 @@ import CallToAction from "../../components/common/CallToActionIera";
 import PageHeading from "../../components/common/PageHeading";
 import useTitle from "../../hooks/useTitle";
 import { useBookQueryStore } from "../../store";
-import BookCardSkeleton from "../../components/books/BookCardSkeleton";
-import BookCardContainer from "../../components/books/BookCardContainer";
 
 const BooksPage = () => {
   const setPage = useBookQueryStore((s) => s.setPage);
@@ -13,7 +11,6 @@ const BooksPage = () => {
 
   return (
     <>
-
       <Box>
         <Grid
           templateAreas={{ base: `"main"` }}

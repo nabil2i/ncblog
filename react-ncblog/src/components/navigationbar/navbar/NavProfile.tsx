@@ -10,7 +10,6 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
-  Spinner,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 // import useAuth from "../useAuth";
@@ -34,8 +33,7 @@ const Profile = () => {
   // const toast = useToast();
   const isAuthenticated = useSelector(authSatus);
   // const dispatch = useDispatch();
-  const [sendLogout, { isError, isSuccess }] =
-    useSendLogoutMutation();
+  const [sendLogout, { isError, isSuccess }] = useSendLogoutMutation();
   const { isAdmin, isEditor, firstname, lastname, img } = useAuth();
   // const [setPersist] = usePersist();
   const navigate = useNavigate();
@@ -78,10 +76,7 @@ const Profile = () => {
               cursor={"pointer"}
               minW={0}
             >
-              <Avatar
-                size={"sm"}
-                src={img}
-              />
+              <Avatar size={"sm"} src={img} />
               <Icon
                 as={ChevronDownIcon}
                 // transition={"all .25s ease-in-out"}
@@ -93,10 +88,7 @@ const Profile = () => {
             <MenuList alignItems={"center"}>
               <br />
               <Center>
-                <Avatar
-                  size={"xl"}
-                  src={img}
-                />
+                <Avatar size={"xl"} src={img} />
               </Center>
               <br />
               <Center>

@@ -5,7 +5,6 @@ import CallToActionOneReason from "../../components/common/CallToActionOneReason
 import PageHeading from "../../components/common/PageHeading";
 import useBook from "../../hooks/useBook";
 import useTitle from "../../hooks/useTitle";
-import BookCardSkeleton from "../../components/books/BookCardSkeleton";
 
 const BookPage = () => {
   const { id } = useParams();

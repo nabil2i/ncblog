@@ -41,15 +41,15 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
     //   localStorage.setItem("userData", JSON.stringify(action.userData));
     //   return { ...state, };
     // }
-    case "UPDATE_USER_ACCOUNT": {
-      const updatedUser = { ...state.user, ...action.updatedUserData };
-      const newState = {
-        user: updatedUser,
-        isAuthenticated: true,
-      };
-      localStorage.setItem("userData", JSON.stringify(newState));
-      return newState;
-    }
+    // case "UPDATE_USER_ACCOUNT": {
+    //   const updatedUser = { ...state.user, ...action.updatedUserData };
+    //   const newState = {
+    //     user: updatedUser,
+    //     isAuthenticated: true,
+    //   };
+    //   localStorage.setItem("userData", JSON.stringify(newState));
+    //   return newState;
+    // }
     case "LOGOUT": {
       const newState = {
         user: null,

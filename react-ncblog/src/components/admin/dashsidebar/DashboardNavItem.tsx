@@ -1,8 +1,8 @@
 import { Box, Flex, Heading, ListIcon, Text } from "@chakra-ui/react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAdminLayout from "../useAdminLayout";
 import { AdminNavItem } from "./adminnavitems";
-import { useEffect, useState } from "react";
 
 interface Props {
   item: AdminNavItem;
@@ -12,35 +12,34 @@ const DashboardNavItem = ({ item }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [tab, setTab] = useState("");
-  
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const tabFromUrl = urlParams.get('tab');
+    const tabFromUrl = urlParams.get("tab");
     // console.log(tabFromUrl);
     if (tabFromUrl) {
       setTab(tabFromUrl);
     }
-  }, [location.search])
+  }, [location.search]);
   // console.log(tab, "from dashboard navigation")
-  
-  const { state, dispatch } = useAdminLayout();
-  const onCloseMain = state.onCloseMain
-  const navSize = state.navSize;
 
-  const isActive = tab === item.tab || (!tab && location.pathname === 'dashboard');
+  const { state } = useAdminLayout();
+  const onCloseMain = state.onCloseMain;
+
+  const isActive =
+    tab === item.tab || (!tab && location.pathname === "dashboard");
   // console.log(isActive)
   // const isActive = item.href && location.pathname.startsWith(item.href);
 
   const { label } = item;
 
-  
   if (item.type === "link") {
     const { icon, href } = item;
-    
+
     const onClick = () => {
       navigate(`${href}`);
       onCloseMain();
-    }
+    };
     return (
       <Box
       // display="flex"
@@ -72,9 +71,9 @@ const DashboardNavItem = ({ item }: Props) => {
           </Flex>
 
           {/* {navSize === "large" && ( */}
-            <Flex>
-              <Text>{label}</Text>
-            </Flex>
+          <Flex>
+            <Text>{label}</Text>
+          </Flex>
           {/* )} */}
         </Box>
       </Box>

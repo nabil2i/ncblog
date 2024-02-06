@@ -7,7 +7,6 @@ import {
   Button,
   Flex,
   Input,
-  useToast,
 } from "@chakra-ui/react";
 import {
   getDownloadURL,
@@ -24,20 +23,19 @@ import { app } from "../../../firebase";
 
 interface Props {
   setFieldValue: UseFormSetValue<PostFormData>;
-  postImage?: string
+  postImage?: string;
 }
 
 const AddPostImage = ({ setFieldValue, postImage }: Props) => {
   const [canSubmit, setCanSubmit] = useState(false);
-  const toast = useToast();
-  const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const [, setFileUrl] = useState<string | null>(null);
   const [fileRealUrl, setFileRealUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [fileUploadProgress, setFileUploadProgress] = useState<number | null>(
     null
   );
   const [fileUploadError, setFileUploadError] = useState<string | null>(null);
-  const [fileUploading, setFileUploading] = useState<boolean>(false);
+  const [, setFileUploading] = useState<boolean>(false);
 
   // console.log(fileUploadProgress, fileUploadError);
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +143,7 @@ const AddPostImage = ({ setFieldValue, postImage }: Props) => {
           )}
         </Button>
       </Flex>
-      {((fileRealUrl !== null)) && (
+      {fileRealUrl !== null && (
         <Box>
           {/* Render your Box with the image here */}
           <Box>
@@ -153,7 +151,7 @@ const AddPostImage = ({ setFieldValue, postImage }: Props) => {
           </Box>
         </Box>
       )}
-      {((fileRealUrl === null) && (postImage !== null)) && (
+      {fileRealUrl === null && postImage !== null && (
         <Box>
           {/* Render your Box with the image here */}
           <Box>

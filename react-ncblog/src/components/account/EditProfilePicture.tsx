@@ -74,7 +74,8 @@ const EditProfilePicture = () => {
         icon: <EditIcon />,
       });
     },
-    (errorMessage) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    () => {
       // console.log(errorMessage);
 
       toast({

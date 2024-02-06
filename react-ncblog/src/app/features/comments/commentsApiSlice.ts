@@ -1,6 +1,5 @@
 import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { TagDescription } from "@reduxjs/toolkit/query";
-import ms from "ms";
 import Comment from "../../../entities/Comment";
 import { apiSlice } from "../../api/apiSlice";
 import { RootState } from '../../store';
@@ -83,7 +82,7 @@ export const extendedCommentsApiSlice = apiSlice.injectEndpoints({
       //   }
       //   return newItems;
       // },
-      keepUnusedDataFor: ms('24h'),
+      // keepUnusedDataFor: ms('24h'),
       transformResponse: (responseData: ServerResponse<DataComment>) => {
         // const normalizedComments = responseData.data.results.reduce((acc, comment) => {
         //   acc[comment._id || ''] = { ...comment, id: comment._id || '' };

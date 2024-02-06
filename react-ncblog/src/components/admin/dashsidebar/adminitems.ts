@@ -1,5 +1,4 @@
 import { ElementType } from "react";
-import { FiAlignJustify } from "react-icons/fi";
 
 
 export interface AdminItem {

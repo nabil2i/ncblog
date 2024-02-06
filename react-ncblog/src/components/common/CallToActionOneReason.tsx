@@ -29,7 +29,7 @@ const CallToActionOnereason = () => {
           </Box>
           <Button
             as={Link}
-            to={"https://training.iera.org/"}
+            to={"https://onereason.org/"}
             target="_blank"
             bg="teal"
             color="white"

@@ -1,9 +1,10 @@
 import { Box, Grid, GridItem, VStack } from "@chakra-ui/react";
 import BookGrid from "../../components/books/BookGrid";
-import CallToAction from "../../components/common/CallToActionIera";
+import CallToActionIera from "../../components/common/CallToActionIera";
 import PageHeading from "../../components/common/PageHeading";
 import useTitle from "../../hooks/useTitle";
 import { useBookQueryStore } from "../../store";
+import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 
 const BooksPage = () => {
   const setPage = useBookQueryStore((s) => s.setPage);
@@ -27,7 +28,8 @@ const BooksPage = () => {
                   }}
                 />
                 <Box m={5}>
-                  <CallToAction />
+                  <CallToActionIera />
+                  <CallToActionOneReason />
                 </Box>
               </Box>
             </VStack>

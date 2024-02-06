@@ -18,7 +18,7 @@ const Layout = () => {
 
   return (
     <ScrollToTop>
-      <Flex direction="column" minHeight="100vh">
+      <Flex direction="column" >
         <NavBar />
         <Box as="main" flex="1" marginTop={{ base: "60px" }} minHeight="100vh">
           <Outlet />

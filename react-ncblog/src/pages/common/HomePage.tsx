@@ -32,16 +32,13 @@ const HomePage = () => {
           <Box as="section">
             <ImageCarousel images={images} />
           </Box>
-          <VStack as="section">
-            <Box mx="auto" maxW="1440px">
+          
               <Box maxW="1440px" mx="auto" w="full">
                 <LatestPosts />
               </Box>
               <Flex m={5}>
                 <CallToActionOneReason />
               </Flex>
-            </Box>
-          </VStack>
         </GridItem>
       </Grid>
     </Box>

@@ -8,6 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import CallToActionOneReason from "../../components/common/CallToActionOneReason";
+import CallToActionIera from "../../components/common/CallToActionIera";
 
 const AboutPage = () => {
   return (
@@ -46,7 +47,8 @@ const AboutPage = () => {
                 </Flex>
               </Flex>
               <Flex m={5}>
-                <CallToActionOneReason />
+                {/* <CallToActionOneReason /> */}
+                <CallToActionIera />
               </Flex>
             </Box>
           </VStack>

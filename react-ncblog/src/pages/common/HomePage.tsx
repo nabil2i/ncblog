@@ -4,7 +4,8 @@ import image2 from "../../assets/images/landscape.jpeg";
 import image1 from "../../assets/images/login.jpg";
 import image5 from "../../assets/images/pof.jpg";
 import image3 from "../../assets/images/pol.jpg";
-import CallToActionOneReason from "../../components/common/CallToActionOneReason";
+import CallToActionIera from "../../components/common/CallToActionIera";
+import HeroSection from "../../components/common/HeroSection";
 import ImageCarousel from "../../components/common/ImageCarousel";
 import LatestPosts from "../../components/posts/LatestPosts";
 
@@ -27,7 +28,7 @@ const HomePage = () => {
         templateColumns={{ base: "1fr" }}
       >
         <GridItem area="main">
-          {/* <HeroSection /> */}
+          <HeroSection />
           <Box as="section">
             <ImageCarousel images={images} />
           </Box>
@@ -36,7 +37,8 @@ const HomePage = () => {
             <LatestPosts />
           </Box>
           <Flex m={5}>
-            <CallToActionOneReason />
+            {/* <CallToActionOneReason /> */}
+            <CallToActionIera />
           </Flex>
         </GridItem>
       </Grid>

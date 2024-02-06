@@ -13,8 +13,8 @@ const CallToActionOneReason = () => {
         className="border border-teal-500 rounded-tl-3xl rounded-br-3xl"
         p={4}
       >
-        <Flex bg="black" p={4} borderRadius={"20px"} flex="1" justify="center">
-          <Image objectFit="cover" src={onereason} minH="200px" />
+        <Flex bg="white" p={4} borderRadius={"20px"} flex="1" justify="center">
+          <Image objectFit="cover" src={onereason} />
         </Flex>
         <Flex
           direction="column"

@@ -4,10 +4,10 @@ import image2 from "../../assets/images/landscape.jpeg";
 import image1 from "../../assets/images/login.jpg";
 import image5 from "../../assets/images/pof.jpg";
 import image3 from "../../assets/images/pol.jpg";
+import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 import HeroSection from "../../components/common/HeroSection";
 import ImageCarousel from "../../components/common/ImageCarousel";
 import LatestPosts from "../../components/posts/LatestPosts";
-// import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 
 const HomePage = () => {
   // const setPage = usePostQueryStore((s) => s.setPage);
@@ -35,7 +35,7 @@ const HomePage = () => {
             <Box maxW="1440px" mx="auto" w="full">
               <LatestPosts />
               <Box m={5}>
-                {/* <CallToActionOneReason /> */}
+                <CallToActionOneReason />
               </Box>
             </Box>
           </Box>

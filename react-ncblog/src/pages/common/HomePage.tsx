@@ -4,7 +4,7 @@ import image2 from "../../assets/images/landscape.jpeg";
 import image1 from "../../assets/images/login.jpg";
 import image5 from "../../assets/images/pof.jpg";
 import image3 from "../../assets/images/pol.jpg";
-import CallToActionIera from "../../components/common/CallToActionIera";
+import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 import HeroSection from "../../components/common/HeroSection";
 import ImageCarousel from "../../components/common/ImageCarousel";
 import LatestPosts from "../../components/posts/LatestPosts";
@@ -37,8 +37,8 @@ const HomePage = () => {
             <LatestPosts />
           </Box>
           <Flex m={5}>
-            {/* <CallToActionOneReason /> */}
-            <CallToActionIera />
+            <CallToActionOneReason />
+            {/* <CallToActionIera /> */}
           </Flex>
         </GridItem>
       </Grid>

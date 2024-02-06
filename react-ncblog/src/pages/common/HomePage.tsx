@@ -28,12 +28,12 @@ const HomePage = () => {
         templateColumns={{ base: "1fr" }}
       >
         <GridItem area="main">
+          <HeroSection />
           <Box as="section">
             <ImageCarousel images={images} />
           </Box>
           <VStack as="section">
             <Box mx="auto" maxW="1440px">
-              <HeroSection />
               <Box maxW="1440px" mx="auto" w="full">
                 <LatestPosts />
               </Box>

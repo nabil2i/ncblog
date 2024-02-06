@@ -1,6 +1,6 @@
 import { Box, Flex, Grid, GridItem, VStack } from "@chakra-ui/react";
 import PageHeading from "../../components/common/PageHeading";
-import UserPostGrid from "../../components/posts/UserPostGrid";
+import UserPostGrid from "../../components/posts/UserPostTable";
 import useTitle from "../../hooks/useTitle";
 import { useUserPostQueryStore } from "../../store";
 import AddPostButton from "../../components/posts/AddPostButton";

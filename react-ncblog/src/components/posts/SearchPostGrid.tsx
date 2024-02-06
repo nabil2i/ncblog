@@ -73,9 +73,11 @@ const SearchPostGrid = ({ paginate }: Props) => {
         >
           {isLoading &&
             skeletons.map((skeleton) => (
-              <BlogPostCardContainer key={skeleton}>
-                <BlogPostCardSkeleton />{" "}
-              </BlogPostCardContainer>
+              <VStack>
+                <BlogPostCardContainer key={skeleton}>
+                  <BlogPostCardSkeleton />{" "}
+                </BlogPostCardContainer>
+              </VStack>
             ))}
 
           {data?.results.map((post) => (

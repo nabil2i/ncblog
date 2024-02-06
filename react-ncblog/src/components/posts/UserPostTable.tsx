@@ -21,7 +21,7 @@ interface Props {
   paginate?: (page: number) => void;
 }
 
-const UserPostGrid = ({ paginate }: Props) => {
+const UserPostTable = ({ paginate }: Props) => {
   const { data: payload, error, isLoading } = useUserPosts();
   const data = payload?.data;
   // console.log(data);
@@ -126,4 +126,4 @@ const UserPostGrid = ({ paginate }: Props) => {
   );
 };
 
-export default UserPostGrid;
+export default UserPostTable;

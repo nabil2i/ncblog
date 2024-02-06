@@ -6,6 +6,7 @@ import { logEvents } from "./server/middleware/logger.js"
 import routes from "./server/startup/routes.js" 
 import { connectToDb } from"./server/startup/db.js";
 
+
 dotenv.config()
 
 const app = express()
@@ -38,6 +39,9 @@ mongoose.connection.on('error', (err) => {
   logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'mongoErrLog.log');
   reject(err);
 });
+
+// const __dirname = path.resolve();
+
 
 const server = app.listen(port, () => {
   console.log(`App listening on port ${port}...`)

@@ -14,17 +14,19 @@ import books from "../routes/booksRoutes.js";
 import categories from "../routes/categoriesRoutes.js";
 import error from "../routes/error.js";
 import genres from "../routes/genresRoutes.js";
-import home from "../routes/home.js";
+// import home from "../routes/home.js";
 import posts from "../routes/postsRoutes.js";
 import users from "../routes/usersRoutes.js";
 import comments from "../routes/commentsRoutes.js";
 import sessionOptions from "./sessionOptions.js";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+// import { fileURLToPath } from 'url';
+// import { dirname } from 'path';
+
+
 export default function(app) {
 
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
+  // const __filename = fileURLToPath(import.meta.url);
+  // const __dirname = dirname(__filename);
 
   app.use(cors(corsOptions));
   app.use(logger);
@@ -34,14 +36,16 @@ export default function(app) {
   app.use(methodOverride('_method'));
   app.use(session(sessionOptions));
   
-  app.use('/', express.static(path.join(__dirname, '..', 'public')));
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, '..', '..', '/react_ncblog/dist')));
+  // app.use('/', express.static(path.join(__dirname, '..', 'public')));
   // app.use(express.static('public'));
   // templating engine
   // app.use(expressLayout);
   // app.set('layout', './layouts/main'); // default layout
   // app.set('view engine', 'ejs'); // view engine is ejs
   
-  app.use('/', home);
+  // app.use('/', home);
   app.use('/api/posts', posts);
   app.use('/api/books', books);
   app.use('/api/authors', authors);
@@ -50,6 +54,9 @@ export default function(app) {
   app.use('/api/users', users);
   app.use('/api/comments', comments);
   app.use('/api/auth', auth);
+  app.get('*', (req, res, next) => {
+    res.sendFile(path.join(__dirname, '..', '..', '/react-ncblog/dist/index.html'));
+  });
   app.all('*', error);
-  app.use(errorHandler)
+  app.use(errorHandler);
 }

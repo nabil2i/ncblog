@@ -63,7 +63,7 @@ const DeleteUserAction = ({ userId }: { userId: string }) => {
   }, [isError, isSuccess, navigate, toast]);
 
   const triggerDeleteUser = (userId: string) => {
-    console.log("triggerid", userId);
+    // console.log("triggerid", userId);
     if (userId) {
       setIsDeleting(true);
       deleteUser(userId);

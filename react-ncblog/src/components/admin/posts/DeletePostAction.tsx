@@ -111,7 +111,7 @@ const DeletePostAction = ({ postId }: { postId: string }) => {
   // };
 
   const triggerDeletePost = (postId: string) => {
-    console.log("triggerid", postId);
+    // console.log("triggerid", postId);
     if (postId) {
       setIsDeleting(true);
       deletePost(postId);

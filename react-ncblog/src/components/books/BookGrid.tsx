@@ -44,11 +44,11 @@ const BookGrid = ({ paginate }: Props) => {
           <Flex justify="center" align="center">
             {isLoading &&
               skeletons.map((skeleton) => (
-                <VStack>
+                <Flex maxW="1440px" mx="auto">
                   <BookCardContainer key={skeleton}>
                     <BookCardSkeleton />{" "}
                   </BookCardContainer>
-                </VStack>
+                </Flex>
               ))}
 
             {data?.results.map((book) => (

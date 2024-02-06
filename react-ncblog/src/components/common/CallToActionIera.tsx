@@ -21,6 +21,7 @@ const CallToActionIera = () => {
             to={"https://training.iera.org/"}
             target="_blank"
             bg="teal"
+            color="white"
             borderRadius={"full"}
             fontFamily={"Nunito"}
             fontSize={25}

@@ -33,6 +33,7 @@ const CallToActionOneReason = () => {
             borderRadius={"full"}
             fontFamily={"Nunito"}
             fontSize={25}
+            color="white"
           >
             Find out more on OneReason.org
           </Button>

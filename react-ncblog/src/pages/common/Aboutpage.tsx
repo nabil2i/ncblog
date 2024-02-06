@@ -38,7 +38,7 @@ const AboutPage = () => {
                     because of their life experiences, what goes on in the
                     world, the fact that they don't understand why certain
                     things happen, have come to adopt agnostic or atheistic
-                    beleifs, rejecting the existence of God. Other refrain
+                    beliefs, rejecting the existence of God. Other refrain
                     themselves from talking about God and the purpose of life
                     for other reasons. <br></br>
                     In this context, NabilConveys Blog places itself as a simple

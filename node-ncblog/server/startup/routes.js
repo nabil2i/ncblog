@@ -19,14 +19,14 @@ import posts from "../routes/postsRoutes.js";
 import users from "../routes/usersRoutes.js";
 import comments from "../routes/commentsRoutes.js";
 import sessionOptions from "./sessionOptions.js";
-// import { fileURLToPath } from 'url';
-// import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 
 export default function(app) {
 
-  // const __filename = fileURLToPath(import.meta.url);
-  // const __dirname = dirname(__filename);
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
 
   app.use(cors(corsOptions));
   app.use(logger);
@@ -36,7 +36,7 @@ export default function(app) {
   app.use(methodOverride('_method'));
   app.use(session(sessionOptions));
   
-  const __dirname = path.resolve();
+  // const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, '..', '..', '/react_ncblog/dist')));
   // app.use('/', express.static(path.join(__dirname, '..', 'public')));
   // app.use(express.static('public'));

@@ -4,7 +4,6 @@ import CallToActionIera from "../../components/common/CallToActionIera";
 import PageHeading from "../../components/common/PageHeading";
 import useTitle from "../../hooks/useTitle";
 import { useBookQueryStore } from "../../store";
-import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 
 const BooksPage = () => {
   const setPage = useBookQueryStore((s) => s.setPage);
@@ -29,7 +28,7 @@ const BooksPage = () => {
                 />
                 <Box m={5}>
                   <CallToActionIera />
-                  <CallToActionOneReason />
+                  {/* <CallToActionOneReason /> */}
                 </Box>
               </Box>
             </VStack>

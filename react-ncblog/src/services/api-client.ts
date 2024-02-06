@@ -30,7 +30,7 @@ export interface ArrayData<S> {
 
 const URL = import.meta.env.DEV
   ? import.meta.env.VITE_API_BASE_URL
-  : import.meta.env.API_BASE_URL;
+  : import.meta.env.VITE_API_BASE_URL;
   
 // const URL = import.meta.env.DEV
 //   ? import.meta.env.VITE_API_BASE_URL

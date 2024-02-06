@@ -8,10 +8,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import CallToActionOneReason from "../../components/common/CallToActionOneReason";
+import PageHeading from "../../components/common/PageHeading";
 
 const AboutPage = () => {
   return (
     <Box>
+      <PageHeading title={"About"} />
       <Grid
         templateAreas={{ base: `"main"` }}
         templateColumns={{ base: "1fr" }}

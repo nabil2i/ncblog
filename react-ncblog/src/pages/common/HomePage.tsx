@@ -28,7 +28,7 @@ const HomePage = () => {
         templateColumns={{ base: "1fr" }}
       >
         <GridItem area="main">
-          <HeroSection />
+          {/* <HeroSection /> */}
           <Box as="section">
             <ImageCarousel images={images} />
           </Box>

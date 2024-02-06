@@ -37,7 +37,7 @@ export default function(app) {
   app.use(session(sessionOptions));
   
   // const __dirname = path.resolve();
-  app.use(express.static(path.join(__dirname, '..', '..', '/react_ncblog/dist')));
+  app.use(express.static(path.join(__dirname, '..', 'react-ncblog', 'dist')));
   // app.use('/', express.static(path.join(__dirname, '..', 'public')));
   // app.use(express.static('public'));
   // templating engine
@@ -55,7 +55,7 @@ export default function(app) {
   app.use('/api/comments', comments);
   app.use('/api/auth', auth);
   app.get('*', (req, res, next) => {
-    res.sendFile(path.join(__dirname, '..', '..', '/react-ncblog/dist/index.html'));
+    res.sendFile(path.join(__dirname, '..', 'react-ncblog', 'dist', 'index.html'));
   });
   app.all('*', error);
   app.use(errorHandler);

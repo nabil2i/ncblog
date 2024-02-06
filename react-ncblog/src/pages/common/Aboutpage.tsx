@@ -8,7 +8,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import CallToActionOneReason from "../../components/common/CallToActionOneReason";
-import PageHeading from "../../components/common/PageHeading";
 
 const AboutPage = () => {
   return (
@@ -19,11 +18,7 @@ const AboutPage = () => {
       >
         <GridItem area="main">
           <VStack as="section">
-            <PageHeading title={"About"} />
-            <Box mx="auto" maxW="800px">
-              {/* <Box w="full">
-                    <Image src={ncblog} boxSize={"500px"} />
-                  </Box> */}
+            <Box maxW="800px" mx="auto" w="full">
               <Flex direction="column" mt={5} gap={4} p={5}>
                 <Flex direction="column" gap={4}>
                   <Heading textAlign="center">Nabil Conveys Blog</Heading>
@@ -50,9 +45,9 @@ const AboutPage = () => {
                   <Box>See you soon</Box>
                 </Flex>
               </Flex>
-              <Box m={5}>
-                <CallToActionOneReason />
-              </Box>
+            </Box>
+            <Box m={5}>
+              <CallToActionOneReason />
             </Box>
           </VStack>
         </GridItem>

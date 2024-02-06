@@ -10,7 +10,7 @@ import { getAuth } from "firebase/auth";
 const getEnvVariable = (key: string) => {
   const variable = import.meta.env.DEV ? import.meta.env[`VITE_${key}`] : import.meta.env[`VITE_${key}`];
   // const variable = import.meta.env.DEV ? import.meta.env[`VITE_${key}`] : import.meta.env[key];
-  console.log(variable)
+  // console.log(variable)
   if (!variable) {
     throw new Error(`Environment variable ${key} is missing.`);
   }

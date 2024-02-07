@@ -19,7 +19,7 @@ export const createNewBook = async (req, res, next) => {
     if (error) return next(makeError(400, error.details[0].message));
 
     // console.log(req.body);
-    const { title, about, authorId } = req.body;
+    const { title, about, authorId, img } = req.body;
 
     const author = await Author.findById(authorId);
     if (!author) return next(makeError(400, "Invalid author"));
@@ -27,7 +27,8 @@ export const createNewBook = async (req, res, next) => {
     let newBook = new Book({
       author: authorId,
       title,
-      about
+      about,
+      img
     })
     // let newPost = new Post({
     //   user: {

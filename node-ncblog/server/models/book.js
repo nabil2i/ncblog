@@ -11,6 +11,11 @@ export const bookSchema = new mongoose.Schema({
     maxlength: 255,
     trim: true,
   },
+  slug: {
+    type: String,
+    // required: true,
+    unique: true
+  },
   about: {
     type: String,
     required: true,
@@ -23,6 +28,7 @@ export const bookSchema = new mongoose.Schema({
   },
   img: {
     type: String,
+    default: ""
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,

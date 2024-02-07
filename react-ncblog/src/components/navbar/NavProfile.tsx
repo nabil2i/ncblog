@@ -15,9 +15,9 @@ import { useNavigate } from "react-router-dom";
 // import useAuth from "../useAuth";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useSendLogoutMutation } from "../../../app/features/auth/authApiSlice";
-import { authSatus } from "../../../app/features/auth/authSlice";
-import useAuth from "../../../hooks/useAuth";
+import { useSendLogoutMutation } from "../../app/features/auth/authApiSlice";
+import { authSatus } from "../../app/features/auth/authSlice";
+import useAuth from "../../hooks/useAuth";
 // import useAuth from "./navigationbar/useAuth";
 
 // interface Props {

@@ -12,14 +12,15 @@ import paginate from "../middleware/paginate.js";
 
 const router = express.Router();
 
-router.route('/like/:id')
-  // like a comment
-  .put(auth, likeComment);
-
 router.route('/')
   // get all comments
   .get([auth, admin], paginate(Comment), getAllComments);
   // .get([auth, admin], paginateWithLimit(Comment), getAllComments);
+  
+router.route('/like/:id')
+  // like a comment
+  .put(auth, likeComment);
+
 
   router.route('/:id')
   // get all comments

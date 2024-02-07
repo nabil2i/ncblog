@@ -16,10 +16,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../../../hooks/useAuth";
-import { isExternalURL } from "../../../utils/urls";
-import ADMIN_ITEMS from "../../admin/dashsidebar/adminitems";
-import useAdminLayout from "../../admin/useAdminLayout";
+import useAuth from "../../hooks/useAuth";
+import { isExternalURL } from "../../utils/urls";
+import ADMIN_ITEMS from "../admin/dashsidebar/adminitems";
+import useAdminLayout from "../admin/useAdminLayout";
 import { NavLogoDrawer } from "./NavLogo";
 import NAV_ITEMS, { NavItem } from "./navitems";
 
@@ -63,7 +63,7 @@ const MobileNavDrawer = () => {
               {...navItem}
             />
           ))}
-          {status === "Admin" && (
+          {(status === "Admin" || status === "SuperAdmin") && (
             <>
               <Divider />
               <Box fontWeight={"bold"} py={2}>

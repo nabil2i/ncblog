@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { isExternalURL } from "../../../utils/urls";
+import { isExternalURL } from "../../utils/urls";
 import { NavItem } from "./navitems";
 
 interface Props {

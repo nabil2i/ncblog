@@ -46,6 +46,7 @@ router.route('/:id/comments')
   // create a comment on a blog post
   .post(auth, createComment)
 
+//
 router.route('/:id/comments/:cid')
   // get a comment of a blog post
   .get([auth, admin], getComment)

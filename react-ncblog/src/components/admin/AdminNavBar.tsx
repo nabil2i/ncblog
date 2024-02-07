@@ -1,6 +1,6 @@
 import { Flex, Heading, IconButton } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
-import ColorModeSwitch from "../navigationbar/navbar/ColorModeSwitch";
+import ColorModeSwitch from "../navbar/ColorModeSwitch";
 import useAdminLayout from "./useAdminLayout";
 
 const AdminNavBar = () => {

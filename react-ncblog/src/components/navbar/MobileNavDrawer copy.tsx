@@ -17,12 +17,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { NavLink, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { isExternalURL } from "../../utils/urls";
+import DashSidebar from "../admin/dashsidebar/DashSidebar";
+import useAdminLayout from "../admin/useAdminLayout";
 import { NavLogoDrawer } from "./NavLogo";
 import NAV_ITEMS, { NavItem } from "./navitems";
-import { isExternalURL } from "../../../utils/urls";
-import DashSidebar from "../../admin/dashsidebar/DashSidebar";
-import useAuth from "../../../hooks/useAuth";
-import useAdminLayout from "../../admin/useAdminLayout";
 
 // interface Props {
 //   onCloseMain: () => void;
@@ -64,12 +64,12 @@ const MobileNavDrawer = () => {
               {...navItem}
             />
           ))}
-          { status === "Admin" &&
+          {status === "Admin" && (
             <>
               <Divider />
-              <DashSidebar/>
+              <DashSidebar />
             </>
-          }
+          )}
         </DrawerBody>
         {/* {!state.isAuthenticated && (
           <DrawerFooter borderTopWidth="1px">
@@ -85,17 +85,13 @@ const MobileNavDrawer = () => {
 //   onCloseMain: () => void;
 // }
 
-const MobileNavItem = ({
-  label,
-  children,
-  href,
-}: NavItem) => {
-// const MobileNavItem = ({
-//   label,
-//   children,
-//   href,
-//   // onCloseMain,
-// }: NavItem & MobileNavItemeProps) => {
+const MobileNavItem = ({ label, children, href }: NavItem) => {
+  // const MobileNavItem = ({
+  //   label,
+  //   children,
+  //   href,
+  //   // onCloseMain,
+  // }: NavItem & MobileNavItemeProps) => {
   const { state } = useAdminLayout();
   const onCloseMain = state.onCloseMain;
   const navigate = useNavigate();
@@ -175,11 +171,18 @@ const MobileNavItem = ({
                 }}
               >
                 {isExternalURL(child.href || "") ? (
-                  <a href={child.href} target="_blank" rel="noopener noreferrer" className="w-full">
+                  <a
+                    href={child.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full"
+                  >
                     {child.label}
                   </a>
                 ) : (
-                  <NavLink className="w-full" to={child.href ?? "#"}>{child.label}</NavLink>
+                  <NavLink className="w-full" to={child.href ?? "#"}>
+                    {child.label}
+                  </NavLink>
                 )}
               </Box>
             ))}

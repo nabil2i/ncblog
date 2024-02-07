@@ -1,7 +1,7 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 // import logo from '../assets/images/logo.webp';
 import { Link } from "react-router-dom";
-import NabilConveys1 from "../../../assets/icons/NabilConveys1.webp";
+import NabilConveys1 from "../../assets/icons/NabilConveys1.webp";
 // import usePostQueryStore from "../store";
 
 interface Props {

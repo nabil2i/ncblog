@@ -1,7 +1,7 @@
 import { Button, HStack } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { authSatus } from "../../../app/features/auth/authSlice";
+import { authSatus } from "../../app/features/auth/authSlice";
 // import PropTypes from 'prop-types';
 
 const VARIANT_COLOR = "teal";

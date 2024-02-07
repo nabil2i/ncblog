@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
-import useAdminLayout from "../../admin/useAdminLayout";
+import useAdminLayout from "../admin/useAdminLayout";
 import ColorModeSwitch from "./ColorModeSwitch";
 import DesktopNav from "./DesktopNav";
 import MobileNavDrawer from "./MobileNavDrawer";
@@ -21,7 +21,7 @@ import SearchInput from "./SearchInput";
 import SearchInputModalIcon from "./SearchInputModalIcon";
 
 const NavBar = () => {
-  const {  dispatch } = useAdminLayout();
+  const { dispatch } = useAdminLayout();
   // const onToggle = state.onToggle;
 
   const { isOpen, onClose, onToggle } = useDisclosure();

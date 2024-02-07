@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import Footer from "../../components/common/Footer";
-import { NavBar } from "../../components/navigationbar";
 import ScrollToTop from "../../components/common/ScrollToTop";
+import { NavBar } from "../../components/navbar";
 
 const Layout = () => {
   // const { state, dispatch } = useAdminLayout();
@@ -18,7 +18,7 @@ const Layout = () => {
 
   return (
     <ScrollToTop>
-      <Flex direction="column" >
+      <Flex direction="column">
         <NavBar />
         <Box as="main" flex="1" marginTop={{ base: "60px" }} minHeight="100vh">
           <Outlet />

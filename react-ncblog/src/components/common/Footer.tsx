@@ -7,7 +7,7 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { NavLogoDrawer } from "../navigationbar/navbar/NavLogo";
+import { NavLogoDrawer } from "../navbar/NavLogo";
 import SOCIAL_ITEMS from "./socialitems";
 
 const Footer = () => {
@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <Box as="footer" background={"black"} color="white" w="100%">
       {/* <Divider orientation="horizontal" color="gray.500" my="4" /> */}
-      <Box  px={{ base: 8, lg: 20 }}  py={14} as="section" >
+      <Box px={{ base: 8, lg: 20 }} py={14} as="section">
         <Flex
           justify="space-between"
           flexWrap={{ base: "wrap", lg: "nowrap" }}

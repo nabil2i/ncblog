@@ -1,6 +1,6 @@
 import { Box, Heading, Slide, VStack, useDisclosure } from "@chakra-ui/react";
 import { useEffect } from "react";
-import useAdminLayout from "../../admin/useAdminLayout";
+import useAdminLayout from "../admin/useAdminLayout";
 
 const ResponsiveDrawer = () => {
   const { isOpen, onClose, onToggle } = useDisclosure();

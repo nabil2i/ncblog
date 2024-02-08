@@ -2,7 +2,7 @@
 # NC Blog
 This project is a fullstack MERN web application using node.js with express on the backend, and react.js on the frontend. It's a blog that proposes posts for readers. Editors on the website can add blog posts, edit them, delete them. Admins can manage resources of the blog.
 
-The project system design and diagrams document is available [here](https://docs.google.com/document/d/1-fEuNqwnWiB2hgJXylv1zFOacpQmkdY3-5EWUqnXWZs/edit?usp=sharing) alongside the [diagrams and visualizations](https://drive.google.com/file/d/1xcPKr6_uCNjg9tE7gUy0e6xXvpc1KtIS/view?usp=sharing). The backend is deployed on render and the frontend is deployed on vercel.
+The project system design and diagrams document is available [here](https://docs.google.com/document/d/1-fEuNqwnWiB2hgJXylv1zFOacpQmkdY3-5EWUqnXWZs/edit?usp=sharing) alongside the [diagrams and visualizations](https://drive.google.com/drive/folders/1xZ7fO0GrGR9ScMI6Tszyrl4KYIxNDtKC?usp=sharing). The backend is deployed on render and the frontend is deployed on vercel.
 Here is the live website link: [https://nabilconveys.vercel.app](https://nabilconveys.vercel.app)
 
 ## Installation

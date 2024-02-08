@@ -114,7 +114,7 @@ const UsersTable = () => {
               <Tbody>{tableContent}</Tbody>
             </Table>
           </TableContainer>
-          {pagination?.count && pagination.count >= 2 ? (
+          {pagination?.count && Math.ceil(pagination.count / pagination.limit) > 1 ? (
             <Flex p={4} w="full" justify="center">
               <PaginationBox
                 itemPerPage={pagination?.limit as number}

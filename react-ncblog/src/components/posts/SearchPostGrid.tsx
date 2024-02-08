@@ -87,7 +87,7 @@ const SearchPostGrid = ({ paginate }: Props) => {
           ))}
         </SimpleGrid>
 
-        {data?.count && data.count > 1 ? (
+        {data?.count && Math.ceil(data.count / data.limit) > 1 ? (
           <PaginationBox
             itemPerPage={data?.limit as number}
             totalItems={data?.count as number}

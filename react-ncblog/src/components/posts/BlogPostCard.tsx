@@ -21,7 +21,8 @@ interface Props {
 const BlogPostCard = ({ post }: Props) => {
   return (
     <Link to={"/blog/" + post.slug}>
-      <Card textAlign="left" height="100%" key={post._id} borderRadius="4">
+      <Card textAlign="left" height="100%" key={post._id}
+      borderRadius="4">
         <CardBody>
           {/* <Center> */}
           <Image

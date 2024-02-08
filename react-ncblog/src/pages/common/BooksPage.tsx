@@ -28,7 +28,6 @@ const BooksPage = () => {
                 />
                 <Box m={5}>
                   <CallToActionIera />
-                  
                 </Box>
               </Box>
             </VStack>

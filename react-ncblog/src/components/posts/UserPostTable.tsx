@@ -103,7 +103,7 @@ const UserPostTable = ({ paginate }: Props) => {
           ))}
         </SimpleGrid> */}
 
-        {data?.count && data.count >= 2 && paginate ? (
+        {data?.count && Math.ceil(data.count / data.limit) > 1 && paginate ? (
           <PaginationBox
             itemPerPage={data?.limit as number}
             totalItems={data?.count as number}

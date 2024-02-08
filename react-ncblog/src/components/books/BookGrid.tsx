@@ -41,7 +41,6 @@ const BookGrid = ({ paginate }: Props) => {
           spacing={3}
           padding={1}
         >
-          <Flex justify="center" align="center">
             {isLoading &&
               skeletons.map((skeleton) => (
                 <Flex maxW="800" mx="auto">
@@ -56,10 +55,9 @@ const BookGrid = ({ paginate }: Props) => {
                 <BookCard book={book} />
               </BookCardContainer>
             ))}
-          </Flex>
         </SimpleGrid>
 
-        {data?.count && data.count > 1 ? (
+        {data?.count && Math.ceil(data.count / data.limit) > 1 ? (
           <PaginationBox
             itemPerPage={data?.limit as number}
             totalItems={data?.count as number}
@@ -72,7 +70,7 @@ const BookGrid = ({ paginate }: Props) => {
           <></>
         )}
 
-        {!data?.count && (
+        {!isLoading && !data?.count && (
           <VStack>
             <Text>Nothing found. Try a different search.</Text>
           </VStack>

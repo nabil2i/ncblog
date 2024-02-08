@@ -56,7 +56,7 @@ const PostGrid = ({ paginate }: Props) => {
           ))}
         </SimpleGrid>
 
-        {data?.count && data.count >= 2 && paginate ? (
+        {data?.count && Math.ceil(data.count / data.limit) > 2 && paginate ? (
           <PaginationBox
             itemPerPage={data?.limit as number}
             totalItems={data?.count as number}
@@ -69,7 +69,7 @@ const PostGrid = ({ paginate }: Props) => {
           <></>
         )}
 
-        {!data?.count && (
+        {!isLoading && !data?.count && (
           <VStack>
             <Text>No posts</Text>
           </VStack>

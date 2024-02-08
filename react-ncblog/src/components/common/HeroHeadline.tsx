@@ -5,7 +5,7 @@ const Headline = () => {
     <Box m="5" textAlign="center">
       <Heading as="h1" size={{ base: "3xl", lg: "2xl" }}>
         {" "}
-        Welcome to NabilConveys
+        NabilConveys
       </Heading>
       <Text m="0" mt="1" fontSize="xl">
         {" "}

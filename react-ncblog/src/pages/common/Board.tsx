@@ -12,9 +12,9 @@ import CommentsTable from "../../components/admin/board/CommentsTable";
 import PostsTable from "../../components/admin/board/PostsTable";
 import StatsCard, { Stats } from "../../components/admin/board/StatsCard";
 import UsersTable from "../../components/admin/board/UsersTable";
+import Comment from "../../entities/Comment";
 import Post from "../../entities/Post";
 import User from "../../entities/User";
-import Comment from "../../entities/Comment";
 
 const Board = () => {
   const { data: commentsData, isSuccess: isSuccessComments } =
@@ -41,9 +41,13 @@ const Board = () => {
 
   return (
     <>
-      <Flex p={3} mx={{ base: "auto" }} direction="column">
+      <Flex p={3} direction="column">
         {/* Summary Cards */}
-        <Flex flexWrap="wrap" gap={4} justify="center">
+        <Flex
+          gap={4}
+          direction={{ base: "column", lg: "row" }}
+          flexWrap={{ lg: "wrap" }}
+        >
           <StatsCard
             name="Total Users"
             stats={usersStats as Stats}
@@ -68,7 +72,13 @@ const Board = () => {
         </Flex>
 
         {/* Summary Tables */}
-        <Flex mt={4} flexWrap="wrap" gap={4} py={3} mx="auto">
+        <Flex
+          mt={4}
+          gap={4}
+          py={3}
+          direction={{ base: "column", lg: "row" }}
+          flexWrap={{ lg: "wrap" }}
+        >
           <PostsTable
             isSuccess={isSuccessPosts}
             posts={posts as EntityState<Post, EntityId>}

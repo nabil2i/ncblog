@@ -27,6 +27,7 @@ const CommentRow = ({ commentId }: { commentId: EntityId }) => {
             bg: colorMode === "light" ? "teal.300" : "black",
           }}
         >
+          {/* <Td noOfLines={2}>{comment.text}</Td> */}
           <Td noOfLines={2} w={96}>{comment.text}</Td>
           <Td>{comment.numberOfLikes}</Td>
         </Tr>

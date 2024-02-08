@@ -30,6 +30,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
           <Td>
             <Image src={post.img} w={14} h={10} rounded="md" />
           </Td>
+          {/* <Td >{post.title}</Td> */}
           <Td w={96}>{post.title}</Td>
           <Td w={5}>{post.category}</Td>
         </Tr>

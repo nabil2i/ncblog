@@ -16,9 +16,9 @@ git clone https://github.com/nabil2i/ncblog.git
 
 ```bash
 npm run install
+```
  -->
  
-```
 * In the ncblog folder, install the package dependencies:
 
 ```bash
@@ -43,7 +43,7 @@ npm install
 * Install mongodb on your local machine and get a mongodb connection URI that you will supply to the .env file in node-ncblog folder:
 
 
-* In the main ncblog folder, launch both frontend and backend apps. By default the backend server should on `http://127.0.0.1:5000` and the frontend should be live on `http://127.0.0.1:5173`
+* In the main ncblog folder, launch both frontend and backend apps. By default the backend server should run on `http://127.0.0.1:5000` and the frontend should be live on `http://127.0.0.1:5173`
 ```bash
 npm run dev 
 ```

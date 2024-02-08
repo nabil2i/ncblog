@@ -15,7 +15,7 @@ export const getAllPosts = async (req, res) => {
 
 // @desc Create a post
 // @route POST /posts
-// @access Private
+// @access Private Write
 export const createNewPost = async (req, res, next) => {
   try {
     const { error } = validatePost(req.body);
@@ -277,7 +277,7 @@ export const updateCurrentUserPost = async (req, res, next) => {
 
 // @desc Delete a post
 // @route DELETE /posts/:id/:userId
-// @access Private Editor
+// @access Private Writer
 export const deleteCurrentUserPost = async (req, res, next) => {
   const postId = req.params.id;
   const userId = req.params.userId;
@@ -417,12 +417,12 @@ export const updateUserComment = async (req, res, next) => {
   const commentId = req.params.cid;
 
   const commentOwnerId = req.params.uid
-  const editorId = req.user._id
-  // console.log("editor", editorId)
+  const writerId = req.user._id
+  // console.log("writer", writerId)
   // console.log("commentowner", commentOwnerId)
   // console.log(req.user.isAdmin)
 
-  if (!(req.user.isAdmin || editorId === commentOwnerId))
+  if (!(req.user.isAdmin || writerId === commentOwnerId))
     return next(makeError(401, "You are not authorized to make this request"));
 
   if (!commentId) return next(makeError(400, "Comment ID required"));

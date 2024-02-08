@@ -2,12 +2,12 @@
 
 export const getRole = (roles: string[]) => {
   const isAdmin = roles.includes('Admin' || 'admin')
-  const isEditor = roles.includes('Editor' || 'editor')
+  const isWriter = roles.includes('Writer' || 'writer')
   const isRegular = roles.includes('Regular' || 'regular')
   let status = "";
 
   if (isRegular) status = "Regular"
-  if (isEditor) status = "Editor"
+  if (isWriter) status = "Writer"
   if (isAdmin) status = "Admin"
 
   return status

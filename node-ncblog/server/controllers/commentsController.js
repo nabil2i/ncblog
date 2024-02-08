@@ -89,7 +89,7 @@ export const deleteComment = async (req, res, next) => {
 
 // @desc Like/Unlike a comment
 // @route PUT /like/:id
-// @access Private
+// @access Private Auth
 export const likeComment = async (req, res, next) => {
   try {
     const commentId = req.params.id;

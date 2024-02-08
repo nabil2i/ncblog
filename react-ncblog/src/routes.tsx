@@ -46,14 +46,14 @@ const router = createBrowserRouter([
                   // { path: ":slug", element: <PostPage /> },
                   {
                     path: "write",
-                    element: <RequireAuth allowedRoles={["Editor"]} />,
+                    element: <RequireAuth allowedRoles={["Writer"]} />,
                     children: [{ index: true, element: <AddPostPage /> }],
                   },
                 ],
               },
               {
                 path: "/myposts",
-                element: <RequireAuth allowedRoles={["Editor", "Admin"]} />,
+                element: <RequireAuth allowedRoles={["Writer", "Admin"]} />,
                 children: [
                   { index: true, element: <MyPostsPage /> },
                   { path: ":id", element: <PostPage /> },

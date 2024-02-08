@@ -16,7 +16,7 @@ import {
 } from "../controllers/postsController.js";
 import admin from "../middleware/admin.js";
 import auth from "../middleware/auth.js";
-import editor from "../middleware/editor.js";
+import writer from "../middleware/writer.js";
 import paginate from "../middleware/paginate.js";
 import Post from "../models/post.js";
 
@@ -26,7 +26,7 @@ router.route('/')
   // get all blog posts
   .get(paginate(Post), getAllPosts)
   // create a blog post
-  .post([auth, editor], createNewPost);
+  .post([auth, writer], createNewPost);
 
 router.route('/:id')
   // get a blog post
@@ -37,8 +37,8 @@ router.route('/:id')
   .delete([auth, admin], deletePost)
 
 router.route('/:id/:userId')  
-  .delete([auth, editor], deleteCurrentUserPost)
-  .put([auth, editor], updateCurrentUserPost);
+  .delete([auth, writer], deleteCurrentUserPost)
+  .put([auth, writer], updateCurrentUserPost);
 
 router.route('/:id/comments')
   // get all comments of a blog post

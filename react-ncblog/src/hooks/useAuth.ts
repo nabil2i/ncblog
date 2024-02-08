@@ -17,7 +17,7 @@ const useAuth = () => {
   const token = useAppSelector(selectCurrentToken)
   let isSuperAdmin = false
   let isAdmin = false
-  let isEditor = false
+  let isWriter = false
   let isStandard = false
   let status = ""
 
@@ -28,11 +28,11 @@ const useAuth = () => {
 
     isSuperAdmin = roles.includes('SuperAdmin' || 'superadmin')
     isAdmin = roles.includes('Admin' || 'admin')
-    isEditor = roles.includes('Editor' || 'editor')
+    isWriter = roles.includes('Writer' || 'writer')
     isStandard = roles.includes('Standard' || 'standard')
 
     if (isStandard) status = "Standard"
-    if (isEditor) status = "Editor"
+    if (isWriter) status = "Writer"
     if (isAdmin) status = "Admin"
     if (isSuperAdmin) status = "SuperAdmin"
 
@@ -46,7 +46,7 @@ const useAuth = () => {
       roles,
       img,
       isSuperAdmin,
-      isAdmin, isEditor, isStandard, status
+      isAdmin, isWriter, isStandard, status
     }
   }
 
@@ -59,7 +59,7 @@ const useAuth = () => {
     roles: [],
     img: '',
     isSuperAdmin,
-    isAdmin, isEditor, isStandard, status
+    isAdmin, isWriter, isStandard, status
   }
 }
 

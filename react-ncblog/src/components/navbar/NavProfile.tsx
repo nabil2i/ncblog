@@ -34,7 +34,7 @@ const Profile = () => {
   const isAuthenticated = useSelector(authSatus);
   // const dispatch = useDispatch();
   const [sendLogout, { isError, isSuccess }] = useSendLogoutMutation();
-  const { isAdmin, isEditor, firstname, lastname, img } = useAuth();
+  const { isAdmin, isWriter, firstname, lastname, img } = useAuth();
   // const [setPersist] = usePersist();
   const navigate = useNavigate();
 
@@ -96,7 +96,7 @@ const Profile = () => {
               </Center>
               <br />
               <MenuDivider />
-              {(isAdmin || isEditor) && (
+              {(isAdmin || isWriter) && (
                 <>
                   <MenuItem onClick={() => navigate("/blog/write")}>
                     Create a post

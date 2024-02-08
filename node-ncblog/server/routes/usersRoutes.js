@@ -12,7 +12,7 @@ import {
 } from "../controllers/usersController.js";
 import admin from "../middleware/admin.js";
 import auth from "../middleware/auth.js";
-import editor from "../middleware/editor.js";
+import writer from "../middleware/writer.js";
 import paginate from "../middleware/paginate.js";
 import User from "../models/user.js";
 
@@ -34,7 +34,7 @@ router.route('/me')
 
 // router.route('/me/posts')
 //   // get logged in user posts
-//   .get([auth, editor],getCurrentUserPosts)
+//   .get([auth, writer],getCurrentUserPosts)
 
 router.route('/:id')
 // get a user

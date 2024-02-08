@@ -25,7 +25,7 @@ const BlogPage = () => {
                   setPage(page);
                 }}
               />
-              <Box m={5}>
+              <Box m={5} maxW="800px" mx="auto">
                 <CallToActionIera />
               </Box>
             </Box>

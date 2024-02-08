@@ -24,7 +24,7 @@ const PostGrid = ({ paginate }: Props) => {
   //     </Box>
   //   );
 
-  const skeletons = [1, 2, 3, 4];
+  const skeletons = [1, 2, 3];
 
   return (
     <>

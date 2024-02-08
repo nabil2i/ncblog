@@ -36,7 +36,7 @@ const UserPostTable = ({ paginate }: Props) => {
       </Box>
     );
 
-  // const skeletons = [1, 2, 3, 4];
+  // const skeletons = [1, 2, 3];
   const tableContent = posts ? (
     posts.map((post) => <PostRow key={post._id} post={post} />)
   ) : (

@@ -36,7 +36,7 @@ const HomePage = () => {
           <Box maxW="1440px" mx="auto" w="full">
             <LatestPosts />
           </Box>
-          <Flex m={5}>
+          <Flex m={5} maxW="800px" mx="auto">
             <CallToActionOneReason />
             {/* <CallToActionIera /> */}
           </Flex>

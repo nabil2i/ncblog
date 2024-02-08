@@ -36,7 +36,7 @@ const BookPage = () => {
             <PageHeading title={book.title} />
             <Box maxW="1440px" mx="auto">
               <BookDetails book={book} />
-              <Box m={5}>
+              <Box m={5} maxW="800px" mx="auto">
                 <CallToActionOneReason />
               </Box>
             </Box>

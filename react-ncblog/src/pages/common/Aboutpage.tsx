@@ -40,7 +40,7 @@ const AboutPage = () => {
                     for other reasons. <br></br>
                     In this context, NabilConveys Blog places itself as a simple
                     layman's attempt to have conversations with his fellow
-                    brother and sister to better understand the purpose of life.
+                    brothers and sisters in humanity to better understand the purpose of life.
                   </Text>
                 </Flex>
                 <Flex align="end" direction="column">

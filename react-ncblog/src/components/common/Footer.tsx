@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { NavLogoDrawer } from "../navbar/NavLogo";
 import SOCIAL_ITEMS from "./socialitems";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   const emailAddress = import.meta.env.DEV
@@ -51,10 +52,10 @@ const Footer = () => {
                 Links
               </Heading>
               <Flex direction="column" gap={2}>
-                <Link href="/">Home</Link>
-                <Link href="/blog">Blog</Link>
-                <Link href="/books">Books</Link>
-                <Link href="/about">About</Link>
+                <NavLink to="/">Home</NavLink>
+                <NavLink to="/blog">Blog</NavLink>
+                <NavLink to="/books">Books</NavLink>
+                <NavLink to="/about">About</NavLink>
                 {/* <Link href="#">Conditions of Use</Link>
                 <Link href="#">Privacy & Policy</Link> */}
               </Flex>

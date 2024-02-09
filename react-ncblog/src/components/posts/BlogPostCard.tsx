@@ -8,8 +8,9 @@ import {
   Image,
   Tag,
   Text,
+  Link
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 // import Landscape from "../../assets/images/landscape.jpeg";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
@@ -20,7 +21,7 @@ interface Props {
 
 const BlogPostCard = ({ post }: Props) => {
   return (
-    <Link to={"/blog/" + post.slug}>
+    <Link as={NavLink} to={"/blog/" + post.slug}>
       <Card textAlign="left" height="100%" key={post._id} borderRadius="4">
         <CardBody>
           {/* <Center> */}

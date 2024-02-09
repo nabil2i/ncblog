@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Image, useColorMode } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import onereason from "../../assets/images/onereason.jpg";
 
 const CallToActionOnereason = () => {
@@ -28,7 +28,7 @@ const CallToActionOnereason = () => {
             goal in life?
           </Box>
           <Button
-            as={Link}
+            as={NavLink}
             to={"https://onereason.org/"}
             target="_blank"
             bg="teal"

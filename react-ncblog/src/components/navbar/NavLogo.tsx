@@ -1,6 +1,6 @@
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Link, Flex, Image, Text } from "@chakra-ui/react";
 // import logo from '../assets/images/logo.webp';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import NabilConveys1 from "../../assets/icons/NabilConveys1.webp";
 // import usePostQueryStore from "../store";
 
@@ -10,7 +10,7 @@ interface Props {
 }
 const NavLogo = ({ boxSize }: Props) => {
   return (
-    <Link to="/">
+    <Link as={NavLink} to="/">
       <Flex
         flex={{ base: 1 }}
         // display={{ base: 'flex'}}
@@ -42,7 +42,7 @@ const NavLogo = ({ boxSize }: Props) => {
 
 export const NavLogoDrawer = ({ boxSize, fontSize }: Props) => {
   return (
-    <Link to="/">
+    <Link as={NavLink} to="/">
       <Flex
         flex={{ base: 1 }}
         // display={{ base: 'flex'}}

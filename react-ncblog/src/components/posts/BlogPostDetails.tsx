@@ -43,10 +43,10 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
       <BlogPostInfo post={post} />
       <Divider orientation="horizontal" color="gray.500" my="4" />
       <Box>
-        {/* <div
-          className="p-3 max-w-[1440px] mw-auto w-full post-content"
+        <div
+          className="p-3 max-w-[1440px] mw-auto w-full"
           dangerouslySetInnerHTML={{ __html: post.body }}
-        /> */}
+        />
         {/* <div className="p-3 max-w-[1440px] mw-auto w-full post-content"></div> */}
         {/* <ReactMarkdown>{post.body}</ReactMarkdown> */}
       </Box>

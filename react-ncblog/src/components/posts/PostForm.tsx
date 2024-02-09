@@ -86,7 +86,7 @@ const PostForm = ({ post }: Props) => {
     const html = stateToHTML(contentState);
     // const rawContentState = convertToRaw(contentState)
     // const html = stateToHTML(rawContentState)
-    console.log(html);
+    // console.log(html);
     setValue("body", html);
     // const contentState = convertToRaw(newEditorState.getCurrentContent());
     // Convert ContentState to HTML and update the form value
@@ -159,15 +159,15 @@ const PostForm = ({ post }: Props) => {
     register,
     control,
     // reset,
-    getValues,
+    // getValues,
     setValue,
     formState: { errors },
   } = useForm<PostFormData>();
   // } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: PostFormData) => {
-    const formaData = getValues();
-    console.log("data", formaData);
+    // const formaData = getValues();
+    // console.log("data", formaData);
     setSubmittingPost(true);
     if (post) {
       updatePost.mutate({
@@ -244,7 +244,7 @@ const PostForm = ({ post }: Props) => {
                     {errors.title && errors.title.message}
                   </FormErrorMessage> */}
               </FormControl>
-              <Box>
+              <Box w="full">
                 <AddPostImage setFieldValue={setValue} postImage={post?.img} />
               </Box>
               <Controller

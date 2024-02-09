@@ -5,10 +5,10 @@ import {
   Flex,
   Heading,
   Image,
-  Link,
 } from "@chakra-ui/react";
 import book1 from "../../assets/images/thepurposeoflife.jpg";
 import Book from "../../entities/Book";
+import { NavLink } from "react-router-dom";
 
 const BookDetails = ({ book }: { book: Book }) => {
   // console.log(post);
@@ -42,8 +42,8 @@ const BookDetails = ({ book }: { book: Book }) => {
           <Flex justify="center" align="center" direction="column" gap={5}>
             <Heading as="h2">Download the book</Heading>
             <Button
-              as={Link}
-              href={book.link}
+              as={NavLink}
+              to={book.link}
               target="_blank"
               _hover={{ textDecoration: "none" }}
             >

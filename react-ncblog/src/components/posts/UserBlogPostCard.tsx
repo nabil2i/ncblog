@@ -13,9 +13,10 @@ import {
   MenuList,
   Tag,
   Text,
+  Link
 } from "@chakra-ui/react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
 import DeletePostAction from "./DeletePostAction";
@@ -44,7 +45,7 @@ const UserBlogPostCard = ({ post }: Props) => {
             </MenuList>
           </Menu>
         </CardHeader>
-        <Link to={"/blog/" + post.slug}>
+        <Link as={NavLink} to={"/blog/" + post.slug}>
           <CardBody>
             {/* <Center> */}
             <Image

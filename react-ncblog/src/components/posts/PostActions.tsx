@@ -1,5 +1,5 @@
 import { Box, Flex, Select } from "@chakra-ui/react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import categories from "../../data/categories";
@@ -22,6 +22,13 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
   const postId = post?._id as string;
 
   const [selectedCategory, setSelectedCategory] = useState(""); // State to track the selected category
+  
+  // console.log(post?.category)
+  useEffect(() => {
+    if (post?.category) {
+      setSelectedCategory(post.category)
+    }
+  }, [post?.category])
 
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const categoryValue = event.target.value;
@@ -58,7 +65,7 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
       /> */}
       <Box>
         <Select
-          value={selectedCategory}
+          value={selectedCategory || categories[0].value}
           onChange={handleCategoryChange}
           variant="filled"
           size="lg"

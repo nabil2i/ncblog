@@ -85,7 +85,7 @@ const PostForm = ({ post }: Props) => {
     const html = stateToHTML(contentState);
     // const rawContentState = convertToRaw(contentState)
     // const html = stateToHTML(rawContentState)
-    console.log(html);
+    // console.log(html);
     setValue("body", html);
     // const contentState = convertToRaw(newEditorState.getCurrentContent());
     // Convert ContentState to HTML and update the form value
@@ -276,7 +276,7 @@ const PostForm = ({ post }: Props) => {
                   <Input _hover={{ cursor: "pointer"}} pl={0} height="full" type="file" accept="image/*"/>
                   <Button>Upload image</Button>
                 </Flex> */}
-              <Box>
+              <Box w="full">
                 <AddPostImage setFieldValue={setValue} postImage={post?.img} />
               </Box>
               <Controller

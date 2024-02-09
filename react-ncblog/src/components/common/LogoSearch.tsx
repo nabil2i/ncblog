@@ -2,6 +2,7 @@ import { Box, Flex, IconButton, Image, Link, Text } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
 import NabilConveys1 from "../../assets/icons/NabilConveys1.webp";
 import useAdminLayout from "../admin/useAdminLayout";
+import { NavLink } from "react-router-dom";
 
 interface Props {
   boxSize?: string;
@@ -27,7 +28,7 @@ const LogoSearch = ({ boxSize, fontSize }: Props) => {
       // p={3}
       // minH="60px"
     >
-      <Link href="/admin" _hover={{ textDeration: "none" }}>
+      <Link  as={NavLink} to="/admin" _hover={{ textDeration: "none" }}>
         <Box display="flex" alignItems="center" gap={1} pl={{ base: 4, lg: 0 }}>
           <Image
             src={NabilConveys1}

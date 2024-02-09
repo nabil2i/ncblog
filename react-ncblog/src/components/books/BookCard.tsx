@@ -6,10 +6,10 @@ import {
   Flex,
   Heading,
   Image,
-  Text,
   Link,
+  Text,
 } from "@chakra-ui/react";
-import {  NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import book1 from "../../assets/images/thepurposeoflife.jpg";
 import Book from "../../entities/Book";
 
@@ -21,7 +21,11 @@ const BookCard = ({ book }: Props) => {
   const navigate = useNavigate();
 
   return (
-    <Link as={NavLink} to={"/books/" + book._id}>
+    <Link
+      as={NavLink}
+      _hover={{ textDecoration: "none" }}
+      to={"/books/" + book._id}
+    >
       <Card textAlign="left" height="100%" key={book._id} borderRadius="4">
         <CardBody>
           <Image

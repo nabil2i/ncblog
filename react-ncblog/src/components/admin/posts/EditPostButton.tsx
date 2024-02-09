@@ -4,7 +4,11 @@ import { NavLink } from "react-router-dom";
 const EditPostButton = ({ postId }: { postId: string }) => {
   // console.log("post id in edit button: ", postId)
   return (
-    <Link as={NavLink} to={`/admin/posts/edit/${postId}`}>
+    <Link
+      as={NavLink}
+      _hover={{ textDecoration: "none" }}
+      to={`/admin/posts/edit/${postId}`}
+    >
       <Button colorScheme="gray">
         {/* <FaEdit /> */}
         Edit Post

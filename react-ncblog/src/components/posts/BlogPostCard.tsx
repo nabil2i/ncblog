@@ -6,9 +6,9 @@ import {
   HStack,
   Heading,
   Image,
+  Link,
   Tag,
   Text,
-  Link
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 // import Landscape from "../../assets/images/landscape.jpeg";
@@ -21,7 +21,11 @@ interface Props {
 
 const BlogPostCard = ({ post }: Props) => {
   return (
-    <Link as={NavLink} to={"/blog/" + post.slug}>
+    <Link
+      as={NavLink}
+      _hover={{ textDecoration: "none" }}
+      to={"/blog/" + post.slug}
+    >
       <Card textAlign="left" height="100%" key={post._id} borderRadius="4">
         <CardBody>
           {/* <Center> */}

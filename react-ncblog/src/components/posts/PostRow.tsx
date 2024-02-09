@@ -33,8 +33,8 @@ const PostRow = ({ post }: { post: Post }) => {
             bg: colorMode === "light" ? "teal.300" : "black",
           }}
         >
-          <Td mb={2} maxW={{ base: "300px", lg: "500px"}}>
-            <Box >
+          <Td mb={2} maxW={{ base: "300px", lg: "500px" }}>
+            <Box>
               <Flex
                 display="column"
                 w="100%"
@@ -44,24 +44,28 @@ const PostRow = ({ post }: { post: Post }) => {
                 <Box>
                   <Link
                     as={NavLink}
+                    _hover={{ textDecoration: "none", cursor: "pointer" }}
                     to={`/blog/${post.slug}`}
-                    _hover={{ cursor: "pointer" }}
                     fontSize={{ base: "16px", lg: "20px" }}
                     fontWeight={500}
                     // noOfLines={{ base: 2, lg: 2 }}
                     whiteSpace="pre-wrap"
-                    
                   >
-                    
-                      <div className="" dangerouslySetInnerHTML={{ __html: post.title }} />
-             
+                    <div
+                      className=""
+                      dangerouslySetInnerHTML={{ __html: post.title }}
+                    />
                   </Link>
                   {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
                   iste eveniet doloribus ipsum nostrum officiis dolorum adipisci
                   enim corporis eos! */}
                 </Box>
                 <Flex mt="5px" gap={4}>
-                <Box display={{ base: "flex", lg: "none"}}>{post.category && <Tag color={"green.500"}>{post.category}</Tag>}</Box>
+                  <Box display={{ base: "flex", lg: "none" }}>
+                    {post.category && (
+                      <Tag color={"green.500"}>{post.category}</Tag>
+                    )}
+                  </Box>
                   <Text>
                     <BlogPostDate date={post.createdAt} />
                   </Text>
@@ -89,8 +93,8 @@ const PostRow = ({ post }: { post: Post }) => {
                 align="center"
                 justify="center"
                 as={NavLink}
+                _hover={{ textDecoration: "none", cursor: "pointer" }}
                 to={`/blog/${post.slug}`}
-                _hover={{ cursor: "pointer" }}
               >
                 <Image
                   src={post.img}
@@ -106,7 +110,10 @@ const PostRow = ({ post }: { post: Post }) => {
                 ></MenuButton>
                 <MenuList>
                   <EditPostAction postId={post._id as string} />
-                  <DeletePostAction postId={post._id as string} userId={post.user?._id as string}/>
+                  <DeletePostAction
+                    postId={post._id as string}
+                    userId={post.user?._id as string}
+                  />
                 </MenuList>
               </Menu>
             </Flex>

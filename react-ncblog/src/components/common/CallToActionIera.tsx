@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Image, useColorMode } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import iera from "../../assets/images/iera.png";
 
 const CallToActionIera = () => {
@@ -25,7 +25,7 @@ const CallToActionIera = () => {
             upon him) instructed
           </Box>
           <Button
-            as={NavLink}
+            as={Link}
             to={"https://training.iera.org/"}
             target="_blank"
             bg="teal"

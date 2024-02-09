@@ -8,12 +8,12 @@ import {
   Heading,
   IconButton,
   Image,
+  Link,
   Menu,
   MenuButton,
   MenuList,
   Tag,
   Text,
-  Link
 } from "@chakra-ui/react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { NavLink } from "react-router-dom";
@@ -45,7 +45,11 @@ const UserBlogPostCard = ({ post }: Props) => {
             </MenuList>
           </Menu>
         </CardHeader>
-        <Link as={NavLink} to={"/blog/" + post.slug}>
+        <Link
+          as={NavLink}
+          _hover={{ textDecoration: "none" }}
+          to={"/blog/" + post.slug}
+        >
           <CardBody>
             {/* <Center> */}
             <Image

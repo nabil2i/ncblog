@@ -48,7 +48,7 @@ const DashboardNavItem = ({ item }: Props) => {
       // my={6}
       >
         <Box
-          // as={NavLink}
+          // as={NavLink} _hover={{ textDecoration: "none" }}
           // to={href as string}
           display="flex"
           fontWeight="medium"

@@ -1,3 +1,4 @@
+import { Link } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
@@ -7,7 +8,6 @@ import {
   selectCurrentToken,
 } from "../../app/features/auth/authSlice";
 import usePersist from "../../hooks/usePersist";
-import { Link } from "@chakra-ui/react";
 // { children }: { children: ReactNode }
 
 const PersistLogin = () => {
@@ -69,7 +69,10 @@ const PersistLogin = () => {
 
     <p className="errmsg">
       {/* {error.data?.message} */}
-      <Link as={NavLink} to="/login">Please login again</Link>.
+      <Link as={NavLink} _hover={{ textDecoration: "none" }} to="/login">
+        Please login again
+      </Link>
+      .
     </p>;
   } else if (isSuccess && trueSuccess) {
     //persist: yes, token: yes

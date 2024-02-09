@@ -1,14 +1,7 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Image,
-} from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
 import book1 from "../../assets/images/thepurposeoflife.jpg";
 import Book from "../../entities/Book";
-import { NavLink } from "react-router-dom";
 
 const BookDetails = ({ book }: { book: Book }) => {
   // console.log(post);
@@ -43,9 +36,9 @@ const BookDetails = ({ book }: { book: Book }) => {
             <Heading as="h2">Download the book</Heading>
             <Button
               as={NavLink}
+              _hover={{ textDecoration: "none" }}
               to={book.link}
               target="_blank"
-              _hover={{ textDecoration: "none" }}
             >
               Click here to download a pdf
             </Button>

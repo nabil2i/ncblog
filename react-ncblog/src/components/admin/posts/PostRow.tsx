@@ -53,7 +53,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
             bg: colorMode === "light" ? "teal.300" : "black",
           }}
         >
-          <Td mb={2} maxW={{ base: "300px", lg: "500px"}}>
+          <Td mb={2} maxW={{ base: "300px", lg: "500px" }}>
             <Box>
               <Flex
                 display="column"
@@ -64,8 +64,8 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                 <Box>
                   <Link
                     as={NavLink}
+                    _hover={{ textDecoration: "none", cursor: "pointer" }}
                     to={`/dashboard/posts/edit/${post._id}`}
-                    _hover={{ cursor: "pointer" }}
                     fontSize={{ base: "16px", lg: "20px" }}
                     fontWeight={500}
                     // noOfLines={{ base: 2, lg: 2 }}
@@ -81,7 +81,11 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                   enim corporis eos! */}
                 </Box>
                 <Flex mt="5px" gap={4}>
-                <Box display={{ base: "flex", lg: "none"}}>{post.category && <Tag color={"green.500"}>{post.category}</Tag>}</Box>
+                  <Box display={{ base: "flex", lg: "none" }}>
+                    {post.category && (
+                      <Tag color={"green.500"}>{post.category}</Tag>
+                    )}
+                  </Box>
                   <Text>
                     <BlogPostDate date={post.createdAt} />
                   </Text>
@@ -109,8 +113,8 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                 align="center"
                 justify="center"
                 as={NavLink}
+                _hover={{ textDecoration: "none", cursor: "pointer" }}
                 to={`/dashboard/posts/edit/${post._id}`}
-                _hover={{ cursor: "pointer" }}
               >
                 <Image
                   src={post.img}

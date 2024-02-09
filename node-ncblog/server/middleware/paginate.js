@@ -186,7 +186,7 @@ const paginate = (model) => {
 
               items: [
                 { $match: matchConditions },
-                { $sort: { updatedAt: sortOrder } },
+                { $sort: { createdAt: sortOrder } },
                 { $skip: startIndex },
                 { $limit: limit },
                 ...generalLookupStage(model),

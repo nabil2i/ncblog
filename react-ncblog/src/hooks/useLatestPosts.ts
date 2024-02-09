@@ -5,16 +5,15 @@ import { useAppSelector } from '../app/hooks';
 import Post from '../entities/Post';
 import { ArrayData, FetchResponse } from '../services/api-client';
 import postService from "../services/postService";
-import usePostQueryStore from '../store';
-import { CACHE_KEY_POSTS } from './constants';
+import { CACHE_KEY_LATEST_POSTS } from './constants';
 
 
 const useLatestPosts = () => { 
-  const postQuery = usePostQueryStore(s => s.postQuery);
+  // const postQuery = usePostQueryStore(s => s.postQuery);
   const token = useAppSelector(selectCurrentToken);
   
   return useQuery<FetchResponse<ArrayData<Post>>>({
-    queryKey: [CACHE_KEY_POSTS, postQuery],
+    queryKey: [CACHE_KEY_LATEST_POSTS],
     queryFn: () => postService.getAll({
       params: {
         limit: 3,

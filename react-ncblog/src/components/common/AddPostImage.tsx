@@ -18,8 +18,8 @@ import { ChangeEvent, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { UseFormSetValue } from "react-hook-form";
-import { PostFormData } from "../../../entities/Post";
-import { app } from "../../../firebase";
+import { PostFormData } from "../../entities/Post";
+import { app } from "../../firebase";
 
 interface Props {
   setFieldValue: UseFormSetValue<PostFormData>;
@@ -154,9 +154,7 @@ const AddPostImage = ({ setFieldValue, postImage }: Props) => {
       {fileRealUrl === null && postImage !== null && (
         <Box>
           {/* Render your Box with the image here */}
-          <Box>
-            <img src={postImage} alt="Uploaded Image" />
-          </Box>
+          <Box>{postImage && <img src={postImage} alt="Uploaded Image" />}</Box>
         </Box>
       )}
     </>

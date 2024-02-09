@@ -21,8 +21,7 @@ interface Props {
 const BlogPostCard = ({ post }: Props) => {
   return (
     <Link to={"/blog/" + post.slug}>
-      <Card textAlign="left" height="100%" key={post._id}
-      borderRadius="4">
+      <Card textAlign="left" height="100%" key={post._id} borderRadius="4">
         <CardBody>
           {/* <Center> */}
           <Image
@@ -48,16 +47,17 @@ const BlogPostCard = ({ post }: Props) => {
               </Tag>
             ))}
 
-            {post.category && (
-              <Tag color={"green.500"}>{post.category}</Tag>
-            )}
+            {post.category && <Tag color={"green.500"}>{post.category}</Tag>}
           </HStack>
           <Heading as="h3" my="4" fontSize="xl" noOfLines={2}>
-            {post.title}
+            <div
+              className=""
+              dangerouslySetInnerHTML={{ __html: post.title }}
+            />
           </Heading>
 
           <Text fontSize={"md"} noOfLines={3}>
-            {post.body}
+            <div className="" dangerouslySetInnerHTML={{ __html: post.body }} />
           </Text>
         </CardBody>
         {/* <Divider borderColor="gray.200"/> */}

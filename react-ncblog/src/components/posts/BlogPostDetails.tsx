@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Heading } from "@chakra-ui/react";
-import ReactMarkdown from "react-markdown";
+// import ReactMarkdown from "react-markdown";
 import Post from "../../entities/Post";
 import { useSearchPostQueryStore } from "../../store";
 import CallToAction from "../common/CallToActionIera";
@@ -21,7 +21,9 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
   return (
     <Box w="full">
       <Box>
-        <Heading mb={2}>{post.title}</Heading>
+        <Heading mb={2}>
+          <div className="" dangerouslySetInnerHTML={{ __html: post.title }} />
+        </Heading>
       </Box>
       {post.category && (
         <Button
@@ -41,8 +43,12 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
       <BlogPostInfo post={post} />
       <Divider orientation="horizontal" color="gray.500" my="4" />
       <Box>
+        {/* <div
+          className="p-3 max-w-[1440px] mw-auto w-full post-content"
+          dangerouslySetInnerHTML={{ __html: post.body }}
+        /> */}
         {/* <div className="p-3 max-w-[1440px] mw-auto w-full post-content"></div> */}
-        <ReactMarkdown>{post.body}</ReactMarkdown>
+        {/* <ReactMarkdown>{post.body}</ReactMarkdown> */}
       </Box>
       {/* <Divider orientation="horizontal" color="gray.500" my="4" /> */}
       <Box m={5}>

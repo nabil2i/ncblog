@@ -1,4 +1,4 @@
-import { Heading, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Flex, Heading, SimpleGrid } from "@chakra-ui/react";
 import useLatestPosts from "../../hooks/useLatestPosts";
 import BlogPostCard from "./BlogPostCard";
 import BlogPostCardContainer from "./BlogPostCardContainer";
@@ -37,7 +37,8 @@ const SimplePostGrid = () => {
             </Heading>
           )}
 
-          <VStack paddingBottom={5} align={"center"}>
+          {/* <VStack paddingBottom={5} align={"center"}> */}
+          <Flex flexWrap="wrap" justify="center" mx="auto">
             <SimpleGrid
               textAlign="center"
               columns={{ sm: 1, md: 2, lg: 3, xl: 3 }}
@@ -57,7 +58,8 @@ const SimplePostGrid = () => {
                 </BlogPostCardContainer>
               ))}
             </SimpleGrid>
-          </VStack>
+          </Flex>
+          {/* </VStack> */}
         </>
       )}
     </>

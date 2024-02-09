@@ -36,7 +36,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
       post: data?.posts.entities[postId],
     }),
   });
-  
+
   const { colorMode } = useColorMode();
 
   // // NORMAL SELECTOR
@@ -46,7 +46,12 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
   if (post)
     return (
       <>
-        <Tr _hover={{ cursor: "pointer", bg: colorMode === "light" ? "teal.300" : "black"}}>
+        <Tr
+          _hover={{
+            cursor: "pointer",
+            bg: colorMode === "light" ? "teal.300" : "black",
+          }}
+        >
           <Td mb={2}>
             <Box>
               <Flex
@@ -65,7 +70,10 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                     // noOfLines={{ base: 2, lg: 2 }}
                     // whiteSpace="pre-wrap"
                   >
-                    {post.title}
+                    <div
+                      className=""
+                      dangerouslySetInnerHTML={{ __html: post.title }}
+                    />
                   </Link>
                   {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
                   iste eveniet doloribus ipsum nostrum officiis dolorum adipisci

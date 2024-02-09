@@ -62,12 +62,12 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
           onChange={handleCategoryChange}
           variant="filled"
           size="lg"
-          placeholder={post?.category || "Select a category"}
+          // placeholder={post?.category || "Select a category"}
           _hover={{ cursor: "pointer" }}
         >
           {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
+            <option key={category.label} value={category.value}>
+              {category.label}
             </option>
           ))}
         </Select>

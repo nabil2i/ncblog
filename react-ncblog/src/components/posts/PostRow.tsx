@@ -50,7 +50,7 @@ const PostRow = ({ post }: { post: Post }) => {
                     // noOfLines={{ base: 2, lg: 2 }}
                     // whiteSpace="pre-wrap"
                   >
-                    {post.title}
+                    <div className="" dangerouslySetInnerHTML={{ __html: post.title }} />
                   </Link>
                   {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
                   iste eveniet doloribus ipsum nostrum officiis dolorum adipisci

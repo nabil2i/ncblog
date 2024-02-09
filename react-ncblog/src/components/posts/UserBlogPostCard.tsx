@@ -37,7 +37,10 @@ const UserBlogPostCard = ({ post }: Props) => {
             ></MenuButton>
             <MenuList>
               <EditPostAction postId={post._id as string} />
-              <DeletePostAction postId={post._id as string} userId={post.user?._id as string}/>
+              <DeletePostAction
+                postId={post._id as string}
+                userId={post.user?._id as string}
+              />
             </MenuList>
           </Menu>
         </CardHeader>
@@ -68,10 +71,16 @@ const UserBlogPostCard = ({ post }: Props) => {
               ))}
             </HStack>
             <Heading as="h3" my="4" fontSize="xl" noOfLines={2}>
-              {post.title}
+              <div
+                className=""
+                dangerouslySetInnerHTML={{ __html: post.title }}
+              />
             </Heading>
             <Text fontSize={"md"} noOfLines={3}>
-              {post.body}
+              <div
+                className=""
+                dangerouslySetInnerHTML={{ __html: post.body }}
+              />
             </Text>
           </CardBody>
           {/* <Divider borderColor="gray.200"/> */}

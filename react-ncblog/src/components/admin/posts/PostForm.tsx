@@ -11,21 +11,30 @@ import {
   GridItem,
   useToast,
 } from "@chakra-ui/react";
-import "easymde/dist/easymde.min.css";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import "react-quill/dist/quill.snow.css";
+// import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
-import SimpleMDE from "react-simplemde-editor";
+// import "easymde/dist/easymde.min.css";
+// import SimpleMDE from "react-simplemde-editor";
 import {
   useAddNewPostMutation,
   useUpdatePostMutation,
 } from "../../../app/features/posts/postsApiSlice";
 import Post, { PostFormData } from "../../../entities/Post";
 import useAuth from "../../../hooks/useAuth";
-import AutoExpandingTextarea from "../../common/AutoExpandingTextarea";
-import AddPostImage from "./AddPostImage";
+import AddPostImage from "../../common/AddPostImage";
 import PostActions from "./PostActions";
+// import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
+import { ContentState, EditorState, convertFromHTML } from "draft-js";
+import { stateToHTML } from "draft-js-export-html";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import PostTitleEditor from "../../common/PostTitleEditor";
+// import draftToHtml from 'draftjs-to-html';
+// import HtmlToDraft from 'html-to-draftjs';
+
 
 interface Props {
   post?: Post;
@@ -37,6 +46,35 @@ const PostForm = ({ post }: Props) => {
   const [error, setError] = useState("");
   const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
+
+  const [editorState, setEditorState] = useState(() => {
+    if (post?.body) {
+      // If updating a post, convert HTML to ContentState
+      const blocksFromHTML = convertFromHTML(post.body);
+      // const blocksFromHTML = HtmlToDraft(post.body);
+
+      const state = ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks,
+        blocksFromHTML.entityMap
+      );
+      return EditorState.createWithContent(state);
+    } else {
+      // For a new post, start with an empty editor state
+      return EditorState.createEmpty();
+    }
+  });
+
+  const handleEditorChange = (newEditorState: EditorState) => {
+    setEditorState(newEditorState);
+    const contentState = newEditorState.getCurrentContent();
+    const html = stateToHTML(contentState);
+    // const rawContentState = convertToRaw(contentState)
+    // const html = stateToHTML(rawContentState)
+    console.log(html);
+    setValue("body", html);
+    // const contentState = convertToRaw(newEditorState.getCurrentContent());
+    // Convert ContentState to HTML and update the form value
+  };
 
   const [
     addNewPost,
@@ -126,7 +164,7 @@ const PostForm = ({ post }: Props) => {
     // reset,
     setValue,
     // getValues,
-    formState: { errors,  },
+    formState: { errors },
   } = useForm<PostFormData>();
 
   const onSubmit = (data: PostFormData) => {
@@ -167,7 +205,11 @@ const PostForm = ({ post }: Props) => {
       <Box>
         <Box>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <PostActions post={post} isSubmittingPost={isSubmittingPost} setFieldValue={setValue}/>
+            <PostActions
+              post={post}
+              isSubmittingPost={isSubmittingPost}
+              setFieldValue={setValue}
+            />
             <Grid
               gap={2}
               templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
@@ -196,13 +238,20 @@ const PostForm = ({ post }: Props) => {
                   isInvalid={errors.title ? true : false}
                   mb="40px"
                 >
-                  <AutoExpandingTextarea
+                  <PostTitleEditor
+                    id={"title"}
+                    content={post?.title as string}
+                    placeholder="Add title"
+                    register={register}
+                    setFieldValue={setValue}
+                  />
+                  {/* <AutoExpandingTextarea
                     id={"title"}
                     defaultValue={post?.title as string}
                     placeholder="Add title"
                     register={register}
                     setFieldValue={setValue}
-                  />
+                  /> */}
                   {/* <FormErrorMessage>
                     {errors.title && errors.title.message}
                   </FormErrorMessage> */}
@@ -212,17 +261,25 @@ const PostForm = ({ post }: Props) => {
                   <Input _hover={{ cursor: "pointer"}} pl={0} height="full" type="file" accept="image/*"/>
                   <Button>Upload image</Button>
                 </Flex> */}
-                <AddPostImage setFieldValue={setValue} postImage={post?.img}/>
+                <AddPostImage setFieldValue={setValue} postImage={post?.img} />
                 <Controller
                   name="body"
                   control={control}
                   defaultValue={post?.body as string}
-                  render={({ field }) => (
-                    // <ReactQuill className="h-72 mb-12" theme="snow" placeholder="Start writing something..." {...field}/>
-                    <SimpleMDE
-                      placeholder="Start writing something..."
-                      {...field}
+                  render={() => (
+                    <Editor
+                      editorState={editorState}
+                      toolbarClassName="toolbarClassName"
+                      wrapperClassName="wrapperClassName"
+                      editorClassName="editorClassName"
+                      onEditorStateChange={handleEditorChange}
+                      placeholder="Write something..."
                     />
+                    // <ReactQuill className="h-72 mb-12" theme="snow" placeholder="Start writing something..." {...field}/>
+                    // <SimpleMDE
+                    //   placeholder="Start writing something..."
+                    //   {...field}
+                    // />
                   )}
                 />
                 <FormErrorMessage>{errors.body?.message}</FormErrorMessage>

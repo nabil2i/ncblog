@@ -33,6 +33,8 @@ const PostPage = () => {
     <>
       <Box w="full" mx="auto" maxW="800px" p={4}>
         <BlogPostDetails post={post} />
+      </Box>
+      <Box w="full" mx="auto" maxW="1440px" p={4}>
         <LatestPosts />
       </Box>
       {/* <Box maxW="4xl" mx="auto" w="full">

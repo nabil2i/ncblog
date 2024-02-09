@@ -27,7 +27,7 @@ export const createNewPost = async (req, res, next) => {
     const user = await User.findById(userId);
     if (!user) return next(makeError(400, "Invalid user"));
     
-    const slug = cheerio.load(title).text().split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]+/g, '-');
+    const slug = cheerio.load(title).text().split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]+/g, '');
 
     let newPost = new Post({
       slug,

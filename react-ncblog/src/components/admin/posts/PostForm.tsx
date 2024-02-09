@@ -5,10 +5,9 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
+  Flex,
   FormControl,
   FormErrorMessage,
-  Grid,
-  GridItem,
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -35,7 +34,6 @@ import PostTitleEditor from "../../common/PostTitleEditor";
 // import draftToHtml from 'draftjs-to-html';
 // import HtmlToDraft from 'html-to-draftjs';
 
-
 interface Props {
   post?: Post;
 }
@@ -46,7 +44,7 @@ const PostForm = ({ post }: Props) => {
   const [error, setError] = useState("");
   const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
-  
+
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -219,71 +217,74 @@ const PostForm = ({ post }: Props) => {
 
   return (
     <>
-      <Box>
-        <Box>
-          <form onSubmit={handleSubmit(onSubmit)}>
+      <Flex>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Flex display="column">
             <PostActions
               post={post}
               isSubmittingPost={isSubmittingPost}
               setFieldValue={setValue}
             />
-            <Grid
-              gap={2}
-              templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
-              templateColumns={{ base: "1fr", lg: "2f 1fr" }}
-              pt={10}
+
+            <Flex
+              p={4}
+              w="full"
+              direction="column"
               mx="auto"
-              maxW="800px"
+              maxW="1000px"
+              align="center"
             >
-              <GridItem area="main" p={4}>
-                {addPostError && (
-                  <Alert mb="15px" mt="10px" status="error">
-                    <AlertIcon />
-                    <AlertTitle></AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
-                {updatePostError && (
-                  <Alert mb="15px" mt="10px" status="error">
-                    <AlertIcon />
-                    <AlertTitle></AlertTitle>
-                    <AlertDescription>{error}</AlertDescription>
-                  </Alert>
-                )}
-                <FormControl
-                  isRequired
-                  isInvalid={errors.title ? true : false}
-                  mb="40px"
-                >
-                  <PostTitleEditor
-                    id={"title"}
-                    content={post?.title as string}
-                    placeholder="Add title"
-                    register={register}
-                    setFieldValue={setValue}
-                  />
-                  {/* <AutoExpandingTextarea
+              {addPostError && (
+                <Alert mb="15px" mt="10px" status="error">
+                  <AlertIcon />
+                  <AlertTitle></AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              {updatePostError && (
+                <Alert mb="15px" mt="10px" status="error">
+                  <AlertIcon />
+                  <AlertTitle></AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              <FormControl
+                isRequired
+                isInvalid={errors.title ? true : false}
+                mb="00px"
+              >
+                <PostTitleEditor
+                  id={"title"}
+                  content={post?.title as string}
+                  placeholder="Add title"
+                  register={register}
+                  setFieldValue={setValue}
+                />
+                {/* <AutoExpandingTextarea
                     id={"title"}
                     defaultValue={post?.title as string}
                     placeholder="Add title"
                     register={register}
                     setFieldValue={setValue}
                   /> */}
-                  {/* <FormErrorMessage>
+                {/* <FormErrorMessage>
                     {errors.title && errors.title.message}
                   </FormErrorMessage> */}
-                </FormControl>
+              </FormControl>
 
-                {/* <Flex my={2} p={2} gap={4} align="center" border="dashed" borderWidth={2} borderRadius="4px">
+              {/* <Flex my={2} p={2} gap={4} align="center" border="dashed" borderWidth={2} borderRadius="4px">
                   <Input _hover={{ cursor: "pointer"}} pl={0} height="full" type="file" accept="image/*"/>
                   <Button>Upload image</Button>
                 </Flex> */}
+              <Box>
                 <AddPostImage setFieldValue={setValue} postImage={post?.img} />
-                <Controller
-                  name="body"
-                  control={control}
-                  defaultValue={post?.body as string}
-                  render={() => (
+              </Box>
+              <Controller
+                name="body"
+                control={control}
+                defaultValue={post?.body as string}
+                render={() => (
+                  <Box w="full" overflowWrap="break-word" mt={15}>
                     <Editor
                       editorState={editorState}
                       toolbarClassName="toolbarClassName"
@@ -292,16 +293,18 @@ const PostForm = ({ post }: Props) => {
                       onEditorStateChange={handleEditorChange}
                       placeholder="Write something..."
                     />
-                    // <ReactQuill className="h-72 mb-12" theme="snow" placeholder="Start writing something..." {...field}/>
-                    // <SimpleMDE
-                    //   placeholder="Start writing something..."
-                    //   {...field}
-                    // />
-                  )}
-                />
-                <FormErrorMessage>{errors.body?.message}</FormErrorMessage>
-              </GridItem>
-              {/* <GridItem
+                  </Box>
+
+                  // <ReactQuill className="h-72 mb-12" theme="snow" placeholder="Start writing something..." {...field}/>
+                  // <SimpleMDE
+                  //   placeholder="Start writing something..."
+                  //   {...field}
+                  // />
+                )}
+              />
+              <FormErrorMessage>{errors.body?.message}</FormErrorMessage>
+            </Flex>
+            {/* <GridItem
                 area="side"
                 p={4}
                 position={{ base: "fixed", lg: "sticky" }}
@@ -319,10 +322,9 @@ const PostForm = ({ post }: Props) => {
                   />
                 </Flex>
               </GridItem> */}
-            </Grid>
-          </form>
-        </Box>
-      </Box>
+          </Flex>
+        </form>
+      </Flex>
     </>
   );
 };

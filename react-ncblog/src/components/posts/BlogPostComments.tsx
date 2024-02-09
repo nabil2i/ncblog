@@ -144,7 +144,7 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
             <Flex gap="3" mb="5" mt="5">
               <Avatar
                 src={comment?.user?.img}
-                size="xs"
+                size={!comment.parentComment ? "lg" : "md"}
                 className="cursor-pointer"
                 referrerPolicy="no-referrer"
               />

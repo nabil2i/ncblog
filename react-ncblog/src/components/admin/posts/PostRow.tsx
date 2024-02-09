@@ -8,6 +8,7 @@ import {
   MenuButton,
   MenuList,
   Show,
+  Tag,
   Td,
   Text,
   Tr,
@@ -52,7 +53,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
             bg: colorMode === "light" ? "teal.300" : "black",
           }}
         >
-          <Td mb={2}>
+          <Td mb={2} maxW={{ base: "300px", lg: "500px"}}>
             <Box>
               <Flex
                 display="column"
@@ -68,7 +69,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                     fontSize={{ base: "16px", lg: "20px" }}
                     fontWeight={500}
                     // noOfLines={{ base: 2, lg: 2 }}
-                    // whiteSpace="pre-wrap"
+                    whiteSpace="pre-wrap"
                   >
                     <div
                       className=""
@@ -79,7 +80,8 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                   iste eveniet doloribus ipsum nostrum officiis dolorum adipisci
                   enim corporis eos! */}
                 </Box>
-                <Flex mt="5px">
+                <Flex mt="5px" gap={4}>
+                <Box display={{ base: "flex", lg: "none"}}>{post.category && <Tag color={"green.500"}>{post.category}</Tag>}</Box>
                   <Text>
                     <BlogPostDate date={post.createdAt} />
                   </Text>

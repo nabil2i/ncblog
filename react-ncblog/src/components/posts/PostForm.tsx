@@ -4,11 +4,10 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
+  Box,
   Flex,
   FormControl,
   FormErrorMessage,
-  Grid,
-  GridItem,
   useToast,
 } from "@chakra-ui/react";
 import "easymde/dist/easymde.min.css";
@@ -191,19 +190,23 @@ const PostForm = ({ post }: Props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex display="column">
-          <PostActions
-            post={post}
-            isSubmittingPost={isSubmittingPost}
-            setFieldValue={setValue}
-          />
-          <Grid
-            gap={2}
-            templateAreas={{ base: `"main"`, lg: `"side1 main side2"` }}
-            templateColumns={{ base: "1fr", lg: "1fr 1000px 1fr" }}
-          >
-            <GridItem area="main" p={4}>
+      <Flex>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Flex display="column">
+            <PostActions
+              post={post}
+              isSubmittingPost={isSubmittingPost}
+              setFieldValue={setValue}
+            />
+
+            <Flex
+              p={4}
+              w="full"
+              direction="column"
+              mx="auto"
+              maxW="1000px"
+              align="center"
+            >
               {createPost.error && (
                 <Alert mb="15px" mt="10px" status="error">
                   <AlertIcon />
@@ -221,7 +224,7 @@ const PostForm = ({ post }: Props) => {
               <FormControl
                 isRequired
                 isInvalid={errors.title ? true : false}
-                mb="40px"
+                mb="0px"
               >
                 <PostTitleEditor
                   id={"title"}
@@ -231,46 +234,46 @@ const PostForm = ({ post }: Props) => {
                   setFieldValue={setValue}
                 />
                 {/* <AutoExpandingTextarea
-                  id={"title"}
-                  defaultValue={post?.title as string}
-                  placeholder="Add title"
-                  register={register}
-                  setFieldValue={setValue}
-                /> */}
+                    id={"title"}
+                    defaultValue={post?.title as string}
+                    placeholder="Add title"
+                    register={register}
+                    setFieldValue={setValue}
+                  /> */}
                 {/* <FormErrorMessage>
-                  {errors.title && errors.title.message}
-                </FormErrorMessage> */}
+                    {errors.title && errors.title.message}
+                  </FormErrorMessage> */}
               </FormControl>
-              <AddPostImage setFieldValue={setValue} postImage={post?.img} />
-
+              <Box>
+                <AddPostImage setFieldValue={setValue} postImage={post?.img} />
+              </Box>
               <Controller
                 name="body"
                 control={control}
                 defaultValue={post?.body as string}
                 render={() => (
-                  <Editor
-                    editorState={editorState}
-                    toolbarClassName="toolbarClassName"
-                    wrapperClassName="wrapperClassName"
-                    editorClassName="editorClassName"
-                    onEditorStateChange={handleEditorChange}
-                    placeholder="Write something..."
-                  />
+                  <Box w="full" overflowWrap="break-word" mt={15}>
+                    <Editor
+                      editorState={editorState}
+                      toolbarClassName="toolbarClassName"
+                      wrapperClassName="wrapperClassName"
+                      editorClassName="editorClassName"
+                      onEditorStateChange={handleEditorChange}
+                      placeholder="Write something..."
+                    />
+                  </Box>
                   //   <Editor
                   //   editorState={editorState}
                   //   onChange={handleEditorChange}
                   //   placeholder="Start writing something..."
                   // />
-
                   // <RichTextEditor />
-
                   // <ReactQuill
                   //   className="h-72 mb-12 dark:"
                   //   theme="snow"
                   //   placeholder="Start writing something..."
                   //   {...field}
                   // />
-
                   // <SimpleMDE
                   //   placeholder="Start writing something..."
                   //   {...field}
@@ -278,29 +281,28 @@ const PostForm = ({ post }: Props) => {
                 )}
               />
               <FormErrorMessage>{errors.body?.message}</FormErrorMessage>
-            </GridItem>
-
+            </Flex>
             {/* <GridItem
-              area="side"
-              p={4}
-              position={{ base: "fixed", lg: "sticky" }}
-              top={{ lg: 0 }}
-              alignSelf={{ lg: "flex-start" }}
-            >
-              <Flex
-                direction="column"
-                display={{ base: "none", lg: "flex" }}
-                gap="4"
+                area="side"
+                p={4}
+                position={{ base: "fixed", lg: "sticky" }}
+                top={{ lg: 0 }}
+                alignSelf={{ lg: "flex-start" }}
               >
-                <UpdatePostButton
-                  isSubmittingPost={isSubmittingPost}
-                  post={post}
-                />
-              </Flex>
-            </GridItem> */}
-          </Grid>
-        </Flex>
-      </form>
+                <Flex
+                  direction="column"
+                  display={{ base: "none", lg: "flex" }}
+                  gap="4"
+                >
+                  <UpdatePostButton
+                    isSubmittingPost={isSubmittingPost}
+                    post={post}
+                  />
+                </Flex>
+              </GridItem> */}
+          </Flex>
+        </form>
+      </Flex>
     </>
   );
 };

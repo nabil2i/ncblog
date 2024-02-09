@@ -70,11 +70,12 @@ const PostTitleEditor = ({
   };
 
   return (
-    <Box fontSize={40} fontWeight="bold">
+    <Box fontWeight="bold" w="full" overflowWrap="break-word">
       <Editor
         editorState={editorState}
         onChange={handleEditorChange}
         placeholder={placeholder}
+        ariaLabel="Post title"
       />
     </Box>
   );

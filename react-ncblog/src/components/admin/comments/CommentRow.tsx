@@ -58,7 +58,7 @@ const CommentRow = ({ commentId }: { commentId: EntityId }) => {
               </Flex>
             </Flex>
           </Td>
-          <Td>{comment.text}</Td>
+          <Td whiteSpace="pre-wrap">{comment.text}</Td>
           {showOnLargeScreen && (
             <>
               <Td>{comment.numberOfLikes}</Td>

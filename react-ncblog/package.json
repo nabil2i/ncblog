@@ -39,6 +39,7 @@
     "autoprefixer": "^10.4.16",
     "axios": "^1.4.0",
     "buffer": "^6.0.3",
+    "cheerio": "^1.0.0-rc.12",
     "cookies-js": "^1.2.3",
     "dateformat": "^5.0.3",
     "draft-js": "^0.11.7",

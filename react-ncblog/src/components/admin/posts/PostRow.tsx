@@ -65,7 +65,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                   <Link
                     as={NavLink}
                     _hover={{ textDecoration: "none", cursor: "pointer" }}
-                    to={`/dashboard/posts/edit/${post._id}`}
+                    to={`/blog/${post.slug}`}
                     fontSize={{ base: "16px", lg: "20px" }}
                     fontWeight={500}
                     // noOfLines={{ base: 2, lg: 2 }}

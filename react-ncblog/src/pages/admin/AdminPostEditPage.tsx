@@ -24,7 +24,7 @@ const AdminPostEditPage = () => {
     <Box>
       <Flex direction="column">
         <Flex justify="space-between" align="center"></Flex>
-        <Box>
+        <Box >
           <PostForm post={post} />
         </Box>
       </Flex>

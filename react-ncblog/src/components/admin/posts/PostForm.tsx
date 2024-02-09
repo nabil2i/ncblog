@@ -228,6 +228,7 @@ const PostForm = ({ post }: Props) => {
 
             <Flex
               p={4}
+              pt={"60px"}
               w="full"
               direction="column"
               mx="auto"

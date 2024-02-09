@@ -12,7 +12,8 @@ import {
   updateComment,
   deleteCurrentUserPost,
   updatePost,
-  updateCurrentUserPost
+  updateCurrentUserPost,
+  getPostComments
 } from "../controllers/postsController.js";
 import admin from "../middleware/admin.js";
 import auth from "../middleware/auth.js";
@@ -42,7 +43,7 @@ router.route('/:id/:userId')
 
 router.route('/:id/comments')
   // get all comments of a blog post
-  // .get([auth, admin], paginate(Comment), getPostComments)
+  .get(getPostComments)
   // create a comment on a blog post
   .post(auth, createComment)
 

@@ -3,7 +3,7 @@ import { selectCurrentToken } from "../app/features/auth/authSlice";
 import { useAppSelector } from "../app/hooks";
 import Comment from "../entities/Comment";
 import APIClient, { FetchResponse } from "../services/api-client";
-import { CACHE_KEY_POSTS } from "./constants";
+import { CACHE_KEY_COMMENTS } from "./constants";
 
 interface DeleteCommentForm {
   commentId: string;
@@ -30,7 +30,7 @@ const useDeleteUserComment = (
     mutationFn: ({ commentId, commenterId}: DeleteCommentForm) => apiClient.delete(commentId, config, commenterId),
     onSuccess: () => {
       onSuccessCreate();
-      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS, slug]})
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_COMMENTS, slug]})
     },
     onError: () => {
       // console.log(error)

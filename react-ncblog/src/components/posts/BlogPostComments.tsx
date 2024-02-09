@@ -7,7 +7,9 @@ import {
   Avatar,
   Box,
   Button,
+  Divider,
   Flex,
+  Spinner,
   Text,
   Textarea,
   useColorMode,
@@ -20,21 +22,26 @@ import { useRef, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { authSatus } from "../../app/features/auth/authSlice";
 import { useAppSelector } from "../../app/hooks";
-import Post, { PostComment } from "../../entities/Post";
+import { PostComment } from "../../entities/Post";
 import useAuth from "../../hooks/useAuth";
 import useDeleteUserComment from "../../hooks/useDeleteUserComment";
 import useLikeComment from "../../hooks/useLikeComment";
+import usePostComments from "../../hooks/usePostComments";
 import useUpdateUserComment from "../../hooks/useUpdateUserComment";
 import { CustomButton } from "../common/CustomButton";
 import { LoginModal } from "../common/LoginModal";
+import AddComment from "./AddComment";
 import ReplyComment from "./ReplyComment";
 
 interface Props {
-  post: Post;
+  postSlug: string;
+  postId: string;
 }
 
-const BlogPostComments = ({ post }: Props) => {
+const BlogPostComments = ({ postSlug, postId }: Props) => {
+  const [addComment, setAddComment] = useState(false);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [parentCommentId, setparentCommentId] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [theCommentId, setTheCommentId] = useState<string>("");
@@ -47,16 +54,30 @@ const BlogPostComments = ({ post }: Props) => {
 
   const onCloseAlert = () => setAlertOpen(false);
 
+  const { data: payload, isLoading } = usePostComments(postSlug);
+  const comments = payload?.data.comments;
+  const numberOfComments = payload?.data.numberOfComments;
+  // console.log(comments);
 
-  const handleReply = (commentId: string) => {
+  const handleComment = () => {
+    if (isAuthenticated) {
+      setAddComment(true);
+    } else {
+      onOpen();
+      // navigate(`/login?redirect=/post/${post._id}`)
+    }
+  };
+
+  const handleReply = (commentId: string, parentCommentId: string) => {
     if (isAuthenticated) {
       setReplyingTo(commentId);
+      setparentCommentId(parentCommentId);
     } else {
       onOpen();
     }
   };
 
-  const likeComment = useLikeComment(theCommentId, post.slug, () => {
+  const likeComment = useLikeComment(theCommentId, postSlug, () => {
     setTheCommentId("");
   });
 
@@ -87,8 +108,8 @@ const BlogPostComments = ({ post }: Props) => {
   };
 
   const editComment = useUpdateUserComment(
-    post._id,
-    post.slug,
+    postId,
+    postSlug,
     theCommentId,
     userId,
     () => {
@@ -103,7 +124,7 @@ const BlogPostComments = ({ post }: Props) => {
     // }
   );
 
-  const deleteComment = useDeleteUserComment(post._id, post.slug, () => {
+  const deleteComment = useDeleteUserComment(postId, postSlug, () => {
     // console.log("deleted");
   });
 
@@ -115,21 +136,11 @@ const BlogPostComments = ({ post }: Props) => {
 
   const { colorMode } = useColorMode();
 
-  // RENDER WITH MAX DEPTH
-  const renderComments = (
-    comments: PostComment[],
-    postId: string,
-    slug: string,
-    depth = 0,
-    maxDepth = 2
-  ) => {
-    const ml = depth > maxDepth ? maxDepth * 4 : depth * 4;
-    // console.log(comments)
-
+  const renderComments = (comments: PostComment[]) => {
     return (
       <>
-        {comments.map((comment, index) => (
-          <Box key={comment?._id || index} ml={ml}>
+        {comments?.map((comment, index) => (
+          <Box key={comment?._id || index} ml={0}>
             <Flex gap="3" mb="5" mt="5">
               <Avatar
                 src={comment?.user?.img}
@@ -145,7 +156,8 @@ const BlogPostComments = ({ post }: Props) => {
                 >
                   <Flex gap="3" align="center">
                     <Text size="3" fontWeight={700}>
-                      {comment?.user?.firstname + " " + comment?.user?.lastname}
+                      {/* {comment?.user?.firstname + " " + comment?.user?.lastname} */}
+                      @{comment?.user.username}
                     </Text>
                     {/* <ElapsedDate date={comment?.createdAt} /> */}
                     <Text size="2" color="gray">
@@ -184,12 +196,12 @@ const BlogPostComments = ({ post }: Props) => {
                 </Box>
                 {theCommentId !== comment._id && (
                   <Flex gap={2}>
-                    {isAuthenticated && (
+                    {/* {isAuthenticated && (
                       <CustomButton
                         onClick={() => handleReply(comment._id)}
                         text={""}
                       />
-                    )}
+                    )} */}
                     <Flex>
                       {isAuthenticated && (
                         <CustomButton
@@ -214,12 +226,16 @@ const BlogPostComments = ({ post }: Props) => {
                         </Text>
                       )}
                     </Flex>
-                    {/* {isAuthenticated && (
+                    {isAuthenticated && (
                       <CustomButton
-                        onClick={() => handleReply(comment._id)}
+                        onClick={() => {
+                          if (!comment.parentComment)
+                            handleReply(comment._id, comment._id);
+                          else handleReply(comment._id, comment.parentComment);
+                        }}
                         text={"Reply"}
                       />
-                    )} */}
+                    )}
                     {isAuthenticated &&
                       (_id === comment.user._id || status === "Admin") && (
                         <CustomButton
@@ -304,19 +320,18 @@ const BlogPostComments = ({ post }: Props) => {
                 />
                 {replyingTo === comment._id && (
                   <ReplyComment
-                    postId={post._id}
-                    postSlug={post.slug}
+                    postId={postId}
+                    postSlug={postSlug}
                     replyingTo={comment.user}
-                    parentComment={comment._id}
+                    parentComment={parentCommentId}
                     onCancelReply={handleCancelReply}
                   />
                 )}
               </Flex>
             </Flex>
+
             {comment.replies && comment.replies.length > 0 && (
-              <Box pl={6}>
-                {renderComments(comment.replies, postId, slug, depth + 1)}
-              </Box>
+              <Box pl={14}>{renderComments(comment.replies)}</Box>
             )}
           </Box>
         ))}
@@ -324,7 +339,36 @@ const BlogPostComments = ({ post }: Props) => {
     );
   };
 
-  return <>{renderComments(post.comments, post._id, post.slug)}</>;
+  return (
+    <>
+      {isLoading && (
+        <Box py={8}>
+          <Spinner />
+        </Box>
+      )}
+
+      <Divider orientation="horizontal" color="gray.500" my="4" />
+
+      <Flex justify="center">
+        <CustomButton
+          onClick={handleComment}
+          text={"(" + numberOfComments + ")" + "Comment"}
+        >
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </CustomButton>
+        <LoginModal
+          isOpen={isOpen}
+          onClose={onClose}
+          redirectLink={`/blog/${postSlug}`}
+        />
+      </Flex>
+
+      <Divider orientation="horizontal" color="gray.500" my="4" />
+      {addComment && <AddComment postSlug={postSlug} postId={postId} />}
+      {renderComments(comments as PostComment[])}
+      <Divider orientation="horizontal" color="gray.500" my="4" />
+    </>
+  );
 };
 
 export default BlogPostComments;
@@ -411,3 +455,214 @@ export default BlogPostComments;
 //     ))}
 //   </>
 // )
+
+// // RENDER WITH MAX DEPTH
+// const renderComments = (
+//   comments: PostComment[],
+//   postId: string,
+//   slug: string,
+//   depth = 0,
+//   maxDepth = 2
+// ) => {
+//   const ml = depth > maxDepth ? maxDepth * 4 : depth * 4;
+//   // console.log(comments)
+
+//   return (
+//     <>
+//       {comments.map((comment, index) => (
+//         <Box key={comment?._id || index} ml={ml}>
+//           <Flex gap="3" mb="5" mt="5">
+//             <Avatar
+//               src={comment?.user?.img}
+//               size="xs"
+//               className="cursor-pointer"
+//               referrerPolicy="no-referrer"
+//             />
+//             <Flex direction="column" gap="1" width={"100%"}>
+//               <Box
+//                 borderRadius={"lg"}
+//                 bg={colorMode === "light" ? "gray.100" : "gray.700"}
+//                 p={4}
+//               >
+//                 <Flex gap="3" align="center">
+//                   <Text size="3" fontWeight={700}>
+//                     {comment?.user?.firstname + " " + comment?.user?.lastname}
+//                   </Text>
+//                   {/* <ElapsedDate date={comment?.createdAt} /> */}
+//                   <Text size="2" color="gray">
+//                     {moment(comment.createdAt).fromNow()}
+//                   </Text>
+//                 </Flex>
+//                 {isEditing && theCommentId === comment._id ? (
+//                   <Flex direction="column" gap={4}>
+//                     <Flex direction="column">
+//                       <Textarea
+//                         focusBorderColor="teal.500"
+//                         value={editedContent}
+//                         onChange={(e) => setEditedContent(e.target.value)}
+//                       />
+//                       <Box color="gray">
+//                         {/* {remainingChars} characters left */}
+//                       </Box>
+//                     </Flex>
+
+//                     <Flex align="center">
+//                       <CustomButton
+//                         onClick={() =>
+//                           editComment.mutate({
+//                             text: editedContent as string,
+//                           })
+//                         }
+//                       >
+//                         <FontAwesomeIcon icon={faPaperPlane} />
+//                       </CustomButton>
+//                       <Button onClick={handleCancelEdit}>Cancel</Button>
+//                     </Flex>
+//                   </Flex>
+//                 ) : (
+//                   <Text size="2">{comment.text}</Text>
+//                 )}
+//               </Box>
+//               {theCommentId !== comment._id && (
+//                 <Flex gap={2}>
+//                   {isAuthenticated && (
+//                     <CustomButton
+//                       onClick={() => handleReply(comment._id)}
+//                       text={""}
+//                     />
+//                   )}
+//                   <Flex>
+//                     {isAuthenticated && (
+//                       <CustomButton
+//                         onClick={() => handleLike(comment._id)}
+//                         // text={"Like"}
+//                       >
+//                         <FaHeart
+//                           className={`text-gray-400 hover:text-teal-500
+//                       ${
+//                         isAuthenticated &&
+//                         comment.likes.includes(_id) &&
+//                         "text-teal-500"
+//                       }`}
+//                         />
+//                       </CustomButton>
+//                     )}
+//                     {comment.numberOfLikes > 0 && (
+//                       <Text whiteSpace="nowrap">
+//                         {comment.numberOfLikes +
+//                           " " +
+//                           (comment.numberOfLikes === 1 ? "like" : "likes")}
+//                       </Text>
+//                     )}
+//                   </Flex>
+//                   {/* {isAuthenticated && (
+//                     <CustomButton
+//                       onClick={() => handleReply(comment._id)}
+//                       text={"Reply"}
+//                     />
+//                   )} */}
+//                   {isAuthenticated &&
+//                     (_id === comment.user._id || status === "Admin") && (
+//                       <CustomButton
+//                         color="teal.200"
+//                         onClick={() => {
+//                           handleEditComment(
+//                             comment._id,
+//                             comment.user._id,
+//                             comment.text
+//                           );
+//                         }}
+//                         text={"Edit"}
+//                       />
+//                     )}
+//                   {isAuthenticated && _id === comment.user._id && (
+//                     <CustomButton
+//                       color="red.400"
+//                       onClick={() => {
+//                         // setAlertOpen(true);
+//                         deleteComment.mutate({
+//                           commentId: comment._id,
+//                           commenterId: comment.user._id,
+//                         });
+//                       }}
+//                       text={"Delete"}
+//                     />
+//                   )}
+//                   <Box>
+//                     <AlertDialog
+//                       isOpen={isAlertOpen}
+//                       onClose={onCloseAlert}
+//                       leastDestructiveRef={cancelRef}
+//                     >
+//                       <AlertDialogOverlay>
+//                         <AlertDialogContent>
+//                           <AlertDialogHeader fontSize="lg" fontWeight="bold">
+//                             Confirm Deletion
+//                           </AlertDialogHeader>
+
+//                           <AlertDialogBody>
+//                             Are you sure you want to delete this comment? This
+//                             action cannot be undone.
+//                           </AlertDialogBody>
+
+//                           <Flex
+//                             m="4"
+//                             gap="3"
+//                             align="center"
+//                             justify="flex-start"
+//                           >
+//                             <Button
+//                               variant="soft"
+//                               color="gray"
+//                               onClick={onCloseAlert}
+//                               ref={cancelRef}
+//                             >
+//                               Cancel
+//                             </Button>
+//                             <Button
+//                               color="red"
+//                               onClick={() => {
+//                                 onCloseAlert();
+//                                 deleteComment.mutate({
+//                                   commentId: comment._id,
+//                                   commenterId: comment.user._id,
+//                                 });
+//                               }}
+//                             >
+//                               Delete
+//                             </Button>
+//                           </Flex>
+//                         </AlertDialogContent>
+//                       </AlertDialogOverlay>
+//                     </AlertDialog>
+//                   </Box>
+//                 </Flex>
+//               )}
+//               <LoginModal
+//                 isOpen={isOpen}
+//                 onClose={onClose}
+//                 redirectLink={`/blog/${postId}`}
+//               />
+//               {replyingTo === comment._id && (
+//                 <ReplyComment
+//                   postId={postId}
+//                   postSlug={postSlug}
+//                   replyingTo={comment.user}
+//                   parentComment={comment._id}
+//                   onCancelReply={handleCancelReply}
+//                 />
+//               )}
+//             </Flex>
+//           </Flex>
+//           {comment.replies && comment.replies.length > 0 && (
+//             <Box pl={6}>
+//               {renderComments(comment.replies, postId, slug, depth + 1)}
+//             </Box>
+//           )}
+//         </Box>
+//       ))}
+//     </>
+//   );
+// };
+
+// return <>{renderComments(comments as PostComment[], postId, postSlug)}</>;

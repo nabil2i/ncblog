@@ -5,18 +5,22 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
 import { CommentForm } from "../../entities/Comment";
-import Post from "../../entities/Post";
 import useAuth from "../../hooks/useAuth";
 import useCreateComment from "../../hooks/useCreateComment";
 import { CustomButton } from "../common/CustomButton";
+import { useEffect } from "react";
 
 // const VARIANT_COLOR = "teal";
+interface Props {
+  postId: string;
+  postSlug: string;
+}
 
-const AddComment = ({ post }: { post: Post }) => {
+const AddComment = ({ postId, postSlug }: Props) => {
   const { _id, img } = useAuth();
   const isAuthenticated = useSelector(authSatus);
   // const { id } = useParams();
-  const addComment = useCreateComment(post._id, post.slug, () => {
+  const addComment = useCreateComment(postId, postSlug, () => {
     reset();
   });
 
@@ -24,6 +28,7 @@ const AddComment = ({ post }: { post: Post }) => {
     handleSubmit,
     register,
     reset,
+    setFocus,
     watch,
     formState: { isValid },
   } = useForm<CommentForm>();
@@ -37,8 +42,14 @@ const AddComment = ({ post }: { post: Post }) => {
     addComment.mutate(data);
   };
 
-  const remainingChars = watch("text")?.length ? 200 - watch("text").length : 200;
+  const remainingChars = watch("text")?.length
+    ? 200 - watch("text").length
+    : 200;
   // console.log(commentText)
+
+  useEffect(() => {
+    setFocus("text");
+  }, [setFocus]);
 
   return (
     <>
@@ -64,9 +75,7 @@ const AddComment = ({ post }: { post: Post }) => {
                     },
                   })}
                 />
-                <Box color="gray">
-                  {remainingChars} characters left
-                </Box>
+                <Box color="gray">{remainingChars} characters left</Box>
               </Flex>
             </FormControl>
             <CustomButton onClick={handleSubmit(onSubmit)} disabled={!isValid}>

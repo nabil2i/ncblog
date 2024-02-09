@@ -106,7 +106,7 @@ const paginate = (model) => {
           projectFields.user = 1,
           projectFields.likes = 1,
           projectFields.img = 1,
-          projectFields.comments = 1,
+          // projectFields.comments = 1,
           projectFields.category = 1
         } else if (modelName === "Category") {
           projectFields.name = 1
@@ -159,11 +159,11 @@ const paginate = (model) => {
             lastname: '$author.lastname',
           }
         }
-        if (fields.includes('comment')){
-          projectFields.parent = {
-            _id: '$author._id',
-          }
-        }
+        // if (fields.includes('comment')){
+        //   projectFields.parent = {
+        //     _id: '$author._id',
+        //   }
+        // }
 
         return {
           $project: {

@@ -1,4 +1,3 @@
-import Joi from "joi";
 import _ from "lodash";
 import mongoose from "mongoose";
 import Comment, { validateComment, validateUpdateComment } from "../models/comment.js";
@@ -86,24 +85,24 @@ export const getPost = async (req, res, next) => {
           path: 'user',
           select: 'firstname lastname',
         },
-        {
-          path: 'comments',
-          options: { sort: { createdAt: -1 } },
-          populate: [
-            {
-              path: 'user',
-              select: 'firstname lastname img',
-            },
-            {
-              path: 'replies',
-              options: { sort: { createdAt: -1 } },
-              populate: {
-                path: 'user',
-                select: 'firstname lastname img'
-              }
-            }
-          ]
-        }   
+        // {
+        //   path: 'comments',
+        //   options: { sort: { createdAt: -1 } },
+        //   populate: [
+        //     {
+        //       path: 'user',
+        //       select: 'firstname lastname img',
+        //     },
+        //     {
+        //       path: 'replies',
+        //       options: { sort: { createdAt: -1 } },
+        //       populate: {
+        //         path: 'user',
+        //         select: 'firstname lastname img'
+        //       }
+        //     }
+        //   ]
+        // }   
       ])
       // .populate({
       //   path: 'user',
@@ -309,16 +308,60 @@ export const deleteCurrentUserPost = async (req, res, next) => {
 // RELETED TO COMMENTS OF A POST
 // @desc Get all posts
 // @route GET /posts/:id/comments
-// @access Private
-export const getPostComments = async (req, res) => {
-  const postId = req.params.id;
-  const comments = await Comment.find().sort("-createdAt");
-  res.status(200).json({ success: true, message: "Get all comments of the post" });
+// @access Private Auth
+export const getPostComments = async (req, res, next) => {
+  let postQuery;
+  const postIdOrSlug = req.params.id;
+
+  if (!postIdOrSlug) return next(makeError(400, "Post ID or slug is required"));
+  
+  const isObjectId = mongoose.Types.ObjectId.isValid(postIdOrSlug);
+
+  if (isObjectId) {
+    postQuery = { _id: postIdOrSlug };
+  } else {
+    postQuery = { slug: postIdOrSlug };
+  }
+
+  // console.log(postQuery)
+
+  const post = await Post.findOne(postQuery)
+  .populate([
+    {
+      path: 'comments',
+      options: { sort: { createdAt: -1 } },
+      populate: [
+        {
+          path: 'user',
+          select: 'username firstname lastname img',
+        },
+        {
+          path: 'replies',
+          options: { sort: { createdAt: 1 } },
+          populate: {
+            path: 'user',
+            select: 'username firstname lastname img'
+          }
+        }
+      ]
+    }   
+  ]).exec();
+  // console.log(post)
+  
+  if (!post) return next(makeError(404, "Post not found"));
+
+  const data = {
+    comments: post.comments,
+    numberOfComments: post.totalCommentsCount
+  };
+
+  // const comments = await Comment.find().sort("-createdAt");
+  res.status(200).json({ success: true, message: "Comments of the post", data });
 };
 
 // @desc Create a comment
 // @route POST /posts/:id/comments
-// @access Private
+// @access Private Auth
 export const createComment = async (req, res, next) => {
   try {
     const { error } = validateComment(req.body);
@@ -327,7 +370,7 @@ export const createComment = async (req, res, next) => {
     // console.log(req.body);
     
     const postId = req.params.id;
-    const { text, userId, parentCommentId } = req.body;
+    const { text, userId, parentCommentId, replyToComment } = req.body;
 
     const post = await Post.findById(postId);
     if (!post) return next(makeError(400, "Invalid post"));
@@ -337,24 +380,25 @@ export const createComment = async (req, res, next) => {
       user: userId,
       post: postId,
     })
-  
-    if (parentCommentId) {
-      newComment.parentComment = parentCommentId
+
+    if (replyToComment) {
+      newComment.replyToComment  = replyToComment
     }
     
-    newComment = await newComment.save();
-
     if (parentCommentId) {
       const parentComment = await Comment.findById(parentCommentId);
       if (!parentComment)  return next(makeError(400, "Invalid parent comment ID"));
-
+      
       parentComment.replies.push(newComment);
+      // parentComment.numberOfReplies++;
       await parentComment.save();
+      newComment.parentComment = parentCommentId
     } else {
       post.comments.push(newComment);
     }
     post.totalCommentsCount++;
     await post.save();
+    newComment = await newComment.save();
 
     newComment = _.pick(newComment, ['_id', 'text']);
     res.status(201).json({success: true, data: newComment});
@@ -363,6 +407,54 @@ export const createComment = async (req, res, next) => {
     return next(makeError(500, "Internal Server Error"));
   }
 };
+// original createComment method
+// @desc Create a comment
+// // @route POST /posts/:id/comments
+// // @access Private Auth
+// export const createComment = async (req, res, next) => {
+//   try {
+//     const { error } = validateComment(req.body);
+//     if (error) return next(makeError(400, error.details[0].message));
+
+//     // console.log(req.body);
+    
+//     const postId = req.params.id;
+//     const { text, userId, parentCommentId } = req.body;
+
+//     const post = await Post.findById(postId);
+//     if (!post) return next(makeError(400, "Invalid post"));
+    
+//     let newComment = new Comment({
+//       text,
+//       user: userId,
+//       post: postId,
+//     })
+  
+//     if (parentCommentId) {
+//       newComment.parentComment = parentCommentId
+//     }
+    
+//     newComment = await newComment.save();
+
+//     if (parentCommentId) {
+//       const parentComment = await Comment.findById(parentCommentId);
+//       if (!parentComment)  return next(makeError(400, "Invalid parent comment ID"));
+
+//       parentComment.replies.push(newComment);
+//       await parentComment.save();
+//     } else {
+//       post.comments.push(newComment);
+//     }
+//     post.totalCommentsCount++;
+//     await post.save();
+
+//     newComment = _.pick(newComment, ['_id', 'text']);
+//     res.status(201).json({success: true, data: newComment});
+//   } catch(err) {
+//     console.log(err)
+//     return next(makeError(500, "Internal Server Error"));
+//   }
+// };
 
 // @desc Create a comment
 // @route GET /posts/:id/comments/:cid
@@ -383,7 +475,7 @@ export const getComment = async (req, res, next) => {
 
 // @desc Create a comment
 // @route UPDATE /posts/:id/comments/:cid
-// @access Private
+// @access Private Admin
 export const updateComment = async (req, res, next) => {
   const commentId = req.params.cid;
 

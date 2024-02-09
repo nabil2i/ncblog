@@ -1,6 +1,7 @@
 import { Box, Flex, FormControl, Text, Textarea } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
@@ -34,11 +35,17 @@ const ReplyComment = ({
     onCancelReply();
   });
 
+  const replyingToStyle = {
+    color: "teal.500",
+  };
+
   const {
     handleSubmit,
     register,
     reset,
     watch,
+    setValue,
+    setFocus,
     formState: { isValid },
   } = useForm<CommentForm>();
 
@@ -47,14 +54,30 @@ const ReplyComment = ({
       text: data.text,
       userId: _id,
       parentCommentId: parentComment,
+      replyToComment: replyingTo._id,
     };
     // console.log(`"Form fields": ${JSON.stringify(data)}`);
     addComment.mutate(data);
   };
 
+  const onFocus = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+    const position = `@${replyingTo.username}`.length;
+    event.target.setSelectionRange(position, position);
+  };
+
+  useEffect(() => {
+    setValue("text", `@${replyingTo.username}`);
+    reset({ text: `@${replyingTo.username}` });
+    // setFocus("text");
+  }, [reset, replyingTo.username, setValue, setFocus]);
+
   const remainingChars = watch("text")?.length
     ? 200 - watch("text").length
     : 200;
+
+  // useEffect(() => {
+  //   setFocus("text");
+  // }, [setFocus]);
 
   return (
     <>
@@ -90,8 +113,11 @@ const ReplyComment = ({
               >
                 <Flex direction="column">
                   <Textarea
-                    focusBorderColor="teal.500"
+                    focusBorderColor="none"
+                    // defaultValue={`@${replyingTo.username}`}
+                    css={replyingToStyle}
                     placeholder="Reply to the comment..."
+                    // {...rest}
                     {...register("text", {
                       required: true,
                       maxLength: {
@@ -99,6 +125,8 @@ const ReplyComment = ({
                         message: "comment must be at most 200 characters.",
                       },
                     })}
+                    onFocus={onFocus}
+                    style={{ color: "" }}
                   />
                   <Box color="gray">{remainingChars} characters left</Box>
                 </Flex>

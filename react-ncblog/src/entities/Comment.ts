@@ -6,11 +6,13 @@ export default interface Comment {
   text: string;
   likes: string[];
   numberOfLikes: number;
+  replies: Comment[];
   createdAt: Date;
   updatedAt: Date;
   post: string;
   user: {
     _id: string;
+    username: string;
     firstname: string;
     lastname: string;
   }
@@ -26,6 +28,7 @@ export interface CommentEntity {
   post: string;
   user: {
     _id: string;
+    username: string;
     firstname: string;
     lastname: string;
   }
@@ -35,4 +38,5 @@ export interface CommentForm {
   userId?: string;
   text: string;
   parentCommentId?: string;
+  replyToComment?: string;
 }

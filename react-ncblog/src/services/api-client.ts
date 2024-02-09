@@ -63,6 +63,13 @@ class APIClient<T, Q> {
 
   }
 
+
+  getAllItems = (config: AxiosRequestConfig) => {
+    return axiosInstance
+      .get<FetchResponse<T>>(this.endpoint, config)
+      .then(res => res.data);
+  };
+
   getAll = (config: AxiosRequestConfig) => {
     return axiosInstance
       .get<FetchResponse<ArrayData<T>>>(this.endpoint, config)

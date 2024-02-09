@@ -19,6 +19,7 @@ export default interface User {
 
 export interface SimpleUser {
   _id: string;
+  username: string;
   firstname: string;
   lastname: string;
   img?: string;

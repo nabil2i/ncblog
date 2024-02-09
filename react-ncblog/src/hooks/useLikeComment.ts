@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { selectCurrentToken } from "../app/features/auth/authSlice";
 import { useAppSelector } from "../app/hooks";
 import APIClient from "../services/api-client";
-import { CACHE_KEY_POSTS } from "./constants";
+import { CACHE_KEY_COMMENTS } from "./constants";
 
 const useLikeComment = (
   commentId: string,
@@ -25,7 +25,7 @@ const useLikeComment = (
     mutationFn: (data) => apiClient.put(data, config),
     onSuccess: () => {
       onSuccessLikeComment();
-      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_POSTS, slug]})
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_COMMENTS, slug]})
     },
     onError: () => {
       // console.log(error)

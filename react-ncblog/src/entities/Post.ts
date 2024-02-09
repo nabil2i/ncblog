@@ -16,6 +16,7 @@ export default interface Post {
   updatedAt?: Date;
   user?: {
     _id: string;
+    username?: string;
     firstname: string;
     lastname: string;
   }
@@ -39,13 +40,17 @@ export interface PostComment {
   text: string;
   user: {
     _id: string;
+    username: string;
     firstname: string;
     lastname: string;
     img?: string;
   }
+  // isTopLevelComment: boolean;
   replies: PostComment[];
   numberOfLikes: number;
   likes: string[];
+  parentComment?: string;
+
 }
 
 export interface PostFormData {

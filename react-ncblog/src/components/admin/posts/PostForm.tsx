@@ -46,8 +46,12 @@ const PostForm = ({ post }: Props) => {
   const [error, setError] = useState("");
   const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
+  
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
 
-  const [editorState, setEditorState] = useState(() => {
+  useEffect(() => {
     if (post?.body) {
       // If updating a post, convert HTML to ContentState
       const blocksFromHTML = convertFromHTML(post.body);
@@ -57,12 +61,25 @@ const PostForm = ({ post }: Props) => {
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
       );
-      return EditorState.createWithContent(state);
-    } else {
-      // For a new post, start with an empty editor state
-      return EditorState.createEmpty();
+      setEditorState(EditorState.createWithContent(state));
     }
-  });
+  }, [post?.body]);
+  // const [editorState, setEditorState] = useState(() => {
+  //   if (post?.body) {
+  //     // If updating a post, convert HTML to ContentState
+  //     const blocksFromHTML = convertFromHTML(post.body);
+  //     // const blocksFromHTML = HtmlToDraft(post.body);
+
+  //     const state = ContentState.createFromBlockArray(
+  //       blocksFromHTML.contentBlocks,
+  //       blocksFromHTML.entityMap
+  //     );
+  //     return EditorState.createWithContent(state);
+  //   } else {
+  //     // For a new post, start with an empty editor state
+  //     return EditorState.createEmpty();
+  //   }
+  // });
 
   const handleEditorChange = (newEditorState: EditorState) => {
     setEditorState(newEditorState);

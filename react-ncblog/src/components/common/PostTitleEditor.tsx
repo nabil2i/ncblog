@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import 'draft-js/dist/Draft.css';
 import { Box } from "@chakra-ui/react";
 import { ContentState, Editor, EditorState, convertFromHTML } from "draft-js";
@@ -22,7 +22,11 @@ const PostTitleEditor = ({
   register,
   setFieldValue,
 }: Props) => {
-  const [editorState, setEditorState] = useState(() => {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+
+  useEffect(() => {
     if (content) {
       // If updating a post, convert HTML to ContentState
       const blocksFromHTML = convertFromHTML(content);
@@ -30,12 +34,24 @@ const PostTitleEditor = ({
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
       );
-      return EditorState.createWithContent(state);
-    } else {
-      // For a new post, start with an empty editor state
-      return EditorState.createEmpty();
+      setEditorState(EditorState.createWithContent(state));
     }
-  });
+  }, [content]);
+
+  // const [editorState, setEditorState] = useState(() => {
+  //   if (content) {
+  //     // If updating a post, convert HTML to ContentState
+  //     const blocksFromHTML = convertFromHTML(content);
+  //     const state = ContentState.createFromBlockArray(
+  //       blocksFromHTML.contentBlocks,
+  //       blocksFromHTML.entityMap
+  //     );
+  //     return EditorState.createWithContent(state);
+  //   } else {
+  //     // For a new post, start with an empty editor state
+  //     return EditorState.createEmpty();
+  //   }
+  // });
 
   const handleEditorChange = (newEditorState: EditorState) => {
     register(id, {

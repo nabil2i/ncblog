@@ -67,6 +67,7 @@ const DeletePostButton = ({ postId, userId }: Props) => {
         colorScheme="gray"
         // variant={"outline"}
         disabled={isDeleting}
+        size="lg"
         onClick={() => setIsOpen(true)}
       >
         Delete Post {isDeleting && <Spinner />}

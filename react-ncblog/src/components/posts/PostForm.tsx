@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import "easymde/dist/easymde.min.css";
 import ms from "ms";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Post, { PostFormData } from "../../entities/Post";
@@ -46,7 +46,11 @@ const PostForm = ({ post }: Props) => {
   const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
 
-  const [editorState, setEditorState] = useState(() => {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+
+  useEffect(() => {
     if (post?.body) {
       // If updating a post, convert HTML to ContentState
       const blocksFromHTML = convertFromHTML(post.body);
@@ -56,12 +60,26 @@ const PostForm = ({ post }: Props) => {
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
       );
-      return EditorState.createWithContent(state);
-    } else {
-      // For a new post, start with an empty editor state
-      return EditorState.createEmpty();
+      setEditorState(EditorState.createWithContent(state));
     }
-  });
+  }, [post?.body]);
+
+  // const [editorState, setEditorState] = useState(() => {
+  //   if (post?.body) {
+  //     // If updating a post, convert HTML to ContentState
+  //     const blocksFromHTML = convertFromHTML(post.body);
+  //     // const blocksFromHTML = HtmlToDraft(post.body);
+
+  //     const state = ContentState.createFromBlockArray(
+  //       blocksFromHTML.contentBlocks,
+  //       blocksFromHTML.entityMap
+  //     );
+  //     return EditorState.createWithContent(state);
+  //   } else {
+  //     // For a new post, start with an empty editor state
+  //     return EditorState.createEmpty();
+  //   }
+  // });
 
   const handleEditorChange = (newEditorState: EditorState) => {
     setEditorState(newEditorState);

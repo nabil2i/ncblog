@@ -1,6 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import dateFormat from "dateformat";
-// import "moment-timezone";
+import "moment-timezone";
 
 interface Props {
   date: Date | undefined;
@@ -9,7 +9,7 @@ const BlogPostDate = ({ date }: Props) => {
   return (
     <Text as="time" fontSize={"md"} color="gray">
       {
-        dateFormat(date, "mmm dS, yyyy")
+        dateFormat(date, "mmm dd, yyyy")
         // new Intl.DateTimeFormat(
         //   'en-US',
         //   {
@@ -23,7 +23,6 @@ const BlogPostDate = ({ date }: Props) => {
         // ).format(Date.now())
       }
     </Text>
-    // <Moment format="YYYY/MM/DD">{date.toString()}</Moment>
   );
 };
 

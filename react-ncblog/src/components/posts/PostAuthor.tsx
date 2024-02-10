@@ -12,18 +12,17 @@ const PostAuthor = ({ post }: { post: Post }) => {
           <Text>Written by</Text>
         </Box> */}
         <Box>
-          <Text fontWeight={300}>
+          <Text fontSize={22} fontWeight={"bold"}>
             {post.user?.firstname + " " + post.user?.lastname}
           </Text>
         </Box>
 
-        <Flex direction="column" justify="center">
+        <Flex gap={4} justify="center">
           <Text>
-            Posted on: <BlogPostDate date={post.createdAt} />{" "}
+            Posted: <BlogPostDate date={post.createdAt} />
           </Text>
           <Text>
-            {" "}
-            Last updated: <BlogPostDate date={post.updatedAt} />{" "}
+            Updated: <BlogPostDate date={post.updatedAt} />
           </Text>
         </Flex>
       </Box>

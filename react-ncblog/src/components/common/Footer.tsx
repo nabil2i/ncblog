@@ -7,9 +7,9 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
+import { NavLink } from "react-router-dom";
 import { NavLogoDrawer } from "../navbar/NavLogo";
 import SOCIAL_ITEMS from "./socialitems";
-import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   const emailAddress = import.meta.env.DEV
@@ -76,11 +76,11 @@ const Footer = () => {
             </Flex>
           </Flex>
         </Box>
-        </Box>
+      </Box>
 
-        <Divider orientation="horizontal" color="gray.500" />
+      <Divider orientation="horizontal" color="gray.500" />
 
-        <Box maxW="1440px" mx="auto">
+      <Box maxW="1440px" mx="auto">
         <Flex
           py={4}
           px={{ base: 8, lg: 20 }}
@@ -89,10 +89,16 @@ const Footer = () => {
           align="center"
           gap={4}
         >
-          <Flex>
+          <Flex gap={2}>
             <Text fontSize="sm">
               &copy; {new Date().getFullYear()} NabilConveys. All Rights
               Reserved
+            </Text>
+            <Text fontSize="sm" color="gray">
+              Developped by{" "}
+              <Link _hover={{ color: "teal", textDecoration: "none"}} href="https://nabil2i.github.io/" target="_blank">
+                @TheNabVerse
+              </Link>
             </Text>
           </Flex>
           <Flex gap={2}>

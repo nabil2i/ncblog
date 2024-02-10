@@ -69,7 +69,7 @@ export const deleteComment = async (req, res, next) => {
         parentPost.comments = parentPost.comments.filter(postCommentId => (
           postCommentId.toString() !== commentId)
         );
-        // await parentPost.save(); 
+        // await parentPost.save();
       }
        
       await Comment.findByIdAndDelete(commentId);

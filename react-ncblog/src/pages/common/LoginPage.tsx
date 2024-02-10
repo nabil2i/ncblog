@@ -27,7 +27,7 @@ const LoginPage = () => {
         <Grid
           borderWidth={{ lg: 1 }}
           borderRadius={16}
-          boxShadow="lg"
+          boxShadow={{ base: "none", md: "lg" }}
           // marginTop={{ base: "100px", lg: "30px" }}
           templateAreas={{ base: `"loginform"`, lg: `"hero loginform"` }}
           templateColumns={{ base: `"1fr"`, lg: "1fr 1fr" }}

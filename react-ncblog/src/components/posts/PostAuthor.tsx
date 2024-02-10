@@ -17,10 +17,12 @@ const PostAuthor = ({ post }: { post: Post }) => {
           </Text>
         </Box>
 
-        <Flex gap={4} justify="center">
+        <Flex>
           <Text>
             Posted: <BlogPostDate date={post.createdAt} />
           </Text>
+        </Flex>
+        <Flex>
           <Text>
             Updated: <BlogPostDate date={post.updatedAt} />
           </Text>

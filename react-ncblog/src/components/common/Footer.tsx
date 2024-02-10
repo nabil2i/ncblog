@@ -89,12 +89,12 @@ const Footer = () => {
           align="center"
           gap={4}
         >
-          <Flex gap={2}>
-            <Text fontSize="sm">
+          <Flex gap={2} direction={{ base:"column", lg: "row"}} >
+            <Text fontSize="sm" textAlign="center">
               &copy; {new Date().getFullYear()} NabilConveys. All Rights
               Reserved
             </Text>
-            <Text fontSize="sm" color="gray">
+            <Text fontSize="sm" color="gray" textAlign="center">
               Developped by{" "}
               <Link _hover={{ color: "teal", textDecoration: "none"}} href="https://nabil2i.github.io/" target="_blank">
                 @TheNabVerse

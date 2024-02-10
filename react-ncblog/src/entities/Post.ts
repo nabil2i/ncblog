@@ -23,7 +23,7 @@ export default interface Post {
   comments: PostComment[]
   commentCount?: number;
   replyCount?: number;
-  totalComments?: number;
+  numberOfLikes?: number;
   totalCommentsCount?: number;
 }
 export interface PostData {

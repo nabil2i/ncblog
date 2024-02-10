@@ -107,6 +107,8 @@ const paginate = (model) => {
           projectFields.likes = 1,
           projectFields.img = 1,
           // projectFields.comments = 1,
+          projectFields.numberOfLikes = 1,
+          projectFields.totalCommentsCount = 1,
           projectFields.category = 1
         } else if (modelName === "Category") {
           projectFields.name = 1

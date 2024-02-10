@@ -1,7 +1,7 @@
 import {
+  Box,
   Card,
   CardBody,
-  CardFooter,
   Flex,
   HStack,
   Heading,
@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 // import Landscape from "../../assets/images/landscape.jpeg";
+import { FiHeart, FiMessageCircle } from "react-icons/fi";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
 
@@ -54,26 +55,41 @@ const BlogPostCard = ({ post }: Props) => {
 
             {post.category && <Tag color={"green.500"}>{post.category}</Tag>}
           </HStack>
-          <Heading as="h3" my="4" fontSize="xl" noOfLines={2}>
+          <Heading as="h3" my="4" fontSize="xl" noOfLines={3}>
             <div
               className=""
               dangerouslySetInnerHTML={{ __html: post.title }}
             />
           </Heading>
 
-          <Text fontSize={"md"} noOfLines={3}>
+          <Text fontSize={"md"} noOfLines={5}>
             <div className="" dangerouslySetInnerHTML={{ __html: post.body }} />
           </Text>
+
+          <Flex align="center" justify="space-between" mt={4}>
+            <BlogPostAuthor post={post} />
+            <Flex gap={2}>
+              {post.totalCommentsCount && post.totalCommentsCount > 0 && (
+                <Flex gap={1} align="center">
+                  <FiMessageCircle />
+                  <Box>{post.totalCommentsCount}</Box>
+                </Flex>
+              )}
+              {post.numberOfLikes && post.numberOfLikes > 0 && (
+                <Flex gap={1} align="center">
+                  <FiHeart />
+                  <Box>{post.numberOfLikes}</Box>
+                </Flex>
+              )}
+            </Flex>
+          </Flex>
         </CardBody>
         {/* <Divider borderColor="gray.200"/> */}
         {/* <CardHeader>
           
         </CardHeader> */}
-        <CardFooter>
-          <Flex>
-            <BlogPostAuthor post={post} />
-          </Flex>
-        </CardFooter>
+        {/* <CardFooter> */}
+        {/* </CardFooter> */}
       </Card>
     </Link>
   );

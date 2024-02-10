@@ -1,6 +1,7 @@
 import { Avatar, Box, Flex, FormControl, Textarea } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
@@ -8,18 +9,19 @@ import { CommentForm } from "../../entities/Comment";
 import useAuth from "../../hooks/useAuth";
 import useCreateComment from "../../hooks/useCreateComment";
 import { CustomButton } from "../common/CustomButton";
-import { useEffect } from "react";
 
 // const VARIANT_COLOR = "teal";
 interface Props {
   postId: string;
   postSlug: string;
+  onCancelComment?: () => void;
 }
 
-const AddComment = ({ postId, postSlug }: Props) => {
+const AddComment = ({ postId, postSlug, onCancelComment }: Props) => {
   const { _id, img } = useAuth();
   const isAuthenticated = useSelector(authSatus);
   // const { id } = useParams();
+
   const addComment = useCreateComment(postId, postSlug, () => {
     reset();
   });
@@ -75,7 +77,10 @@ const AddComment = ({ postId, postSlug }: Props) => {
                     },
                   })}
                 />
-                <Box color="gray">{remainingChars} characters left</Box>
+                <Flex gap={4}>
+                  <Box color="gray">{remainingChars} characters left</Box>
+                  <CustomButton onClick={onCancelComment} text="Cancel" />
+                </Flex>
               </Flex>
             </FormControl>
             <CustomButton onClick={handleSubmit(onSubmit)} disabled={!isValid}>

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import mongoose from "mongoose";
 import Comment, { validateComment, validateUpdateComment } from "../models/comment.js";
+import LikePost from "../models/likepost.js";
 import Post, { validatePost, validateUpdatePost } from "../models/post.js";
 import User from "../models/user.js";
 import { makeError } from "../utils/responses.js";
@@ -154,6 +155,38 @@ export const getPost = async (req, res, next) => {
     if (err.name === 'CastError') {
       return next(makeError(400, "Invalid post ID"));
     }
+    return next(makeError(500, "Internal Server Error"));
+  }
+};
+
+// @desc Like/Unlike a post
+// @route PUT posts/:id/like
+// @access Private Auth
+export const likePost = async (req, res, next) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user._id;
+    // console.log("hello", postId)
+    if (!postId) return next(makeError(400, "Post ID required"));
+
+    const post = await Post.findById(postId);
+    if (!post) return next(makeError(404, "The post with given ID doesn't exist"));
+
+    let likePost = await LikePost.findOne({user: userId, post: postId});
+
+    if (!likePost) {
+      likePost = new LikePost({user: userId, post: postId});
+      await likePost.save();
+      post.numberOfLikes++;
+    } else {
+      await LikePost.remove({ user: userId, post: postId });
+      post.numberOfLikes--;
+    }
+    
+    await post.save();
+    res.json({ success: true, data: likePost});
+  } catch(err) {
+    console.log(err)
     return next(makeError(500, "Internal Server Error"));
   }
 };

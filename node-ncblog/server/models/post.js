@@ -57,13 +57,21 @@ export const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment',
   }],
+  // tags: {
+  //   type: Array,
+  //   default: [],
+  // },
   tags: {
-    type: Array,
-    default: [],
+    type: [String],
+    default: []
   },
   category: {
     type: String,
     default: "Uncategorized"
+  },
+  isDraft: {
+    type: Boolean,
+    default: false
   },
   // category: {
   //   type: mongoose.Schema.Types.ObjectId,

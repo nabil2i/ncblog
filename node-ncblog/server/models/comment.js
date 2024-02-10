@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 import Joi from "joi";
+import mongoose from "mongoose";
 
 export const commentSchema = new mongoose.Schema({
   text: {
@@ -26,6 +26,10 @@ export const commentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment'
   }],
+  isReply: {
+    type: Boolean,
+    default: false,
+  },
   // replies: [{
   //   user: {
   //     type: mongoose.Schema.Types.ObjectId,

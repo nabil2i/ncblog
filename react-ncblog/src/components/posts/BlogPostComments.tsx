@@ -50,6 +50,7 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
   const [isAlertOpen, setAlertOpen] = useState(false);
   const cancelRef = useRef(null);
   const isAuthenticated = useAppSelector(authSatus);
+  const toggleAddComment = () => setAddComment((prev) => !prev);
   const { _id, status } = useAuth();
 
   const onCloseAlert = () => setAlertOpen(false);
@@ -61,10 +62,10 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
 
   const handleComment = () => {
     if (isAuthenticated) {
-      setAddComment(true);
+      toggleAddComment();
+      // setAddComment(true);
     } else {
       onOpen();
-      // navigate(`/login?redirect=/post/${post._id}`)
     }
   };
 
@@ -364,9 +365,9 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
       </Flex>
 
       <Divider orientation="horizontal" color="gray.500" my="4" />
-      {addComment && <AddComment postSlug={postSlug} postId={postId} />}
+      {addComment && <AddComment postSlug={postSlug} postId={postId} onCancelComment={toggleAddComment}/>}
       {renderComments(comments as PostComment[])}
-      <Divider orientation="horizontal" color="gray.500" my="4" />
+      {/* <Divider orientation="horizontal" color="gray.500" my="4" /> */}
     </>
   );
 };

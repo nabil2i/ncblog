@@ -1,8 +1,8 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import Post from "../../entities/Post";
-import { readingTime } from "../../utils/post";
-import { removeHtmlMarkup } from "../../utils/strings";
 import PostAuthor from "./PostAuthor";
+// import { readingTime } from "../../utils/post";
+// import { removeHtmlMarkup } from "../../utils/strings";
 
 const BlogPostInfo = ({ post }: { post: Post }) => {
   return (
@@ -10,7 +10,7 @@ const BlogPostInfo = ({ post }: { post: Post }) => {
       <Flex gap={4}>
         <PostAuthor post={post} />
       </Flex>
-      <Box>{post && readingTime(removeHtmlMarkup(post.body))} read</Box>
+      {/* <Box>{post && readingTime(removeHtmlMarkup(post.body))} read</Box> */}
 
       {/* <Flex direction="column" justify="center">
         <Text >

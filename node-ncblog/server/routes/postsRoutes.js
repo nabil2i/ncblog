@@ -9,6 +9,7 @@ import {
   deleteUserComment,
   updateUserComment,
   getPost,
+  likePost,
   updateComment,
   deleteCurrentUserPost,
   updatePost,
@@ -36,6 +37,11 @@ router.route('/:id')
   .put([auth, admin], updatePost)
   // delete a blog post
   .delete([auth, admin], deletePost)
+
+router.route('/:id/like')
+// like a post
+  .put(auth, likePost);
+
 
 router.route('/:id/:userId')  
   .delete([auth, writer], deleteCurrentUserPost)

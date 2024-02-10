@@ -1,5 +1,4 @@
 import {
-  Box,
   Card,
   CardBody,
   Flex,
@@ -12,9 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 // import Landscape from "../../assets/images/landscape.jpeg";
-import { FiHeart, FiMessageCircle } from "react-icons/fi";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
+import BlogPostInteractions from "./BlogPostInteractions";
 
 interface Props {
   post: Post;
@@ -68,20 +67,7 @@ const BlogPostCard = ({ post }: Props) => {
 
           <Flex align="center" justify="space-between" mt={4}>
             <BlogPostAuthor post={post} />
-            <Flex gap={2}>
-              {Number(post.totalCommentsCount) > 0 && (
-                <Flex gap={1} align="center">
-                  <FiMessageCircle />
-                  <Box>{post.totalCommentsCount}</Box>
-                </Flex>
-              )}
-              {Number(post.numberOfLikes) > 0 && (
-                <Flex gap={1} align="center">
-                  <FiHeart />
-                  <Box>{post.numberOfLikes}</Box>
-                </Flex>
-              )}
-            </Flex>
+            <BlogPostInteractions post={post} />
           </Flex>
         </CardBody>
         {/* <Divider borderColor="gray.200"/> */}

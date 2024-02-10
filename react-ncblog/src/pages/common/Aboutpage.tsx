@@ -35,16 +35,19 @@ const AboutPage = () => {
                     because of their life experiences, what goes on in the
                     world, the fact that they don't understand why certain
                     things happen, have come to adopt agnostic or atheistic
-                    beliefs, rejecting the existence of God. Other refrain
+                    beliefs, rejecting the existence of God. Others refrain
                     themselves from talking about God and the purpose of life
-                    for other reasons. <br></br>
+                    for different reasons. <br></br>
                     In this context, NabilConveys Blog places itself as a simple
                     layman's attempt to have conversations with his fellow
-                    brothers and sisters in humanity to better understand the purpose of life.
+                    brothers and sisters in humanity to better understand why we
+                    exist on this blue planet.
                   </Text>
                 </Flex>
                 <Flex align="end" direction="column">
-                  <Box>See you soon</Box>
+                  <Box>
+                    See you soon<br></br> Peace!
+                  </Box>
                 </Flex>
               </Flex>
               <Flex m={5}>

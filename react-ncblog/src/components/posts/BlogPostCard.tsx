@@ -69,13 +69,13 @@ const BlogPostCard = ({ post }: Props) => {
           <Flex align="center" justify="space-between" mt={4}>
             <BlogPostAuthor post={post} />
             <Flex gap={2}>
-              {post.totalCommentsCount && post.totalCommentsCount > 0 && (
+              {Number(post.totalCommentsCount) > 0 && (
                 <Flex gap={1} align="center">
                   <FiMessageCircle />
                   <Box>{post.totalCommentsCount}</Box>
                 </Flex>
               )}
-              {post.numberOfLikes && post.numberOfLikes > 0 && (
+              {Number(post.numberOfLikes) > 0 && (
                 <Flex gap={1} align="center">
                   <FiHeart />
                   <Box>{post.numberOfLikes}</Box>

@@ -22,11 +22,11 @@ const PostAuthor = ({ post }: { post: Post }) => {
             Posted: <BlogPostDate date={post.createdAt} />
           </Text>
         </Flex>
-        <Flex>
+        {/* <Flex>
           <Text>
             Updated: <BlogPostDate date={post.updatedAt} />
           </Text>
-        </Flex>
+        </Flex> */}
       </Box>
     </Flex>
   );

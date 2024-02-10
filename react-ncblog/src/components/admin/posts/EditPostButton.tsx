@@ -7,7 +7,7 @@ const EditPostButton = ({ postId }: { postId: string }) => {
     <Link
       as={NavLink}
       _hover={{ textDecoration: "none" }}
-      to={`/admin/posts/edit/${postId}`}
+      to={`/dashboard/posts/edit/${postId}`}
     >
       <Button colorScheme="gray">
         {/* <FaEdit /> */}

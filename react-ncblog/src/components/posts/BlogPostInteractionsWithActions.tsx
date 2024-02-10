@@ -1,6 +1,8 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Link } from "@chakra-ui/react";
 import { FaHeart } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 import Post from "../../entities/Post";
+import useAuth from "../../hooks/useAuth";
 import { readingTime } from "../../utils/post";
 import { removeHtmlMarkup } from "../../utils/strings";
 import { CustomButton } from "../common/CustomButton";
@@ -11,6 +13,8 @@ interface Props {
   // onCommentPost: () => void;
 }
 const BlogPostInteractions = ({ post, onLikePost }: Props) => {
+  const { _id } = useAuth();
+
   return (
     <Flex justify="space-between">
       <Box fontSize={15}>
@@ -25,7 +29,16 @@ const BlogPostInteractions = ({ post, onLikePost }: Props) => {
             <Box>{post.totalCommentsCount}</Box>
           )}
         </Flex> */}
-        <Flex gap={1} align="center">
+        <Flex gap={2} align="center">
+          {post.user?._id === _id && (
+            <Link
+              as={NavLink}
+              to={`/myposts/edit/${post._id}`}
+              _hover={{ textDecoration: "none" }}
+            >
+              Edit
+            </Link>
+          )}
           <CustomButton onClick={() => onLikePost()}>
             <FaHeart className={`text-gray-400 hover:text-teal-500`} />
           </CustomButton>

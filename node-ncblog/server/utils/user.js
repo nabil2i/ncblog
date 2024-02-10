@@ -1,4 +1,5 @@
 import User from "../models/user.js";
+import cheerio from "cheerio";
 
 export const makeUsername = async (name) => {
   const username = name.split(' ').join('').toLowerCase();

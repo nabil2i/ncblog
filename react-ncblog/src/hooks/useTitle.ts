@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { removeHtmlMarkup } from '../utils/markup'
+import { removeHtmlMarkup } from '../utils/strings'
 
 const useTitle = (title: string) => {
   useEffect(() =>{

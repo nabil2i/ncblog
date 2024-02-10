@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Post from "../../entities/Post";
-import PostAuthor from "./PostAuthor";
 import { readingTime } from "../../utils/post";
-import { removeHtmlMarkup } from "../../utils/markup";
+import { removeHtmlMarkup } from "../../utils/strings";
+import PostAuthor from "./PostAuthor";
 
 const BlogPostInfo = ({ post }: { post: Post }) => {
   return (

@@ -4,7 +4,7 @@ import Comment, { validateComment, validateUpdateComment } from "../models/comme
 import Post, { validatePost, validateUpdatePost } from "../models/post.js";
 import User from "../models/user.js";
 import { makeError } from "../utils/responses.js";
-import cheerio from "cheerio";
+import { makeSlug } from "../utils/strings.js";
 
 // @desc Get all posts
 // @route GET /posts
@@ -27,7 +27,7 @@ export const createNewPost = async (req, res, next) => {
     const user = await User.findById(userId);
     if (!user) return next(makeError(400, "Invalid user"));
     
-    const slug = cheerio.load(title).text().split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]+/g, '');
+    const slug = makeSlug(title);
 
     let newPost = new Post({
       slug,
@@ -172,6 +172,7 @@ export const updatePost = async (req, res, next) => {
     
     const { title, body, userId, img, category, tags } = req.body;
     
+    
     const post = await Post.findByIdAndUpdate(
       postId,
       {
@@ -186,7 +187,7 @@ export const updatePost = async (req, res, next) => {
     );
 
     if (title) {
-      const slug = title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g, '');
+      const slug =makeSlug(title);
       post.slug = slug;
       await post.save();
     }

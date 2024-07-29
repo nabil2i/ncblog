@@ -1,4 +1,4 @@
-import { makeError } from "../utils/responses.js"
+import { makeError } from "../utils/responses"
 
 export default function (validator) {
   return (req, res, next) => {

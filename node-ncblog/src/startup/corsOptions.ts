@@ -1,6 +1,6 @@
 
 import { CorsOptions } from 'cors';
-import allowedOrigins from "./allowedOrigins.ts";
+import allowedOrigins from "./allowedOrigins";
 
 // console.log(allowedOrigins)
 

@@ -1,7 +1,7 @@
-import { logEvents } from "./logger.js";
-import {  } from "../models/user.ts";
+import { logEvents } from "./logger";
+import {  } from "../models/user";
 import { Request, Response, NextFunction } from "express";
-import { CustomError } from "../models/error.ts";
+import { CustomError } from "../models/error";
 
 // interface CustomRequest extends Request {
 //   user: User

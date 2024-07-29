@@ -1,9 +1,9 @@
 import _ from "lodash";
-import Book from "../models/book.ts";
-import Genre, { validateGenre } from "../models/genre.ts";
-import { makeError } from "../utils/responses.ts";
+import Book from "../models/book";
+import Genre, { validateGenre } from "../models/genre";
+import { makeError } from "../utils/responses";
 import { Request, Response, NextFunction } from "express";
-import { IUser } from "../models/user.ts";
+import { IUser } from "../models/user";
 
 interface CustomResponse extends Response{
   paginatedResults?: any;

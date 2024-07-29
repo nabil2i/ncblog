@@ -1,5 +1,5 @@
 import rateLimit from "express-rate-limit";
-import { logEvents } from "./logger.ts";
+import { logEvents } from "./logger";
 import ms from "ms";
 
 const loginLimiter = rateLimit({

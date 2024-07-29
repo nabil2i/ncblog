@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { makeError } from "../utils/responses.ts"
-import { User } from "../models/user.ts";
+import { makeError } from "../utils/responses"
+import { User } from "../models/user";
 // import { ParamsDictionary, ParsedQs } from 'express-serve-static-core';
 
 interface CustomRequest extends Request {

@@ -1,9 +1,9 @@
 import express, { RequestHandler } from "express";
-import { createNewCategory, deleteCategory, getAllCategories, getCategory, updateCategory} from "../controllers/categoriesController.ts";
-import admin from "../middleware/admin.ts";
-import auth from "../middleware/auth.ts";
-import paginate from "../middleware/paginate.ts";
-import Category from "../models/category.ts";
+import { createNewCategory, deleteCategory, getAllCategories, getCategory, updateCategory} from "../controllers/categoriesController";
+import admin from "../middleware/admin";
+import auth from "../middleware/auth";
+import paginate from "../middleware/paginate";
+import Category from "../models/category";
 
 const router = express.Router();
 

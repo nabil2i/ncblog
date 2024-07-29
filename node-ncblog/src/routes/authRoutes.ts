@@ -1,7 +1,7 @@
 import express, { RequestHandler } from "express";
-import { google, login, logout, refresh } from "../controllers/authController.ts";
-import loginLimiter from "../middleware/loginLimiter.ts";
-import auth from "../middleware/auth.ts";
+import { google, login, logout, refresh } from "../controllers/authController";
+import loginLimiter from "../middleware/loginLimiter";
+import auth from "../middleware/auth";
 
 const router = express.Router();
 

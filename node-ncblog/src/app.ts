@@ -3,9 +3,9 @@ import express from "express";
 import "express-async-errors";
 import http from "http";
 import mongoose from "mongoose";
-import { logEvents, } from "./middleware/logger.js";
-import { connectToDb } from "./startup/db.js";
-import routes from "./startup/routes.js";
+import { logEvents, } from "./middleware/logger";
+import { connectToDb } from "./startup/db";
+import routes from "./startup/routes";
 
 dotenv.config()
 

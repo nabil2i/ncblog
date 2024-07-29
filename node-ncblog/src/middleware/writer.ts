@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { makeError } from "../utils/responses.js"
-import { User } from "../models/user.js";
+import { makeError } from "../utils/responses"
+import { User } from "../models/user";
 
 interface CustomRequest extends Request {
   user: User

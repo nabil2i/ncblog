@@ -1,9 +1,9 @@
 import express, { RequestHandler } from "express";
-import { createNewBook, deleteBook, getAllBooks, getBook, updateBook} from "../controllers/booksController.ts";
-import admin from "../middleware/admin.ts";
-import auth from "../middleware/auth.ts";
-import paginate from "../middleware/paginate.ts";
-import BookModel from "../models/book.ts";
+import { createNewBook, deleteBook, getAllBooks, getBook, updateBook} from "../controllers/booksController";
+import admin from "../middleware/admin";
+import auth from "../middleware/auth";
+import paginate from "../middleware/paginate";
+import BookModel from "../models/book";
 
 const router = express.Router();
 

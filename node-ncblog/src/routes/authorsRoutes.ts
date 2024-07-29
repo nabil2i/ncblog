@@ -1,9 +1,9 @@
 import express from "express";
-import { createNewAuthor, deleteAuthor, getAllAuthors, getAuthor, updateAuthor } from "../controllers/authorsController.ts";
-import admin from "../middleware/admin.ts";
-import auth from "../middleware/auth.ts";
-import paginate from "../middleware/paginate.ts";
-import AuthorModel from "../models/author.ts";
+import { createNewAuthor, deleteAuthor, getAllAuthors, getAuthor, updateAuthor } from "../controllers/authorsController";
+import admin from "../middleware/admin";
+import auth from "../middleware/auth";
+import paginate from "../middleware/paginate";
+import AuthorModel from "../models/author";
 
 const router = express.Router();
 

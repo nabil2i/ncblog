@@ -1,9 +1,9 @@
-import AuthorModel from "./author.ts";
-import BookModel from "./book.ts";
-import CategoryModel from "./category.ts";
-import CommentModel from "./comment.ts";
-import PostModel from "./post.ts";
-import UserModel from "./user.ts";
+import AuthorModel from "./author";
+import BookModel from "./book";
+import CategoryModel from "./category";
+import CommentModel from "./comment";
+import PostModel from "./post";
+import UserModel from "./user";
 
 export type CustomModel = typeof AuthorModel
                 | typeof CommentModel 

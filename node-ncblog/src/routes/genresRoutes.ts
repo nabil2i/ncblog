@@ -1,10 +1,10 @@
 
 import express, { RequestHandler } from "express";
-import { createNewGenre, deleteGenre, getAllGenres, getGenre, updateGenre} from "../controllers/genresController.ts";
-import admin from "../middleware/admin.ts";
-import auth from "../middleware/auth.ts";
-import paginate from "../middleware/paginate.ts";
-import Genre from "../models/genre.ts";
+import { createNewGenre, deleteGenre, getAllGenres, getGenre, updateGenre} from "../controllers/genresController";
+import admin from "../middleware/admin";
+import auth from "../middleware/auth";
+import paginate from "../middleware/paginate";
+import Genre from "../models/genre";
 
 const router = express.Router();
 

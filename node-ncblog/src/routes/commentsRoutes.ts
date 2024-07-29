@@ -3,12 +3,12 @@ import {
   likeComment,
   getAllComments,
   deleteComment,
-} from "../controllers/commentsController.ts";
-import auth from "../middleware/auth.ts";
-import admin from "../middleware/admin.ts";
-import paginateWithLimit from "../middleware/paginateWithLimit.ts";
-import Comment from "../models/comment.ts"
-import paginate from "../middleware/paginate.ts";
+} from "../controllers/commentsController";
+import auth from "../middleware/auth";
+import admin from "../middleware/admin";
+import paginateWithLimit from "../middleware/paginateWithLimit";
+import Comment from "../models/comment"
+import paginate from "../middleware/paginate";
 
 const router = express.Router();
 

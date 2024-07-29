@@ -3,9 +3,7 @@ import express from "express";
 import "express-async-errors";
 import http from "http";
 import mongoose from "mongoose";
-import { connectToDb } from "./startup/db";
-import routes from "./startup/routes";
-import { logEvents } from "./middleware/logger";
+import { Express } from "express-serve-static-core";
 
 dotenv.config()
 
@@ -94,4 +92,16 @@ server.listen(port, () => {
 //   });
 
 export default server;
+
+function connectToDb() {
+  throw new Error("Function not implemented.");
+}
+
+function routes(app: Express) {
+  throw new Error("Function not implemented.");
+}
+
+function logEvents(arg0: string, arg1: string) {
+  throw new Error("Function not implemented.");
+}
 // module.exports = server;

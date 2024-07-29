@@ -4,7 +4,7 @@ import mongoose, { Model, Types } from "mongoose";
 export interface IComment extends Document {
   _id: Types.ObjectId;
   user: Types.ObjectId;
-  replyToComment: Types.ObjectId;
+  userRepliedTo: Types.ObjectId;
   parentComment: Types.ObjectId;
   replies: Types.ObjectId[];
   post: Types.ObjectId;
@@ -24,10 +24,10 @@ export const commentSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  replyToComment:{
+  userRepliedTo:{
     type: mongoose.Schema.Types.ObjectId,
     default: null,
-    ref: 'Comment',
+    ref: 'User',
   },
   parentComment: {
       type: mongoose.Schema.Types.ObjectId,
@@ -86,9 +86,9 @@ export function validateComment(comment: typeof CommentModel) {
   const schema = Joi.object({
     text: Joi.string().min(2).required(),
     userId: Joi.string().hex().length(24).required(),
-    replyToComment: Joi.string().hex().length(24),
+    userRepliedTo: Joi.string().hex().length(24),
     // userId: Joi.object.objectId().required(),
-    parentCommentId: Joi.string().hex().length(24),
+    parentCommentId: Joi.string().hex().length(24).optional().allow(null, ''),
   })
   return schema.validate(comment)
 }
@@ -97,7 +97,7 @@ export function validateUpdateComment(comment: typeof CommentModel) {
   const schema = Joi.object({
     text: Joi.string().min(2).required(),
     userId: Joi.string().hex().length(24),
-    parentCommentId: Joi.string().hex().length(24),
+    parentCommentId: Joi.string().hex().length(24).optional().allow(null, ''),
   })
   return schema.validate(comment)
 }

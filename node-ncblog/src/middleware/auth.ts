@@ -11,6 +11,7 @@ interface CustomRequest extends Request {
 dotenv.config();
 
 export default function (req: CustomRequest, res: Response, next: NextFunction) {
+  // console.log("verifying credentials...")
   const authHeader = req.headers.authorization
   // console.log(authHeader)
   if (!authHeader || !authHeader.startsWith || !authHeader.startsWith('Bearer '))
@@ -18,14 +19,21 @@ export default function (req: CustomRequest, res: Response, next: NextFunction) 
 
   const accessToken = authHeader.split(' ')[1]
   // console.log(accessToken)
+
+  if (!accessToken)
+    return next(makeError(401, "Unauthorized"))
+  
   const jwtSecret = process.env.NODE_APP_JWT_ACCESS_SECRET
+  // console.log("jwtsecret: ", jwtSecret)
 
   jwt.verify(
     accessToken,
     jwtSecret as Secret,
-    (err, decoded) => {
-      // console.log(err)
+    (err: jwt.VerifyErrors | null, decoded) => {
+     // console.log("decoded: ", decoded)
       if (err || !decoded)
+        // console.log("err: ", err)
+        // return next(makeError(403, err));
         return next(makeError(403, "Forbidden"));
 
       req.user = decoded as User;

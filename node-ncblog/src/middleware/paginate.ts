@@ -62,7 +62,7 @@ const paginate = (model: CustomModel) => {
       const startIndex = (page - 1) * limit;
       const matchConditions: MatchCondition = {};
   
-      if (searchTerm) {
+      if (searchTerm && typeof searchTerm === 'string') {
         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
         // console.log(searchTerm)
         matchConditions.$or = [
@@ -284,7 +284,8 @@ const paginate = (model: CustomModel) => {
       res.paginatedResults = data;
       next(); 
     } catch(err: any) {
-      // console.log(err);
+      console.log(err);
+      // return;
       return next(makeError(500, err.message));
     }
   }

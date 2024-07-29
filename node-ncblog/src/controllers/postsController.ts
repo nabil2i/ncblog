@@ -422,13 +422,15 @@ export const getPostComments = async (req: Request, res: Response, next: NextFun
 // @access Private Auth
 export const createComment = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // console.log("trying to create a comment")
+    console.log(req.body)
     const { error } = validateComment(req.body);
     if (error) return next(makeError(400, error.details[0].message));
 
     // console.log(req.body);
     
     const postId = req.params.id;
-    const { text, userId, parentCommentId, replyToComment } = req.body;
+    const { text, userId, parentCommentId, userRepliedTo } = req.body;
 
     const post = await PostModel.findById(postId);
     if (!post) return next(makeError(400, "Invalid post"));
@@ -439,15 +441,15 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
       post: postId,
     })
 
-    if (replyToComment) {
-      newComment.replyToComment  = replyToComment
+    if (userRepliedTo) {
+      newComment.userRepliedTo  = userRepliedTo
     }
-    
-    newComment = await newComment.save();
 
     if (parentCommentId) {
       const parentComment = await CommentModel.findById(parentCommentId);
       if (!parentComment)  return next(makeError(400, "Invalid parent comment ID"));
+
+      newComment.parentComment = parentCommentId
       
       parentComment.replies.push(newComment._id);
       // parentComment.numberOfReplies++;
@@ -456,6 +458,7 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
     } else {
       post.comments.push(newComment._id);
     }
+    newComment = await newComment.save();
     post.totalCommentsCount++;
     await post.save();
     

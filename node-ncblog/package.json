@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/app.js",
+    "start": "node --experimental-specifier-resolution=node dist/app.js",
     "dev": "nodemon --watch src --exec ts-node src/app.ts",
     "build": "tsc"
   },

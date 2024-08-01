@@ -1,9 +1,9 @@
-import AuthorModel from "./author";
-import BookModel from "./book";
-import CategoryModel from "./category";
-import CommentModel from "./comment";
-import PostModel from "./post";
-import UserModel from "./user";
+import AuthorModel from "./author.js";
+import BookModel from "./book.js";
+import CategoryModel from "./category.js";
+import CommentModel from "./comment.js";
+import PostModel from "./post.js";
+import UserModel from "./user.js";
 
 export type CustomModel = typeof AuthorModel
                 | typeof CommentModel 

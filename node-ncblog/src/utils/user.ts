@@ -1,4 +1,4 @@
-import User from "../models/user";
+import User from "../models/user.js";
 import cheerio from "cheerio";
 
 export const makeUsername = async (name: string): Promise<string> => {

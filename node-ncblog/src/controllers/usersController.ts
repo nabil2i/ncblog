@@ -3,9 +3,9 @@ import bcrypt from "bcrypt";
 import Joi from "joi";
 import _ from "lodash";
 import ms from "ms";
-import Post from "../models/post";
-import User, { IUser} from "../models/user";
-import { makeError } from "../utils/responses";
+import Post from "../models/post.js";
+import User, { IUser} from "../models/user.js";
+import { makeError } from "../utils/responses.js";
 import { Request, Response, NextFunction } from "express";
 
 interface CustomResponse extends Response {

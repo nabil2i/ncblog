@@ -15,12 +15,12 @@ import {
   updatePost,
   updateCurrentUserPost,
   getPostComments
-} from "../controllers/postsController";
-import admin from "../middleware/admin";
-import auth from "../middleware/auth";
-import writer from "../middleware/writer";
-import paginate from "../middleware/paginate";
-import Post from "../models/post";
+} from "../controllers/postsController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import writer from "../middleware/writer.js";
+import paginate from "../middleware/paginate.js";
+import Post from "../models/post.js";
 
 const router = express.Router();
 

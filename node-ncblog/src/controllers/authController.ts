@@ -3,11 +3,11 @@ import dotenv from "dotenv";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import ms from "ms";
-import UserModel, { IUser } from "../models/user";
-import { makeError } from "../utils/responses";
-import { generatePassword, makeNames, makeUsername } from "../utils/user";
+import UserModel, { IUser } from "../models/user.js";
+import { makeError } from "../utils/responses.js";
+import { generatePassword, makeNames, makeUsername } from "../utils/user.js";
 import { Request, Response, NextFunction } from "express";
-import { CustomError } from "../models/error";
+import { CustomError } from "../models/error.js";
 
 dotenv.config();
 

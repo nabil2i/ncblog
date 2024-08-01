@@ -1,8 +1,8 @@
 import { Schema, Types } from "mongoose";
-import CommentModel from "../models/comment";
-import PostModel, { IPost } from "../models/post";
-import { IUser } from "../models/user";
-import { makeError } from "../utils/responses";
+import CommentModel from "../models/comment.js";
+import PostModel, { IPost } from "../models/post.js";
+import { IUser } from "../models/user.js";
+import { makeError } from "../utils/responses.js";
 import { NextFunction, Request, Response } from "express";
 
 interface CustomResponse extends Response{

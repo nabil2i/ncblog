@@ -1,6 +1,6 @@
 import _ from "lodash";
-import Category, { validateCategory } from "../models/category";
-import { makeError } from "../utils/responses";
+import Category, { validateCategory } from "../models/category.js";
+import { makeError } from "../utils/responses.js";
 import { Request, Response, NextFunction } from "express";
 
 interface CustomResponse extends Response{

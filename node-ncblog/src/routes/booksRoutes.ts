@@ -1,9 +1,11 @@
 import express, { RequestHandler } from "express";
-import { createNewBook, deleteBook, getAllBooks, getBook, updateBook} from "../controllers/booksController";
-import admin from "../middleware/admin";
-import auth from "../middleware/auth";
-import paginate from "../middleware/paginate";
-import BookModel from "../models/book";
+import { createNewBook, deleteBook, getAllBooks, getBook, updateBook
+
+} from "../controllers/booksController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import paginate from "../middleware/paginate.js";
+import BookModel from "../models/book.js";
 
 const router = express.Router();
 

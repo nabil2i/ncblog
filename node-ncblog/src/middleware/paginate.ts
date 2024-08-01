@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import mongoose from "mongoose";
 import { ParsedQs } from "qs";
-import { CustomModel } from "../models/model";
-import { makeError } from "../utils/responses";
+import { CustomModel } from "../models/model.js";
+import { makeError } from "../utils/responses.js";
 
 interface CustomQuery {
   page: string;

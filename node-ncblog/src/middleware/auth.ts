@@ -1,8 +1,8 @@
 import jwt, { JwtPayload, Secret} from "jsonwebtoken";
 import dotenv from "dotenv";
-import { makeError } from "../utils/responses"
+import { makeError } from "../utils/responses.js"
 import { Request, Response, NextFunction } from "express";
-import { User } from "../models/user";
+import { User } from "../models/user.js";
 
 interface CustomRequest extends Request {
   user: User

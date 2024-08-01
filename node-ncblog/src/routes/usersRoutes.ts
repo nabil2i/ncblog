@@ -9,12 +9,12 @@ import {
   getUser,
   updateCurrentUser,
   updateUser
-} from "../controllers/usersController";
-import admin from "../middleware/admin";
-import auth from "../middleware/auth";
-import writer from "../middleware/writer";
-import paginate from "../middleware/paginate";
-import User from "../models/user";
+} from "../controllers/usersController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import writer from "../middleware/writer.js";
+import paginate from "../middleware/paginate.js";
+import User from "../models/user.js";
 
 const router = express.Router()
 

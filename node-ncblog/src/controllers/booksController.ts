@@ -1,7 +1,7 @@
 import _ from "lodash";
-import Author from "../models/author";
-import Book, { validateBook } from "../models/book";
-import { makeError } from "../utils/responses";
+import Author from "../models/author.js";
+import Book, { validateBook } from "../models/book.js";
+import { makeError } from "../utils/responses.js";
 import { Request, Response, NextFunction } from "express"; 
  
 interface CustomResponse extends Response{

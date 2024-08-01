@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import _ from "lodash";
 import mongoose, { Types } from "mongoose";
-import CommentModel, { validateComment, validateUpdateComment } from "../models/comment";
-import LikePost from "../models/likepost";
-import PostModel, { IPost, validatePost, validateUpdatePost } from "../models/post";
-import User, { IUser } from "../models/user";
-import { makeError } from "../utils/responses";
-import { makeSlug } from "../utils/strings";
+import CommentModel, { validateComment, validateUpdateComment } from "../models/comment.js";
+import LikePost from "../models/likepost.js";
+import PostModel, { IPost, validatePost, validateUpdatePost } from "../models/post.js";
+import User, { IUser } from "../models/user.js";
+import { makeError } from "../utils/responses.js";
+import { makeSlug } from "../utils/strings.js";
 
 interface CustomResponse extends Response{
   paginatedResults?: any;

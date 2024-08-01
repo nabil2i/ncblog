@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import Post from "../models/post";
+import Post from "../models/post.js";
 
 dotenv.config();
 

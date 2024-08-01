@@ -5,7 +5,7 @@
 //     isError: true
 //   }
 
-import { CustomError } from "../models/error";
+import { CustomError } from "../models/error.js";
 
 // }
 export const makeError = (statusCode: number, message: string) => {

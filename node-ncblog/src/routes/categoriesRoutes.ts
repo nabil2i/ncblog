@@ -1,9 +1,11 @@
 import express, { RequestHandler } from "express";
-import { createNewCategory, deleteCategory, getAllCategories, getCategory, updateCategory} from "../controllers/categoriesController";
-import admin from "../middleware/admin";
-import auth from "../middleware/auth";
-import paginate from "../middleware/paginate";
-import Category from "../models/category";
+import { createNewCategory, deleteCategory, getAllCategories, getCategory, updateCategory
+
+} from "../controllers/categoriesController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import paginate from "../middleware/paginate.js";
+import Category from "../models/category.js";
 
 const router = express.Router();
 

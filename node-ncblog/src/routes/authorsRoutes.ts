@@ -1,9 +1,11 @@
 import express from "express";
-import { createNewAuthor, deleteAuthor, getAllAuthors, getAuthor, updateAuthor } from "../controllers/authorsController";
-import admin from "../middleware/admin";
-import auth from "../middleware/auth";
-import paginate from "../middleware/paginate";
-import AuthorModel from "../models/author";
+import { 
+  createNewAuthor, deleteAuthor, getAllAuthors, getAuthor, updateAuthor 
+} from "../controllers/authorsController.js";
+import admin from "../middleware/admin.js";
+import auth from "../middleware/auth.js";
+import paginate from "../middleware/paginate.js";
+import AuthorModel from "../models/author.js";
 
 const router = express.Router();
 

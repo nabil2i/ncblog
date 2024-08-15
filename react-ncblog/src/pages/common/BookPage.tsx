@@ -1,9 +1,16 @@
-import { Box, Divider, Flex, Grid, GridItem, Heading, Spinner, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Grid,
+  GridItem,
+  Spinner,
+  VStack,
+} from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import BookActions from "../../components/books/BookActions";
 import BookDetails from "../../components/books/BookDetails";
 import BookImages from "../../components/books/BookImages";
-import BookInfos from "../../components/books/BookInfos";
+import BookInfo from "../../components/books/BookInfo";
 import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 import PageHeading from "../../components/common/PageHeading";
 import useBook from "../../hooks/useBook";
@@ -47,11 +54,11 @@ const BookPage = () => {
           <GridItem area="details" as="article" gap={4}>
             <Box maxW="1440px" mx="auto" gap={5}>
               <Box mb={5}>
-                <BookInfos book={book} />
+                <BookInfo book={book} />
               </Box>
               <Divider />
               <Box mt={5}>
-                <BookDetails book={book} /> 
+                <BookDetails book={book} />
               </Box>
             </Box>
           </GridItem>

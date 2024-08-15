@@ -19,7 +19,7 @@ import { memo } from "react";
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { useGetPostsQuery } from "../../../app/features/posts/postsApiSlice";
-import BlogPostDate from "../../posts/BlogPostDate";
+import BlogPostDate from "../../common/CustomDate";
 import DeletePostAction from "./DeletePostAction";
 import EditPostAction from "./EditPostAction";
 
@@ -86,7 +86,7 @@ const PostRow = ({ postId }: { postId: EntityId }) => {
                       <Tag color={"green.500"}>{post.category}</Tag>
                     )}
                   </Box>
-                  <Text>
+                  <Text fontSize={"md"} color="gray">
                     <BlogPostDate date={post.createdAt} />
                   </Text>
                 </Flex>

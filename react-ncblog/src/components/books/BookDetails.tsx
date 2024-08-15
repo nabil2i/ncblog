@@ -1,57 +1,75 @@
-import { Avatar, Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
-import book1 from "../../assets/images/thepurposeoflife.jpg";
+import {
+  Flex,
+  Heading,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tr,
+} from "@chakra-ui/react";
 import Book from "../../entities/Book";
+import BookPublicationDate from "../common/CustomDate";
 
 const BookDetails = ({ book }: { book: Book }) => {
   // console.log(post);
   // const { state } = useAuth();
   // const navigate = useNavigate();
+  // const authorColor = useColorModeValue("gray.600", "gray.200");
+  // const { colorMode } = useColorMode();
 
   return (
     <>
       <Flex direction={{ base: "column", lg: "column" }} gap={5}>
-        <Flex justify="center" align="center" direction="column">
-          <Image
-            // objectFit='cover'
-            mt={3}
-            mb={3}
-            src={book1}
-            // src={book.img}
-            // boxSize="350px"
-            height="600px"
-            borderRadius="xl"
-            objectFit="cover"
-            mx="auto"
-          />
-        </Flex>
-
-        <Flex justify="center" align="center" direction="column" gap={5}>
-          <Heading as="h2">About the book</Heading>
-          <Box>{book.about}</Box>
-        </Flex>
-
-        {book.link && (
-          <Flex justify="center" align="center" direction="column" gap={5}>
-            <Heading as="h2">Download the book</Heading>
-            <Button
-              as={NavLink}
-              _hover={{ textDecoration: "none" }}
-              to={book.link}
-              target="_blank"
-            >
-              Click here to download a pdf
-            </Button>
-          </Flex>
-        )}
-
-        <Flex justify="center" align="center" direction="column" gap={5}>
-          <Heading as="h2">About the author</Heading>
-          <Avatar size="3xl" src={book.author.img} />
-          <Box fontSize={25} fontWeight={"bold"}>
-            {book.author.firstname + " " + book.author.lastname}
-          </Box>
-          <Box>{book.author.bio}</Box>
+        <Flex direction="column">
+          <Heading as="h4">Product Details</Heading>
+          <TableContainer>
+            <Table>
+              <Tbody>
+                <Tr>
+                  <Td>Author</Td>
+                  <Td>{book.author.firstname + " " + book.author.lastname}</Td>
+                </Tr>
+                {book.publisher && (
+                  <Tr>
+                    <Td>Publisher</Td>
+                    <Td>{book.publisher}</Td>
+                  </Tr>
+                )}
+                {book.publicationDate && (
+                  <Tr>
+                    <Td>Publication date</Td>
+                    <Td>
+                      <BookPublicationDate date={book.publicationDate} />
+                    </Td>
+                  </Tr>
+                )}
+                {book.language && (
+                  <Tr>
+                    <Td>Language</Td>
+                    <Td>{book?.language}</Td>
+                  </Tr>
+                )}
+                {book.numberOfPages && (
+                  <Tr>
+                    <Td>Print length</Td>
+                    <Td>{book.numberOfPages + " pages"}</Td>
+                  </Tr>
+                )}
+                {book.size && (
+                  <Tr>
+                    <Td>File size</Td>
+                    <Td>{book.size + " KB"}</Td>
+                  </Tr>
+                )}
+                {book.dimensions && (
+                  <Tr>
+                    <Td>Dimensions</Td>
+                    <Td>{book.dimensions}</Td>
+                  </Tr>
+                )}
+              </Tbody>
+            </Table>
+          </TableContainer>
         </Flex>
       </Flex>
     </>

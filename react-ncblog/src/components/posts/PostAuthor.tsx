@@ -1,7 +1,7 @@
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import NabilConveys2 from "../../assets/icons/NabilConveys2.webp";
 import Post from "../../entities/Post";
-import BlogPostDate from "./BlogPostDate";
+import BlogPostDate from "../common/CustomDate";
 
 const PostAuthor = ({ post }: { post: Post }) => {
   return (
@@ -19,7 +19,10 @@ const PostAuthor = ({ post }: { post: Post }) => {
 
         <Flex>
           <Text>
-            Posted: <BlogPostDate date={post.createdAt} />
+            Posted: 
+              <Text>
+                <BlogPostDate date={post.createdAt} />
+              </Text>
           </Text>
         </Flex>
         {/* <Flex>

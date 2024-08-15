@@ -40,8 +40,10 @@ interface Props {
 
 const BlogPostComments = ({ postSlug, postId }: Props) => {
   const [addComment, setAddComment] = useState(false);
-  const [replyingTo, setReplyingTo] = useState<string | null>(null);
-  const [parentCommentId, setparentCommentId] = useState<string>("");
+  const [replyingToComment, setReplyingToComment] = useState<string | null>(
+    null
+  );
+  const [parentOfCommentRepliedTo, setParentOfCommentRepliedTo] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [theCommentId, setTheCommentId] = useState<string>("");
@@ -69,10 +71,13 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
     }
   };
 
-  const handleReply = (commentId: string, parentCommentId: string) => {
+  const handleReply = (commentId: string, parentCommentId?: string) => {
     if (isAuthenticated) {
-      setReplyingTo(commentId);
-      setparentCommentId(parentCommentId);
+      setReplyingToComment(commentId);
+      if (parentCommentId) {
+        setParentOfCommentRepliedTo(parentCommentId);
+      }
+      console.log("Replying to: ", commentId, "Parent of: ", parentCommentId)
     } else {
       onOpen();
     }
@@ -129,7 +134,7 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
     // console.log("deleted");
   });
 
-  const handleCancelReply = () => setReplyingTo(null);
+  const handleCancelReply = () => setReplyingToComment(null);
   const handleCancelEdit = () => {
     setIsEditing(false);
     setTheCommentId("");
@@ -141,7 +146,7 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
     return (
       <>
         {comments?.map((comment, index) => (
-          <Box key={comment?._id || index} ml={0}>
+          <Box key={comment?._id || index} pl={comment.parentComment ? 14 : 0}>
             <Flex gap="3" mb="5" mt="5">
               <Avatar
                 src={comment?.user?.img}
@@ -231,7 +236,7 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
                       <CustomButton
                         onClick={() => {
                           if (!comment.parentComment)
-                            handleReply(comment._id, comment._id);
+                            handleReply(comment._id);
                           else handleReply(comment._id, comment.parentComment);
                         }}
                         text={"Reply"}
@@ -319,12 +324,13 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
                   onClose={onClose}
                   redirectLink={`/blog/${postId}`}
                 />
-                {replyingTo === comment._id && (
+                {replyingToComment === comment._id && (
                   <ReplyComment
                     postId={postId}
                     postSlug={postSlug}
-                    replyingTo={comment.user}
-                    parentComment={parentCommentId}
+                    commentRepliedTo={comment._id}
+                    userRepliedTo={comment.user}
+                    parentOfCommentRepliedTo={parentOfCommentRepliedTo}
                     onCancelReply={handleCancelReply}
                   />
                 )}
@@ -332,7 +338,7 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
             </Flex>
 
             {comment.replies && comment.replies.length > 0 && (
-              <Box pl={14}>{renderComments(comment.replies)}</Box>
+              <Box >{renderComments(comment.replies)}</Box>
             )}
           </Box>
         ))}
@@ -365,7 +371,13 @@ const BlogPostComments = ({ postSlug, postId }: Props) => {
       </Flex>
 
       <Divider orientation="horizontal" color="gray.500" my="4" />
-      {addComment && <AddComment postSlug={postSlug} postId={postId} onCancelComment={toggleAddComment}/>}
+      {addComment && (
+        <AddComment
+          postSlug={postSlug}
+          postId={postId}
+          onCancelComment={toggleAddComment}
+        />
+      )}
       {renderComments(comments as PostComment[])}
       {/* <Divider orientation="horizontal" color="gray.500" my="4" /> */}
     </>

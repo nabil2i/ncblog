@@ -17,7 +17,7 @@ import {
 import { MdOutlineMoreHoriz } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import Post from "../../entities/Post";
-import BlogPostDate from "./BlogPostDate";
+import BlogPostDate from "../common/CustomDate";
 import DeletePostAction from "./DeletePostAction";
 import EditPostAction from "./EditPostAction";
 
@@ -66,7 +66,7 @@ const PostRow = ({ post }: { post: Post }) => {
                       <Tag color={"green.500"}>{post.category}</Tag>
                     )}
                   </Box>
-                  <Text>
+                  <Text fontSize={"md"} color="gray">
                     <BlogPostDate date={post.createdAt} />
                   </Text>
                 </Flex>

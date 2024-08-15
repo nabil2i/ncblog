@@ -38,5 +38,5 @@ export interface CommentForm {
   userId?: string;
   text: string;
   parentCommentId?: string;
-  replyToComment?: string;
+  userRepliedTo?: string;
 }

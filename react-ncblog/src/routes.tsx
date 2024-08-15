@@ -5,7 +5,7 @@ import AdminAddPostPage from "./pages/admin/AdminAddPostPage";
 import AdminPostEditPage from "./pages/admin/AdminPostEditPage";
 import AdminPostPage from "./pages/admin/AdminPostPage";
 import DashboardPage from "./pages/admin/DashboardPage";
-import AboutPage from "./pages/common/Aboutpage";
+import AboutPage from "./pages/common/AboutPage";
 import AccountPage from "./pages/common/AccountPage";
 import AddPostPage from "./pages/common/AddPostPage";
 import BlogPage from "./pages/common/BlogPage";

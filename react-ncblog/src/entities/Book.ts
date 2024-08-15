@@ -8,5 +8,11 @@ export default interface Book {
     lastname: string;
     bio?: string;
     img?: string;
-  }
+  };
+  publisher?: string;
+  publicationDate?: Date;
+  language?: string;
+  numberOfPages: number;
+  size?: number;
+  dimensions?: string;
 }

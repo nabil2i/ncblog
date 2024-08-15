@@ -5,9 +5,9 @@ import "moment-timezone";
 interface Props {
   date: Date | undefined;
 }
-const BlogPostDate = ({ date }: Props) => {
+const CustomDate = ({ date }: Props) => {
   return (
-    <Text as="time" fontSize={"md"} color="gray">
+    <Text as="time">
       {
         dateFormat(date, "mmm dd, yyyy")
         // new Intl.DateTimeFormat(
@@ -26,4 +26,4 @@ const BlogPostDate = ({ date }: Props) => {
   );
 };
 
-export default BlogPostDate;
+export default CustomDate;

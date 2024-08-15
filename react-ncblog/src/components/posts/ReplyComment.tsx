@@ -14,19 +14,22 @@ import { CustomButton } from "../common/CustomButton";
 // const VARIANT_COLOR = "teal";
 
 interface Props {
-  replyingTo: SimpleUser;
-  parentComment: string;
+  userRepliedTo: SimpleUser;
+  commentRepliedTo: string;
+  parentOfCommentRepliedTo: string;
   postId: string;
   postSlug: string;
   onCancelReply: () => void;
 }
 const ReplyComment = ({
-  replyingTo,
+  userRepliedTo,
   postId,
   postSlug,
-  parentComment,
+  commentRepliedTo,
+  //parentOfCommentRepliedTo,
   onCancelReply,
 }: Props) => {
+  // console.log("ParentCommentId to: ", parentOfCommentRepliedTo);
   const { _id } = useAuth();
   const isAuthenticated = useSelector(authSatus);
   // const { id } = useParams();
@@ -53,23 +56,25 @@ const ReplyComment = ({
     data = {
       text: data.text,
       userId: _id,
-      parentCommentId: parentComment,
-      replyToComment: replyingTo._id,
+      parentCommentId: commentRepliedTo,
+      // parentCommentId: parentOfCommentRepliedTo,
+      userRepliedTo: userRepliedTo._id,
     };
     // console.log(`"Form fields": ${JSON.stringify(data)}`);
     addComment.mutate(data);
+    
   };
 
   const onFocus = (event: React.FocusEvent<HTMLTextAreaElement>) => {
-    const position = `@${replyingTo.username}`.length;
+    const position = `@${userRepliedTo.username} `.length;
     event.target.setSelectionRange(position, position);
   };
 
   useEffect(() => {
-    setValue("text", `@${replyingTo.username}`);
-    reset({ text: `@${replyingTo.username}` });
+    setValue("text", `@${userRepliedTo.username}`);
+    reset({ text: `@${userRepliedTo.username}` });
     // setFocus("text");
-  }, [reset, replyingTo.username, setValue, setFocus]);
+  }, [reset, userRepliedTo.username, setValue, setFocus]);
 
   const remainingChars = watch("text")?.length
     ? 200 - watch("text").length
@@ -97,7 +102,7 @@ const ReplyComment = ({
               <Flex gap={1}>
                 <Text fontSize={"xs"}>Replying to </Text>
                 <Text fontSize={"xs"} fontWeight={700}>
-                  {replyingTo.firstname + " " + replyingTo.lastname}
+                  {userRepliedTo.firstname + " " + userRepliedTo.lastname}
                 </Text>
               </Flex>
               <CustomButton

@@ -2,9 +2,9 @@
   "name": "ncblog",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "",
   "scripts": {
-    "start": "cd node-ncblog && node app.js",
+    "start": "cd node-ncblog && node src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "npm run dev --prefix node-ncblog",
     "client": "npm run dev --prefix react-ncblog",
@@ -16,5 +16,10 @@
   "license": "ISC",
   "dependencies": {
     "concurrently": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
   }
 }

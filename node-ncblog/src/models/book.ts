@@ -1,5 +1,5 @@
+import Joi from "joi";
 import mongoose, { Schema } from "mongoose";
-import Joi from "joi"
 
 
 export const bookSchema = new Schema({
@@ -7,6 +7,13 @@ export const bookSchema = new Schema({
     type: String,
     unique: true,
     required: true,
+    minlength: 5,
+    maxlength: 255,
+    trim: true,
+  },
+  subtitle: {
+    type: String,
+    required: false,
     minlength: 5,
     maxlength: 255,
     trim: true,
@@ -27,15 +34,30 @@ export const bookSchema = new Schema({
     ref: "Genre"
   },
   img: {
-    type: String,
-    default: ""
+    type: [String],
+    default: [""]
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Author"
   },
-  publishedYear: {
+  publisher: {
+    type: String,
+  },
+  publicationDate: {
     type: Date,
+  },
+  language: {
+    type: String,
+  },
+  numberOfPages: {
+    type: Number
+  },
+  size: {
+    type: Number
+  },
+  dimensions: {
+    type: String
   },
   isbn: {
     type: String,

@@ -4,6 +4,8 @@ import {
   Grid,
   GridItem,
   Spinner,
+  useBreakpointValue,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
@@ -24,6 +26,10 @@ const BookPage = () => {
   // console.log(book)
   useTitle("Nabil Conveys - Post");
 
+  const authorColor = useColorModeValue("gray.600", "gray.200");
+  // const { colorMode } = useColorMode();
+  const showAuthor = useBreakpointValue({ base: false, lg: true });
+
   if (isLoading)
     return (
       <Box p={10}>
@@ -40,12 +46,25 @@ const BookPage = () => {
       <PageHeading title={book.title} />
       <Box p={10}>
         <Grid
-          templateAreas={{ base: `"photo"`, lg: `"photo details actions"` }}
+          templateAreas={{
+            base: `"photo" "actions" "details"`,
+            lg: `"photo details actions"`,
+          }}
           templateColumns={{ base: "1fr", lg: "300px 1fr 300px" }}
           gap={2}
           as="section"
         >
           <GridItem area="photo" as="article">
+            {!showAuthor && (
+              <Box
+                // fontSize={25}
+                // fontWeight={"bold"}
+                color={authorColor}
+              >
+                {book.author.firstname + " " + book.author.lastname}
+              </Box>
+            )}
+
             <Box>
               <BookImages />
             </Box>
@@ -56,6 +75,7 @@ const BookPage = () => {
               <Box mb={5}>
                 <BookInfo book={book} />
               </Box>
+
               <Divider />
               <Box mt={5}>
                 <BookDetails book={book} />

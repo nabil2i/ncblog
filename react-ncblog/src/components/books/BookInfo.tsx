@@ -1,4 +1,10 @@
-import { Box, Divider, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Flex,
+  useBreakpointValue,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import Book from "../../entities/Book";
 
 const BookInfo = ({ book }: { book: Book }) => {
@@ -7,6 +13,7 @@ const BookInfo = ({ book }: { book: Book }) => {
   // const navigate = useNavigate();
   const authorColor = useColorModeValue("gray.600", "gray.200");
   // const { colorMode } = useColorMode();
+  const showAuthor = useBreakpointValue({ base: false, lg: true });
 
   return (
     <>
@@ -14,14 +21,16 @@ const BookInfo = ({ book }: { book: Book }) => {
         <Flex justify="start" align="start" gap={5}>
           {/* <Heading as="h2">About the author</Heading> */}
           {/* <Avatar size="3xl" src={book.author.img} /> */}
-          <Text>by</Text>
-          <Box
-            // fontSize={25}
-            // fontWeight={"bold"}
-            color={authorColor}
-          >
-            {book.author.firstname + " " + book.author.lastname}
-          </Box>
+          {/* <Text>by</Text> */}
+          {showAuthor && (
+            <Box
+              // fontSize={25}
+              // fontWeight={"bold"}
+              color={authorColor}
+            >
+              {book.author.firstname + " " + book.author.lastname}
+            </Box>
+          )}
           {/* <Box>{book.author.bio}</Box> */}
         </Flex>
         <Divider />

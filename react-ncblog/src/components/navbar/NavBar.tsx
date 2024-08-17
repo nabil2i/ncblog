@@ -1,7 +1,6 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Divider,
   Drawer,
   Flex,
   IconButton,
@@ -17,6 +16,7 @@ import ColorModeSwitch from "./ColorModeSwitch";
 import DesktopNav from "./DesktopNav";
 import MobileNavDrawer from "./MobileNavDrawer";
 import NavAuthButtons from "./NavAuthButtons";
+import NavAuthButtonsBase from "./NavAuthButtonsBase";
 import NavLogo from "./NavLogo";
 import Profile from "./NavProfile";
 import SearchInput from "./SearchInput";
@@ -52,20 +52,7 @@ const NavBar = () => {
         borderBottomWidth={1}
         borderColor="gray.100"
       >
-        {!showNavAuthButtons && (
-          <Flex
-            marginRight={5}
-            my={2}
-            w="full"
-            justify="end"
-            direction="column"
-          >
-            <NavAuthButtons />
-            <Flex w="full">
-              <Divider my={2} orientation="horizontal" />
-            </Flex>
-          </Flex>
-        )}
+        {!showNavAuthButtons && <NavAuthButtonsBase />}
 
         <Flex
           as="nav"

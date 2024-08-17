@@ -1,11 +1,13 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Divider,
   Drawer,
   Flex,
   IconButton,
   Show,
   Stack,
+  useBreakpointValue,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -30,6 +32,8 @@ const NavBar = () => {
     dispatch({ type: "SET_IS_OPEN", isOpen: isOpen });
   }, [dispatch, isOpen, onClose]);
 
+  const showNavAuthButtons = useBreakpointValue({ base: false, lg: true });
+
   return (
     <>
       <Box
@@ -48,6 +52,21 @@ const NavBar = () => {
         borderBottomWidth={1}
         borderColor="gray.100"
       >
+        {!showNavAuthButtons && (
+          <Flex
+            marginRight={5}
+            my={2}
+            w="full"
+            justify="end"
+            direction="column"
+          >
+            <NavAuthButtons />
+            <Flex w="full">
+              <Divider my={2} orientation="horizontal" />
+            </Flex>
+          </Flex>
+        )}
+
         <Flex
           as="nav"
           px={{ base: 4 }}
@@ -102,7 +121,7 @@ const NavBar = () => {
               <SearchInputModalIcon />
             </Box>
             <ColorModeSwitch />
-            <NavAuthButtons />
+            {showNavAuthButtons && <NavAuthButtons />}
             <Profile />
 
             {/* START MobileNav */}

@@ -14,23 +14,7 @@ const NavAuthButtons = () => {
   if (!isAuthenticated)
     return (
       <>
-        <HStack>
-          <NavLink to="/login">
-            <Button
-              // as={'a'}
-              fontSize={"sm"}
-              // fontWeight={400}
-              variant={"link"}
-              colorScheme={VARIANT_COLOR}
-              _hover={{
-                textDecoration: "underline",
-                colorScheme: "red",
-              }}
-            >
-              Log in
-            </Button>
-          </NavLink>
-
+        <HStack justify="end">
           <NavLink to="/sign-up">
             <Button
               // as={'a'}
@@ -48,7 +32,23 @@ const NavAuthButtons = () => {
               Sign up
             </Button>
           </NavLink>
+          <NavLink to="/login">
+            <Button
+              // as={'a'}
+              fontSize={"sm"}
+              // fontWeight={400}
+              variant={"link"}
+              colorScheme={VARIANT_COLOR}
+              _hover={{
+                textDecoration: "underline",
+                colorScheme: "red",
+              }}
+            >
+              Log in
+            </Button>
+          </NavLink>
         </HStack>
+        {/* <Divider my={4} /> */}
       </>
     );
 };

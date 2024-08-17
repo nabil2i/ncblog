@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom";
 import Footer from "../../components/common/Footer";
 import ScrollToTop from "../../components/common/ScrollToTop";
 import { NavBar } from "../../components/navbar";
+import { useSelector } from "react-redux";
+import { authSatus } from "../../app/features/auth/authSlice";
 
 const Layout = () => {
   // const { state, dispatch } = useAdminLayout();
@@ -15,12 +17,17 @@ const Layout = () => {
   // useEffect(() => {
   //   if (!isAuthenticated) setPersist("false");
   // }, [isAuthenticated, setPersist])
+  const isAuthenticated = useSelector(authSatus);
+  const marginTopValue = {
+    base: isAuthenticated ? "60px" : "120px",
+    lg: "60px"
+  };
 
   return (
     <ScrollToTop>
       <Flex direction="column">
         <NavBar />
-        <Box as="main" flex="1" marginTop={{ base: "60px" }} minHeight="100vh">
+        <Box as="main" flex="1" marginTop={marginTopValue} minHeight="100vh">
           <Outlet />
         </Box>
         <Footer />

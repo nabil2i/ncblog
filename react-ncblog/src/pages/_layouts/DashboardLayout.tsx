@@ -6,7 +6,7 @@ const DashboardLayout = () => {
   return (
     <>
       <Flex direction={{ base: "column", lg: "row" }}>
-        <Box width={{ lg: "300px" }} display={{ base: "none", lg: "flex" }}>
+        <Box maxW={{ lg: "300px" }} display={{ base: "none", lg: "flex" }}>
           <DashSidebar />
         </Box>
         <Outlet />

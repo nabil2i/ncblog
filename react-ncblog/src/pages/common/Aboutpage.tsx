@@ -26,7 +26,7 @@ const AboutPage = () => {
                   <Heading textAlign="center">Nabil Conveys Blog</Heading>
                   <Text>
                     NabilConveys Blog is a blog that aims to convey the message
-                    of God Almighty to the pondering souls, by discussing a
+                    of God Almighty (Al-Islam) to all humanity, by discussing a
                     variety of topics related to beliefs and religion in
                     general, Islam is particular, life and more. <br></br>People
                     ultimately question themselves at some point in their lives

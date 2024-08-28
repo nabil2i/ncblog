@@ -32,7 +32,7 @@ const Footer = () => {
                   <NavLogoDrawer boxSize="60px" fontSize="30px" />
                 </Box>
                 <Box>
-                  Conveying the message of God Almighty to the pondering souls
+                  Conveying the message of God Almighty (Al-Islam) to all humanity
                 </Box>
               </Flex>
               <Flex>

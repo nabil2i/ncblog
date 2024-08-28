@@ -9,7 +9,7 @@ const Headline = () => {
       </Heading>
       <Text m="0" mt="1" fontSize="2xl">
         {" "}
-        Conveying the message of God Almighty to the pondering souls.
+        Conveying the message of God Almighty (Al-Islam) to all humanity.
       </Text>
     </Box>
   );

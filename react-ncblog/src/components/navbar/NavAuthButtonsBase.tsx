@@ -1,14 +1,23 @@
-import { Divider, Flex } from "@chakra-ui/react";
+import { Divider, Flex, useBreakpointValue } from "@chakra-ui/react";
 import NavAuthButtons from "./NavAuthButtons";
 
 const NavAuthButtonsBase = () => {
+  const showNavAuthButtonsOnBase = useBreakpointValue({ base: true, lg: false });
+
   return (
-    <Flex marginRight={5} my={2} w="full" justify="end" direction="column">
-      <NavAuthButtons />
-      <Flex w="full">
-        <Divider my={2} orientation="horizontal" />
+    <>
+      { showNavAuthButtonsOnBase && (
+      <Flex w="full" direction="column">
+        <Flex w="full" justify="end" my={2} mr={2}>
+          <NavAuthButtons />
+        </Flex>
+        <Flex w="full">
+          <Divider orientation="horizontal" />
+        </Flex>
       </Flex>
-    </Flex>
+
+    )}
+    </>
   );
 };
 

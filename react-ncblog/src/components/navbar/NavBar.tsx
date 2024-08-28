@@ -32,8 +32,8 @@ const NavBar = () => {
     dispatch({ type: "SET_IS_OPEN", isOpen: isOpen });
   }, [dispatch, isOpen, onClose]);
 
-  const showNavAuthButtons = useBreakpointValue({ base: false, lg: true });
-
+  const showNavAuthButtonsOnLarge = useBreakpointValue({ base: false, lg: true });
+ 
   return (
     <>
       <Box
@@ -52,7 +52,7 @@ const NavBar = () => {
         borderBottomWidth={1}
         borderColor="gray.100"
       >
-        {!showNavAuthButtons && <NavAuthButtonsBase />}
+        <NavAuthButtonsBase />
 
         <Flex
           as="nav"
@@ -108,7 +108,7 @@ const NavBar = () => {
               <SearchInputModalIcon />
             </Box>
             <ColorModeSwitch />
-            {showNavAuthButtons && <NavAuthButtons />}
+            {showNavAuthButtonsOnLarge && <NavAuthButtons />}
             <Profile />
 
             {/* START MobileNav */}

@@ -27,7 +27,7 @@ const Layout = () => {
     <ScrollToTop>
       <Flex direction="column">
         <NavBar />
-        <Box as="main" flex="1" marginTop={marginTopValue} minHeight="100vh">
+        <Box as="main" flex="1" marginTop={marginTopValue} minHeight="100vh" overflowY="auto">
           <Outlet />
         </Box>
         <Footer />

@@ -36,9 +36,14 @@ const SOCIAL_ITEMS: Array<SocialItem> = [
   },
   {
     label: "Whatsapp",
-    href: "https://whatsapp.com/channel/0029Va4PVWkLNSZwUOVJbA2X",
+    href: "https://www.whatsapp.com/channel/0029Vae69rT9cDDSzzAdo10K",
     icon: FaWhatsapp,
   },
+  // {
+  //   label: "Whatsapp",
+  //   href: "https://whatsapp.com/channel/0029Va4PVWkLNSZwUOVJbA2X",
+  //   icon: FaWhatsapp,
+  // },
 ];
 
 export default SOCIAL_ITEMS;

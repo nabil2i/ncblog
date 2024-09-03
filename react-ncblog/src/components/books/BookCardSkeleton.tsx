@@ -11,7 +11,7 @@ import {
 const BookCardSkeleton = () => {
   return (
     <Card textAlign="left" height="full" borderRadius="xl">
-      <CardBody>
+      <CardBody width={"400px"}>
         <Skeleton mt={0} mb={3} height="200px" borderRadius="xl" mx="auto" />
 
         <Box mb={8}>

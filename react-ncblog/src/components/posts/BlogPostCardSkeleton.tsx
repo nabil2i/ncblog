@@ -11,7 +11,7 @@ import {
 
 const BlogPostCardSkeleton = () => {
   return (
-    <Card height="100%" borderRadius="xl">
+    <Card height="100%" borderRadius="xl" width={"400px"}>
       <CardBody>
         <Skeleton mt={0} mb={3} height="200px" borderRadius="xl" mx="auto" />
         <Box mb={8}>

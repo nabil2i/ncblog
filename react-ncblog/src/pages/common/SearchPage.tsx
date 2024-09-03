@@ -29,7 +29,7 @@ const SearchPage = () => {
                   setPage(page);
                 }}
               />
-              <Box m={5} maxW="800px" mx="auto">
+              <Box m={5} maxW="800px" px={4} mx="auto">
                 <CallToAction />
               </Box>
             </Box>

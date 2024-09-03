@@ -71,7 +71,7 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
         {/* <ReactMarkdown>{post.body}</ReactMarkdown> */}
       </Box>
       {/* <Divider orientation="horizontal" color="gray.500" my="4" /> */}
-      <Box m={5}>
+      <Box m={5} px={4}>
         <CallToAction />
       </Box>
 

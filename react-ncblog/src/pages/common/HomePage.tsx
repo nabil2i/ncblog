@@ -1,9 +1,10 @@
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
-import image4 from "../../assets/images/hero-image.webp";
-import image2 from "../../assets/images/landscape.jpeg";
-import image1 from "../../assets/images/login.jpg";
-import image5 from "../../assets/images/pof.jpg";
-import image3 from "../../assets/images/pol.jpg";
+import image1 from "../../assets/images/lakelandscape.webp";
+import image2 from "../../assets/images/pol.webp";
+import image3 from "../../assets/images/insidemosque.webp";
+import image4 from "../../assets/images/blv.webp";
+import image5 from "../../assets/images/moutainlandscape.webp";
+import image6 from "../../assets/images/linkpol.webp";
 import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 import HeroSection from "../../components/common/HeroSection";
 import ImageCarousel from "../../components/common/ImageCarousel";
@@ -18,6 +19,7 @@ const HomePage = () => {
     { url: image3, caption: "Image 3" },
     { url: image4, caption: "Image 4" },
     { url: image5, caption: "Image 5" },
+    { url: image6, caption: "Image 6" },
   ];
 
   return (
@@ -36,7 +38,7 @@ const HomePage = () => {
           <Box maxW="1440px" mx="auto" w="full">
             <LatestPosts />
           </Box>
-          <Flex m={5} maxW="800px" mx="auto">
+          <Flex m={5} px={4} maxW={"800px"} mx="auto">
             <CallToActionOneReason />
             {/* <CallToActionIera /> */}
           </Flex>

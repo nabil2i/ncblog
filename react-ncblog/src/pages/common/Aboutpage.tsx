@@ -50,7 +50,7 @@ const AboutPage = () => {
                   </Box>
                 </Flex>
               </Flex>
-              <Flex m={5}>
+              <Flex m={5} px={4}>
                 <CallToActionOneReason />
                 {/* <CallToActionIera /> */}
               </Flex>

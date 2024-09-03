@@ -5,6 +5,8 @@ interface Props {
   children: ReactNode;
 }
 const BookCardContainer = ({ children }: Props) => {
+  // const smallDevice = useBreakpointValue({ "370px": true });
+
   return (
     <Box
       as="article"
@@ -13,12 +15,13 @@ const BookCardContainer = ({ children }: Props) => {
         transition: "transform .05s ease-in",
       }}
       // bg='white'
-      minWidth="400px"
-      maxWidth="420px"
+      minWidth={"25px"}
+      // minWidth={ smallDevice ? "0px" : "350px"}
+      maxWidth="400px"
       // borderRadius="lg"
       // borderWidth="1px"
       overflow="hidden"
-      p="6"
+      p="2"
     >
       {children}
     </Box>

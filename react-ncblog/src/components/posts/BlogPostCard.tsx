@@ -26,7 +26,7 @@ const BlogPostCard = ({ post }: Props) => {
       _hover={{ textDecoration: "none" }}
       to={"/blog/" + post.slug}
     >
-      <Card textAlign="left" height="100%" key={post._id} borderRadius="4">
+      <Card textAlign="left" height="100%" key={post._id} borderRadius="xl">
         <CardBody>
           {/* <Center> */}
           <Image

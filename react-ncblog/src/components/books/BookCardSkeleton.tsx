@@ -10,9 +10,9 @@ import {
 
 const BookCardSkeleton = () => {
   return (
-    <Card textAlign="left" height="full" borderRadius="4">
+    <Card textAlign="left" height="full" borderRadius="xl">
       <CardBody>
-        <Skeleton mt={3} mb={3} height="200px" borderRadius="xl" mx="auto" />
+        <Skeleton mt={0} mb={3} height="200px" borderRadius="xl" mx="auto" />
 
         <Box mb={8}>
           <SkeletonText height="40px" />

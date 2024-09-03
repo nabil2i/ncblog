@@ -26,7 +26,7 @@ const BookCard = ({ book }: Props) => {
       _hover={{ textDecoration: "none" }}
       to={"/books/" + book._id}
     >
-      <Card textAlign="left" height="100%" key={book._id} borderRadius="4">
+      <Card textAlign="left" height="100%" key={book._id} borderRadius="xl">
         <CardBody>
           <Image
             // objectFit='cover'

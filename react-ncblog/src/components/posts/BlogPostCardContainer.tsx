@@ -5,6 +5,7 @@ interface Props {
   children: ReactNode;
 }
 const BlogPostCardContainer = ({ children }: Props) => {
+  // const smallDevice = useBreakpointValue({ "370px": true });
   return (
     <Box
       as="article"
@@ -13,12 +14,13 @@ const BlogPostCardContainer = ({ children }: Props) => {
         transition: "transform .05s ease-in",
       }}
       // bg='white'
-      minWidth="400px"
-      maxWidth="420px"
+      minWidth={"250px"}
+      // minWidth={ smallDevice ? "0px" : "350px"}
+      maxWidth="400px"
       // borderRadius="lg"
       // borderWidth="1px"
-      overflow="hidden"
-      p="6"
+      // overflow="hidden"
+      p="2"
     >
       {children}
     </Box>

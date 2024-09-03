@@ -34,7 +34,7 @@ const BookInfo = ({ book }: { book: Book }) => {
           {/* <Box>{book.author.bio}</Box> */}
         </Flex>
         <Divider />
-        <Flex justify="center" align="center" direction="column" gap={5}>
+        <Flex justify="center" align="center" direction="column">
           {/* <Heading as="h2">About the book</Heading> */}
           <Box>{book.about}</Box>
         </Flex>

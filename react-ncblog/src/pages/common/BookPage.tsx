@@ -13,7 +13,7 @@ import BookActions from "../../components/books/BookActions";
 import BookDetails from "../../components/books/BookDetails";
 import BookImages from "../../components/books/BookImages";
 import BookInfo from "../../components/books/BookInfo";
-import CallToActionOneReason from "../../components/common/CallToActionOneReason";
+// import CallToActionOneReason from "../../components/common/CallToActionOneReason";
 import PageHeading from "../../components/common/PageHeading";
 import useBook from "../../hooks/useBook";
 import useTitle from "../../hooks/useTitle";
@@ -88,9 +88,9 @@ const BookPage = () => {
           </GridItem>
         </Grid>
 
-        <Box m={5} maxW="800px" px={4} mx="auto">
+        {/* <Box m={5} maxW="800px" px={4} mx="auto">
           <CallToActionOneReason />
-        </Box>
+        </Box> */}
 
         {/* <Grid
         templateAreas={{ base: `"main"` }}

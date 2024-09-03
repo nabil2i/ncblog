@@ -260,6 +260,7 @@ const PostForm = ({ post }: Props) => {
                       editorClassName="editorClassName"
                       onEditorStateChange={handleEditorChange}
                       placeholder="Write something..."
+                      toolbarOnFocus={true}
                     />
                   </Box>
                   //   <Editor

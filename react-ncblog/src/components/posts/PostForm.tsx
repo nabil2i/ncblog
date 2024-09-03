@@ -284,7 +284,7 @@ const PostForm = ({ post }: Props) => {
                       placeholder="Write something..."
                       toolbarOnFocus={true}
                       toolbarStyle={{
-                        position: "fixed",
+                        position: "sticky",
                         bottom: 0,
                         left: 0,
                         width: "100%",

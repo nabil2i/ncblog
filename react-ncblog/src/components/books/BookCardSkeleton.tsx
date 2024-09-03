@@ -10,8 +10,8 @@ import {
 
 const BookCardSkeleton = () => {
   return (
-    <Card textAlign="left" height="full" borderRadius="xl">
-      <CardBody width={"400px"}>
+    <Card textAlign="left" height="full" borderRadius="xl" width={"350px"}>
+      <CardBody>
         <Skeleton mt={0} mb={3} height="200px" borderRadius="xl" mx="auto" />
 
         <Box mb={8}>

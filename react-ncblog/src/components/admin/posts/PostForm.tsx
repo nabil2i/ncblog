@@ -49,6 +49,12 @@ const PostForm = ({ post }: Props) => {
     EditorState.createEmpty()
   );
 
+  // const [toolbarPosition, setToolbarPosition] = useState({
+  //   top: 0,
+  //   left: 0,
+  //   display: "none",
+  // });
+
   useEffect(() => {
     if (post?.body) {
       // If updating a post, convert HTML to ContentState
@@ -89,6 +95,21 @@ const PostForm = ({ post }: Props) => {
     setValue("body", html);
     // const contentState = convertToRaw(newEditorState.getCurrentContent());
     // Convert ContentState to HTML and update the form value
+
+    // // Calculate the position of the selected text
+    // const selection = window.getSelection();
+    // if (selection?.rangeCount) {
+    //   const range = selection.getRangeAt(0).getBoundingClientRect();
+    //   if (range.width > 0) {
+    //     setToolbarPosition({
+    //       top: range.top + window.scrollY - 50,
+    //       left: range.left + window.scrollX,
+    //       display: "block",
+    //     });
+    //   } else {
+    //     setToolbarPosition((prev) => ({ ...prev, display: "none" }));
+    //   }
+    // }
   };
 
   const [
@@ -294,6 +315,22 @@ const PostForm = ({ post }: Props) => {
                       onEditorStateChange={handleEditorChange}
                       placeholder="Write something..."
                       toolbarOnFocus={true}
+                      toolbarStyle={{
+                        position: "fixed",
+                        bottom: 0,
+                        left: 0,
+                        width: "100%",
+                        zIndex: 1000,
+                        backgroundColor: "#fff",
+                        borderTop: "1px solid #ddd",
+                        padding: "10px",
+
+                        // // floating toolbar position
+                        // position: "absolute",
+                        // top: toolbarPosition.top,
+                        // left: toolbarPosition.left,
+                        // display: toolbarPosition.display,
+                      }}
                     />
                   </Box>
 

@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, Middleware } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -26,7 +26,7 @@ export const store = configureStore({
   reducer: persistedReducer,
   // reducer: rootReducer,
   middleware: getDefaultMiddleware => (
-    getDefaultMiddleware({ serializableCheck: false}).concat(apiSlice.middleware)
+    getDefaultMiddleware({ serializableCheck: false }).concat(apiSlice.middleware as Middleware)
   ),
   devTools: flag
 })

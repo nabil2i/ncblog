@@ -55,7 +55,7 @@ export interface PostComment {
 export interface PostFormData {
   title: string;
   body: string;
-  userId?: string;
+  postAuthorId?: string;
   img?: string;
   category?: string;
   tags?: string[];
@@ -66,7 +66,7 @@ export interface PostFormData {
 //   likeCount: number;
 // }
 export interface LikePostForm {
-  userId: string;
+  postAuthorId: string;
 }
 
 export interface PostLikeStatus {

@@ -212,14 +212,14 @@ const PostForm = ({ post }: Props) => {
 
   useEffect(() => {
     if (post?.body) {
-      console.log(post.body)
+      // console.log(post.body)
       setValue("body", post.body);
     }
   }, [post?.body, setValue]);
 
   const onSubmit = (data: PostFormData) => {
     // const formaData = getValues();
-    console.log("data", data);
+    console.log("data for update", data);
 
     setSubmittingPost(true);
     if (post) {
@@ -227,14 +227,14 @@ const PostForm = ({ post }: Props) => {
         ...data,
         title: data.title,
         body: data.body,
-        userId: post?.postAuthorId?._id,
+        // postAuthorId: post?.postAuthorId?._id,
       });
     } else {
       createPost.mutate({
         ...data,
         title: data.title,
         body: data.body,
-        userId: _id,
+        postAuthorId: _id,
       });
     }
   };

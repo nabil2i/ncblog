@@ -18,7 +18,7 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
   const isCreate =
     location.pathname.startsWith("/blog/write") ||
     location.pathname.startsWith("/myposts/write");
-  const userId = post?.user?._id as string;
+  // const userId = post?.postAuthorId?._id as string;
   const postId = post?._id as string;
 
   const [selectedCategory, setSelectedCategory] = useState(""); // State to track the selected category
@@ -83,7 +83,7 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
         isSubmittingPost={isSubmittingPost as boolean}
         post={post}
       />
-      {!isCreate && <DeletePostButton postId={postId} userId={userId} />}
+      {!isCreate && <DeletePostButton postId={postId} />}
       {/* <Menu>
         <MenuButton
           as={IconButton}

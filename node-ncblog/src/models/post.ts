@@ -7,19 +7,19 @@ import { Document } from "mongoose";
 dotenv.config();
 
 export interface IPost extends Document {
-  _id: string;
+  _id: mongoose.Types.ObjectId;
   title: string;
   body: string;
   img: string;
   slug: string;
-  user: Types.ObjectId;
-  comments: Types.ObjectId[];
+  postAuthorId: mongoose.Types.ObjectId;
+  comments: mongoose.Types.ObjectId[];
   tags: string[];
   category: string;
   isDraft: boolean;
-  likes: string[];
-  numberOfLikes: number;
-  totalCommentsCount: number;
+  // likes: string[];
+  likeCount: number;
+  commentCount: number;
 }
 
 // const AutoIncrementCounter = AutoIncrement(mongoose);
@@ -48,24 +48,7 @@ export const postSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  // user: {
-  //   type: new mongoose.Schema({
-  //     firstname: {
-  //       type: String,
-  //       required: true,
-  //       minlength: 5,
-  //       maxlength: 50
-  //     },
-  //     lastname: {
-  //       type: String,
-  //       required: true,
-  //       minlength: 5,
-  //       maxlength: 50
-  //     },
-  //   }),
-  //   required: true
-  // },
-  user: {
+  postAuthorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
@@ -74,10 +57,6 @@ export const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment',
   }],
-  // tags: {
-  //   type: Array,
-  //   default: [],
-  // },
   tags: {
     type: [String],
     default: []
@@ -90,20 +69,20 @@ export const postSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
   // category: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: 'Category',
   //   default: new mongoose.Types.ObjectId(process.env.NODE_APP_DEFAULT_CATEGORY)
   // },
-  likes: {
-    type: Array,
-    default: [],
-  },
-  numberOfLikes: {
+  likeCount: {
     type: Number,
     default: 0
   },
-  totalCommentsCount: {
+  commentCount: {
     type: Number,
     default: 0
   }
@@ -134,7 +113,7 @@ export function validatePost(post: typeof PostModel) {
   const schema = Joi.object({
     title: Joi.string().min(5).max(255).required(),
     body: Joi.string().min(5).required(),
-    userId: Joi.string().hex().length(24).required(),
+    authorId: Joi.string().hex().length(24).required(),
     // userId: Joi.object.objectId().required(),
     img: Joi.string().min(5),
     category: Joi.string().min(5),
@@ -148,7 +127,8 @@ export function validateUpdatePost(post: typeof PostModel) {
   const schema = Joi.object({
     title: Joi.string().min(5).max(255),
     body: Joi.string().min(5),
-    userId: Joi.string().hex().length(24),
+    // authorId: Joi.string().hex().length(24),
+    postAuthorId: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).required(),
     img: Joi.string().min(5),
     category: Joi.string().min(5),
     tags: Joi.string().min(5),

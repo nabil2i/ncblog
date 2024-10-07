@@ -4,17 +4,23 @@ export default interface Comment {
   id: EntityId;
   _id: string;
   text: string;
-  likes: string[];
-  numberOfLikes: number;
+  postId: string;
+  replyCount: number;
+  likeCount: number;
+  isDeleted: boolean;
+  topParentCommentId: string;
+  realParentCommentId: string;
+  userRepliedToId: string;
   replies: Comment[];
   createdAt: Date;
   updatedAt: Date;
   post: string;
-  user: {
+  userId: {
     _id: string;
     username: string;
     firstname: string;
     lastname: string;
+    img?: string;
   }
 }
 export interface CommentEntity {
@@ -22,11 +28,11 @@ export interface CommentEntity {
   _id: string;
   text: string;
   likes: string[];
-  numberOfLikes: number;
+  likeCount: number;
   createdAt: Date;
   updatedAt: Date;
   post: string;
-  user: {
+  userId: {
     _id: string;
     username: string;
     firstname: string;
@@ -37,6 +43,18 @@ export interface CommentEntity {
 export interface CommentForm {
   userId?: string;
   text: string;
-  parentCommentId?: string;
-  userRepliedTo?: string;
+  topParentCommentId?: string | null;
+  realParentCommentId?: string | null;
+  userRepliedToId?: string;
+}
+
+export interface LikeComment {
+  commentId: string;
+  likeCount: number;
+}
+
+export interface CommentLikeStatus {
+  commentId: string;
+  hasLiked: boolean;
+  likeCount: number;
 }

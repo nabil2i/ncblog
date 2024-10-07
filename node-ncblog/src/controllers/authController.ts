@@ -1,13 +1,12 @@
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import ms from "ms";
 import UserModel, { IUser } from "../models/user.js";
-import { makeError } from "../utils/responses.js";
+import { makeError } from "../utils/error.js";
 import { generatePassword, makeNames, makeUsername } from "../utils/user.js";
-import { Request, Response, NextFunction } from "express";
-import { CustomError } from "../models/error.js";
 
 dotenv.config();
 
@@ -34,8 +33,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) return next(makeError(400, "Invalid username or password"));
   
-  const accessToken = user.generateAuthToken();
-  const refreshToken = user.generateRefreshToken();
+  const accessToken = await user.generateAuthToken();
+  const refreshToken = await user.generateRefreshToken();
   
   // const userData = _.pick(user, ['_id', 'username', 'email', 'firstname', 'lastname', 'accessToken'])
   // userData.accessToken = accessToken;

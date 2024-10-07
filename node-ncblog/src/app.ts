@@ -1,6 +1,6 @@
+import "express-async-errors";
 import dotenv from "dotenv";
 import express from "express";
-import "express-async-errors";
 import http from "http";
 import mongoose from "mongoose";
 import { logEvents, } from "./middleware/logger.js";

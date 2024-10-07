@@ -1,8 +1,6 @@
 import { EntityId } from "@reduxjs/toolkit";
 
 export default interface Post {
-  // id: string | number;
-  // id: string | number;
   id: EntityId;
   _id: string;
   title: string;
@@ -14,7 +12,8 @@ export default interface Post {
   createdAt?: Date;
   publishedAt?: Date;
   updatedAt?: Date;
-  user?: {
+  hasLiked?: boolean;
+  postAuthorId?: {
     _id: string;
     username?: string;
     firstname: string;
@@ -23,8 +22,7 @@ export default interface Post {
   comments: PostComment[]
   commentCount?: number;
   replyCount?: number;
-  numberOfLikes?: number;
-  totalCommentsCount?: number;
+  likeCount?: number;
 }
 export interface PostData {
   // _id?: string;
@@ -35,24 +33,25 @@ export interface PostData {
 }
 
 export interface PostComment {
-  createdAt: Date;
   _id: string;
   text: string;
-  user: {
+  postId: string;
+  userId: {
     _id: string;
     username: string;
     firstname: string;
     lastname: string;
     img?: string;
   }
-  // isTopLevelComment: boolean;
   replies: PostComment[];
-  numberOfLikes: number;
-  likes: string[];
-  parentComment?: string;
-
+  replyCount: number;
+  likeCount: number;
+  topParentCommentId: string;
+  realParentCommentId: string;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
-
 export interface PostFormData {
   title: string;
   body: string;
@@ -60,4 +59,18 @@ export interface PostFormData {
   img?: string;
   category?: string;
   tags?: string[];
+}
+
+// export interface LikePost {
+//   postId: string;
+//   likeCount: number;
+// }
+export interface LikePostForm {
+  userId: string;
+}
+
+export interface PostLikeStatus {
+  postId: string;
+  hasLiked: boolean;
+  likeCount: number;
 }

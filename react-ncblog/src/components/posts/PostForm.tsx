@@ -27,13 +27,19 @@ import PostActions from "./PostActions";
 // import "easymde/dist/easymde.min.css";
 // import SimpleMDE from "react-simplemde-editor";
 // import 'draft-js/dist/Draft.css';
-import { ContentState, EditorState, convertFromHTML } from "draft-js";
-import { stateToHTML } from "draft-js-export-html";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+// import { ContentState, EditorState, convertFromHTML } from "draft-js";
+// import { stateToHTML } from "draft-js-export-html";
+// import { Editor } from "react-draft-wysiwyg";
+// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
 // import draftToHtml from 'draftjs-to-html';
 // import HtmlToDraft from 'html-to-draftjs';
+
 import PostTitleEditor from "../common/PostTitleEditor";
+import { WambuiEditor } from "../common/wambuieditor";
+
+// import {DanteEditor } from "dante3";
 
 interface Props {
   post?: Post;
@@ -45,9 +51,12 @@ const PostForm = ({ post }: Props) => {
   const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  // const [editorState, setEditorState] = useState(() =>
+  //   EditorState.createEmpty()
+  // );
+
+  // const [isMobile] = useMediaQuery("(max-width: 768px)");
+  // const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   // // toolbar position
   // const [toolbarPosition, setToolbarPosition] = useState({
@@ -56,19 +65,33 @@ const PostForm = ({ post }: Props) => {
   //   display: "none",
   // });
 
-  useEffect(() => {
-    if (post?.body) {
-      // If updating a post, convert HTML to ContentState
-      const blocksFromHTML = convertFromHTML(post.body);
-      // const blocksFromHTML = HtmlToDraft(post.body);
+  // useEffect(() => {
+  //   if (post?.body) {
+  //     setValue("body", post.body);
+  //     // // If updating a post, convert HTML to ContentState
+  //     // const blocksFromHTML = convertFromHTML(post.body);
+  //     // // const blocksFromHTML = HtmlToDraft(post.body);
 
-      const state = ContentState.createFromBlockArray(
-        blocksFromHTML.contentBlocks,
-        blocksFromHTML.entityMap
-      );
-      setEditorState(EditorState.createWithContent(state));
-    }
-  }, [post?.body]);
+  //     // const state = ContentState.createFromBlockArray(
+  //     //   blocksFromHTML.contentBlocks,
+  //     //   blocksFromHTML.entityMap
+  //     // );
+  //     // setEditorState(EditorState.createWithContent(state));
+  //   }
+
+  //   // // Detect keyboard visibility (basic example)
+  //   // const handleResize = () => {
+  //   //   if (isMobile && window.innerHeight < 500) {
+  //   //     setKeyboardVisible(true);
+  //   //   } else {
+  //   //     setKeyboardVisible(false);
+  //   //   }
+  //   // };
+
+  //   // window.addEventListener("resize", handleResize);
+  //   // return () => window.removeEventListener("resize", handleResize);
+  // // }, [isMobile, post?.body]);
+  // }, [post?.body]);
 
   // const [editorState, setEditorState] = useState(() => {
   //   if (post?.body) {
@@ -87,32 +110,32 @@ const PostForm = ({ post }: Props) => {
   //   }
   // });
 
-  const handleEditorChange = (newEditorState: EditorState) => {
-    setEditorState(newEditorState);
-    const contentState = newEditorState.getCurrentContent();
-    const html = stateToHTML(contentState);
-    // const rawContentState = convertToRaw(contentState)
-    // const html = stateToHTML(rawContentState)
-    // console.log(html);
-    setValue("body", html);
-    // const contentState = convertToRaw(newEditorState.getCurrentContent());
-    // Convert ContentState to HTML and update the form value
+  // const handleEditorChange = (newEditorState: EditorState) => {
+  //   setEditorState(newEditorState);
+  //   const contentState = newEditorState.getCurrentContent();
+  //   const html = stateToHTML(contentState);
+  //   // const rawContentState = convertToRaw(contentState)
+  //   // const html = stateToHTML(rawContentState)
+  //   // console.log(html);
+  //   setValue("body", html);
+  //   // const contentState = convertToRaw(newEditorState.getCurrentContent());
+  //   // Convert ContentState to HTML and update the form value
 
-    // // Calculate the position of the selected text
-    // const selection = window.getSelection();
-    // if (selection?.rangeCount) {
-    //   const range = selection.getRangeAt(0).getBoundingClientRect();
-    //   if (range.width > 0) {
-    //     setToolbarPosition({
-    //       top: range.top + window.scrollY - 50,
-    //       left: range.left + window.scrollX,
-    //       display: "block",
-    //     });
-    //   } else {
-    //     setToolbarPosition((prev) => ({ ...prev, display: "none" }));
-    //   }
-    // }
-  };
+  //   // // Calculate the position of the selected text
+  //   // const selection = window.getSelection();
+  //   // if (selection?.rangeCount) {
+  //   //   const range = selection.getRangeAt(0).getBoundingClientRect();
+  //   //   if (range.width > 0) {
+  //   //     setToolbarPosition({
+  //   //       top: range.top + window.scrollY - 50,
+  //   //       left: range.left + window.scrollX,
+  //   //       display: "block",
+  //   //     });
+  //   //   } else {
+  //   //     setToolbarPosition((prev) => ({ ...prev, display: "none" }));
+  //   //   }
+  //   // }
+  // };
 
   const createPost = useCreatePost(
     () => {
@@ -146,7 +169,7 @@ const PostForm = ({ post }: Props) => {
   // const updatePost = useUpdatePost(
   const updatePost = useUpdateUserPost(
     post?._id as string,
-    post?.user?._id as string,
+    post?.postAuthorId?._id as string,
     () => {
       // reset();
       setSubmittingPost(false);
@@ -187,16 +210,23 @@ const PostForm = ({ post }: Props) => {
   } = useForm<PostFormData>();
   // } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  useEffect(() => {
+    if (post?.body) {
+      setValue("body", post.body);
+    }
+  }, [post?.body, setValue]);
+
   const onSubmit = (data: PostFormData) => {
     // const formaData = getValues();
-    // console.log("data", formaData);
+    console.log("data", data);
+
     setSubmittingPost(true);
     if (post) {
       updatePost.mutate({
         ...data,
         title: data.title,
         body: data.body,
-        userId: post?.user?._id,
+        userId: post?.postAuthorId?._id,
       });
     } else {
       createPost.mutate({
@@ -269,37 +299,18 @@ const PostForm = ({ post }: Props) => {
               <Box w="full">
                 <AddPostImage setFieldValue={setValue} postImage={post?.img} />
               </Box>
-              <Controller
+              <Controller // manage the editor's state
                 name="body"
                 control={control}
                 defaultValue={post?.body as string}
-                render={() => (
+                render={({ field }) => (
                   <Box w="full" overflowWrap="break-word" mt={15}>
-                    <Editor
-                      editorState={editorState}
-                      toolbarClassName="toolbarClassName"
-                      wrapperClassName="wrapperClassName"
-                      editorClassName="editorClassName"
-                      onEditorStateChange={handleEditorChange}
-                      placeholder="Write something..."
-                      toolbarOnFocus={true}
-                      toolbarStyle={{
-                        position: "sticky",
-                        bottom: 0,
-                        left: 0,
-                        width: "100%",
-                        zIndex: 1000,
-                        backgroundColor: "#fff",
-                        borderTop: "1px solid #ddd",
-                        padding: "10px",
-
-                        // // floating toolbar position
-                        // position: "absolute",
-                        // top: toolbarPosition.top,
-                        // left: toolbarPosition.left,
-                        // display: toolbarPosition.display,
-                      }}
+                    <WambuiEditor
+                      placeholder={"Write here..."} 
+                      value ={field.value}
+                      handleEditorChange={field.onChange}
                     />
+
                   </Box>
                   //   <Editor
                   //   editorState={editorState}

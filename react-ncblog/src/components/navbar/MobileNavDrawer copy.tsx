@@ -33,7 +33,7 @@ import NAV_ITEMS, { NavItem } from "./navitems";
 const MobileNavDrawer = () => {
   // const btnRef = React.useRef()
   // const { state } = useAuth();
-  const { status } = useAuth();
+  const { privilegelevel } = useAuth();
   const { state } = useAdminLayout();
   const onCloseMain = state.onCloseMain;
 
@@ -64,7 +64,7 @@ const MobileNavDrawer = () => {
               {...navItem}
             />
           ))}
-          {status === "Admin" && (
+          {(privilegelevel === "admin" ||  privilegelevel === "superadmin") && (
             <>
               <Divider />
               <DashSidebar />

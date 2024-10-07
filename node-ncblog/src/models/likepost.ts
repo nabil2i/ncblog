@@ -5,12 +5,12 @@ import mongoose from "mongoose";
 dotenv.config();
 
 export const likePostSchema = new mongoose.Schema({
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  post: {
+  postId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
     required: true,
@@ -18,8 +18,6 @@ export const likePostSchema = new mongoose.Schema({
   },
   { timestamps: true },
 );
-
-
 
 const LikePostModel = mongoose.model('LikePost', likePostSchema);
 

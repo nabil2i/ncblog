@@ -3,70 +3,84 @@ import {
   createComment,
   createNewPost,
   deleteComment,
+  // deleteCurrentUserPost,
   deletePost,
+  // deleteUserComment,
   getAllPosts,
   getComment,
-  deleteUserComment,
-  updateUserComment,
+  getCommentReplies,
   getPost,
+  getPostComments,
+  getPostLikeStatus,
   likePost,
   updateComment,
-  deleteCurrentUserPost,
+  // updateCurrentUserPost,
   updatePost,
-  updateCurrentUserPost,
-  getPostComments
 } from "../controllers/postsController.js";
-import admin from "../middleware/admin.js";
 import auth from "../middleware/auth.js";
-import writer from "../middleware/writer.js";
-import paginate from "../middleware/paginate.js";
-import Post from "../models/post.js";
+import checkInjectTopParentCommentQuery from "../middleware/checkInjectTopParentCommentQuery.js";
+import checkRole from "../middleware/checkRole.js";
+import getPostQuery from "../middleware/getPostQuery.js";
+import paginateWithLimit from "../middleware/paginateWithLimit.js";
+import paginateWithPage from "../middleware/paginateWithPage.js";
+import CommentModel from "../models/comment.js";
+import PostModel from "../models/post.js";
+
 
 const router = express.Router();
 
 router.route('/')
   // get all blog posts
-  .get(paginate(Post), getAllPosts)
+  .get(paginateWithPage(PostModel), getAllPosts)
   // create a blog post
-  .post([auth as RequestHandler, writer as RequestHandler], createNewPost);
+  .post([auth as RequestHandler, checkRole(['blogauthor, admin, superadmin'])] , createNewPost);
 
 router.route('/:id')
   // get a blog post
-  .get(getPost)
+  .get([getPostQuery as RequestHandler], getPost)
   // update a blog post
-  .put([auth as RequestHandler, admin as RequestHandler], updatePost)
+  .put([auth as RequestHandler, checkRole(['admin', 'superadmin', 'blogauthor'])], updatePost)
   // delete a blog post
-  .delete([auth as RequestHandler, admin as RequestHandler], deletePost)
+  .delete([auth as RequestHandler, checkRole(['admin', 'superadmin', 'blogauthor'])], deletePost)
+
+router.route('/:id/like-status')
+  // check if user liked a post or not
+  .get(getPostLikeStatus);
 
 router.route('/:id/like')
 // like a post
   .put(auth as RequestHandler, likePost as RequestHandler);
 
+// router.route('/:id/:authorId')  
+//   .delete([auth as RequestHandler, checkRole(['blogauthor'])], deleteCurrentUserPost as RequestHandler)
+//   .put([auth as RequestHandler, checkRole(['blogauthor'])], updateCurrentUserPost as RequestHandler);
 
-router.route('/:id/:userId')  
-  .delete([auth as RequestHandler, writer as RequestHandler], deleteCurrentUserPost as RequestHandler)
-  .put([auth as RequestHandler, writer as RequestHandler], updateCurrentUserPost as RequestHandler);
 
+// COMMENTS RELATED TO A POST
 router.route('/:id/comments')
   // get all comments of a blog post
-  .get(getPostComments)
+  .get(paginateWithLimit(CommentModel), getPostComments)
   // create a comment on a blog post
-  .post(auth as RequestHandler, createComment)
+  .post(auth as RequestHandler, createComment);
 
 //
 router.route('/:id/comments/:cid')
   // get a comment of a blog post
-  .get([auth as RequestHandler, admin as RequestHandler], getComment)
+  .get([auth as RequestHandler, checkRole(['admin', 'superadmin'])], getComment)
   // update a comment of a blog post
-  .put([auth as RequestHandler, admin as RequestHandler], updateComment)
+  .put([auth as RequestHandler], updateComment)
     // delete a comment of a blog post
-  .delete([auth as RequestHandler, admin as RequestHandler], deleteComment);
+  .delete([auth as RequestHandler], deleteComment);
 
-router.route('/:id/comments/:cid/:uid') 
-  // delete a comment of a blog post
-  .put([auth as RequestHandler], updateUserComment as RequestHandler)
-  // delete a comment of a blog post
-  .delete([auth as RequestHandler], deleteUserComment as RequestHandler);
+router.route('/:id/comments/:cid/replies')
+  // get all replies of a comment
+  .get(checkInjectTopParentCommentQuery, paginateWithLimit(CommentModel), getCommentReplies);
+
+// router.route('/:id/comments/:cid/:uid') 
+//   // delete a comment of a blog post
+//   .put([auth as RequestHandler], updateUserComment as RequestHandler)
+//   // delete a comment of a blog post
+//   .delete([auth as RequestHandler], deleteUserComment as RequestHandler);
 
 
 export default router;

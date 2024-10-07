@@ -1,17 +1,17 @@
 
 import express, { RequestHandler } from "express";
-import { createNewGenre, deleteGenre, getAllGenres, getGenre, updateGenre
-
+import {
+  createNewGenre, deleteGenre, getAllGenres, getGenre, updateGenre
 } from "../controllers/genresController.js";
-import admin from "../middleware/admin.js";
 import auth from "../middleware/auth.js";
-import paginate from "../middleware/paginate.js";
+import checkRole from "../middleware/checkRole.js";
+import paginate from "../middleware/paginateWithPage.js";
 import Genre from "../models/genre.js";
 
 const router = express.Router();
 
 router.use(auth as RequestHandler);
-router.use(admin as RequestHandler);
+router.use(checkRole(['admin']) as RequestHandler);
 
 router.route('/')
   // get all genres

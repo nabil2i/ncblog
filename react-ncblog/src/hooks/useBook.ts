@@ -6,7 +6,7 @@ import { useAppSelector } from "../app/hooks";
 
 // const apiClient = new APIClient<Post>('/posts');
 
-const useBook = (id: string) => {
+const useBook = (bookId: string) => {
   const token = useAppSelector(selectCurrentToken);
 
   const config = {
@@ -17,8 +17,8 @@ const useBook = (id: string) => {
     }
   }
   return useQuery({
-    queryKey: [CACHE_KEY_BOOKS, id],
-    queryFn: () => bookService.get(id, config),
+    queryKey: [CACHE_KEY_BOOKS, bookId],
+    queryFn: () => bookService.get(config, bookId),
   });
 }
 

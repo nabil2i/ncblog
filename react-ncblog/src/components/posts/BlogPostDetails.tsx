@@ -1,7 +1,5 @@
 import { Box, Button, Divider, Heading } from "@chakra-ui/react";
 // import ReactMarkdown from "react-markdown";
-import { authSatus } from "../../app/features/auth/authSlice";
-import { useAppSelector } from "../../app/hooks";
 import Post from "../../entities/Post";
 import { useSearchPostQueryStore } from "../../store";
 import CallToAction from "../common/CallToActionIera";
@@ -17,18 +15,31 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
   // const toggleAddComment = () => setAddComment((prev) => !prev);
 
   // console.log(post);
-  const isAuthenticated = useAppSelector(authSatus);
+  // const isAuthenticated = useAppSelector(authSatus);
 
   // const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleLikePost = async () => {
-    if (isAuthenticated) {
-      // console.log("comment id set", theCommentId);
-      // likePost.mutate();
-    } else {
-      // onOpen();
-    }
-  };
+  // const handleSuccess = () => {
+  //   // Optionally show success feedback
+  // };
+
+  // const handleError = (error: CustomAxiosError) => {
+  //   // Optionally show error feedback (e.g., a toast notification)
+  //   console.error("Failed to like/unlike post", error);
+  // };
+
+  // const handleLikePost = async () => {
+  //   if (isAuthenticated) {
+  //     // optimistic update
+  //     setIsLiked((prev) => !prev);
+  //     setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+  //     likeUnlikePost.mutate();
+  //   } else {
+  //     // onOpen();
+  //   }
+  // };
+
+  // const likeUnlikePost = useLikeUnlikePost(post._id, post.slug, handleSuccess, handleError);
 
   return (
     <Box w="full">
@@ -54,13 +65,16 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
 
       <BlogPostInfo post={post} />
       <Divider orientation="horizontal" color="gray.500" my="4" />
+
       <Box>
         <BlogPostInteractionsWithActions
           post={post}
           // onCommentPost={handleCommentPost}
-          onLikePost={handleLikePost}
+          // onLikePost={handleLikePost}
+          // likeCount={likeCount}
         />
       </Box>
+
       <Divider orientation="horizontal" color="gray.500" my="4" />
       <Box>
         <div

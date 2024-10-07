@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import _ from "lodash";
-import mongoose, { Types } from "mongoose";
-import CommentModel, { validateComment, validateUpdateComment } from "../models/comment.js";
-import LikePost from "../models/likepost.js";
-import PostModel, { IPost, validatePost, validateUpdatePost } from "../models/post.js";
+import { Types } from "mongoose";
+import checkRole from "../middleware/checkRole.js";
+import CommentModel, { IComment, validateComment, validateUpdateComment } from "../models/comment.js";
+import LikePostModel from "../models/likepost.js";
+import PostModel, { validatePost, validateUpdatePost } from "../models/post.js";
 import User, { IUser } from "../models/user.js";
-import { makeError } from "../utils/responses.js";
-import { makeSlug } from "../utils/strings.js";
+import { makeError } from "../utils/error.js";
+import { makeSlug } from './../utils/strings.js';
+import jwt from 'jsonwebtoken';
 
 interface CustomResponse extends Response{
   paginatedResults?: any;
@@ -16,45 +18,55 @@ interface CustomResponse extends Response{
 interface CustomRequest extends Request {
 // interface CustomRequest extends Request<ParamsDictionary, any, any, ParsedQs> {
   user?: IUser
+  postQuery?: { _id?: String, slug?: String }
+}
+
+interface CustomQueryRequest extends Request {
+  
 }
 
 interface PickedPost {
   _id: string;
   title: string;
-  user: IUser
+  author: IUser
 }
 
 interface PickedComment {
-  _id: string;
+  _id: Types.ObjectId;
   text: string;
+  userId: Types.ObjectId;
+  userRepliedToId: Types.ObjectId;
+  topParentCommentId: Types.ObjectId;
+  realParentCommentId: Types.ObjectId;
+  postId: Types.ObjectId;
 }
 
 // @desc Get all posts
 // @route GET /posts
-// @access Public
+// @access Public Guest
 export const getAllPosts = async (req: Request, res: CustomResponse) => {
   res.status(200).json({ success: true, data: res.paginatedResults});
 };
 
 // @desc Create a post
 // @route POST /posts
-// @access Private Write
+// @access Private Blog Author
 export const createNewPost = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  
     const { error } = validatePost(req.body);
-    if (error) return next(makeError(400, error.details[0].message));
+    if (error) throw makeError(400, error.details[0].message);
 
     // console.log(req.body);
-    const { title, body, userId, img, category, tags } = req.body;
+    const { title, body, authorId, img, category, tags } = req.body;
 
-    const user = await User.findById(userId);
-    if (!user) return next(makeError(400, "Invalid user"));
+    const author = await User.findById(authorId);
+    if (!author) throw makeError(400, "Invalid author");
     
     const slug = makeSlug(title);
 
     let newPost = new PostModel({
       slug,
-      user: userId,
+      postAuthorId: authorId,
       title,
       body,
       img,
@@ -72,412 +84,530 @@ export const createNewPost = async (req: Request, res: Response, next: NextFunct
     // })
     newPost = await newPost.save();
 
-    if (!newPost) return next(makeError(400, "An error occured"));
+    if (!newPost) throw makeError(400, "An error occured");
 
-    const pickedPost: PickedPost = _.pick(newPost.toObject(), ['_id', 'title', 'user']);
+    const pickedPost: PickedPost = _.pick(newPost.toObject(), ['_id', 'title', 'author']);
     res.status(201).json({success: true, data: pickedPost});
-  } catch(err) {
-    console.log(err)
-    if ((err as Error).name === 'CastError') {
-      return next(makeError(400, "Invalid post ID"));
-    }
-    return next(makeError(500, "Internal Server Error"));
-  }
 };
 
 // @desc Get a post
 // @route GET /posts/:id
-// @access Public
+// @access Public Guest
 export const getPost = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    let postQuery;
-    const postIdOrSlug = req.params.id;
+  const customReq = req as CustomRequest
+  const postId = req.params.id;
+  // const userId = customReq.user?._id;
 
-    if (!postIdOrSlug) return next(makeError(400, "Post ID or slug is required"));
-    
-    const isObjectId = mongoose.Types.ObjectId.isValid(postIdOrSlug);
+  // console.log("Getting a post of ID ", postId, " for user ", userId);
 
-    if (isObjectId) {
-      postQuery = { _id: postIdOrSlug };
-    } else {
-      postQuery = { slug: postIdOrSlug };
-    }
+  // console.log (customReq.postQuery);
 
-    const post = await PostModel.findOne(postQuery)
-      .populate([
-        {
-          path: 'user',
-          select: 'firstname lastname',
-        },
-        // {
-        //   path: 'comments',
-        //   options: { sort: { createdAt: -1 } },
-        //   populate: [
-        //     {
-        //       path: 'user',
-        //       select: 'firstname lastname img',
-        //     },
-        //     {
-        //       path: 'replies',
-        //       options: { sort: { createdAt: -1 } },
-        //       populate: {
-        //         path: 'user',
-        //         select: 'firstname lastname img'
-        //       }
-        //     }
-        //   ]
-        // }   
-      ])
-      // .populate({
-      //   path: 'user',
-      //   select: 'firstname lastname',
-      // })
-      // .populate({
+  const post = await PostModel.findOne(customReq.postQuery)
+  // const post = await PostModel.findOne(postQuery)
+    .populate([
+      {
+        path: 'postAuthorId',
+        select: 'firstname lastname',
+      },
+      // {
       //   path: 'comments',
+      //   options: { sort: { createdAt: -1 } },
       //   populate: [
       //     {
-      //       path: 'user',
-      //       select: 'firstname lastname',
+      //       path: 'authorId',
+      //       select: 'firstname lastname img',
       //     },
       //     {
       //       path: 'replies',
+      //       options: { sort: { createdAt: -1 } },
       //       populate: {
       //         path: 'user',
-      //         select: 'firstname lastname'
+      //         select: 'firstname lastname img'
       //       }
       //     }
       //   ]
-      // })
-      .exec();
-    
-    if (!post) return next(makeError(404, "The post with the given ID was not found"));
-    
-    // const calculateReplyCount = (comments) => {
-    //   let replyCount = 0;
+      // }   
+    ])
+    .exec();
+  
+  if (!post) throw makeError(404, "The post with the given ID was not found");
+  
+  // // Check if current user liked the post
+  //   const like = await LikePostModel.findOne({ postId, userId });
+  //   const hasLiked = !!like;
 
-    //   for (const comment of comments) {
-    //     replyCount += comment.replies.length;
-    //     replyCount += calculateReplyCount(comment.replies);
-    //   }
-    //   return replyCount;
-    // };
+  //   console.log("User has liked: ", hasLiked);
 
-    // const commentCount = post.comments.length;
-    // const replyCount = calculateReplyCount(post.comments);
-
-    // const data = {
-    //   ...post.toObject(),
-    //   commentCount,
-    //   replyCount,
-    //   totalComments: commentCount + replyCount
-    // }
-    res.status(200).json({ success: true, data: post});
-  } catch(err) {
-    console.log(err)
-    if ((err as Error).name === 'CastError') {
-      return next(makeError(400, "Invalid post ID"));
-    }
-    return next(makeError(500, "Internal Server Error"));
-  }
+  //   res.status(200).json({ 
+  //     success: true, 
+  //     data: { 
+  //       ...post.toObject(), 
+  //       hasLiked 
+  //     } 
+  //   });
+  res.status(200).json({ success: true, data: post});
+  // res.status(200).json({ success: true, data: { ...post, hasLiked: !!like }});
 };
+
+// @desc Chek if  user liked a post
+// @route GET posts/:id/like-status
+// @access Public Guest
+export const getPostLikeStatus = async (req: Request, res: Response, next: NextFunction) => {
+  // const customReq = req as CustomRequest;
+
+  const postId = req.params.id;
+  const authHeader = req.headers.authorization;
+  let userId;
+
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.NODE_APP_JWT_ACCESS_SECRET as string) as { _id: string}
+    userId = decoded._id;
+  }
+
+  // console.log("Getting a post of ID ", postId, " for user ", userId);
+
+  // Check if current user liked the post
+    const like = await LikePostModel.findOne({ postId, userId });
+    const hasLiked = !!like;
+
+    // console.log("User has liked: ", hasLiked);
+
+    const post = await PostModel.findById(postId);
+
+    const likeCount = post?.likeCount;
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Post Like Data',
+      data: {  
+        postId,
+        // userId,
+        hasLiked,
+        likeCount 
+      } 
+    });
+}
 
 // @desc Like/Unlike a post
 // @route PUT posts/:id/like
-// @access Private Auth
-export const likePost = async (req: CustomRequest, res: Response, next: NextFunction) => {
-  try {
+// @access Private User
+export const likePost = async (req: Request, res: Response, next: NextFunction) => {
+  const customReq = req as CustomRequest
+  
+    // cconst postQuery = req.postQuery;
     const postId = req.params.id;
-    const userId = req.user?._id;
+    const userId = customReq.user?._id;
     // console.log("hello", postId)
-    if (!postId) return next(makeError(400, "Post ID required"));
+
+    if (!Types.ObjectId.isValid(postId) || (userId && !Types.ObjectId.isValid(userId))) {
+      throw makeError(400, "Invalid post of user ID");
+    }
+    // if (!postId) throw makeError(400, "Post ID required");
 
     const post = await PostModel.findById(postId);
-    if (!post) return next(makeError(404, "The post with given ID doesn't exist"));
+    if (!post) throw makeError(404, "The post with the given ID doesn't exist");
 
-    let likePost = await LikePost.findOne({user: userId, post: postId});
+    const  likePost = await LikePostModel.findOne({userId, postId});
 
     if (!likePost) {
-      likePost = new LikePost({user: userId, post: postId});
-      await likePost.save();
-      post.numberOfLikes++;
+      // Like the post
+      const newLike = new LikePostModel({userId, postId});
+      await newLike.save();
+      post.likeCount += 1;
+      await post.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Post liked",
+        data: {
+          postId: post._id,
+          likeCount: post.likeCount
+        }
+      })
     } else {
-      await LikePost.findOneAndDelete({ user: userId, post: postId });
-      post.numberOfLikes--;
+      // Unlike the post
+      await LikePostModel.deleteOne({ _id: likePost._id });
+      post.likeCount = Math.max(post.likeCount - 1, 0);
+      await post.save();
+
+      res.status(200).json({ 
+        success: true, 
+        message: "Post unliked",
+        data: {
+          postId: post._id,
+          likeCount: post.likeCount
+        }
+      });
     }
-    
-    await post.save();
-    res.json({ success: true, data: likePost});
-  } catch(err) {
-    console.log(err)
-    return next(makeError(500, "Internal Server Error"));
-  }
 };
+
+// LIKE A POST: VERSION 1
+// // @desc Like/Unlike a post
+// // @route PUT posts/:id/like
+// // @access Private User
+// export const likePost = async (req: Request, res: Response, next: NextFunction) => {
+//   const customReq = req as CustomRequest
+  
+//     // cconst postQuery = req.postQuery;
+//     const postId = req.params.id;
+//     const userId = customReq.user?._id;
+//     // console.log("hello", postId)
+//     if (!postId) throw makeError(400, "Post ID required");
+
+//     const post = await PostModel.findById(postId);
+//     if (!post) throw makeError(404, "The post with the given ID doesn't exist");
+
+//     let likePost = await LikePost.findOne({userId, postId});
+
+//     if (!likePost) {
+//       likePost = new LikePost({userId, postId});
+//       await likePost.save();
+//       post.likeCount++;
+//     } else {
+//       await LikePost.findOneAndDelete({ userId, postId });
+//       post.likeCount--;
+//     }
+    
+//     await post.save();
+//     res.json({ success: true, data: likePost});
+// };
 
 // @desc Update a post
 // @route PUT /posts/:id
-// @access Private
+// @access Private Admin or Blog Post Author
 export const updatePost = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const postId = req.params.id;
+  const customReq = req as CustomRequest
 
-    if (!postId) return next(makeError(400, "Post ID required"));
+  
+  const { error } = validateUpdatePost(req.body);
+  if (error) throw makeError(400, error.details[0].message);
+  
+  const { title, body, authorId, img, category, tags } = req.body;
 
-    const { error } = validateUpdatePost(req.body);
-    if (error) return next(makeError(400, error.details[0].message));
-    
-    const { title, body, userId, img, category, tags } = req.body;
-    
-    
-    const post = await PostModel.findByIdAndUpdate(
-      postId,
-      {
-        title,
-        body,
-        userId, 
-        img,
-        category,
-        tags
-      },
-      { new: true}
-    );
+  const postId = req.params.id;
+  const userId = customReq.user?._id;
 
-    if (post && title) {
-      const slug =makeSlug(title);
-      post.slug = slug;
-      await post.save();
-    }
-      
-    if (!post) return next(makeError(404, "The post with given ID doesn't exist"));
-      
-    res.json({ success: true, message: `The post with ID ${post._id} is updated`});
-  } catch(err) {
-    console.log(err)
-    if ((err as Error).name === 'CastError') {
-      return next(makeError(400, "Invalid post ID"));
-    }
-    return next(makeError(500, "Internal Server Error"));
-  }
+  if (!postId) throw makeError(400, "Post ID required");
+
+  const post = await PostModel.findById(postId)
+  if(!post) throw makeError(404, "The post with the given ID is not found");
+
+  if (!checkRole(['admin']) && post?.postAuthorId.toString() !== userId?.toString()) throw makeError(403, "Operation not allowed");
+
+  let updatedSlug = post.slug;
+  if (title && post.title !== title)
+    updatedSlug = makeSlug(title);
+
+  const updatedPost = await PostModel.findByIdAndUpdate(
+    postId,
+    {
+      title,
+      body,
+      slug: updatedSlug,
+      authorId,
+      img,
+      category,
+      tags,
+    },
+    { new: true }
+  );
+    
+  if (!updatedPost) throw makeError(404, "The post with the given ID doesn't exist");
+    
+  res.json({ success: true, message: `The post with ID ${updatedPost._id} is updated`});
 };
 
 // @desc Delete a post
 // @route DELETE /posts/:id
-// @access Private Admin
+// @access Private Admin or Blog Post Author
 export const deletePost = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const postId = req.params.id;
+  const customReq = req as CustomRequest
 
-    if (!postId) return next(makeError(400, "Post ID required"));
-  
-    const post = await PostModel.findByIdAndDelete(postId);
-  
-    if(!post) return next(makeError(404, "The post with given ID is not found"));
-  
-    res.status(200).json({
-      success: true,
-      message: `The post with ID ${post._id} was deleted`,
-      data: {
-        id: postId
-      }
-    });
-
-  } catch(err) {
-    console.log(err)
-    if ((err as Error).name === 'CastError') {
-      return next(makeError(400, "Invalid post ID"));
-    }
-    return next(makeError(500, "Internal Server Error"));
-  }
-};
-
-// @desc Update a post
-// @route PUT /posts/:id
-// @access Private
-export const updateCurrentUserPost = async (req: CustomRequest, res: Response, next: NextFunction) => {
   const postId = req.params.id;
-  const userId = req.params.userId;
-  if (!postId) return next(makeError(400, "Post ID required"));
+  const userId = customReq.user?._id
 
-  if (req.user?._id !== userId) return next(makeError(403, "Operation not allowed"))
+  if (!postId) throw makeError(400, "Post ID required");
 
-  try {
-    const { error } = validateUpdatePost(req.body);
-    if (error) return next(makeError(400, error.details[0].message));
-    
-    const { title, body, img, category, tags } = req.body;
+  const post = await PostModel.findById(postId)
+  if(!post) throw makeError(404, "The post with the given ID is not found");
 
-    const post = await PostModel.findByIdAndUpdate(
-      postId,
-      {
-        $set: {
-          title,
-          body,
-          category,
-          img,
-          tags
-        }
-      },
-      { new: true}
-    );
-      
-    if (!post) return next(makeError(404, "The post with given ID doesn't exist"));
-      
-    res.json({ success: true, message: `The post with ID ${post._id} is updated`});
-  } catch(err) {
-    console.log(err)
-    if ((err as Error).name === 'CastError') {
-      return next(makeError(400, "Invalid post ID"));
+  if (!checkRole(['admin']) && post?.postAuthorId.toString() !== userId?.toString()) throw makeError(403, "Operation not allowed");
+
+  await post.deleteOne();
+  
+  res.status(200).json({
+    success: true,
+    message: `The post with ID ${post._id} was deleted`,
+    data: {
+      id: postId
     }
-    return next(makeError(500, "Internal Server Error"));
-  }
+  });
 };
 
-// @desc Delete a post
-// @route DELETE /posts/:id/:userId
-// @access Private Writer
-export const deleteCurrentUserPost = async (req: CustomRequest, res: Response, next: NextFunction) => {
-  try {
-    const postId = req.params.id;
-    const userId = req.params.userId;
-    if (!postId) return next(makeError(400, "Post ID required"));
+// // @desc Update a post
+// // @route PUT /posts/:id
+// // @access Private Blog Author
+// export const updateCurrentUserPost = async (req: CustomRequest, res: Response, next: NextFunction) => {
+//   const postId = req.params.id;
+//   const userId = req.params.userId;
+//   if (!postId) throw makeError(400, "Post ID required"));
 
-    if (req.user?._id !== userId) return next(makeError(403, "Operation not allowed"))
+//   if (req.user?._id !== userId) throw makeError(403, "Operation not allowed"))
+
+//   
+//     const { error } = validateUpdatePost(req.body);
+//     if (error) throw makeError(400, error.details[0].message));
     
-    const post = await PostModel.findByIdAndDelete(postId);
-  
-    if(!post) return next(makeError(404, "The post with given ID is not found"));
-  
-    res.status(200).json({
-      success: true,
-      message: `The post with ID ${post._id} was deleted`,
-      data: {
-        id: postId
-      }
-    });
+//     const { title, body, img, category, tags } = req.body;
 
-  } catch(err) {
-    console.log(err)
-    if ((err as Error).name === 'CastError') {
-      return next(makeError(400, "Invalid post ID"));
-    }
-    return next(makeError(500, "Internal Server Error"));
-  }
-};
+//     const post = await PostModel.findByIdAndUpdate(
+//       postId,
+//       {
+//         $set: {
+//           title,
+//           body,
+//           category,
+//           img,
+//           tags
+//         }
+//       },
+//       { new: true}
+//     );
+      
+//     if (!post) throw makeError(404, "The post with given ID doesn't exist"));
+      
+//     res.json({ success: true, message: `The post with ID ${post._id} is updated`});
+//   } catch(err) {
+//     console.log(err)
+//     if ((err as Error).name === 'CastError') {
+//       throw makeError(400, "Invalid post ID"));
+//     }
+//     throw makeError(500, "Internal Server Error"));
+//   }
+// };
 
-// RELETED TO COMMENTS OF A POST
+// // @desc Delete a post
+// // @route DELETE /posts/:id/:userId
+// // @access Private Blog Author
+// export const deleteCurrentUserPost = async (req: CustomRequest, res: Response, next: NextFunction) => {
+//   
+//     const postId = req.params.id;
+//     const userId = req.params.userId;
+
+//     if (!postId) throw makeError(400, "Post ID required"));
+
+//     if (req.user?._id !== userId) throw makeError(403, "Operation not allowed"))
+    
+//     const post = await PostModel.findByIdAndDelete(postId);
+  
+//     if(!post) throw makeError(404, "The post with given ID is not found"));
+  
+//     res.status(200).json({
+//       success: true,
+//       message: `The post with ID ${post._id} was deleted`,
+//       data: {
+//         id: postId
+//       }
+//     });
+
+//   } catch(err) {
+//     console.log(err)
+//     if ((err as Error).name === 'CastError') {
+//       throw makeError(400, "Invalid post ID"));
+//     }
+//     throw makeError(500, "Internal Server Error"));
+//   }
+// };
+
+// RELATED TO COMMENTS OF A POST
 // @desc Get all posts
 // @route GET /posts/:id/comments
-// @access Private Auth
+// @access Private User
 export const getPostComments = async (req: Request, res: Response, next: NextFunction) => {
-  let postQuery;
-  const postIdOrSlug = req.params.id;
+  const customRes = res as CustomResponse;
+  const postId = req.params.id;
 
-  if (!postIdOrSlug) return next(makeError(400, "Post ID or slug is required"));
-  
-  const isObjectId = mongoose.Types.ObjectId.isValid(postIdOrSlug);
+  // // Fetch top level comments
+  // const comments = await CommentModel.find({ ...customReq.postQuery, topParentCommentId: null})
+  //   .sort({ createdAt: -1 })
+  //   .populate([
+  //     {
+  //       path: 'userId',
+  //       select: 'username firstname lastname img',
+  //     },
+  //     {
+  //       path: 'replies',
+  //       options: { sort: { createdAt: 1 } },
+  //       populate: {
+  //         path: 'userId',
+  //         select: 'username firstname lastname img'
+  //       }
+  //     }
+  //   ])
+  //   .exec();
 
-  if (isObjectId) {
-    postQuery = { _id: postIdOrSlug };
-  } else {
-    postQuery = { slug: postIdOrSlug };
-  }
+  const post = await PostModel.findById(postId).lean()
+  // if (!post) throw makeError(404, "Post not found");
+  // // .populate([
+  // //   {
+  // //     path: 'comments',
+  // //     options: { sort: { createdAt: -1 } },
+  // //     populate: [
+  // //       {
+  // //         path: 'userId',
+  // //         select: 'username firstname lastname img',
+  // //       },
+  // //       {
+  // //         path: 'replies',
+  // //         options: { sort: { createdAt: 1 } },
+  // //         populate: {
+  // //           path: 'userId',
+  // //           select: 'username firstname lastname img'
+  // //         }
+  // //       }
+  // //     ]
+  // //   }   
+  // // ]).exec();
+  // // console.log(post)
 
-  // console.log(postQuery)
-
-  const post = await PostModel.findOne(postQuery)
-  .populate([
-    {
-      path: 'comments',
-      options: { sort: { createdAt: -1 } },
-      populate: [
-        {
-          path: 'user',
-          select: 'username firstname lastname img',
-        },
-        {
-          path: 'replies',
-          options: { sort: { createdAt: 1 } },
-          populate: {
-            path: 'user',
-            select: 'username firstname lastname img'
-          }
-        }
-      ]
-    }   
-  ]).exec();
-  // console.log(post)
-  
-  if (!post) return next(makeError(404, "Post not found"));
-
-  const data = {
-    comments: post.comments,
-    numberOfComments: post.totalCommentsCount
-  };
+  // const data = {
+  //   comments,
+  //   commentCount: post.commentCount,
+  //   postId: post._id,
+  //   postTitle: post.title,
+  // };
 
   // const comments = await Comment.find().sort("-createdAt");
-  res.status(200).json({ success: true, message: "Comments of the post", data });
+  const data = customRes.paginatedResults;
+
+  res.status(200).json({ success: true, message: `Comments of the post '${post?.title}'`, data });
 };
+
+// @desc Get all coreplies for a comment
+// @route GET /posts/:id/comments/:cid/replies
+// @access Private Guest
+export const getCommentReplies = async (req: Request, res: Response, next: NextFunction) => {
+  // const commentId = req.params.cid;
+  const customRes = res as CustomResponse;
+
+  const comment = await CommentModel.findById(req.query.topParentCommentId).lean();
+
+  const data = customRes.paginatedResults;
+  // data.data.replyCount = comment?.replyCount || 0;
+
+  res.status(200).json({ success: true, message: `Replies of the comment '${comment?._id}'`, data});
+}
+
+// // @desc Get all posts
+// // @route GET /posts/:id/comments
+// // @access Private User
+// export const getPostCommentsWithLike = async (req: Request, res: Response, next: NextFunction) => {
+//   const customReq = req as CustomRequest;
+//   const userId = customReq.user?._id;
+//   const postId = req.params.id;
+
+//   const comments = await CommentModel.find({postId})
+//   .populate([
+//         {
+//           path: 'replies',
+//           options: { sort: { createdAt: 1 } },
+//           populate: {
+//             path: 'userId',
+//             select: 'username firstname lastname img'
+//           }
+      
+//     }   
+//   ]).exec();
+
+//   const likeStatuses = await LikeCommentModel.find({
+//     userId,
+//     commentId: {$in: comments.map(comment => comment._id)}
+//   });
+
+//   const likeStatusMap = {};
+//   likeStatuses.forEach(likeStatus => {
+//     likeStatusMap[likeStatus.commentId] = true;
+//   })
+  
+//   const commentsWithStatus = comments.map(comment => {
+//     ...comment.toObject(),
+//     hasLiked: likeStatuses
+//   })
+
+//   const data = {
+//     comments: post.comments,
+//     commentCount: post.commentCount
+//   };
+
+//   // const comments = await Comment.find().sort("-createdAt");
+//   res.status(200).json({ success: true, message: `Comments of the post '${post.title}'`, data });
+// };
 
 // @desc Create a comment
 // @route POST /posts/:id/comments
-// @access Private Auth
+// @access Private User
 export const createComment = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // console.log("trying to create a comment")
-    console.log(req.body)
-    const { error } = validateComment(req.body);
-    if (error) return next(makeError(400, error.details[0].message));
+  // console.log("Received request to create a comment:", req.body);
 
-    // console.log(req.body);
-    
-    const postId = req.params.id;
-    const { text, userId, parentCommentId, userRepliedTo } = req.body;
-
-    const post = await PostModel.findById(postId);
-    if (!post) return next(makeError(400, "Invalid post"));
-    
-    let newComment = new CommentModel({
-      text,
-      user: userId,
-      post: postId,
-    })
-
-    if (userRepliedTo) {
-      newComment.userRepliedTo  = userRepliedTo
-    }
-
-    if (parentCommentId) {
-      const parentComment = await CommentModel.findById(parentCommentId);
-      if (!parentComment)  return next(makeError(400, "Invalid parent comment ID"));
-
-      newComment.parentComment = parentCommentId
-      
-      parentComment.replies.push(newComment._id);
-      // parentComment.numberOfReplies++;
-      await parentComment.save();
-      newComment.parentComment = parentCommentId
-    } else {
-      post.comments.push(newComment._id);
-    }
-    newComment = await newComment.save();
-    post.totalCommentsCount++;
-    await post.save();
-    
-
-    const pickedComment: PickedComment = _.pick(newComment.toObject(), ['_id', 'text']);
-    res.status(201).json({success: true, data: newComment});
-  } catch(err) {
-    console.log(err)
-    return next(makeError(500, "Internal Server Error"));
+  // Validate the request body
+  const { error } = validateComment(req.body);
+  if (error) {
+    throw makeError(400, error.message);
   }
+  
+  const postId = req.params.id;
+  const { text, userId, userRepliedToId, topParentCommentId, realParentCommentId } = req.body;
+  // console.log(req.body);
+
+  const post = await PostModel.findById(postId);
+  if (!post) throw makeError(400, "Invalid post");
+  
+  let newComment = new CommentModel({
+    text,
+    userId,
+    postId
+  })
+
+  if (userRepliedToId) {
+    newComment.userRepliedToId  = userRepliedToId
+  }
+
+  if (realParentCommentId) {
+    newComment.realParentCommentId = realParentCommentId;
+  }
+
+  if (topParentCommentId) {
+    const topParentComment = await CommentModel.findById(topParentCommentId);
+    if (!topParentComment)  throw makeError(400, "Invalid parent comment ID");
+
+    newComment.topParentCommentId = topParentCommentId
+    
+    topParentComment.replies.push(newComment._id);
+    topParentComment.replyCount++;
+    await topParentComment.save();
+  } else {
+    post.comments.push(newComment._id);
+  }
+  newComment = await newComment.save();
+  post.commentCount++;
+  await post.save();
+  
+  const savedComment = newComment.toObject() as Required<IComment>;
+  const pickedComment: PickedComment = _.pick(savedComment, [
+    '_id', 'text', 'userId', 'postId', 'topParentCommentId', 'realParentCommentId', 'userRepliedToId'
+  ]);
+  res.status(201).json({success: true, data: pickedComment});
 };
+
 // original createComment method
 // @desc Create a comment
 // // @route POST /posts/:id/comments
 // // @access Private Auth
 // export const createComment = async (req, res, next) => {
-//   try {
+//   
 //     const { error } = validateComment(req.body);
-//     if (error) return next(makeError(400, error.details[0].message));
+//     if (error) throw makeError(400, error.details[0].message));
 
 //     // console.log(req.body);
     
@@ -485,7 +615,7 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
 //     const { text, userId, parentCommentId } = req.body;
 
 //     const post = await Post.findById(postId);
-//     if (!post) return next(makeError(400, "Invalid post"));
+//     if (!post) throw makeError(400, "Invalid post"));
     
 //     let newComment = new Comment({
 //       text,
@@ -501,7 +631,7 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
 
 //     if (parentCommentId) {
 //       const parentComment = await Comment.findById(parentCommentId);
-//       if (!parentComment)  return next(makeError(400, "Invalid parent comment ID"));
+//       if (!parentComment)  throw makeError(400, "Invalid parent comment ID"));
 
 //       parentComment.replies.push(newComment);
 //       await parentComment.save();
@@ -515,17 +645,17 @@ export const createComment = async (req: Request, res: Response, next: NextFunct
 //     res.status(201).json({success: true, data: newComment});
 //   } catch(err) {
 //     console.log(err)
-//     return next(makeError(500, "Internal Server Error"));
+//     throw makeError(500, "Internal Server Error"));
 //   }
 // };
 
 // @desc Create a comment
 // @route GET /posts/:id/comments/:cid
-// @access Private
+// @access Public
 export const getComment = async (req: Request, res: Response, next: NextFunction) => {
   const commentId = req.params.cid;
 
-  if (!commentId) return next(makeError(400, "Comment ID required"));
+  if (!commentId) throw makeError(400, "Comment ID required");
 
   const comment = await CommentModel.findById(commentId);
 
@@ -538,200 +668,263 @@ export const getComment = async (req: Request, res: Response, next: NextFunction
 
 // @desc Create a comment
 // @route UPDATE /posts/:id/comments/:cid
-// @access Private Admin
+// @access Private Admin + Comment Owner
 export const updateComment = async (req: Request, res: Response, next: NextFunction) => {
   const commentId = req.params.cid;
 
-  if (!commentId) return next(makeError(400, "Comment ID required"));
+  if (!commentId) throw makeError(400, "Comment ID required");
 
   const { error } = validateUpdateComment(req.body);
-    if (error) return next(makeError(400, error.details[0].message));
-    
-    const { text, userId, parentCommentId } = req.body;
+    if (error) throw makeError(400, error.details[0].message);
 
-    const comment = await CommentModel.findByIdAndUpdate(
+    const customReq = req as CustomRequest
+    const userId = customReq?.user?._id
+
+    const { text } = req.body;
+
+    let comment = await CommentModel.findById(commentId)
+
+    if (!comment) throw makeError(404, "The comment with the given ID doesn't exist");
+
+    const commentOwner = comment?.userId
+    
+    if (!checkRole(['admin']) && commentOwner.toString() !== userId?.toString())
+      throw makeError(403, "Operation not allowed");
+    
+    // const updatedComment = await comment.updateOne({$set: { text }}, { new: true});
+    comment = await CommentModel.findByIdAndUpdate(
       commentId,
-      {
-        text, userId, parentCommentId
-      },
+      {$set: { text }},
       { new: true}
     );
       
-    if (!comment) return next(makeError(404, "The comment with given ID doesn't exist"));
+    if (!comment) throw makeError(404, "The comment with the given ID doesn't exist");
       
     res.json({
       success: true,
-      message: `The comment with ID ${comment._id} is updated`
+      message: `The comment with ID ${comment._id} is updated`,
+      data: comment
     });
 };
 
-// @desc Create a comment
-// @route UPDATE /posts/:id/comments/:cid/:uid
-// @access Private
-export const updateUserComment = async (req: CustomRequest, res: Response, next: NextFunction) => {
-  const commentId = req.params.cid;
+// // @desc Create a comment
+// // @route UPDATE /posts/:id/comments/:cid/:uid
+// // @access Private
+// export const updateUserComment = async (req: CustomRequest, res: Response, next: NextFunction) => {
+//   const commentId = req.params.cid;
 
-  const commentOwnerId = req.params.uid
-  const writerId = req.user?._id
-  // console.log("writer", writerId)
-  // console.log("commentowner", commentOwnerId)
-  // console.log(req.user.isAdmin)
+//   const commentOwnerId = req.params.uid
+//   const writerId = req.user?._id
+//   // console.log("writer", writerId)
+//   // console.log("commentowner", commentOwnerId)
+//   // console.log(req.user.isAdmin)
 
-  if (!(req.user?.isAdmin || writerId === commentOwnerId))
-    return next(makeError(401, "You are not authorized to make this request"));
+//   if (!(req.user?.isAdmin || writerId === commentOwnerId))
+//     throw makeError(401, "You are not authorized to make this request"));
 
-  if (!commentId) return next(makeError(400, "Comment ID required"));
+//   if (!commentId) throw makeError(400, "Comment ID required"));
 
-  const { error } = validateUpdateComment(req.body);
-    if (error) return next(makeError(400, error.details[0].message));
+//   const { error } = validateUpdateComment(req.body);
+//     if (error) throw makeError(400, error.details[0].message));
     
-    const { text, userId, parentCommentId } = req.body;
+//     const { text, userId, parentCommentId } = req.body;
 
-    const comment = await CommentModel.findByIdAndUpdate(
-      commentId,
-      { $set: { text } },
-      { new: true}
-    );
+//     const comment = await CommentModel.findByIdAndUpdate(
+//       commentId,
+//       { $set: { text } },
+//       { new: true}
+//     );
       
-    if (!comment) return next(makeError(404, "The comment with given ID doesn't exist"));
+//     if (!comment) throw makeError(404, "The comment with given ID doesn't exist"));
       
-    res.json({
-      success: true,
-      message: `The comment with ID ${comment._id} is updated`
-    });
-};
+//     res.json({
+//       success: true,
+//       message: `The comment with ID ${comment._id} is updated`
+//     });
+// };
 
 // @desc Create a comment
 // @route DELETE /posts/:id/comments/:cid
-// @access Private Admin
+// @access Private Admin + Comment Owner
 export const deleteComment = async (req: Request, res: Response, next: NextFunction) => {
   const commentId = req.params.cid;
 
-  if (!commentId) return next(makeError(400, "Comment ID required"));
+  if (!commentId) throw makeError(400, "Comment ID required");
 
-  try {
-    const comment = await CommentModel.findById(commentId);
-    
-    if(!comment) return next(makeError(404, "The comment with given ID is not found"));
-    // console.log(comment, "deleting replies")
-    
-    const parentPost = await PostModel.findById(comment.post);
 
-    if (parentPost) {
-      await deleteReplies(comment.replies, parentPost);
+  const customReq = req as CustomRequest
+  const userId = customReq?.user?._id
+  const comment = await CommentModel.findById(commentId)
   
-      if (comment.parentComment) {
-        const parentComment = await CommentModel.findById(comment.parentComment);
-        if (parentComment) {
-          parentComment.replies = parentComment.replies.filter(replyId => (
-            replyId.toString() !== commentId)
-          )
-          await parentComment.save();
-        }
-      } else {
-          parentPost.comments = parentPost.comments.filter(postCommentId => (
-            postCommentId.toString() !== commentId)
-          );
-          // await parentPost.save(); 
-        }
-         
-      await CommentModel.findByIdAndDelete(commentId);
+  if (!comment) throw makeError(404, "The comment with the given ID doesn't exist");
+  
+  const commentOwner = comment?.userId
+  
+  if (!checkRole(['admin']) && commentOwner.toString() !== userId?.toString())
+    throw makeError(403, "Operation not allowed")
 
-      parentPost.totalCommentsCount -= 1;
-      await parentPost.save(); 
+  // console.log(" we can delete the comment")
+  
+  const topParentComment = await CommentModel.findById(comment?.topParentCommentId);
+  const post = await PostModel.findById(comment.postId);
+
+  // console.log("topParentComment", topParentComment);
+  // console.log("post", post);
+
+  //if it is a second level comment
+  if (post && topParentComment) {
+    // delete only the second level comment
+    await CommentModel.findByIdAndDelete(comment._id);
+
+    // delete the id in the replies of the parent comment
+    topParentComment.replies = topParentComment.replies.filter(id => (
+      id.toString() !== commentId.toString()
+    ));
+    topParentComment.replyCount = Math.max(topParentComment.replyCount - 1, 0);
+    await topParentComment.save();
+    
+    post.commentCount = Math.max(post.commentCount -1, 0);
+    await post.save();
+  } else if (post && !topParentComment) {
+    // if it's a first level comment
+    //delete all its replies
+    const replyDeletedCount = await deleteReplies(comment);
+    if (replyDeletedCount && replyDeletedCount === comment.replyCount) {
+      post.comments = post.comments.filter(id => (
+        id.toString() !== commentId.toString()
+      ));
     }
-
-    res.status(200).json({
-      success: true,
-      message: "Comment and replies deleted"
-    });
-  } catch (error) {
-    return next(makeError(500, "Internal server error"));
+    
+    post.commentCount = Math.max(post.commentCount - replyDeletedCount - 1, 0);
+    await post.save();
+    // then delete it
+    await CommentModel.findByIdAndDelete(comment._id);
   }
+
+  res.status(200).json({
+    success: true,
+    message: "Comment and replies deleted"
+  });
 };
 
-// @desc Create a comment
-// @route DELETE /posts/:id/comments/:cid/!uid
-// @access Private User
-export const deleteUserComment = async (req: CustomRequest, res: Response, next: NextFunction) => {
-  const commentId = req.params.cid;
-  const commentOwnerId = req.params.uid
+// // @desc Create a comment
+// // @route DELETE /posts/:id/comments/:cid/!uid
+// // @access Private User
+// export const deleteUserComment = async (req: CustomRequest, res: Response, next: NextFunction) => {
+//   const commentId = req.params.cid;
+//   const commentOwnerId = req.params.uid
 
-  if (!(req.user?.isAdmin || req.user?._id === commentOwnerId))
-    return next(makeError(401, "You are not authorized to make this request"));
+//   if (!(req.user?.isAdmin || req.user?._id === commentOwnerId))
+//     throw makeError(401, "You are not authorized to make this request"));
 
-  if (!commentId) return next(makeError(400, "Comment ID required"));
+//   if (!commentId) throw makeError(400, "Comment ID required"));
 
-  try {
-    const comment = await CommentModel.findById(commentId);
+//   
+//     const comment = await CommentModel.findById(commentId);
     
-    if(!comment) return next(makeError(404, "The comment with given ID is not found"));
-    // console.log(comment, "deleting replies")
+//     if(!comment) throw makeError(404, "The comment with given ID is not found"));
+//     // console.log(comment, "deleting replies")
     
-    const parentPost = await PostModel.findById(comment.post);
+//     const parentPost = await PostModel.findById(comment.post);
 
-    if (parentPost) {
-      await deleteReplies(comment.replies, parentPost);
+//     if (parentPost) {
+//       await deleteReplies(comment.replies, parentPost);
 
-      if (comment.parentComment) {
-        const parentComment = await CommentModel.findById(comment.parentComment);
-        if (parentComment) {
-          parentComment.replies = parentComment.replies.filter(replyId => (
-            replyId.toString() !== commentId)
-          )
-          await parentComment.save();
-        }
-      } else {
-          parentPost.comments = parentPost.comments.filter(postCommentId => (
-            postCommentId.toString() !== commentId)
-          );
-          // await parentPost.save(); 
-        }
-    }
+//       if (comment.parentComment) {
+//         const parentComment = await CommentModel.findById(comment.parentComment);
+//         if (parentComment) {
+//           parentComment.replies = parentComment.replies.filter(replyId => (
+//             replyId.toString() !== commentId)
+//           )
+//           await parentComment.save();
+//         }
+//       } else {
+//           parentPost.comments = parentPost.comments.filter(postCommentId => (
+//             postCommentId.toString() !== commentId)
+//           );
+//           // await parentPost.save(); 
+//         }
+//     }
        
-      await CommentModel.findByIdAndDelete(commentId);
+//       await CommentModel.findByIdAndDelete(commentId);
 
-      if (parentPost) {
-        parentPost.totalCommentsCount -= 1;
-        await parentPost.save(); 
-      }
+//       if (parentPost) {
+//         parentPost.totalCommentsCount -= 1;
+//         await parentPost.save(); 
+//       }
 
-    res.status(200).json({
-      success: true,
-      message: "Comment and replies deleted"
-    });
-  } catch (error) {
-    return next(makeError(500, "Internal server error"));
-  }
-};
+//     res.status(200).json({
+//       success: true,
+//       message: "Comment and replies deleted"
+//     });
+//   } catch (error) {
+//     throw makeError(500, "Internal server error"));
+//   }
+// };
 
 
-const deleteReplies = async (replyIds: Types.ObjectId[], parentPost: IPost) => {
-  if (!replyIds || replyIds.length === 0) return;
+const deleteReplies = async (comment: IComment) => {
+  const repliesId = comment.replies;
+
+  let replyDeletedCount = 0;
+
+  if (!repliesId || repliesId.length === 0)
+    replyDeletedCount = 0 ;
 
   // Delete each reply
-  for (const replyId of replyIds) {
+  for (const replyId of repliesId) {
     const replyToDelete = await CommentModel.findById(replyId);
     if (replyToDelete) {
-      await deleteReplies(replyToDelete.replies, parentPost);
+      // Delete the reply
+      await CommentModel.findByIdAndDelete(replyId);
+      replyDeletedCount += 1;
+
+      // await deleteReplies(replyToDelete.replies);
       
       // Remove the reply from its parent comment's replies
-      if (replyToDelete.parentComment) {
-        const parentComment = await CommentModel.findById(replyToDelete.parentComment);
-        if (parentComment) {
-          parentComment.replies = parentComment.replies.filter(replyId => (
-            replyId.toString() !== replyToDelete._id.toString())
-            );
-            await parentComment.save();
-          }
-        }
-        // await parentPost.save();
-        // Delete the reply
-        await CommentModel.findByIdAndDelete(replyId);
-        parentPost.totalCommentsCount -= 1;
+      // if (replyToDelete.parentCommentId) {
+      //   const parentComment = await CommentModel.findById(replyToDelete.parentCommentId);
+      //   if (parentComment) {
+      //     parentComment.replies = parentComment.replies.filter(replyId => (
+      //       replyId.toString() !== replyToDelete._id.toString())
+      //       );
+      //       await parentComment.save();
+      //     }
+      //   }
+
+        // await parentPost.save();   
     }
   }
+
+  return replyDeletedCount;
 };
+
+// const deleteReplies = async (replyIds: Types.ObjectId[], parentPost: IPost) => {
+//   if (!replyIds || replyIds.length === 0) return;
+
+//   // Delete each reply
+//   for (const replyId of replyIds) {
+//     const replyToDelete = await CommentModel.findById(replyId);
+//     if (replyToDelete) {
+//       await deleteReplies(replyToDelete.replies, parentPost);
+      
+//       // Remove the reply from its parent comment's replies
+//       if (replyToDelete.parentComment) {
+//         const parentComment = await CommentModel.findById(replyToDelete.parentComment);
+//         if (parentComment) {
+//           parentComment.replies = parentComment.replies.filter(replyId => (
+//             replyId.toString() !== replyToDelete._id.toString())
+//             );
+//             await parentComment.save();
+//           }
+//         }
+//         // await parentPost.save();
+//         // Delete the reply
+//         await CommentModel.findByIdAndDelete(replyId);
+//         parentPost.totalCommentsCount -= 1;
+//     }
+//   }
+// };
 
 
 // export const getCommentsForPost = async (postId) => {

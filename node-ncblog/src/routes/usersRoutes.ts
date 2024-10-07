@@ -10,17 +10,16 @@ import {
   updateCurrentUser,
   updateUser
 } from "../controllers/usersController.js";
-import admin from "../middleware/admin.js";
 import auth from "../middleware/auth.js";
-import writer from "../middleware/writer.js";
-import paginate from "../middleware/paginate.js";
+import checkRole from "../middleware/checkRole.js";
+import paginate from "../middleware/paginateWithPage.js";
 import User from "../models/user.js";
 
 const router = express.Router()
 
 router.route('/')
   // get all users
-  .get([auth as RequestHandler, admin as RequestHandler], paginate(User), getAllUsers)
+  .get([auth as RequestHandler, checkRole(['admin']) as RequestHandler], paginate(User), getAllUsers)
   // registration
   .post(createNewUser)
 
@@ -38,10 +37,10 @@ router.route('/me')
 
 router.route('/:id')
 // get a user
-  .get([auth as RequestHandler, admin as RequestHandler], getUser)
+  .get([auth as RequestHandler, checkRole(['admin']) as RequestHandler], getUser)
   // update user data
-  .put([auth as RequestHandler, admin as RequestHandler], updateUser) 
+  .put([auth as RequestHandler, checkRole(['admin']) as RequestHandler], updateUser) 
   // delete a user
-  .delete([auth as RequestHandler, admin as RequestHandler], deleteUser);
+  .delete([auth as RequestHandler, checkRole(['admin']) as RequestHandler], deleteUser);
 
 export default router;

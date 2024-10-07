@@ -1,16 +1,16 @@
 import express, { RequestHandler } from "express";
-import { createNewCategory, deleteCategory, getAllCategories, getCategory, updateCategory
-
+import {
+  createNewCategory, deleteCategory, getAllCategories, getCategory, updateCategory
 } from "../controllers/categoriesController.js";
-import admin from "../middleware/admin.js";
 import auth from "../middleware/auth.js";
-import paginate from "../middleware/paginate.js";
+import checkRole from "../middleware/checkRole.js";
+import paginate from "../middleware/paginateWithPage.js";
 import Category from "../models/category.js";
 
 const router = express.Router();
 
 router.use(auth as RequestHandler);
-router.use(admin as RequestHandler);
+router.use(checkRole(['admin']) as RequestHandler);
 
 router.route('/')
   // get all categories

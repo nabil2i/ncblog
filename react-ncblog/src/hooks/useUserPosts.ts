@@ -25,7 +25,7 @@ const useUserPosts = () => {
       },
       params: {
         page: userPostQuery.page,
-        authorId: _id,
+        postAuthorId: _id,
         // search: userPostQuery.searchText,
         // _start: (userPostQuery.page - 1) * userPostQuery.limit,
         // _limit: userPostQuery.limit,

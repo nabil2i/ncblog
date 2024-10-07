@@ -111,3 +111,10 @@ div.editorClassName {
 div.rdw-editor-main {
 
 }
+
+.nabhover {
+  
+  &:hover {
+    cursor: pointer;
+  }
+}

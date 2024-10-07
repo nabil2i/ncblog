@@ -1,0 +1,17 @@
+
+
+.ProseMirror {
+  /* Give full width to editor */
+  width: 100%
+}
+
+.ProseMirror p {
+  /* Add padding to paragraphs */
+  padding: 0.5em 0;
+}
+
+.ProseMirror img {
+  /* Center images */
+  display: block;
+  margin: 1em auto;
+}

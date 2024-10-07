@@ -8,7 +8,7 @@ const SimplePostGrid = () => {
   const { data: payload, error, isLoading } = useLatestPosts();
   // const { data: payload, error, isLoading } = usePosts();
   const data = payload?.data;
-  // console.log(data);
+  // console.log("posts data: ", data);
 
   // if (isLoading)
   //   return (

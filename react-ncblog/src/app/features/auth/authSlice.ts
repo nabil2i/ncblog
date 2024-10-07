@@ -1,6 +1,6 @@
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
+import { persistor, RootState } from "../../store";
 
 
 interface AuthState {
@@ -44,8 +44,13 @@ const authSlice = createSlice({
       state.isAuthenticated = true
     },
     logout: (state: AuthState) => {
-      state.token = null
-      state.isAuthenticated = false
+      state.token = null;
+      state.isAuthenticated = false;
+
+      // console.log("purging")
+      localStorage.removeItem('persist:root'); // Remove the persisted state
+      persistor.purge();
+      
     }
   }
 })

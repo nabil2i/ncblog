@@ -5,16 +5,16 @@ import Post from "../../entities/Post";
 const BlogPostInteractions = ({ post }: { post: Post }) => {
   return (
     <Flex gap={2}>
-      {Number(post.totalCommentsCount) > 0 && (
+      {Number(post.commentCount) > 0 && (
         <Flex gap={1} align="center">
           <FiMessageCircle />
-          <Box>{post.totalCommentsCount}</Box>
+          <Box>{post.commentCount}</Box>
         </Flex>
       )}
-      {Number(post.numberOfLikes) > 0 && (
+      {Number(post.likeCount) > 0 && (
         <Flex gap={1} align="center">
           <FiHeart />
-          <Box>{post.numberOfLikes}</Box>
+          <Box>{post.likeCount}</Box>
         </Flex>
       )}
     </Flex>

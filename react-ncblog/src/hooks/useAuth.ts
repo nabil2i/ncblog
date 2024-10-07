@@ -3,64 +3,69 @@ import { selectCurrentToken } from '../app/features/auth/authSlice';
 import { useAppSelector } from '../app/hooks';
 
 interface TokenPayload {
-  roles: string[];
-  username: string;
   _id: string;
+  username: string;
   firstname: string;
   lastname: string;
-  isActive: string;
+  roles: string[];
+  isActive: boolean;
   email: string;
   img: string;
-  // isAdmin: boolean;
 }
 const useAuth = () => {
-  const token = useAppSelector(selectCurrentToken)
-  let isSuperAdmin = false
-  let isAdmin = false
-  let isWriter = false
-  let isStandard = false
-  let status = ""
+  const token = useAppSelector(selectCurrentToken);
+  // console.log(token);
 
-  if (token) {
-    const decoded = jwtDecode<TokenPayload>(token)
-
-    const { username, roles, _id, firstname, lastname, isActive, email, img } = decoded
-
-    isSuperAdmin = roles.includes('SuperAdmin' || 'superadmin')
-    isAdmin = roles.includes('Admin' || 'admin')
-    isWriter = roles.includes('Writer' || 'writer')
-    isStandard = roles.includes('Standard' || 'standard')
-
-    if (isStandard) status = "Standard"
-    if (isWriter) status = "Writer"
-    if (isAdmin) status = "Admin"
-    if (isSuperAdmin) status = "SuperAdmin"
-
-    return  {
-      _id,
-      username,
-      firstname,
-      lastname,
-      email,
-      isActive,
-      roles,
-      img,
-      isSuperAdmin,
-      isAdmin, isWriter, isStandard, status
-    }
-  }
-
-  return  {
+  const tokendata = {
     _id: '',
     username: '',
     firstname: '',
     lastname: '',
     email: '',
-    roles: [],
+    roles: [''],
     img: '',
-    isSuperAdmin,
-    isAdmin, isWriter, isStandard, status
+    isActive: false, 
+    privilegelevel: ''
+   }
+
+  let isUser = false;
+  let isBlogAuthor = false;
+  let isAdmin = false;
+  let isSuperAdmin = false;
+
+  if (token) {
+    const decoded = jwtDecode<TokenPayload>(token);
+    // console.log("decoded user", decoded)
+
+    const { _id, username, firstname, lastname, email, roles, isActive, img } = decoded
+
+    isSuperAdmin = roles.includes('superadmin');
+    isAdmin = roles.includes('admin');
+    isBlogAuthor = roles.includes('blogauthor');
+    isUser = roles.includes('user');
+
+    if (isUser) tokendata.privilegelevel = 'user';
+    // if (isUser) tokendata.status = "user";
+    if (isBlogAuthor) tokendata.privilegelevel = 'blogauthor';
+    // if (isBlogAuthor) tokendata.status = "blogauthor";
+    if (isAdmin) tokendata.privilegelevel = 'admin';
+    // if (isAdmin) tokendata.status = "admin";
+    if (isSuperAdmin) tokendata.privilegelevel = 'superadmin';
+    // if (isSuperAdmin) tokendata.status = "superadmin";
+
+    if (_id) tokendata._id = _id;
+    if (username) tokendata.username = username;
+    if (firstname) tokendata.firstname = firstname;
+    if (lastname) tokendata.lastname = lastname;
+    if (email) tokendata.email = email;
+    if (isActive) tokendata.isActive = isActive;
+    if (img) tokendata.img = img;
+    if (roles) tokendata.roles = roles;
   }
+
+  // console.log (tokendata)
+  return tokendata;
+
 }
 
-export default useAuth
+export default useAuth;

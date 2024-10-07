@@ -40,7 +40,7 @@ const UserBlogPostCard = ({ post }: Props) => {
               <EditPostAction postId={post._id as string} />
               <DeletePostAction
                 postId={post._id as string}
-                userId={post.user?._id as string}
+                // userId={post.postAuthorId?._id as string}
               />
             </MenuList>
           </Menu>

@@ -1,9 +1,16 @@
 /// <reference types="vite/client" />
 
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 // interface ImportMeta {
 //   env: Record<string, any>;
 // }
+
+export interface CustomAxiosError extends AxiosError {
+  response: AxiosResponse<{
+    data: { 
+      message: string};
+  }>;
+}
 export interface FetchResponse<R> {
   success: boolean;
   data: R;
@@ -21,11 +28,27 @@ export interface FetchError {
 
 export interface ArrayData<S> {
   count: number;
-  current: number;
-  prev: number;
-  next: number;
+  current?: number;
+  prev?: number;
+  next?: number;
+  startIndex?: number;
   limit: number;
   results: S[];
+  stats?: {
+    totalItems?: number;
+    lastMonthItems?: number
+  }
+}
+
+export interface ArrayIndexData<S> {
+  count: number;
+  startIndex: number;
+  limit: number;
+  results: S[];
+  stats?: {
+    totalItems?: number;
+    lastMonthItems?: number
+  }
 }
 
 const URL = import.meta.env.DEV
@@ -76,9 +99,10 @@ class APIClient<T, Q> {
       .then(res => res.data);
   };
 
-  get = (id: string, config?: AxiosRequestConfig) => {
+  get = (config?: AxiosRequestConfig, id?: string) => {
+    const url = id ? `${this.endpoint}/${id}`: `${this.endpoint}`;
     return axiosInstance
-      .get<FetchResponse<T>>(this.endpoint + '/' + id, config)
+      .get<FetchResponse<T>>(url, config)
       .then(res => res.data);
   };
 
@@ -95,14 +119,27 @@ class APIClient<T, Q> {
       .then((res) => res.data);
   };
 
-  delete = (id?: string, config?: AxiosRequestConfig, userId?: string) => {
-    let url = id ? `${this.endpoint}/${id}`: `${this.endpoint}`;
-    url = userId ? `${url}/${userId}` : `${url}`;
+  delete = (config?: AxiosRequestConfig) => {
+    return axiosInstance
+      .delete<FetchResponse<T>>(this.endpoint, config)
+      .then(res => res.data);
+  };
+
+  deleteItem = (config: AxiosRequestConfig, id: string, ) => {
+    const url = id ? `${this.endpoint}/${id}`: `${this.endpoint}`;
   
     return axiosInstance
       .delete<FetchResponse<T>>(url, config)
       .then(res => res.data);
   };
+  // delete = (id?: string, config?: AxiosRequestConfig, userId?: string) => {
+  //   let url = id ? `${this.endpoint}/${id}`: `${this.endpoint}`;
+  //   url = userId ? `${url}/${userId}` : `${url}`;
+  
+  //   return axiosInstance
+  //     .delete<FetchResponse<T>>(url, config)
+  //     .then(res => res.data);
+  // };
 
 }
 

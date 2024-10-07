@@ -14,6 +14,7 @@ export interface OAuthData {
   photo: string  | null;
 }
 
+
 const extendedAuthApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthServerResponse, LoginCredentials>({
@@ -38,7 +39,7 @@ const extendedAuthApiSlice = apiSlice.injectEndpoints({
           dispatch(logout());
           setTimeout(() => {
             dispatch(apiSlice.util.resetApiState()) // clear cache
-          }, 1000)
+          }, 2000)
         } catch (error) {
           // console.log(error)
         }

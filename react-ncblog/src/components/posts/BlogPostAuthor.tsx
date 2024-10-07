@@ -10,7 +10,7 @@ const BlogPostAuthor = ({ post }: { post: Post }) => {
       <Avatar src={NabilConveys2} />
       <Box>
         <Text fontWeight={300}>
-          {post.user?.firstname + " " + post.user?.lastname}
+          {post.postAuthorId?.firstname + " " + post.postAuthorId?.lastname}
         </Text>
         <Text fontSize={"md"} color="gray">
           <BlogPostDate date={post.createdAt} />

@@ -4,19 +4,21 @@ import { useAppSelector } from "../app/hooks";
 import Comment from "../entities/Comment";
 import APIClient, { FetchResponse } from "../services/api-client";
 import { CACHE_KEY_COMMENTS } from "./constants";
+import { usePostCommentQueryStore } from "../store";
 
-interface DeleteCommentForm {
-  commentId: string;
-  commenterId: string;
-}
+// interface DeleteCommentForm {
+//   commentId: string;
+//   // commenterId: string;
+// }
 
-const useDeleteUserComment = (
+const useDeleteComment = (
   postId: string,
-  slug: string,
+  commentId: string,
   onSuccessCreate: () => void,
   ) => {
-  const apiClient = new APIClient<FetchResponse<Comment>, DeleteCommentForm>(`/posts/${postId}/comments`);
+  const apiClient = new APIClient<FetchResponse<Comment>, void>(`/posts/${postId}/comments/${commentId}`);
   const queryClient = useQueryClient();
+  const postCommentQuery = usePostCommentQueryStore(s => s.postCommentQuery);
 
   const token = useAppSelector(selectCurrentToken);
   const config = {
@@ -27,10 +29,11 @@ const useDeleteUserComment = (
     }
   }
   return useMutation({
-    mutationFn: ({ commentId, commenterId}: DeleteCommentForm) => apiClient.delete(commentId, config, commenterId),
+    mutationFn: () => apiClient.delete(config),
+    // mutationFn: ({ commentId, commenterId}: DeleteCommentForm) => apiClient.delete(commentId, config, commenterId),
     onSuccess: () => {
       onSuccessCreate();
-      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_COMMENTS, slug]})
+      queryClient.invalidateQueries({ queryKey: [CACHE_KEY_COMMENTS, postId, postCommentQuery]})
     },
     onError: () => {
       // console.log(error)
@@ -38,4 +41,4 @@ const useDeleteUserComment = (
   });
 }
 
-export default useDeleteUserComment
+export default useDeleteComment

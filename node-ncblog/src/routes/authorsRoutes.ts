@@ -1,16 +1,16 @@
 import express from "express";
-import { 
-  createNewAuthor, deleteAuthor, getAllAuthors, getAuthor, updateAuthor 
+import {
+  createNewAuthor, deleteAuthor, getAllAuthors, getAuthor, updateAuthor
 } from "../controllers/authorsController.js";
-import admin from "../middleware/admin.js";
 import auth from "../middleware/auth.js";
-import paginate from "../middleware/paginate.js";
+import checkRole from "../middleware/checkRole.js";
+import paginate from "../middleware/paginateWithPage.js";
 import AuthorModel from "../models/author.js";
 
 const router = express.Router();
 
 router.use(auth as express.RequestHandler);
-router.use(admin as express.RequestHandler);
+router.use(checkRole(['admin']) as express.RequestHandler);
 
 router.route('/')
   // get all authors

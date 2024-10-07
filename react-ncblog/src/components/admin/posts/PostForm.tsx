@@ -26,13 +26,12 @@ import AddPostImage from "../../common/AddPostImage";
 import PostActions from "./PostActions";
 // import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
-import { ContentState, EditorState, convertFromHTML } from "draft-js";
-import { stateToHTML } from "draft-js-export-html";
-import { Editor } from "react-draft-wysiwyg";
+// import { ContentState, EditorState, convertFromHTML } from "draft-js";
+// import { stateToHTML } from "draft-js-export-html";
+// import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PostTitleEditor from "../../common/PostTitleEditor";
-// import draftToHtml from 'draftjs-to-html';
-// import HtmlToDraft from 'html-to-draftjs';
+import { WambuiEditor } from "../../common/wambuieditor";
 
 interface Props {
   post?: Post;
@@ -45,9 +44,9 @@ const PostForm = ({ post }: Props) => {
   const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  // const [editorState, setEditorState] = useState(() =>
+  //   EditorState.createEmpty()
+  // );
 
   // const [toolbarPosition, setToolbarPosition] = useState({
   //   top: 0,
@@ -55,19 +54,19 @@ const PostForm = ({ post }: Props) => {
   //   display: "none",
   // });
 
-  useEffect(() => {
-    if (post?.body) {
-      // If updating a post, convert HTML to ContentState
-      const blocksFromHTML = convertFromHTML(post.body);
-      // const blocksFromHTML = HtmlToDraft(post.body);
+  // useEffect(() => {
+  //   if (post?.body) {
+  //     // If updating a post, convert HTML to ContentState
+  //     const blocksFromHTML = convertFromHTML(post.body);
+  //     // const blocksFromHTML = HtmlToDraft(post.body);
 
-      const state = ContentState.createFromBlockArray(
-        blocksFromHTML.contentBlocks,
-        blocksFromHTML.entityMap
-      );
-      setEditorState(EditorState.createWithContent(state));
-    }
-  }, [post?.body]);
+  //     const state = ContentState.createFromBlockArray(
+  //       blocksFromHTML.contentBlocks,
+  //       blocksFromHTML.entityMap
+  //     );
+  //     setEditorState(EditorState.createWithContent(state));
+  //   }
+  // }, [post?.body]);
   // const [editorState, setEditorState] = useState(() => {
   //   if (post?.body) {
   //     // If updating a post, convert HTML to ContentState
@@ -85,37 +84,38 @@ const PostForm = ({ post }: Props) => {
   //   }
   // });
 
-  const handleEditorChange = (newEditorState: EditorState) => {
-    setEditorState(newEditorState);
-    const contentState = newEditorState.getCurrentContent();
-    const html = stateToHTML(contentState);
-    // const rawContentState = convertToRaw(contentState)
-    // const html = stateToHTML(rawContentState)
-    // console.log(html);
-    setValue("body", html);
-    // const contentState = convertToRaw(newEditorState.getCurrentContent());
-    // Convert ContentState to HTML and update the form value
+  // const handleEditorChange = (newEditorState: EditorState) => {
+  //   setEditorState(newEditorState);
+  //   const contentState = newEditorState.getCurrentContent();
+  //   const html = stateToHTML(contentState);
+  //   // const rawContentState = convertToRaw(contentState)
+  //   // const html = stateToHTML(rawContentState)
+  //   // console.log(html);
+  //   setValue("body", html);
+  //   // const contentState = convertToRaw(newEditorState.getCurrentContent());
+  //   // Convert ContentState to HTML and update the form value
 
-    // // Calculate the position of the selected text
-    // const selection = window.getSelection();
-    // if (selection?.rangeCount) {
-    //   const range = selection.getRangeAt(0).getBoundingClientRect();
-    //   if (range.width > 0) {
-    //     setToolbarPosition({
-    //       top: range.top + window.scrollY - 50,
-    //       left: range.left + window.scrollX,
-    //       display: "block",
-    //     });
-    //   } else {
-    //     setToolbarPosition((prev) => ({ ...prev, display: "none" }));
-    //   }
-    // }
-  };
+  //   // Calculate the position of the selected text
+  //   const selection = window.getSelection();
+  //   if (selection?.rangeCount) {
+  //     const range = selection.getRangeAt(0).getBoundingClientRect();
+  //     if (range.width > 0) {
+  //       setToolbarPosition({
+  //         top: range.top + window.scrollY - 100,
+  //         left: range.left + window.scrollX,
+  //         display: "block",
+  //       });
+  //     } else {
+  //       setToolbarPosition((prev) => ({ ...prev, display: "none" }));
+  //     }
+  //   }
+  // };
 
   const [
     addNewPost,
     { isError: isErrorAdd, isSuccess: isSuccessAdd, error: addPostError },
   ] = useAddNewPostMutation();
+
   const [
     updatePost,
     {
@@ -193,6 +193,7 @@ const PostForm = ({ post }: Props) => {
     toast,
   ]);
 
+
   const {
     handleSubmit,
     register,
@@ -214,7 +215,7 @@ const PostForm = ({ post }: Props) => {
         id: post._id,
         title: data.title,
         body: data.body,
-        userId: post.user?._id,
+        userId: post.postAuthorId?._id,
       });
       // updatePost.mutate({
       //   title: data.title,
@@ -305,9 +306,14 @@ const PostForm = ({ post }: Props) => {
                 name="body"
                 control={control}
                 defaultValue={post?.body as string}
-                render={() => (
+                render={({field}) => (
                   <Box w="full" overflowWrap="break-word" mt={15}>
-                    <Editor
+                  <WambuiEditor
+                      placeholder={"Write here..."} 
+                      value ={field.value}
+                      handleEditorChange={field.onChange}
+                    />
+                    {/* <Editor
                       editorState={editorState}
                       toolbarClassName="toolbarClassName"
                       wrapperClassName="wrapperClassName"
@@ -316,22 +322,30 @@ const PostForm = ({ post }: Props) => {
                       placeholder="Write something..."
                       toolbarOnFocus={true}
                       toolbarStyle={{
-                        position: "sticky",
-                        bottom: 0,
-                        left: 0,
-                        width: "100%",
-                        zIndex: 1000,
-                        backgroundColor: "#fff",
-                        borderTop: "1px solid #ddd",
-                        padding: "10px",
+                        // position: "sticky",
+                        // bottom: 0,
+                        // left: 0,
+                        // width: "100%",
+                        // zIndex: 1000,
+                        // backgroundColor: "#fff",
+                        // borderTop: "1px solid #ddd",
+                        // padding: "10px",
 
-                        // // floating toolbar position
+                        // floating toolbar position
                         // position: "absolute",
                         // top: toolbarPosition.top,
                         // left: toolbarPosition.left,
                         // display: toolbarPosition.display,
-                      }}
-                    />
+                        position: "absolute",
+                        top: `${toolbarPosition.top}px`,
+                        left: `${toolbarPosition.left}px`,
+                        display: toolbarPosition.display,
+                        zIndex: 1000,
+                        backgroundColor: "#fff",
+                        border: "1px solid #ddd",
+                        padding: "10px",
+                      }} 
+                    />*/}
                   </Box>
 
                   // <ReactQuill className="h-72 mb-12" theme="snow" placeholder="Start writing something..." {...field}/>

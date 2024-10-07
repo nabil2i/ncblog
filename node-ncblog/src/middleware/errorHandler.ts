@@ -1,11 +1,8 @@
 import { logEvents } from "./logger.js";
 import {  } from "../models/user.js";
 import { Request, Response, NextFunction } from "express";
-import { CustomError } from "../models/error.js";
+import { CustomError } from "../utils/error.js";
 
-// interface CustomRequest extends Request {
-//   user: User
-// }
 
 // declare module 'express-serve-static-core' {
 //   interface Response {
@@ -14,23 +11,30 @@ import { CustomError } from "../models/error.js";
 //   }
 // }
 
-const errorHandler = (err: CustomError, req: Request, res: Response) => {
+const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+  // console.error("Error caught in handler:", err);
+
+  const customErr = err as CustomError
   logEvents(`${err.name}: ${err.message}\t${req.method}\t
   ${req.url}\t${req.headers.origin}`, 'errLog.log')
+  
+  // console.log(err.status)
+  const status = customErr.status;
+  
+  console.error(
+    `Error Status: ${status}, Error Name: ${customErr.name}, Message: ${customErr.message}`
+  );
+  // console.error("Error Stack: ", err.stack)
 
-  console.log("stack", err.stack)
-  const status = err.statusCode ? err.statusCode : 500
-
-  res.status(status)
-  // console.log(err);
-  res.json({
+  res.status(status).json({
     success: false,
-    // error: { code: status, message: res.message },
-    message: err.message,
-    isError: true
+    isError: true,
+    status: status,
+    message: customErr.message || "Internal Server Error",
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   })
 
-  // console.log("response::", res)
+  // console.log("Response: ", status, err.message)
 }
 
 export default errorHandler

@@ -29,7 +29,7 @@ const CommentRow = ({ commentId }: { commentId: EntityId }) => {
         >
           {/* <Td noOfLines={2}>{comment.text}</Td> */}
           <Td noOfLines={2} w={96}>{comment.text}</Td>
-          <Td>{comment.numberOfLikes}</Td>
+          <Td>{comment.likeCount}</Td>
         </Tr>
       </>
     );

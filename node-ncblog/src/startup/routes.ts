@@ -19,6 +19,8 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import errorHandler from "../middleware/errorHandler.js";
 import comments from "../routes/commentsRoutes.js";
+import roles from "../routes/rolesRoutes.js";
+import permissions from "../routes/permissionsRoutes.js";
 import posts from "../routes/postsRoutes.js";
 import users from "../routes/usersRoutes.js";
 //import session from "express-session";
@@ -53,6 +55,8 @@ export default function(app: Express) {
   app.use('/api/categories', categories);
   app.use('/api/users', users);
   app.use('/api/comments', comments);
+  app.use('/api/roles', roles);
+  app.use('/api/permissions', permissions);
   app.use('/api/auth', auth);
   // app.get('*', (req, res, next) => {
   //   res.sendFile(path.join(__dirname, '..', '..', '..', 'react-ncblog', 'dist', 'index.html'));

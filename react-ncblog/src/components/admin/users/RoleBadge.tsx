@@ -8,9 +8,9 @@ const RoleBadge = ({ role }: { role: string }) => {
       ? "teal"
       : therole === "admin"
       ? "green"
-      : therole === "writer"
+      : therole === "blogauthor"
       ? "purple"
-      : therole === "standard"
+      : therole === "user"
       ? "default"
       : "red";
   return (

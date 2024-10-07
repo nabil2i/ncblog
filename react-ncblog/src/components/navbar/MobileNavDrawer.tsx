@@ -32,7 +32,7 @@ import NAV_ITEMS, { NavItem } from "./navitems";
 const MobileNavDrawer = () => {
   // const btnRef = React.useRef()
   // const { state } = useAuth();
-  const { status } = useAuth();
+  const { privilegelevel } = useAuth();
   const { state } = useAdminLayout();
   const onCloseMain = state.onCloseMain;
 
@@ -63,7 +63,7 @@ const MobileNavDrawer = () => {
               {...navItem}
             />
           ))}
-          {(status === "Admin" || status === "SuperAdmin") && (
+          {(privilegelevel === 'admin' || privilegelevel === "superadmin" ) && (
             <>
               <Divider />
               <Box fontWeight={"bold"} py={2}>

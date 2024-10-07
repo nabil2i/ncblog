@@ -7,6 +7,7 @@ import postService from "../services/postService";
 import { CACHE_KEY_USER_POSTS } from "./constants";
 
 const useDeleteUserPost = (
+  postId: string,
   // onDeletePost: () => void,
   onSuccessDelete: () => void,
   onErrorDelete: (errorMessage: string) => void,
@@ -22,7 +23,8 @@ const useDeleteUserPost = (
     }
   }
   return useMutation({
-    mutationFn: ({id, userId} : {id: string, userId?: string}) => postService.delete(id, config, userId),
+    mutationFn: () => postService.deleteItem(config, postId),
+    // mutationFn: ({id, userId} : {id: string, userId?: string}) => postService.delete(id, config, userId),
 
     onSuccess: () => {
     //  onDeletePost();

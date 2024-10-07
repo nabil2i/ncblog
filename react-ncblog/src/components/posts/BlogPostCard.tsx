@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardBody,
   Flex,
@@ -7,7 +8,6 @@ import {
   Image,
   Link,
   Tag,
-  Text,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 // import Landscape from "../../assets/images/landscape.jpeg";
@@ -61,9 +61,12 @@ const BlogPostCard = ({ post }: Props) => {
             />
           </Heading>
 
-          <Text fontSize={"md"} noOfLines={5}>
+          {/* <Text fontSize={"md"} noOfLines={5}>
             <div className="" dangerouslySetInnerHTML={{ __html: post.body }} />
-          </Text>
+          </Text> */}
+          <Box fontSize={"md"} noOfLines={5}>
+            <div className="" dangerouslySetInnerHTML={{ __html: post.body }} />
+          </Box>
 
           <Flex align="center" justify="space-between" mt={4}>
             <BlogPostAuthor post={post} />

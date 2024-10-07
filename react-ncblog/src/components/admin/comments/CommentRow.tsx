@@ -48,12 +48,12 @@ const CommentRow = ({ commentId }: { commentId: EntityId }) => {
             </Box>
             <Flex direction="column" gap={2}>
               <Box>Post Id: {comment.post}</Box>
-              <Box>user Id: {comment.user._id}</Box>
+              <Box>user Id: {comment.userId._id}</Box>
 
               <Flex display={{ lg: "none" }} direction="column" gap={3}>
-                <Box>Number of likes: {comment.numberOfLikes}</Box>
+                <Box>Number of likes: {comment.likeCount}</Box>
                 <Box>
-                  User: {comment.user.firstname + " " + comment.user.lastname}
+                  User: {comment.userId.firstname + " " + comment.userId.lastname}
                 </Box>
               </Flex>
             </Flex>
@@ -61,10 +61,10 @@ const CommentRow = ({ commentId }: { commentId: EntityId }) => {
           <Td whiteSpace="pre-wrap">{comment.text}</Td>
           {showOnLargeScreen && (
             <>
-              <Td>{comment.numberOfLikes}</Td>
+              <Td>{comment.likeCount}</Td>
               {/* <Td>{comment.post}</Td>
               <Td>{comment.user._id}</Td> */}
-              <Td>{comment.user.firstname + " " + comment.user.lastname}</Td>
+              <Td>{comment.userId.firstname + " " + comment.userId.lastname}</Td>
             </>
           )}
           <Td>

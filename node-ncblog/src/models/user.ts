@@ -2,22 +2,15 @@ import mongoose, { Model } from "mongoose";
 import Joi from "joi"
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-
-export interface User {
-  // _id: string;
-  roles: string[]
-
-}
+import RoleModel, { IRole } from "./role.js";
 
 export interface IUser extends Document {
-  _id: string;
+  _id: mongoose.Types.ObjectId | string;
   username: string;
   email: string;
   password: string;
-  roles: string[];
+  roles: mongoose.Types.ObjectId[];
   isActive: boolean;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
   firstname: string;
   lastname: string;
   img: string;
@@ -25,7 +18,6 @@ export interface IUser extends Document {
   generateAuthToken: () => string;
   generateRefreshToken: () => string;
 }
-
 
 dotenv.config();
 
@@ -50,22 +42,24 @@ export const userSchema = new mongoose.Schema<IUser>({
     minlength: 8,
     maxlength: 255
   },
-  roles: [{
-    type: String,
-    default: "Standard"
-  }],
+  roles: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Role",
+    required: true,
+    default: []
+  },
   isActive: {
     type: Boolean,
     default: true
   },
-  isAdmin: {
-    type: Boolean,
-    default: false
-  },
-  isSuperAdmin: {
-    type: Boolean,
-    default: false
-  },
+  // isAdmin: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  // isSuperAdmin: {
+  //   type: Boolean,
+  //   default: false
+  // },
   firstname: {
     type: String,
     required: true,
@@ -85,19 +79,28 @@ export const userSchema = new mongoose.Schema<IUser>({
 }, { timestamps: true });
 
 // instance method 
-userSchema.methods.generateAuthToken = function () {
+userSchema.methods.generateAuthToken = async function () {
+  const user = this;
+  // console.log(user.roles);
+
+  await user.populate('roles');
+
+  const roles= user.roles.map((role: { name: string; }) => role.name);
+
+  // console.log(roles);
+
+  const payload =  {
+    _id: user._id,
+    username: user.username,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    roles,
+    isActive: user.isActive,
+    img: user.img,
+  }
   const accessToken = jwt.sign(
-    {
-      _id: this._id,
-      username: this.username,
-      firstname: this.firstname,
-      lastname: this.lastname,
-      email: this.email,
-      roles: this.roles,
-      isActive: this.isActive,
-      isAdmin: this.isAdmin,
-      img: this.img,
-    },
+    payload,
     process.env.NODE_APP_JWT_ACCESS_SECRET!,
     { expiresIn: '2d' }
     // { expiresIn: '1d' }

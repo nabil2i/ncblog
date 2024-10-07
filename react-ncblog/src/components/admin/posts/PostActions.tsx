@@ -82,7 +82,7 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
             _hover={{ cursor: "pointer" }}
           >
             {categories.map((category) => (
-              <option key={category.label} value={category.value}>
+              <option key={category.label} value={category.value} className="nabhover">
                 {category.label}
               </option>
             ))}

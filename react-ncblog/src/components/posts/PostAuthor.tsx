@@ -2,6 +2,8 @@ import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import NabilConveys2 from "../../assets/icons/NabilConveys2.webp";
 import Post from "../../entities/Post";
 import BlogPostDate from "../common/CustomDate";
+import { readingTime } from "../../utils/post";
+import { removeHtmlMarkup } from "../../utils/strings";
 
 const PostAuthor = ({ post }: { post: Post }) => {
   return (
@@ -13,17 +15,21 @@ const PostAuthor = ({ post }: { post: Post }) => {
         </Box> */}
         <Box>
           <Text fontSize={22} fontWeight={"bold"}>
-            {post.user?.firstname + " " + post.user?.lastname}
+            {post.postAuthorId?.firstname + " " + post.postAuthorId?.lastname}
           </Text>
         </Box>
 
-        <Flex>
+        <Flex gap={2}>
           <Text>
-            Posted: 
-              <Text>
-                <BlogPostDate date={post.createdAt} />
-              </Text>
+            <BlogPostDate date={post.createdAt} />
           </Text>
+
+          <Text>·</Text>
+          
+          <Box fontSize={15}>
+            {post && readingTime(removeHtmlMarkup(post.body))} read
+          </Box>
+
         </Flex>
         {/* <Flex>
           <Text>

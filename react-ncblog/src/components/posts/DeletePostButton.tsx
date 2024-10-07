@@ -16,9 +16,10 @@ import useDeleteUserPost from "../../hooks/useDeleteUserPost";
 
 interface Props {
   postId: string;
-  userId: string;
+  // userId: string;
 }
-const DeletePostButton = ({ postId, userId }: Props) => {
+
+const DeletePostButton = ({ postId }: Props) => {
   const navigate = useNavigate();
   // const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -31,6 +32,7 @@ const DeletePostButton = ({ postId, userId }: Props) => {
   };
 
   const deletePost = useDeleteUserPost(
+    postId,
     () => {
       navigate("/myposts");
       setIsOpen(false);
@@ -52,13 +54,14 @@ const DeletePostButton = ({ postId, userId }: Props) => {
   );
 
   const triggerDeletePost = () => {
-    if (postId) {
+    // if (postId) {
       setIsDeleting(true);
-      deletePost.mutate({
-        id: postId,
-        userId,
-      });
-    }
+      deletePost.mutate();
+      // deletePost.mutate({
+      //   id: postId,
+      //   userId,
+      // });
+    // }
   };
 
   return (

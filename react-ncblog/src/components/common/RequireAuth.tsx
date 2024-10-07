@@ -22,8 +22,10 @@ const RequireAuth = ({ allowedRoles }: Props) => {
       // console.log("allowed roles", allowedRoles)
 
       if (roles.some((role) => allowedRoles.includes(role))) {
+        // console.log('Authorized')
         content = <Outlet />;
       } else {
+        // console.log('Not Authorized')
         content = <Navigate to="/login" state={{ from: location }} replace />;
       }
     } else {

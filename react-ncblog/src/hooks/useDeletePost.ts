@@ -7,6 +7,7 @@ import { selectCurrentToken } from "../app/features/auth/authSlice";
 import { useAppSelector } from "../app/hooks";
 
 const useDeletePost = (
+  postId: string,
   // onDeletePost: () => void,
   onSuccessDelete: () => void,
   onErrorDelete: (errorMessage: string) => void,
@@ -22,7 +23,8 @@ const useDeletePost = (
     }
   }
   return useMutation({
-    mutationFn: ({id, userId} : {id: string, userId?: string}) => postService.delete(id, config, userId),
+    mutationFn: () => postService.deleteItem(config, postId),
+    // mutationFn: ({id, userId} : {id: string, userId?: string}) => postService.delete(config, id, userId),
 
     onSuccess: () => {
     //  onDeletePost();

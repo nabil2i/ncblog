@@ -29,7 +29,7 @@ export const bookSchema = new Schema({
     minlength: 5,
     trim: true,
   },
-  genre: {
+  genreId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Genre"
   },
@@ -37,7 +37,7 @@ export const bookSchema = new Schema({
     type: [String],
     default: [""]
   },
-  author: {
+  authorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Author"
   },
@@ -50,7 +50,7 @@ export const bookSchema = new Schema({
   language: {
     type: String,
   },
-  numberOfPages: {
+  pageCount: {
     type: Number
   },
   size: {

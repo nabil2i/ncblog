@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { selectCurrentToken } from "../app/features/auth/authSlice";
+import { useAppSelector } from "../app/hooks";
 import { FetchError } from '../services/api-client';
 import userAccountService from '../services/userAccountService';
 import { CACHE_KEY_USER } from "./constants";
-import { selectCurrentToken } from "../app/features/auth/authSlice";
-import { useAppSelector } from "../app/hooks";
 
 const useDeleteUserAccount = (
   // userId: string,
@@ -23,7 +23,7 @@ const useDeleteUserAccount = (
   }
   
   return useMutation({
-    mutationFn: () => userAccountService.delete("", config),
+    mutationFn: () => userAccountService.delete(config),
 
     onSuccess: () => {
       onSuccessDelete();

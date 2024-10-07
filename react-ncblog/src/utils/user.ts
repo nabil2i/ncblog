@@ -1,14 +1,16 @@
 
 
 export const getRole = (roles: string[]) => {
-  const isAdmin = roles.includes('Admin' || 'admin')
-  const isWriter = roles.includes('Writer' || 'writer')
-  const isRegular = roles.includes('Regular' || 'regular')
+  const isSuperAdmin = roles.includes('superadmin');
+  const isAdmin = roles.includes('admin');
+  const isBlogAuthor = roles.includes('blogAuthor');
+  const isUser = roles.includes('user');
   let status = "";
 
-  if (isRegular) status = "Regular"
-  if (isWriter) status = "Writer"
-  if (isAdmin) status = "Admin"
+  if (isUser) status = "user"
+  if (isBlogAuthor) status = "blogauthor"
+  if (isAdmin) status = "admin"
+  if (isSuperAdmin) status = "superadmin"
 
   return status
 }

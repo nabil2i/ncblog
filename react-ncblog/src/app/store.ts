@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'production') flag = false;
 const persistConfig = {
   key: 'root',
   storage,
+  // whitelist: ['auth'], // Only persist 'auth' slice
   version: 1,
 }
 const persistedReducer = persistReducer(persistConfig, rootReducer);

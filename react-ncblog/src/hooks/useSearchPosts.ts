@@ -19,7 +19,7 @@ const useSearchPosts = () => {
     queryFn: () => postService.getAll({
       params: {
         search: searchPostQuery.searchText,
-        authorId: searchPostQuery.authorId,
+        postAuthorId: searchPostQuery.postAuthorId,
         page: searchPostQuery.page,
         category: searchPostQuery.category,
         // _start: (postQuery.page - 1) * postQuery.limit,

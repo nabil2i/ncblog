@@ -46,14 +46,14 @@ const router = createBrowserRouter([
                   // { path: ":slug", element: <PostPage /> },
                   {
                     path: "write",
-                    element: <RequireAuth allowedRoles={["Writer"]} />,
+                    element: <RequireAuth allowedRoles={['blogauthor', 'admin', 'superadmin']} />,
                     children: [{ index: true, element: <AddPostPage /> }],
                   },
                 ],
               },
               {
                 path: "/myposts",
-                element: <RequireAuth allowedRoles={["Writer", "Admin"]} />,
+                element: <RequireAuth allowedRoles={['blogauthor', 'admin', 'superadmin']} />,
                 children: [
                   { index: true, element: <MyPostsPage /> },
                   { path: ":id", element: <PostPage /> },
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "dashboard",
-                element: <RequireAuth allowedRoles={["Admin"]} />,
+                element: <RequireAuth allowedRoles={['admin', 'superadmin']} />,
                 children: [
                   { index: true, element: <DashboardPage /> },
                   {

@@ -1,12 +1,13 @@
 
 import bcrypt from "bcrypt";
+import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import _ from "lodash";
 import ms from "ms";
 import Post from "../models/post.js";
-import User, { IUser} from "../models/user.js";
-import { makeError } from "../utils/responses.js";
-import { Request, Response, NextFunction } from "express";
+import RoleModel from "../models/role.js";
+import User, { IUser } from "../models/user.js";
+import { makeError } from "../utils/error.js";
 
 interface CustomResponse extends Response {
   paginatedResults?: any;
@@ -20,8 +21,10 @@ interface CustomRequest extends Request {
 // @desc Get all users
 // @route GET /users
 // @access Private Admin Only
-export const getAllUsers = async (req: Request, res: CustomResponse, next: NextFunction) => {
-  res.status(200).json({ success: true, data: res.paginatedResults});
+export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+  const customRes = res as CustomResponse;
+
+  res.status(200).json({ success: true, data: customRes.paginatedResults});
   // const users = await User.find().select('-password').lean().sort('name');
   // if (!users.length) return next(makeError(400, "No user found"));
     // res.status(200).json({ success: true, data: users });
@@ -48,12 +51,16 @@ export const createNewUser = async (req: Request, res: CustomResponse, next: Nex
   
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
+
+  const roleUser = await RoleModel.findOne({ name: 'user'});
+  if (roleUser) user.roles.push(roleUser._id);
+  else return next(makeError(500, "An error occured"))
   
   await user.save();
   
   if (user) {
-    const accessToken = user.generateAuthToken();
-    const refreshToken = user.generateRefreshToken();
+    const accessToken = await user.generateAuthToken();
+    const refreshToken = await user.generateRefreshToken();
     
     // const userData = _.pick(user, ['_id', 'username', 'firstname', 'lastname', 'email', 'accessToken'])
     // userData.accessToken = accessToken;
@@ -152,9 +159,9 @@ export const updateUser = async (req: Request, res: CustomResponse, next: NextFu
     user.img = img
   }
 
-  if (isAdmin) {
-    user.isAdmin = isAdmin
-  }
+  // if (isAdmin) {
+  //   user.isAdmin = isAdmin
+  // }
 
   if (roles) {
     user.roles = roles
@@ -260,7 +267,7 @@ export const updateCurrentUser = async (req: CustomRequest, res: CustomResponse,
     const duplicate = await User.findOne({ username })
       .collation({ locale: 'en', strength: 2}).lean().exec();
 
-    if (duplicate && duplicate._id.toString() !== userId)
+    if (duplicate && duplicate._id?.toString() !== userId?.toString())
       return next(makeError(409, "Username already exists"));
 
     user.username = username

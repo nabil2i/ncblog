@@ -3,17 +3,19 @@ import { ParamsDictionary } from "express-serve-static-core";
 import mongoose from "mongoose";
 import { ParsedQs } from "qs";
 import { CustomModel } from "../models/model.js";
-import { makeError } from "../utils/responses.js";
+import { makeError } from "../utils/error.js";
 
 interface CustomQuery {
   page: string;
   limit: string;
   search?: string;
   authorId?: string;
+  postAuthorId?: string;
   postId?: string;
   order?: string;
   category?: string;
   slug?: string;
+  topParentCommentId?: string;
 }
 
 interface CustomRequest extends Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>> {
@@ -25,10 +27,13 @@ interface CustomResponse extends Response {
 
 interface MatchCondition {
   $or?: { [key: string]: { $regex: RegExp } } [] ;
-  user?: mongoose.Types.ObjectId;
+  userId?: mongoose.Types.ObjectId;
+  postAuthorId?: mongoose.Types.ObjectId;
+  authorId?: mongoose.Types.ObjectId;
   _id?: mongoose.Types.ObjectId;
   slug?: string;
   category?: string;
+  topParentCommentId?: mongoose.Types.ObjectId;
 }
 
 // interface MatchCondition {
@@ -42,72 +47,89 @@ interface MatchCondition {
 interface ProjectFields {
   [key: string]: number | {
     _id?: string;
+    username?: string;
     firstname?: string;
     lastname?: string;
+    img?: string;
   };
 }
 
 const paginate = (model: CustomModel) => {
+  
   return async (req: CustomRequest, res: CustomResponse, next: NextFunction) => {
-    try {
+    const modelName = model.modelName;
+    const fields = Object.keys(model.schema.paths);
+    // console.log(`Fields in the ${modelName} model:`, fields);
+    
+    // try {
       let page = parseInt(req.query.page) || 1;
       let limit = parseInt(req.query.limit) || 10;
       let searchTerm = req.query.search;
-      let authorId = req.query.authorId;
-      let postId = req.query.postId;
       let sortOrder: 1 | -1 = req.query.order === 'asc' ? 1 : -1;
+      
+      let postAuthorId = req.query.postAuthorId;   
+      let postId = req.query.postId;
       let category = req.query.category;
       let slug = req.query.slug;
+
+      let authorId = req.query.authorId;
+
+      let topParentCommentId = req.query.topParentCommentId;
   
       const startIndex = (page - 1) * limit;
       const matchConditions: MatchCondition = {};
   
+      // Set up match conditions
       if (searchTerm && typeof searchTerm === 'string') {
         const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
         // console.log(searchTerm)
-        matchConditions.$or = [
-          { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
-          { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
-          // { title: { $regex: new RegExp(searchTerm, 'i') } },
-          // { body: { $regex: new RegExp(searchTerm, 'i') } },
-          // { tags: { $regex: new RegExp(searchTerm, 'i') } },
-          // { category: { $regex: new RegExp(searchTerm, 'i') } },
-          // { user: { $regex: new RegExp(searchTerm, 'i') } },
-        ]
+        if (modelName === "Post") {
+          matchConditions.$or = [
+            { title: { $regex: new RegExp(searchNoSpecialChar, 'i') } },
+            { body: { $regex: new RegExp(searchNoSpecialChar, 'i') } }
+            // { tags: { $regex: new RegExp(searchTerm, 'i') } },
+            // { category: { $regex: new RegExp(searchTerm, 'i') } },
+            // { user: { $regex: new RegExp(searchTerm, 'i') } },
+          ]
+        }
       }
 
-      if (authorId) {
-        matchConditions.user = new mongoose.Types.ObjectId(authorId);
-        // console.log(matchConditions.user);
+      if (modelName === "Book") {
+        if (authorId) {
+          matchConditions.authorId = new mongoose.Types.ObjectId(authorId);
+        }
       }
 
-      if (postId) {
-        matchConditions._id = new mongoose.Types.ObjectId(postId)
+      if (modelName === "Post") {
+        if (postAuthorId) {
+          matchConditions.postAuthorId = new mongoose.Types.ObjectId(postAuthorId);
+        }
+  
+        if (slug) {
+          matchConditions.slug = slug
+        }
+  
+        if (category) {
+          matchConditions.category = category
+        }
       }
-
-      if (slug) {
-        matchConditions.slug = slug
-      }
-
-      if (category) {
-        matchConditions.category = category
-      }
-
-      // console.log(model)
-      const fields = Object.keys(model.schema.paths);
-      const modelName = model.modelName;
-      // console.log('Fields in UserModel:', fields);
-      // console.log('Modelname of UserModel:', modelName);
       
+      if (modelName === "Comment") {
+        if (topParentCommentId) {
+          matchConditions.topParentCommentId = new mongoose.Types.ObjectId(topParentCommentId);
+        }  
+      }
 
+      // Lookups to fill in referenced collections
+      // References to lookup
       const generalLookupStage = (model: CustomModel) => {
         const lookupStages = [];
         
-        if (fields.includes('user')) {
+        if (fields.includes('userId')) {
           lookupStages.push({
             $lookup: {
               from: 'users',
-              localField: 'user',
+              localField: 'userId',
               foreignField: '_id',
               as: 'user',
             },
@@ -121,11 +143,29 @@ const paginate = (model: CustomModel) => {
           });
         }
 
-        if (fields.includes('author')) {
+        if (fields.includes('postAuthorId')) {
+          lookupStages.push({
+            $lookup: {
+              from: 'users',
+              localField: 'postAuthorId',
+              foreignField: '_id',
+              as: 'postAuthor',
+            },
+          });
+
+          lookupStages.push({
+            $unwind: {
+              path: '$postAuthor',
+              preserveNullAndEmptyArrays: true,
+            },
+          });
+        }
+
+        if (fields.includes('authorId')) {
           lookupStages.push({
             $lookup: {
               from: 'authors',
-              localField: 'author',
+              localField: 'authorId',
               foreignField: '_id',
               as: 'author',
             },
@@ -138,16 +178,20 @@ const paginate = (model: CustomModel) => {
           })
         }
 
+        // console.log("LookupStages: ", lookupStages);
         return lookupStages;
       }
 
+      // Fields to supply
       const generateProjectStage = (model: CustomModel) => {
+        // Fields to get in any case
         const commonFields = {
           _id: 1,
           createdAt: 1,
           updatedAt: 1,
         }
 
+        // Finely tuned fields
         const projectFields: ProjectFields = {};
 
         if (modelName === "Post") {
@@ -155,62 +199,82 @@ const paginate = (model: CustomModel) => {
           projectFields.body = 1,
           projectFields.slug = 1,
           projectFields.tags = 1,
-          projectFields.user = 1,
-          projectFields.likes = 1,
+          projectFields.likeCount = 1,
+          projectFields.commentCount = 1,
+          projectFields.isDraft = 1,
+          projectFields.isDeleted = 1,
           projectFields.img = 1,
-          // projectFields.comments = 1,
-          projectFields.numberOfLikes = 1,
-          projectFields.totalCommentsCount = 1,
+          projectFields.postAuthorId = 1,
           projectFields.category = 1
         } else if (modelName === "Category") {
           projectFields.name = 1
         } else if (modelName === "Comment") {
           projectFields.text = 1,
-          projectFields.post = 1,
-          projectFields.likes = 1,
-          projectFields.numberOfLikes = 1
-        } else if (modelName === "Genre") {
-          projectFields.name = 1
-        } else if (modelName === "Comment") {
-          projectFields.text = 1,
-          projectFields.user = 1,
-          projectFields.parent = 1,
-          projectFields.replies = 1
+          projectFields.postId = 1,
+          projectFields.userId = 1,
+          projectFields.likeCount = 1,
+          projectFields.isDeleted = 1,
+          projectFields.topParentCommentId = 1,
+          projectFields.realParentCommentId = 1,
+          projectFields.userRepliedToId = 1,
+          // projectFields.replies = 1,
+          projectFields.replyCount = 1
         } else if (modelName === "Genre") {
           projectFields.name = 1
         } else if (modelName === "User") {
-          projectFields.slug = 1,
           projectFields.username = 1,
           projectFields.email = 1,
           projectFields.roles = 1,
           projectFields.isActive = 1,
-          projectFields.isAdmin = 1,
           projectFields.firstname = 1,
           projectFields.lastname = 1,
           projectFields.img = 1
         } else if (modelName === "Book") {
           projectFields.title = 1,
+          projectFields.slug = 1,
+          projectFields.subtitle = 1,
           projectFields.about = 1,
-          projectFields.genre = 1,
+          projectFields.genreId = 1,
           projectFields.img = 1,
-          projectFields.author = 1,
-          projectFields.publishedYear = 1,
+          projectFields.authorId = 1,
+          projectFields.publicationDate = 1,
+          projectFields.publisher = 1,
+          projectFields.language = 1,
+          projectFields.pageCount = 1,
+          projectFields.size = 1,
+          projectFields.dimensions = 1,
           projectFields.isbn = 1,
           projectFields.link = 1
+        } else if (modelName === 'Role') {
+          projectFields.name = 1
+          projectFields.description = 1,
+          projectFields.permissions = 1
+        } else if (modelName === 'Permission') {
+          projectFields.name = 1
+          projectFields.description = 1
         }
         
-        if (fields.includes('user')){
-          projectFields.user = {
+        if (fields.includes('userId')){
+          projectFields.userId = {
             _id: '$user._id',
+            username: '$user.username',
             firstname: '$user.firstname',
             lastname: '$user.lastname',
+            img: '$user.img',
           }
         }
-        if (fields.includes('author')){
-          projectFields.author = {
+        if (fields.includes('authorId')){
+          projectFields.authorId = {
             _id: '$author._id',
             firstname: '$author.firstname',
             lastname: '$author.lastname',
+          }
+        }
+        if (fields.includes('postAuthorId')){
+          projectFields.postAuthorId = {
+            _id: '$postAuthor._id',
+            firstname: '$postAuthor.firstname',
+            lastname: '$postAuthor.lastname',
           }
         }
         // if (fields.includes('comment')){
@@ -219,6 +283,8 @@ const paginate = (model: CustomModel) => {
         //   }
         // }
 
+        // console.log("ProjectFields: ", projectFields);
+
         return {
           $project: {
             ...commonFields,
@@ -226,8 +292,6 @@ const paginate = (model: CustomModel) => {
           }
         }
       }
-      // console.log(generateProjectStage(model));
-      // console.log(generalLookupStage(model));
      
       
       const result = await model
@@ -283,11 +347,11 @@ const paginate = (model: CustomModel) => {
 
       res.paginatedResults = data;
       next(); 
-    } catch(err: any) {
-      console.log(err);
-      // return;
-      return next(makeError(500, err.message));
-    }
+    // } catch(err: any) {
+    //   // console.log(err);
+    //   // return;
+    //   return next(makeError(500, err.message));
+    // }
   }
 }
 

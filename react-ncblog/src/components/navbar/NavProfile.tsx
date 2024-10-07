@@ -34,7 +34,7 @@ const Profile = () => {
   const isAuthenticated = useSelector(authSatus);
   // const dispatch = useDispatch();
   const [sendLogout, { isError, isSuccess }] = useSendLogoutMutation();
-  const { isAdmin, isWriter, firstname, lastname, img } = useAuth();
+  const { privilegelevel, firstname, lastname, img } = useAuth();
   // const [setPersist] = usePersist();
   const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ const Profile = () => {
     //   status: "error",
     //   position: "top",
     // });
-    return <p>error.data.message</p>;
+    return <Box>error.data.message</Box>;
   }
 
   if (isAuthenticated)
@@ -92,11 +92,13 @@ const Profile = () => {
               </Center>
               <br />
               <Center>
-                <p>{firstname + " " + lastname}</p>
+                <Box>{firstname + " " + lastname}</Box>
               </Center>
               <br />
               <MenuDivider />
-              {(isAdmin || isWriter) && (
+              {(privilegelevel === "blogauthor" ||
+                privilegelevel === "admin" ||
+                privilegelevel === "superadmin") && (
                 <>
                   <MenuItem onClick={() => navigate("/blog/write")}>
                     Create a post
@@ -107,7 +109,7 @@ const Profile = () => {
                 </>
               )}
               <MenuItem onClick={() => navigate("/account/")}>Account</MenuItem>
-              {isAdmin && (
+              {privilegelevel === "superadmin" && (
                 <>
                   <MenuItem onClick={() => navigate("/dashboard?tab=dash")}>
                     Dashboard
@@ -124,6 +126,8 @@ const Profile = () => {
               <MenuItem
                 onClick={() => {
                   sendLogout({});
+                  navigate('/')
+                  window.location.reload();
                   // setPersist(false);
                 }}
               >

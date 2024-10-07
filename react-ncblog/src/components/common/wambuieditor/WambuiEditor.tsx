@@ -256,7 +256,7 @@ const EditorContainer = styled.div`
 const StyledEditorContent = styled(EditorContent)`
   min-height: 300px;
   font-size: 1.125rem;
-  line-height: 0;
+  line-height: 1.5;
   color: #111827; /* Tailwind Gray-900 */
 
   .ProseMirror {

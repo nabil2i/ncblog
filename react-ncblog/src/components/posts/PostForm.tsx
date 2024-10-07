@@ -212,6 +212,7 @@ const PostForm = ({ post }: Props) => {
 
   useEffect(() => {
     if (post?.body) {
+      console.log(post.body)
       setValue("body", post.body);
     }
   }, [post?.body, setValue]);

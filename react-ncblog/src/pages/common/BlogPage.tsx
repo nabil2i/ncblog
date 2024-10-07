@@ -18,7 +18,7 @@ const BlogPage = () => {
         <GridItem area="main">
           <VStack as="section">
             <PageHeading title={"Posts"} />
-            <Box mx="auto" maxW="1440px">
+            <Box mx="auto" maxW="1440px" w="full">
               <PostGrid
                 paginate={(page) => {
                   if (page === null) return null;

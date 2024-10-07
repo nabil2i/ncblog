@@ -113,8 +113,10 @@ const PostForm = ({ post }: Props) => {
 
   const [
     addNewPost,
-    { isError: isErrorAdd, isSuccess: isSuccessAdd, 
-      // error: addPostError 
+    {
+      isError: isErrorAdd,
+      isSuccess: isSuccessAdd,
+      error: addPostError
     },
   ] = useAddNewPostMutation();
 
@@ -123,7 +125,7 @@ const PostForm = ({ post }: Props) => {
     {
       isError: isErrorUpdate,
       isSuccess: isSuccessUpdate,
-      // error: updatePostError,
+      error: updatePostError,
     },
   ] = useUpdatePostMutation();
 
@@ -195,7 +197,6 @@ const PostForm = ({ post }: Props) => {
     toast,
   ]);
 
-
   const {
     handleSubmit,
     register,
@@ -211,7 +212,7 @@ const PostForm = ({ post }: Props) => {
     // console.log("data", formData);
     setSubmittingPost(true);
     if (post) {
-      // console.log(data)
+      console.log(data)
       updatePost({
         ...data,
         id: post._id,
@@ -259,7 +260,7 @@ const PostForm = ({ post }: Props) => {
               maxW="1000px"
               align="center"
             >
-              {/* {addPostError && (
+              {addPostError && (
                 <Alert mb="15px" mt="10px" status="error">
                   <AlertIcon />
                   <AlertTitle></AlertTitle>
@@ -272,7 +273,7 @@ const PostForm = ({ post }: Props) => {
                   <AlertTitle></AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
-              )} */}
+              )}
               <FormControl
                 isRequired
                 isInvalid={errors.title ? true : false}
@@ -308,11 +309,11 @@ const PostForm = ({ post }: Props) => {
                 name="body"
                 control={control}
                 defaultValue={post?.body as string}
-                render={({field}) => (
+                render={({ field }) => (
                   <Box w="full" overflowWrap="break-word" mt={15}>
-                  <WambuiEditor
-                      placeholder={"Write here..."} 
-                      value ={field.value}
+                    <WambuiEditor
+                      placeholder={"Write here..."}
+                      value={field.value}
                       handleEditorChange={field.onChange}
                     />
                     {/* <Editor

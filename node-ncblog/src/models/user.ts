@@ -9,7 +9,7 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  roles: mongoose.Types.ObjectId[];
+  roles: (mongoose.Types.ObjectId | IRole)[];
   isActive: boolean;
   firstname: string;
   lastname: string;

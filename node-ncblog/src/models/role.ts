@@ -9,7 +9,7 @@ export interface IRole extends Document {
   _id: Types.ObjectId;
   name: string;
   description: string;
-  permissions: IPermission[];
+  permissions: (mongoose.Types.ObjectId | IPermission)[];
 }
 
 export const roleSchema = new mongoose.Schema({

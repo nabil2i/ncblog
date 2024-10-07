@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import RoleModel from "../models/role.js";
+import RoleModel, { IRole } from "../models/role.js";
 import UserModel, { IUser } from "../models/user.js";
 import { makeError } from "../utils/error.js";
 
@@ -15,11 +15,24 @@ export default function checkPermissions(requiredPermissions: string[]): Request
     
     try {
       // get the user from the database
-      const user = await UserModel.findById(customReq.user._id).populate("roles");
+      const user = await UserModel.findById(customReq.user._id)
+      .populate([
+        {
+          path: 'roles',
+          // options: { sort: { createdAt: -1 } },
+          populate: [
+            {
+              path: 'permissions',
+              // select: 'firstname lastname img',
+            },
+          ]
+        } 
+      ]);
+
       if (!user) return next(makeError(401, "Unauthorized"));
 
       // get the roles for the user
-      const userRoles = user.roles;
+      const userRoles = user.roles as IRole[];
 
       // make sure the permissions are loaded in the roles
       if (!userRoles[0]?.permissions) {
@@ -28,9 +41,17 @@ export default function checkPermissions(requiredPermissions: string[]): Request
       }
 
       // get all permissions for the user
-      const userPermissions = customReq.user.roles.flatMap(role =>
-        role.permissions.map(permission => permission.name)
-      );
+      const userPermissions = customReq.user.roles.flatMap(role => {
+        if ('permissions' in role) {
+          return role.permissions.map(permission => {
+            if (typeof permission !== 'object' || !('name' in permission)) {
+              throw new Error("Permission is not populated correctly");
+            }
+            return permission.name;
+          });
+        }
+        return [];
+      });
 
       // verify that the user has the required permissions
       const hasPermission = requiredPermissions.every(permission => userPermissions.includes(permission));

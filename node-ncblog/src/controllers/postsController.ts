@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import jwt from 'jsonwebtoken';
 import _ from "lodash";
 import { Types } from "mongoose";
 import checkRole from "../middleware/checkRole.js";
@@ -8,7 +9,6 @@ import PostModel, { validatePost, validateUpdatePost } from "../models/post.js";
 import User, { IUser } from "../models/user.js";
 import { makeError } from "../utils/error.js";
 import { makeSlug } from './../utils/strings.js';
-import jwt from 'jsonwebtoken';
 
 interface CustomResponse extends Response{
   paginatedResults?: any;
@@ -275,7 +275,7 @@ export const likePost = async (req: Request, res: Response, next: NextFunction) 
 
 // @desc Update a post
 // @route PUT /posts/:id
-// @access Private Admin or Blog Post Author
+// @access Private superadmin or Blog Post Author
 export const updatePost = async (req: Request, res: Response, next: NextFunction) => {
   const customReq = req as CustomRequest
 
@@ -283,7 +283,7 @@ export const updatePost = async (req: Request, res: Response, next: NextFunction
   const { error } = validateUpdatePost(req.body);
   if (error) throw makeError(400, error.details[0].message);
   
-  const { title, body, authorId, img, category, tags } = req.body;
+  const { title, body, img, category, tags } = req.body;
 
   const postId = req.params.id;
   const userId = customReq.user?._id;
@@ -293,7 +293,9 @@ export const updatePost = async (req: Request, res: Response, next: NextFunction
   const post = await PostModel.findById(postId)
   if(!post) throw makeError(404, "The post with the given ID is not found");
 
-  if (!checkRole(['admin']) && post?.postAuthorId.toString() !== userId?.toString()) throw makeError(403, "Operation not allowed");
+  if (!checkRole(['superadmin']) && post?.postAuthorId.toString() !== userId?.toString()) {
+    throw makeError(403, "Operation not allowed");
+  }
 
   let updatedSlug = post.slug;
   if (title && post.title !== title)
@@ -302,13 +304,14 @@ export const updatePost = async (req: Request, res: Response, next: NextFunction
   const updatedPost = await PostModel.findByIdAndUpdate(
     postId,
     {
-      title,
-      body,
-      slug: updatedSlug,
-      authorId,
-      img,
-      category,
-      tags,
+      $set: {
+        title,
+        body,
+        slug: updatedSlug,
+        img,
+        category,
+        tags
+      }
     },
     { new: true }
   );

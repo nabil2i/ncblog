@@ -23,6 +23,7 @@ import roles from "../routes/rolesRoutes.js";
 import permissions from "../routes/permissionsRoutes.js";
 import posts from "../routes/postsRoutes.js";
 import users from "../routes/usersRoutes.js";
+import status from "../routes/statusRoutes.js";
 //import session from "express-session";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -58,6 +59,7 @@ export default function(app: Express) {
   app.use('/api/roles', roles);
   app.use('/api/permissions', permissions);
   app.use('/api/auth', auth);
+  app.use('/api/status', status);
   // app.get('*', (req, res, next) => {
   //   res.sendFile(path.join(__dirname, '..', '..', '..', 'react-ncblog', 'dist', 'index.html'));
   // });

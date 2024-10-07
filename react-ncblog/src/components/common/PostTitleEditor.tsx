@@ -8,7 +8,7 @@ import { PostFormData } from "../../entities/Post";
 
 interface Props {
   content: string;
-  id: "title" | "body" | "userId";
+  id: "title" | "body" | "postAuthorId";
   defaultValue?: string;
   placeholder: string;
   register: UseFormRegister<PostFormData>;

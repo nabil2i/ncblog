@@ -29,7 +29,7 @@ export interface PostData {
   title: string;
   body: string;
   // tags?: string[];
-  userId?: string;
+  postAuthorId?: string;
 }
 
 export interface PostComment {

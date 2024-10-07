@@ -113,7 +113,9 @@ const PostForm = ({ post }: Props) => {
 
   const [
     addNewPost,
-    { isError: isErrorAdd, isSuccess: isSuccessAdd, error: addPostError },
+    { isError: isErrorAdd, isSuccess: isSuccessAdd, 
+      // error: addPostError 
+    },
   ] = useAddNewPostMutation();
 
   const [
@@ -121,7 +123,7 @@ const PostForm = ({ post }: Props) => {
     {
       isError: isErrorUpdate,
       isSuccess: isSuccessUpdate,
-      error: updatePostError,
+      // error: updatePostError,
     },
   ] = useUpdatePostMutation();
 
@@ -215,7 +217,7 @@ const PostForm = ({ post }: Props) => {
         id: post._id,
         title: data.title,
         body: data.body,
-        userId: post.postAuthorId?._id,
+        postAuthorId: post.postAuthorId?._id,
       });
       // updatePost.mutate({
       //   title: data.title,
@@ -227,7 +229,7 @@ const PostForm = ({ post }: Props) => {
         ...data,
         title: data.title,
         body: data.body,
-        userId: _id,
+        postAuthorId: _id,
       });
       // createPost.mutate({
       //   title: data.title,
@@ -257,7 +259,7 @@ const PostForm = ({ post }: Props) => {
               maxW="1000px"
               align="center"
             >
-              {addPostError && (
+              {/* {addPostError && (
                 <Alert mb="15px" mt="10px" status="error">
                   <AlertIcon />
                   <AlertTitle></AlertTitle>
@@ -270,7 +272,7 @@ const PostForm = ({ post }: Props) => {
                   <AlertTitle></AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
-              )}
+              )} */}
               <FormControl
                 isRequired
                 isInvalid={errors.title ? true : false}

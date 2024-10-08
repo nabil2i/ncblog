@@ -1,3 +1,4 @@
+/* Apply shared styles for rendering content */
 .rich-content h1 {
   font-size: 2.5rem;
   font-weight: bold;
@@ -26,13 +27,29 @@
 
 .rich-content blockquote {
   font-style: italic;
-  border-left: 4px solid #ccc;
+  border-left: 4px solid #d1d5db; /* Match with editor */
   padding-left: 1.5rem;
-  color: #666;
+  color: #6b7280;
   margin-bottom: 1.5rem;
 }
 
 .rich-content img {
-  max-width: 100%;
+  max-width: 100%; /* Enforce the image stays within the layout */
   height: auto;
+}
+
+.rich-content a {
+  color: #3b82f6; /* Tailwind Blue-500 */
+  text-decoration: none;
+}
+
+.rich-content a:hover {
+  text-decoration: underline;
+}
+
+.rich-content code {
+  background-color: #f3f4f6; /* Match code styling */
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: "Fira Code", monospace;
 }

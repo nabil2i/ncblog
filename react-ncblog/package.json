@@ -63,6 +63,7 @@
     "cheerio": "^1.0.0-rc.12",
     "cookies-js": "^1.2.3",
     "dateformat": "^5.0.3",
+    "dompurify": "^3.1.7",
     "draft-js": "^0.11.7",
     "draft-js-export-html": "^1.4.1",
     "draftjs-to-html": "^0.9.1",

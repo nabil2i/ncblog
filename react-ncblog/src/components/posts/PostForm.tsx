@@ -1,4 +1,4 @@
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Alert,
   AlertDescription,
@@ -10,40 +10,32 @@ import {
   FormErrorMessage,
   useToast,
 } from "@chakra-ui/react";
-import "easymde/dist/easymde.min.css";
-import ms from "ms";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+// import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
-import Post, { PostFormData } from "../../entities/Post";
-import useAuth from "../../hooks/useAuth";
-import useCreatePost from "../../hooks/useCreatePost";
-import useUpdateUserPost from "../../hooks/useUpdateUserPost";
-import AddPostImage from "../common/AddPostImage";
-// import AutoExpandingTextarea from "../common/AutoExpandingTextarea";
+// import "easymde/dist/easymde.min.css";
+// import SimpleMDE from "react-simplemde-editor";
+
 import PostActions from "./PostActions";
 // import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
-// import "easymde/dist/easymde.min.css";
-// import SimpleMDE from "react-simplemde-editor";
-// import 'draft-js/dist/Draft.css';
-
 // import { ContentState, EditorState, convertFromHTML } from "draft-js";
 // import { stateToHTML } from "draft-js-export-html";
 // import { Editor } from "react-draft-wysiwyg";
-// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
-// import draftToHtml from 'draftjs-to-html';
-// import HtmlToDraft from 'html-to-draftjs';
-
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import Post, { PostFormData } from "../../entities/Post";
+import useAuth from "../../hooks/useAuth";
+import { useAddNewPostMutation, useUpdatePostMutation } from "../../app/features/posts/postsApiSlice";
 import PostTitleEditor from "../common/PostTitleEditor";
+import AddPostImage from "../common/AddPostImage";
 import { WambuiEditor } from "../common/wambuieditor";
 
-// import {DanteEditor } from "dante3";
 
 interface Props {
   post?: Post;
 }
+
 const PostForm = ({ post }: Props) => {
   const { _id } = useAuth();
   const navigate = useNavigate();
@@ -55,10 +47,6 @@ const PostForm = ({ post }: Props) => {
   //   EditorState.createEmpty()
   // );
 
-  // const [isMobile] = useMediaQuery("(max-width: 768px)");
-  // const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
-  // // toolbar position
   // const [toolbarPosition, setToolbarPosition] = useState({
   //   top: 0,
   //   left: 0,
@@ -67,32 +55,17 @@ const PostForm = ({ post }: Props) => {
 
   // useEffect(() => {
   //   if (post?.body) {
-  //     setValue("body", post.body);
-  //     // // If updating a post, convert HTML to ContentState
-  //     // const blocksFromHTML = convertFromHTML(post.body);
-  //     // // const blocksFromHTML = HtmlToDraft(post.body);
+  //     // If updating a post, convert HTML to ContentState
+  //     const blocksFromHTML = convertFromHTML(post.body);
+  //     // const blocksFromHTML = HtmlToDraft(post.body);
 
-  //     // const state = ContentState.createFromBlockArray(
-  //     //   blocksFromHTML.contentBlocks,
-  //     //   blocksFromHTML.entityMap
-  //     // );
-  //     // setEditorState(EditorState.createWithContent(state));
+  //     const state = ContentState.createFromBlockArray(
+  //       blocksFromHTML.contentBlocks,
+  //       blocksFromHTML.entityMap
+  //     );
+  //     setEditorState(EditorState.createWithContent(state));
   //   }
-
-  //   // // Detect keyboard visibility (basic example)
-  //   // const handleResize = () => {
-  //   //   if (isMobile && window.innerHeight < 500) {
-  //   //     setKeyboardVisible(true);
-  //   //   } else {
-  //   //     setKeyboardVisible(false);
-  //   //   }
-  //   // };
-
-  //   // window.addEventListener("resize", handleResize);
-  //   // return () => window.removeEventListener("resize", handleResize);
-  // // }, [isMobile, post?.body]);
   // }, [post?.body]);
-
   // const [editorState, setEditorState] = useState(() => {
   //   if (post?.body) {
   //     // If updating a post, convert HTML to ContentState
@@ -121,24 +94,42 @@ const PostForm = ({ post }: Props) => {
   //   // const contentState = convertToRaw(newEditorState.getCurrentContent());
   //   // Convert ContentState to HTML and update the form value
 
-  //   // // Calculate the position of the selected text
-  //   // const selection = window.getSelection();
-  //   // if (selection?.rangeCount) {
-  //   //   const range = selection.getRangeAt(0).getBoundingClientRect();
-  //   //   if (range.width > 0) {
-  //   //     setToolbarPosition({
-  //   //       top: range.top + window.scrollY - 50,
-  //   //       left: range.left + window.scrollX,
-  //   //       display: "block",
-  //   //     });
-  //   //   } else {
-  //   //     setToolbarPosition((prev) => ({ ...prev, display: "none" }));
-  //   //   }
-  //   // }
+  //   // Calculate the position of the selected text
+  //   const selection = window.getSelection();
+  //   if (selection?.rangeCount) {
+  //     const range = selection.getRangeAt(0).getBoundingClientRect();
+  //     if (range.width > 0) {
+  //       setToolbarPosition({
+  //         top: range.top + window.scrollY - 100,
+  //         left: range.left + window.scrollX,
+  //         display: "block",
+  //       });
+  //     } else {
+  //       setToolbarPosition((prev) => ({ ...prev, display: "none" }));
+  //     }
+  //   }
   // };
 
-  const createPost = useCreatePost(
-    () => {
+  const [
+    addNewPost,
+    {
+      isError: isErrorAdd,
+      isSuccess: isSuccessAdd,
+      error: addPostError
+    },
+  ] = useAddNewPostMutation();
+
+  const [
+    updatePost,
+    {
+      isError: isErrorUpdate,
+      isSuccess: isSuccessUpdate,
+      error: updatePostError,
+    },
+  ] = useUpdatePostMutation();
+
+  useEffect(() => {
+    if (isSuccessAdd) {
       // reset();
       setSubmittingPost(false);
       navigate("/myposts");
@@ -151,95 +142,102 @@ const PostForm = ({ post }: Props) => {
         position: "top",
         icon: <AddIcon />,
       });
-    },
-    (errorMessage) => {
-      setSubmittingPost(false);
-      setError(errorMessage);
-      // toast({
-      //   title: "Add a post",
-      //   description: "An error occured while adding the post.",
-      //   duration: 5000, // 5s
-      //   isClosable: true,
-      //   status: "error",
-      //   position: "top",
-      //   icon: <AddIcon />,
-      // });
     }
-  );
-  // const updatePost = useUpdatePost(
-  const updatePost = useUpdateUserPost(
-    post?._id as string,
-    post?.postAuthorId?._id as string,
-    () => {
-      // reset();
+
+    if (isErrorAdd) {
       setSubmittingPost(false);
+      setError("Could not add the post");
+      // setError(addPostError);
       toast({
         title: "",
-        description: "Successfully updated the post.",
-        duration: ms("5s"),
+        description: "An error occured while adding the post.",
+        duration: 5000, // 5s
         isClosable: true,
-        status: "success",
+        status: "error",
         position: "top",
         icon: <AddIcon />,
       });
-      navigate("/myposts/");
-    },
-    (errorMessage) => {
-      setSubmittingPost(false);
-      setError(errorMessage);
-      // toast({
-      //   title: "",
-      //   description: "An error occured while adding the post.",
-      //   duration: 5000,
-      //   isClosable: true,
-      //   status: "error",
-      //   position: "top",
-      //   icon: <AddIcon />,
-      // });
     }
-  );
+
+    if (isSuccessUpdate) {
+      setSubmittingPost(false);
+      navigate("/myposts");
+      toast({
+        title: "",
+        description: "Successfully updated the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "success",
+        position: "top",
+        icon: <EditIcon />,
+      });
+    }
+
+    if (isErrorUpdate) {
+      setSubmittingPost(false);
+      setError("Could not update the post");
+      // setError(updatePostError);
+      toast({
+        title: "",
+        description: "An error occured while updating the post.",
+        duration: 5000, // 5s
+        isClosable: true,
+        status: "error",
+        position: "top",
+        icon: <EditIcon />,
+      });
+    }
+  }, [
+    isErrorAdd,
+    isErrorUpdate,
+    isSuccessAdd,
+    isSuccessUpdate,
+    navigate,
+    toast,
+  ]);
 
   const {
     handleSubmit,
     register,
     control,
     // reset,
-    // getValues,
     setValue,
+    // getValues,
     formState: { errors },
   } = useForm<PostFormData>();
-  // } = useForm<FormData>({ resolver: zodResolver(schema) });
-
-  useEffect(() => {
-    if (post?.body) {
-      // console.log(post.body)
-      setValue("body", post.body);
-    }
-  }, [post?.body, setValue]);
 
   const onSubmit = (data: PostFormData) => {
-    // const formaData = getValues();
-    console.log("data for update", data);
-
+    // const formData = getValues();
+    // console.log("data", formData);
     setSubmittingPost(true);
     if (post) {
-      updatePost.mutate({
+      console.log(data)
+      updatePost({
         ...data,
+        id: post._id,
         title: data.title,
         body: data.body,
-        // postAuthorId: post?.postAuthorId?._id,
+        postAuthorId: post.postAuthorId?._id,
       });
+      // updatePost.mutate({
+      //   title: data.title,
+      //   body: data.body,
+      //   userId: post?.user?._id,
+      // });
     } else {
-      createPost.mutate({
+      addNewPost({
         ...data,
         title: data.title,
         body: data.body,
         postAuthorId: _id,
       });
+      // createPost.mutate({
+      //   title: data.title,
+      //   body: data.body,
+      //   userId: state.user?._id,
+      // });
     }
   };
-  // const { isOpen, onClose } = useDisclosure();
-  // const icnRef = React.useRef();
 
   return (
     <>
@@ -254,20 +252,21 @@ const PostForm = ({ post }: Props) => {
 
             <Flex
               p={4}
+              pt={"60px"}
               w="full"
               direction="column"
               mx="auto"
               maxW="1000px"
               align="center"
             >
-              {createPost.error && (
+              {addPostError && (
                 <Alert mb="15px" mt="10px" status="error">
                   <AlertIcon />
                   <AlertTitle></AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              {updatePost.error && (
+              {updatePostError && (
                 <Alert mb="15px" mt="10px" status="error">
                   <AlertIcon />
                   <AlertTitle></AlertTitle>
@@ -277,7 +276,7 @@ const PostForm = ({ post }: Props) => {
               <FormControl
                 isRequired
                 isInvalid={errors.title ? true : false}
-                mb="0px"
+                mb="00px"
               >
                 <PostTitleEditor
                   id={"title"}
@@ -297,34 +296,61 @@ const PostForm = ({ post }: Props) => {
                     {errors.title && errors.title.message}
                   </FormErrorMessage> */}
               </FormControl>
+
+              {/* <Flex my={2} p={2} gap={4} align="center" border="dashed" borderWidth={2} borderRadius="4px">
+                  <Input _hover={{ cursor: "pointer"}} pl={0} height="full" type="file" accept="image/*"/>
+                  <Button>Upload image</Button>
+                </Flex> */}
               <Box w="full">
                 <AddPostImage setFieldValue={setValue} postImage={post?.img} />
               </Box>
-              <Controller // manage the editor's state
+              <Controller
                 name="body"
                 control={control}
                 defaultValue={post?.body as string}
                 render={({ field }) => (
                   <Box w="full" overflowWrap="break-word" mt={15}>
                     <WambuiEditor
-                      placeholder={"Write here..."} 
-                      value ={field.value}
+                      placeholder={"Write here..."}
+                      value={field.value}
                       handleEditorChange={field.onChange}
                     />
+                    {/* <Editor
+                      editorState={editorState}
+                      toolbarClassName="toolbarClassName"
+                      wrapperClassName="wrapperClassName"
+                      editorClassName="editorClassName"
+                      onEditorStateChange={handleEditorChange}
+                      placeholder="Write something..."
+                      toolbarOnFocus={true}
+                      toolbarStyle={{
+                        // position: "sticky",
+                        // bottom: 0,
+                        // left: 0,
+                        // width: "100%",
+                        // zIndex: 1000,
+                        // backgroundColor: "#fff",
+                        // borderTop: "1px solid #ddd",
+                        // padding: "10px",
 
+                        // floating toolbar position
+                        // position: "absolute",
+                        // top: toolbarPosition.top,
+                        // left: toolbarPosition.left,
+                        // display: toolbarPosition.display,
+                        position: "absolute",
+                        top: `${toolbarPosition.top}px`,
+                        left: `${toolbarPosition.left}px`,
+                        display: toolbarPosition.display,
+                        zIndex: 1000,
+                        backgroundColor: "#fff",
+                        border: "1px solid #ddd",
+                        padding: "10px",
+                      }} 
+                    />*/}
                   </Box>
-                  //   <Editor
-                  //   editorState={editorState}
-                  //   onChange={handleEditorChange}
-                  //   placeholder="Start writing something..."
-                  // />
-                  // <RichTextEditor />
-                  // <ReactQuill
-                  //   className="h-72 mb-12 dark:"
-                  //   theme="snow"
-                  //   placeholder="Start writing something..."
-                  //   {...field}
-                  // />
+
+                  // <ReactQuill className="h-72 mb-12" theme="snow" placeholder="Start writing something..." {...field}/>
                   // <SimpleMDE
                   //   placeholder="Start writing something..."
                   //   {...field}
@@ -359,3 +385,67 @@ const PostForm = ({ post }: Props) => {
 };
 
 export default PostForm;
+
+// const createPost = useCreatePost(
+//   () => {
+//     // reset();
+//     setSubmittingPost(false);
+//     navigate("/admin/posts/");
+//   },
+//   () => {
+//     toast({
+//       title: "Add a post",
+//       description: "Successfully added the post.",
+//       duration: 5000, // 5s
+//       isClosable: true,
+//       status: "success",
+//       position: "top",
+//       icon: <AddIcon />,
+//     });
+//   },
+//   (errorMessage) => {
+//     setSubmittingPost(false);
+//     setError(errorMessage);
+//     // toast({
+//     //   title: "Add a post",
+//     //   description: "An error occured while adding the post.",
+//     //   duration: 5000, // 5s
+//     //   isClosable: true,
+//     //   status: "error",
+//     //   position: "top",
+//     //   icon: <AddIcon />,
+//     // });
+//   }
+// );
+// const updatePost = useUpdatePost(
+//   post?._id as string,
+//   () => {
+//     // reset();
+//     setSubmittingPost(false);
+//     navigate("/admin/posts/");
+//   },
+//   () => {
+//     toast({
+//       title: "Update a post",
+//       description: "Successfully updated the post.",
+//       duration: 5000, // 5s
+//       isClosable: true,
+//       status: "success",
+//       position: "top",
+//       icon: <AddIcon />,
+//     });
+//   },
+//   (errorMessage) => {
+//     setSubmittingPost(false);
+//     setError(errorMessage);
+//     // toast({
+//     //   title: "Update a post",
+//     //   description: "An error occured while adding the post.",
+//     //   duration: 5000, // 5s
+//     //   isClosable: true,
+//     //   status: "error",
+//     //   position: "top",
+//     //   icon: <AddIcon />,
+//     // });
+//   }
+// );

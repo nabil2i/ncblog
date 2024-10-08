@@ -7,6 +7,7 @@ import BlogPostComments from "./BlogPostComments";
 import BlogPostInfo from "./BlogPostInfo";
 import BlogPostInteractionsWithActions from "./BlogPostInteractionsWithActions";
 import PostImage from "./PostImage";
+import DOMPurify from "dompurify";
 
 const BlogPostDetails = ({ post }: { post: Post }) => {
   const setCategory = useSearchPostQueryStore((s) => s.setCategory);
@@ -78,8 +79,8 @@ const BlogPostDetails = ({ post }: { post: Post }) => {
       <Divider orientation="horizontal" color="gray.500" my="4" />
       <Box>
         <div
-          className="p-3 max-w-[1440px] mw-auto w-full"
-          dangerouslySetInnerHTML={{ __html: post.body }}
+          className="p-3 max-w-[1440px] mw-auto w-full rich-content"
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.body) }}
         />
         {/* <div className="p-3 max-w-[1440px] mw-auto w-full post-content"></div> */}
         {/* <ReactMarkdown>{post.body}</ReactMarkdown> */}

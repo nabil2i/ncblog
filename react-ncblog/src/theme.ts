@@ -30,7 +30,8 @@ const theme = extendTheme({
     global: {
       body: {
         fontSize: '20px',
-      }
+
+      },
     }
   }
 })

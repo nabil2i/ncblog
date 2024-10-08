@@ -14,6 +14,8 @@ import { NavLink } from "react-router-dom";
 import Post from "../../entities/Post";
 import BlogPostAuthor from "./BlogPostAuthor";
 import BlogPostInteractions from "./BlogPostInteractions";
+import DOMPurify from 'dompurify';
+import '../../assets/styles/PostStyles.css'
 
 interface Props {
   post: Post;
@@ -57,7 +59,7 @@ const BlogPostCard = ({ post }: Props) => {
           <Heading as="h3" my="4" fontSize="xl" noOfLines={3}>
             <div
               className=""
-              dangerouslySetInnerHTML={{ __html: post.title }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.title) }}
             />
           </Heading>
 
@@ -65,7 +67,7 @@ const BlogPostCard = ({ post }: Props) => {
             <div className="" dangerouslySetInnerHTML={{ __html: post.body }} />
           </Text> */}
           <Box fontSize={"md"} noOfLines={5}>
-            <div className="" dangerouslySetInnerHTML={{ __html: post.body }} />
+            <div  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.body) }} />
           </Box>
 
           <Flex align="center" justify="space-between" mt={4}>

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import PostForm from "../../components/posts/PostForm";
 import usePost from "../../hooks/usePost";
 import useTitle from "../../hooks/useTitle";
+// import PostForm from "../../components/admin/posts/PostForm";
 
 const EditPostPage = () => {
   const { id: postId } = useParams();

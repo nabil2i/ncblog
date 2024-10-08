@@ -34,28 +34,21 @@ const FloatingToolbar: React.FC<FloatingToolbarProps> = ({ editor }) => {
         const range = selection.getRangeAt(0);
         if (!range.collapsed) {
           const rect = range.getBoundingClientRect();
-
+      
           // Calculate desired top and left positions
-          let top = rect.top - 60 + window.scrollY;
-          let left = rect.left + rect.width / 2 + window.scrollX + 15;
+          const top = rect.top - 60 + window.scrollY;
+          let left = rect.left + rect.width / 2 + window.scrollX + 30;
 
-          // Get window width and height to adjust for screen bounds
-          const toolbarHeight = 50; // Set your toolbar's height here
-          const toolbarWidth = 200; // Set your toolbar's width here
-          const screenWidth = window.innerWidth;
-          const screenHeight = window.innerHeight;
+        // Adjust position if toolbar is out of viewport
+        const toolbarWidth = 300; // Approximate width of the toolbar
+        const viewportWidth = window.innerWidth;
 
-          // Adjust top to avoid going off the top or bottom of the screen
-          if (top < 0) top = 0; // If above the top of the viewport
-          if (top + toolbarHeight > screenHeight) {
-            top = screenHeight - toolbarHeight; // If below the bottom of the viewport
-          }
-
-          // Adjust left to avoid going off the left or right of the screen
-          if (left < 0) left = 0; // If too far to the left
-          if (left + toolbarWidth > screenWidth) {
-            left = screenWidth - toolbarWidth; // If too far to the right
-          }
+        if (left + toolbarWidth > viewportWidth) {
+          left = viewportWidth - toolbarWidth - 20; // Ensure it fits in the screen
+        }
+        if (left < 0) {
+          left = 10; // Padding from the left edge
+        }
 
           setPosition({
             top,
@@ -164,8 +157,15 @@ const ToolbarContainer = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transform: translateX(-50%);
   z-index: 1000;
-  max-width: 100vw; /* Optional: Constrain width to the screen size */
+  max-width: 90vw; /* Set max width based on viewport */
+  overflow-x: auto; /* Add horizontal scrolling if necessary */
   box-sizing: border-box; /* Prevent overflow due to padding */
+
+  @media (max-width: 768px) {
+    /* Additional styling for smaller screens */
+    max-width: 95vw;
+    transform: translateX(0); /* Disable centering on very small screens */
+  }
 `;
 
 interface ToolbarButtonProps {

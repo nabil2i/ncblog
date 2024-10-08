@@ -218,7 +218,7 @@ const PostForm = ({ post }: Props) => {
         id: post._id,
         title: data.title,
         body: data.body,
-        // postAuthorId: post.postAuthorId?._id,
+        postAuthorId: post.postAuthorId?._id,
       });
       // updatePost.mutate({
       //   title: data.title,

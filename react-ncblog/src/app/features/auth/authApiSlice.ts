@@ -1,5 +1,6 @@
 
 import { apiSlice } from "../../api/apiSlice";
+import { persistor } from "../../store";
 import { AuthServerResponse, setCredentials } from "../auth/authSlice";
 import { logout } from './authSlice';
 
@@ -26,7 +27,7 @@ const extendedAuthApiSlice = apiSlice.injectEndpoints({
         }
       })
     }),
-    sendLogout: builder.mutation<AuthServerResponse, object>({
+    sendLogout: builder.mutation<AuthServerResponse, void>({
       query: () => ({
         url: 'auth/logout',
         method: 'POST'
@@ -35,13 +36,23 @@ const extendedAuthApiSlice = apiSlice.injectEndpoints({
         try {
           // const { data } = 
           await queryFulfilled;
-          // console.log(data);
+          // console.log("deleting the localstorage");
           dispatch(logout());
+          // console.log("reseting api sclice");
           setTimeout(() => {
             dispatch(apiSlice.util.resetApiState()) // clear cache
-          }, 2000)
+            persistor.purge();
+            // console.log("cache cleared")
+          }, 1000)
         } catch (error) {
-          // console.log(error)
+          console.log("Logout failed: ", error);
+          // dispatch(logout());
+          // // console.log("reseting api sclice");
+          // setTimeout(() => {
+          //   dispatch(apiSlice.util.resetApiState()) // clear cache
+          //   persistor.purge();
+          //   // console.log("cache cleared")
+          // }, 2000)
         }
       }
     }),

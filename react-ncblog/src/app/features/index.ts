@@ -5,6 +5,7 @@ import commentsReducer from "./comments/commentsSlice";
 import usersReducer from "./users/usersSlice";
 import postsReducer from "./posts/postsSlice";
 import authReducer from "./auth/authSlice";
+import notificationReducer from "./notification/notificationSlice";
 
 export default combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   comments: commentsReducer,
   users: usersReducer,
   posts: postsReducer,
+  notification: notificationReducer,
 })

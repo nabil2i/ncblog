@@ -4,7 +4,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import "./WambuiEditor.css";
 import WambuiFloatingToolbar from "./WambuiFloatingToolbar";
@@ -26,7 +26,10 @@ interface Props {
 }
 
 const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
-  // const [editorContent, setEditorContent] = useState<string>("");
+  const [editorContent, setEditorContent] = useState<string>("");
+
+  const savedContent = localStorage.getItem("editorContent") || value;
+
 
   const editor = useEditor({
     extensions: [
@@ -43,14 +46,26 @@ const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
       }),
       Underline,
     ],
-    content: value,
+    content: savedContent,
     autofocus: true,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      // setEditorContent(html);
+      setEditorContent(html);
       handleEditorChange(html);
+      localStorage.setItem("editorContent", html);
     },
   });
+
+  // useEffect(() => {
+  //   const loadContent = async () => {
+  //     const response = await fetch("/api/load");
+  //     const data = await response.json();
+  //     editor?.commands.setContent(data.content);
+  //   };
+  
+  //   loadContent();
+  // }, [editor?.commands]);
+  
 
   // Toolbar Buttons
   // const toolbarButtons: ToolbarButton[] = [
@@ -175,6 +190,19 @@ const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
   //   }
   // };
 
+  useEffect(() => {
+    // Auto-save every 5 seconds (5000 ms)
+    const interval = setInterval(() => {
+      if (editor) {
+        const content = editor.getHTML();
+        localStorage.setItem("editorContent", content);
+      }
+    }, 5000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(interval);
+  }, [editor]);
+
   // Clean up the editor when the component unmounts
   useEffect(() => {
     return () => {
@@ -200,7 +228,7 @@ const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
       </Toolbar> */}
       <StyledEditorContent editor={editor} />
       {/* Optional: Display the HTML content for debugging */}
-      {/* <pre>{editorContent}</pre> */}
+      <pre>{editorContent}</pre>
       <WambuiFloatingToolbar editor={editor} />
     </EditorContainer>
   );

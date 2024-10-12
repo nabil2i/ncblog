@@ -113,11 +113,7 @@ const PostForm = ({ post }: Props) => {
 
   const [
     addNewPost,
-    {
-      isError: isErrorAdd,
-      isSuccess: isSuccessAdd,
-      error: addPostError
-    },
+    { isError: isErrorAdd, isSuccess: isSuccessAdd, error: addPostError },
   ] = useAddNewPostMutation();
 
   const [
@@ -212,7 +208,7 @@ const PostForm = ({ post }: Props) => {
     // console.log("data", formData);
     setSubmittingPost(true);
     if (post) {
-      console.log(data)
+      console.log(data);
       updatePost({
         ...data,
         id: post._id,
@@ -314,7 +310,21 @@ const PostForm = ({ post }: Props) => {
                     <WambuiEditor
                       placeholder={"Write here..."}
                       value={field.value}
-                      handleEditorChange={field.onChange}
+                      handleEditorChange={async () => {
+                        field.onChange;
+                        // try {
+                        //   // API call to save the content on the server
+                        //   await axios.post("/api/save", {
+                        //     method: "POST",
+                        //     headers: {
+                        //       "Content-Type": "application/json",
+                        //     },
+                        //     body: JSON.stringify({ content: field.value }),
+                        //   });
+                        // } catch (error) {
+                        //   console.error("Error saving content:", error);
+                        // }
+                      }}
                     />
                     {/* <Editor
                       editorState={editorState}
@@ -387,66 +397,3 @@ const PostForm = ({ post }: Props) => {
 
 export default PostForm;
 
-// const createPost = useCreatePost(
-//   () => {
-//     // reset();
-//     setSubmittingPost(false);
-//     navigate("/admin/posts/");
-//   },
-//   () => {
-//     toast({
-//       title: "Add a post",
-//       description: "Successfully added the post.",
-//       duration: 5000, // 5s
-//       isClosable: true,
-//       status: "success",
-//       position: "top",
-//       icon: <AddIcon />,
-//     });
-//   },
-//   (errorMessage) => {
-//     setSubmittingPost(false);
-//     setError(errorMessage);
-//     // toast({
-//     //   title: "Add a post",
-//     //   description: "An error occured while adding the post.",
-//     //   duration: 5000, // 5s
-//     //   isClosable: true,
-//     //   status: "error",
-//     //   position: "top",
-//     //   icon: <AddIcon />,
-//     // });
-//   }
-// );
-// const updatePost = useUpdatePost(
-//   post?._id as string,
-//   () => {
-//     // reset();
-//     setSubmittingPost(false);
-//     navigate("/admin/posts/");
-//   },
-//   () => {
-//     toast({
-//       title: "Update a post",
-//       description: "Successfully updated the post.",
-//       duration: 5000, // 5s
-//       isClosable: true,
-//       status: "success",
-//       position: "top",
-//       icon: <AddIcon />,
-//     });
-//   },
-//   (errorMessage) => {
-//     setSubmittingPost(false);
-//     setError(errorMessage);
-//     // toast({
-//     //   title: "Update a post",
-//     //   description: "An error occured while adding the post.",
-//     //   duration: 5000, // 5s
-//     //   isClosable: true,
-//     //   status: "error",
-//     //   position: "top",
-//     //   icon: <AddIcon />,
-//     // });
-//   }
-// );

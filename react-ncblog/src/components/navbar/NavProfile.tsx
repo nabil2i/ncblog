@@ -10,13 +10,17 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 // import useAuth from "../useAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSendLogoutMutation } from "../../app/features/auth/authApiSlice";
-import { authSatus } from "../../app/features/auth/authSlice";
+import {
+  AuthErrorResponse,
+  authSatus,
+} from "../../app/features/auth/authSlice";
 import useAuth from "../../hooks/useAuth";
 // import useAuth from "./navigationbar/useAuth";
 
@@ -30,19 +34,30 @@ const Profile = () => {
   // const { state, dispatch } = useAuth();
   // const { state, dispatch } = useAuth();
   // console.log(state)
-  // const toast = useToast();
+  const toast = useToast();
   const isAuthenticated = useSelector(authSatus);
   // const dispatch = useDispatch();
-  const [sendLogout, { isError, isSuccess }] = useSendLogoutMutation();
+  const [sendLogout, { isError, isSuccess, error: logoutError }] =
+    useSendLogoutMutation();
   const { privilegelevel, firstname, lastname, img } = useAuth();
   // const [setPersist] = usePersist();
+  const [errMessage, setErrMessage] = useState("");
+  const [logoutTriggered, setLogoutTriggered] = useState(false);
   const navigate = useNavigate();
+  const error = logoutError as AuthErrorResponse;
+
+  const handleLogout = () => {
+    console.log("Logout button clicked");
+    sendLogout();
+    setLogoutTriggered(true);
+    setErrMessage(error.data.message);
+  };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && logoutTriggered) {
       navigate("/login");
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, logoutTriggered, navigate]);
 
   // if (isLoading) {
   //   return (
@@ -53,15 +68,15 @@ const Profile = () => {
   // }
 
   if (isError) {
-    // toast({
-    //   title: "Log in",
-    //   description: error?.data?.message,
-    //   duration: 5000, // 5s
-    //   isClosable: true,
-    //   status: "error",
-    //   position: "top",
-    // });
-    return <Box>error.data.message</Box>;
+    toast({
+      title: "Log in",
+      description: errMessage,
+      duration: 5000, // 5s
+      isClosable: true,
+      status: "error",
+      position: "top",
+    });
+    // return <Box>error.data.message</Box>;
   }
 
   if (isAuthenticated)
@@ -116,26 +131,7 @@ const Profile = () => {
                   </MenuItem>
                 </>
               )}
-              {/* {isAdmin && (
-                <>
-                  <MenuItem onClick={() => navigate("/admin")}>
-                    Admin Section
-                  </MenuItem>
-                </>
-              )} */}
-              <MenuItem
-                onClick={() => {
-                  sendLogout({});
-                  navigate('/')
-                  window.location.reload();
-                  // setPersist(false);
-                }}
-              >
-                Logout
-              </MenuItem>
-              {/* <MenuItem onClick={() => dispatch({ type: "LOGOUT" })}>
-                Logout
-              </MenuItem> */}
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </Box>

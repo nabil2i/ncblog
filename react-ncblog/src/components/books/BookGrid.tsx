@@ -41,20 +41,20 @@ const BookGrid = ({ paginate }: Props) => {
           spacing={3}
           padding={1}
         >
-            {isLoading &&
-              skeletons.map((skeleton) => (
-                <Flex maxW="800" mx="auto">
-                  <BookCardContainer key={skeleton}>
-                    <BookCardSkeleton />{" "}
-                  </BookCardContainer>
-                </Flex>
-              ))}
-
-            {data?.results.map((book) => (
-              <BookCardContainer key={book._id}>
-                <BookCard book={book} />
-              </BookCardContainer>
+          {isLoading &&
+            skeletons.map((skeleton) => (
+              <Flex maxW="800" mx="auto" key={skeleton}>
+                <BookCardContainer>
+                  <BookCardSkeleton />{" "}
+                </BookCardContainer>
+              </Flex>
             ))}
+
+          {data?.results.map((book) => (
+            <BookCardContainer key={book._id}>
+              <BookCard book={book} />
+            </BookCardContainer>
+          ))}
         </SimpleGrid>
 
         {data?.count && Math.ceil(data.count / data.limit) > 1 ? (

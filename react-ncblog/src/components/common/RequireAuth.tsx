@@ -14,12 +14,12 @@ const RequireAuth = ({ allowedRoles }: Props) => {
   const isAuthenticated = useSelector(authSatus);
 
   let content;
-  // console.log("roles", roles)
+  console.log("user roles: ", roles)
   // console.log(isAuthenticated)
 
   if (isAuthenticated) {
     if (allowedRoles) {
-      // console.log("allowed roles", allowedRoles)
+      console.log("allowed roles", allowedRoles)
 
       if (roles.some((role) => allowedRoles.includes(role))) {
         // console.log('Authorized')
@@ -29,9 +29,11 @@ const RequireAuth = ({ allowedRoles }: Props) => {
         content = <Navigate to="/login" state={{ from: location }} replace />;
       }
     } else {
+      // if no role is required
       content = <Outlet />;
     }
-  } else {
+  } else { 
+    // if the user is not authenticated
     content = <Navigate to="/login" state={{ from: location }} replace />;
   }
   return content;

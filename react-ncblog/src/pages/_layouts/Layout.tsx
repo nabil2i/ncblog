@@ -5,6 +5,7 @@ import ScrollToTop from "../../components/common/ScrollToTop";
 import { NavBar } from "../../components/navbar";
 import { useSelector } from "react-redux";
 import { authSatus } from "../../app/features/auth/authSlice";
+import Notification from "../../components/common/Notification";
 
 const Layout = () => {
   // const { state, dispatch } = useAdminLayout();
@@ -25,6 +26,7 @@ const Layout = () => {
 
   return (
     <ScrollToTop>
+      <Notification />
       <Flex direction="column">
         <NavBar />
         <Box as="main" flex="1" marginTop={marginTopValue} minHeight="100vh" overflowY="auto">

@@ -1,6 +1,6 @@
 
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { persistor, RootState } from "../../store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 
 
 interface AuthState {
@@ -49,7 +49,8 @@ const authSlice = createSlice({
 
       // console.log("purging")
       localStorage.removeItem('persist:root'); // Remove the persisted state
-      persistor.purge();
+      localStorage.removeItem("editorContent");
+      // persistor.purge();
       
     }
   }

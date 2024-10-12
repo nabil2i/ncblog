@@ -211,8 +211,8 @@ const PostForm = ({ post }: Props) => {
     // console.log("data", formData);
     setSubmittingPost(true);
     if (post) {
-      console.log(data)
-      console.log(post)
+      // console.log(data)
+      // console.log(post)
       updatePost({
         ...data,
         id: post._id,
@@ -257,7 +257,7 @@ const PostForm = ({ post }: Props) => {
               w="full"
               direction="column"
               mx="auto"
-              maxW="1000px"
+              maxW="800px"
               align="center"
             >
               {addPostError && (

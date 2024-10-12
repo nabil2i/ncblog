@@ -253,7 +253,7 @@ const PostForm = ({ post }: Props) => {
               w="full"
               direction="column"
               mx="auto"
-              maxW="1000px"
+              maxW="800px"
               align="center"
             >
               {addPostError && (
@@ -396,4 +396,3 @@ const PostForm = ({ post }: Props) => {
 };
 
 export default PostForm;
-

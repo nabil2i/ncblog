@@ -238,7 +238,7 @@ export default WambuiEditor;
 
 const EditorContainer = styled.div`
   /* position: relative;  To position the floating toolbar correctly */
-  max-width: 800px;
+  /*max-width: 800px;*/
   margin: 2rem auto;
   padding: 1rem;
   border: 1px solid #e5e7eb; /* Tailwind Gray-200 */

@@ -57,7 +57,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   const { password: pass, ...rest } = user._doc;
   const data = { accessToken, ...rest }
 
-  res.status(200).json({ success: true, data });
+  res.status(200).json({ success: true, data, message: "Login successful" });
 
 };
 
@@ -67,11 +67,12 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 // @access Public
 export const refresh = async (req: Request, res: Response, next: NextFunction) => {
   const cookies = req.cookies
+  console.log("cookies: ", cookies)
 
   if (!cookies.jwt) return next(makeError(401, "Unauthorized"));
 
   const refreshToken = cookies.jwt
-  // console.log("refresh result resh token", refreshToken)
+  console.log("refresh result refresh token", refreshToken)
 
   jwt.verify(
     refreshToken,
@@ -80,6 +81,7 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
       if (err) return next(makeError(403, "Forbidden"));
 
       const decodedUser = decoded as IUser;
+      console.log("decoded user: ", decodedUser);
 
       const user = await UserModel.findOne({ username: decodedUser.username });
 
@@ -89,7 +91,8 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
 
       res.status(200).json({
         success: true,
-        data: { accessToken }
+        data: { accessToken },
+        message: "Token refreshed"
       });
     }
   );
@@ -151,7 +154,11 @@ export const google = async (req: Request, res: Response, next: NextFunction) =>
       const { password: pass, ...rest } = newUser.toObject();
       const data = { accessToken, ...rest }
     
-      res.status(201).json({ success: true, data });
+      res.status(201).json({ 
+        success: true, 
+        data, 
+        message: "Successfully logged in with google"
+      });
     } else {
       return next(makeError(400, 'Invalid use details'))
     }

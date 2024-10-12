@@ -6,7 +6,7 @@ import { IPermission } from "./permission.js";
 dotenv.config();
 
 export interface IRole extends Document {
-  _id: Types.ObjectId;
+  _id: mongoose.Types.ObjectId;
   name: string;
   description: string;
   permissions: (mongoose.Types.ObjectId | IPermission)[];

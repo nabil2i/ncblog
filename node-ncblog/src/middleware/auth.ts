@@ -39,52 +39,10 @@ export default async function auth(req: Request, res: Response, next: NextFuncti
     next()
 
   } catch (err) {
-    return next(makeError(403, "Token invalid or expired"));
+    const errorMessage = err instanceof jwt.TokenExpiredError ? 
+      "Token expired" : 
+      "Token invalid";
+    return next(makeError(403, errorMessage));
   }
-  // jwt.verify(
-  //   accessToken,
-  //   jwtSecret as Secret,
-  //   (err: jwt.VerifyErrors | null, decoded) => {
-  //    // console.log("decoded: ", decoded)
-  //     if (err || !decoded)
-  //       // console.log("err: ", err)
-  //       // return next(makeError(403, err));
-  //       return next(makeError(403, "Forbidden"));
-
-  //     req.user = decoded as User;
-  //     next();
-  //   }
-  // )
-
-
-
-  // // if taking token from cookies
-  // const refreshToken = req.cookies.jwt;
-
-  // if (!refreshToken) {
-  //   return res.status(401).json({
-  //     success: false,
-  //     error: {
-  //       code: 401,
-  //       message: 'Unauthorized'
-  //     }
-  //   });
-  // }
-  
-  // try {
-  //   const decoded = jwt.verify(
-  //     jwt,
-  //     process.env.NODE_APP_JWT_REFRESH_SECRET
-  //   );
-  //   req.user = decoded;
-  //   next();
-  // } catch(ex) {
-  //   res.status(400).json({
-  //     success: false,
-  //     error: {
-  //       code: 400,
-  //       message: 'Invalid token'
-  //     }
-  //   });
-  // }
+ 
 }

@@ -14,12 +14,12 @@ const router = express.Router();
 
 router.route('/')
   // get all comments
-  .get([auth as RequestHandler, checkRole(['admin']) as RequestHandler], paginate(Comment), getAllComments);
+  .get([auth as RequestHandler, checkRole(['admin', 'superadmin']) as RequestHandler], paginate(Comment), getAllComments);
   // .get([auth, admin], paginateWithLimit(Comment), getAllComments);
 
 router.route('/:id')
   // get all comments
-  .get([auth as RequestHandler, checkRole(['admin']) as RequestHandler], getComment);
+  .get([auth as RequestHandler, checkRole(['admin', 'superadmin']) as RequestHandler], getComment);
   // .delete([auth as RequestHandler, checkRole(['admin']) as RequestHandler], deleteComment);
 
 router.route('/:id/like-status')

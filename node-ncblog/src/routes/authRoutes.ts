@@ -19,7 +19,7 @@ router.route('/refresh')
 
   router.route('/logout')
   //logout
-  .post(auth as RequestHandler, logout)
+  .post(logout)
 
 
 export default router;

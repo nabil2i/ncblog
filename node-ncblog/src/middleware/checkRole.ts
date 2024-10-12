@@ -1,6 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import UserModel, { IUser } from "../models/user.js";
 import { makeError } from "../utils/error.js";
+import { IRole } from "../models/role.js";
 
 
 interface CustomRequest extends Request {
@@ -16,8 +17,15 @@ export default function checkRole(roleslist: string[]): RequestHandler {
       const user = await UserModel.findById(customReq.user._id).populate("roles");
       if (!user) return next(makeError(401, "Unauthorized"));
 
-      const hasRole = user?.roles.some((role: any) => roleslist.includes(role.name));
+      const userRoles = user?.roles as IRole[];
+
+      const hasRole = userRoles.some((role) => roleslist.includes(role.name));
       if (!hasRole) return next(makeError(403, "Access denied. Wrong permission"));
+
+      // const hasRole = user?.roles
+      //   .filter((role): role is IRole => typeof role !== 'string')
+      //   .some((role: IRole) => roleslist.includes(role.name));
+      // if (!hasRole) return next(makeError(403, "Access denied. Wrong permission"));
       
       next();
     } catch (error) {

@@ -20,6 +20,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "../aPostSlices.ts"],
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

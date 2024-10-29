@@ -1,5 +1,5 @@
-import mongoose, { Model, Types } from "mongoose";
 import Joi from "joi";
+import mongoose, { Model } from "mongoose";
 // import AutoIncrement from "mongoose-sequence";
 import dotenv from "dotenv";
 import { Document } from "mongoose";
@@ -20,6 +20,8 @@ export interface IPost extends Document {
   // likes: string[];
   likeCount: number;
   commentCount: number;
+  status: string;
+  publishedAt: Date;
 }
 
 // const AutoIncrementCounter = AutoIncrement(mongoose);
@@ -65,14 +67,7 @@ export const postSchema = new mongoose.Schema({
     type: String,
     default: "Uncategorized"
   },
-  isDraft: {
-    type: Boolean,
-    default: false
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false
-  },
+  
   // category: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: 'Category',
@@ -85,7 +80,25 @@ export const postSchema = new mongoose.Schema({
   commentCount: {
     type: Number,
     default: 0
-  }
+  },
+  status: { 
+    type: String, 
+    enum: ['draft', 'published'], 
+    default: 'draft' 
+  },
+  deletionStatus: { 
+    type: String, 
+    enum: ['active', 'deleted', 'archived'], 
+    default: 'active' 
+  },
+  publishedAt: { 
+    type: Date,
+    default: null
+  },
+  deletedAt: { 
+    type: Date,
+    default: null
+  },
   },
   { timestamps: true },
 );

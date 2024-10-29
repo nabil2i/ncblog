@@ -28,7 +28,6 @@ const PostTitleEditor = ({
 
   useEffect(() => {
     if (content) {
-      // If updating a post, convert HTML to ContentState
       const blocksFromHTML = convertFromHTML(content);
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
@@ -37,21 +36,6 @@ const PostTitleEditor = ({
       setEditorState(EditorState.createWithContent(state));
     }
   }, [content]);
-
-  // const [editorState, setEditorState] = useState(() => {
-  //   if (content) {
-  //     // If updating a post, convert HTML to ContentState
-  //     const blocksFromHTML = convertFromHTML(content);
-  //     const state = ContentState.createFromBlockArray(
-  //       blocksFromHTML.contentBlocks,
-  //       blocksFromHTML.entityMap
-  //     );
-  //     return EditorState.createWithContent(state);
-  //   } else {
-  //     // For a new post, start with an empty editor state
-  //     return EditorState.createEmpty();
-  //   }
-  // });
 
   const handleEditorChange = (newEditorState: EditorState) => {
     register(id, {

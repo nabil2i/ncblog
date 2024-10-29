@@ -19,6 +19,8 @@ const SimplePostGrid = () => {
   //     </Box>
   //   );
 
+  if (error) return;
+
   const skeletons = [1, 2, 3];
   return (
     <>

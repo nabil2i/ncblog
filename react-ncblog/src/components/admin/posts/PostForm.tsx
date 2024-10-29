@@ -44,73 +44,6 @@ const PostForm = ({ post }: Props) => {
   const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
 
-  // const [editorState, setEditorState] = useState(() =>
-  //   EditorState.createEmpty()
-  // );
-
-  // const [toolbarPosition, setToolbarPosition] = useState({
-  //   top: 0,
-  //   left: 0,
-  //   display: "none",
-  // });
-
-  // useEffect(() => {
-  //   if (post?.body) {
-  //     // If updating a post, convert HTML to ContentState
-  //     const blocksFromHTML = convertFromHTML(post.body);
-  //     // const blocksFromHTML = HtmlToDraft(post.body);
-
-  //     const state = ContentState.createFromBlockArray(
-  //       blocksFromHTML.contentBlocks,
-  //       blocksFromHTML.entityMap
-  //     );
-  //     setEditorState(EditorState.createWithContent(state));
-  //   }
-  // }, [post?.body]);
-  // const [editorState, setEditorState] = useState(() => {
-  //   if (post?.body) {
-  //     // If updating a post, convert HTML to ContentState
-  //     const blocksFromHTML = convertFromHTML(post.body);
-  //     // const blocksFromHTML = HtmlToDraft(post.body);
-
-  //     const state = ContentState.createFromBlockArray(
-  //       blocksFromHTML.contentBlocks,
-  //       blocksFromHTML.entityMap
-  //     );
-  //     return EditorState.createWithContent(state);
-  //   } else {
-  //     // For a new post, start with an empty editor state
-  //     return EditorState.createEmpty();
-  //   }
-  // });
-
-  // const handleEditorChange = (newEditorState: EditorState) => {
-  //   setEditorState(newEditorState);
-  //   const contentState = newEditorState.getCurrentContent();
-  //   const html = stateToHTML(contentState);
-  //   // const rawContentState = convertToRaw(contentState)
-  //   // const html = stateToHTML(rawContentState)
-  //   // console.log(html);
-  //   setValue("body", html);
-  //   // const contentState = convertToRaw(newEditorState.getCurrentContent());
-  //   // Convert ContentState to HTML and update the form value
-
-  //   // Calculate the position of the selected text
-  //   const selection = window.getSelection();
-  //   if (selection?.rangeCount) {
-  //     const range = selection.getRangeAt(0).getBoundingClientRect();
-  //     if (range.width > 0) {
-  //       setToolbarPosition({
-  //         top: range.top + window.scrollY - 100,
-  //         left: range.left + window.scrollX,
-  //         display: "block",
-  //       });
-  //     } else {
-  //       setToolbarPosition((prev) => ({ ...prev, display: "none" }));
-  //     }
-  //   }
-  // };
-
   const [
     addNewPost,
     { isError: isErrorAdd, isSuccess: isSuccessAdd, error: addPostError },
@@ -294,22 +227,18 @@ const PostForm = ({ post }: Props) => {
                   </FormErrorMessage> */}
               </FormControl>
 
-              {/* <Flex my={2} p={2} gap={4} align="center" border="dashed" borderWidth={2} borderRadius="4px">
-                  <Input _hover={{ cursor: "pointer"}} pl={0} height="full" type="file" accept="image/*"/>
-                  <Button>Upload image</Button>
-                </Flex> */}
               <Box w="full">
                 <AddPostImage setFieldValue={setValue} postImage={post?.img} />
               </Box>
               <Controller
                 name="body"
                 control={control}
-                defaultValue={post?.body as string}
+                defaultValue={post?.body || ""}
                 render={({ field }) => (
                   <Box w="full" overflowWrap="break-word" mt={15}>
                     <WambuiEditor
                       placeholder={"Write here..."}
-                      value={field.value}
+                      value={field.value || ""}
                       handleEditorChange={async () => {
                         field.onChange;
                         // try {
@@ -326,68 +255,11 @@ const PostForm = ({ post }: Props) => {
                         // }
                       }}
                     />
-                    {/* <Editor
-                      editorState={editorState}
-                      toolbarClassName="toolbarClassName"
-                      wrapperClassName="wrapperClassName"
-                      editorClassName="editorClassName"
-                      onEditorStateChange={handleEditorChange}
-                      placeholder="Write something..."
-                      toolbarOnFocus={true}
-                      toolbarStyle={{
-                        // position: "sticky",
-                        // bottom: 0,
-                        // left: 0,
-                        // width: "100%",
-                        // zIndex: 1000,
-                        // backgroundColor: "#fff",
-                        // borderTop: "1px solid #ddd",
-                        // padding: "10px",
-
-                        // floating toolbar position
-                        // position: "absolute",
-                        // top: toolbarPosition.top,
-                        // left: toolbarPosition.left,
-                        // display: toolbarPosition.display,
-                        position: "absolute",
-                        top: `${toolbarPosition.top}px`,
-                        left: `${toolbarPosition.left}px`,
-                        display: toolbarPosition.display,
-                        zIndex: 1000,
-                        backgroundColor: "#fff",
-                        border: "1px solid #ddd",
-                        padding: "10px",
-                      }} 
-                    />*/}
                   </Box>
-
-                  // <ReactQuill className="h-72 mb-12" theme="snow" placeholder="Start writing something..." {...field}/>
-                  // <SimpleMDE
-                  //   placeholder="Start writing something..."
-                  //   {...field}
-                  // />
                 )}
               />
               <FormErrorMessage>{errors.body?.message}</FormErrorMessage>
             </Flex>
-            {/* <GridItem
-                area="side"
-                p={4}
-                position={{ base: "fixed", lg: "sticky" }}
-                top={{ lg: 0 }}
-                alignSelf={{ lg: "flex-start" }}
-              >
-                <Flex
-                  direction="column"
-                  display={{ base: "none", lg: "flex" }}
-                  gap="4"
-                >
-                  <UpdatePostButton
-                    isSubmittingPost={isSubmittingPost}
-                    post={post}
-                  />
-                </Flex>
-              </GridItem> */}
           </Flex>
         </form>
       </Flex>

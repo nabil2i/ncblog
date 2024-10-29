@@ -11,6 +11,7 @@ export default interface Post {
   tags?: string[];
   createdAt?: Date;
   publishedAt?: Date;
+  deletedAt?: Date;
   updatedAt?: Date;
   hasLiked?: boolean;
   postAuthorId?: {
@@ -23,6 +24,8 @@ export default interface Post {
   commentCount?: number;
   replyCount?: number;
   likeCount?: number;
+  status?: 'draft' | 'published';
+  deletingStatus?: 'active' | 'deleted' | 'archived';
 }
 export interface PostData {
   // _id?: string;

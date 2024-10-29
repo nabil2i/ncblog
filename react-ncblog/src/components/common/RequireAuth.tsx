@@ -14,12 +14,12 @@ const RequireAuth = ({ allowedRoles }: Props) => {
   const isAuthenticated = useSelector(authSatus);
 
   let content;
-  console.log("user roles: ", roles)
+  // console.log("user roles: ", roles)
   // console.log(isAuthenticated)
 
   if (isAuthenticated) {
     if (allowedRoles) {
-      console.log("allowed roles", allowedRoles)
+      // console.log("allowed roles", allowedRoles)
 
       if (roles.some((role) => allowedRoles.includes(role))) {
         // console.log('Authorized')

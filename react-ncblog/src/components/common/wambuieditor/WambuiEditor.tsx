@@ -26,11 +26,17 @@ interface Props {
 }
 
 const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
+  
+  console.log("WambuiEditor placeholder: ", placeholder);
+  console.log("WambuiEditor value: ", value);
+  console.log("WambuiEditor handleEditorChange: ", handleEditorChange);
+
+  
   const [editorContent, setEditorContent] = useState<string>("");
-
+  
   const savedContent = localStorage.getItem("editorContent") || value;
-
-
+  
+  
   const editor = useEditor({
     extensions: [
       StarterKit.configure({}),
@@ -56,6 +62,12 @@ const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
     },
   });
 
+  useEffect(() => {
+    if (value && editor) {
+      editor.commands.setContent(value);
+    }
+  }, [value, editor]);
+  
   // useEffect(() => {
   //   const loadContent = async () => {
   //     const response = await fetch("/api/load");

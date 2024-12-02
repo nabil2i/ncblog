@@ -16,12 +16,14 @@ export interface IPost extends Document {
   comments: mongoose.Types.ObjectId[];
   tags: string[];
   category: string;
-  isDraft: boolean;
-  // likes: string[];
   likeCount: number;
   commentCount: number;
   status: string;
+  deletionStatus: string;
+  currentDraftId: mongoose.Types.ObjectId;
+  drafts?: mongoose.Types.ObjectId[];
   publishedAt: Date;
+  archivedAt: Date;
 }
 
 // const AutoIncrementCounter = AutoIncrement(mongoose);
@@ -31,14 +33,14 @@ export const postSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true,
-    minlength: 5,
+    minlength: 1,
     maxlength: 255,
     trim: true,
   },
   body: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 1,
     trim: true,
   },
   img: {
@@ -67,12 +69,21 @@ export const postSchema = new mongoose.Schema({
     type: String,
     default: "Uncategorized"
   },
-  
+  drafts: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'DraftPost',
+    default: []
+  },
+  currentDraftId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'DraftPost',
+  },
   // category: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: 'Category',
   //   default: new mongoose.Types.ObjectId(process.env.NODE_APP_DEFAULT_CATEGORY)
   // },
+
   likeCount: {
     type: Number,
     default: 0
@@ -83,8 +94,8 @@ export const postSchema = new mongoose.Schema({
   },
   status: { 
     type: String, 
-    enum: ['draft', 'published'], 
-    default: 'draft' 
+    enum: ['published'], 
+    default: 'published' 
   },
   deletionStatus: { 
     type: String, 
@@ -93,9 +104,13 @@ export const postSchema = new mongoose.Schema({
   },
   publishedAt: { 
     type: Date,
-    default: null
+    default: Date.now
   },
   deletedAt: { 
+    type: Date,
+    default: null
+  },
+  archivedAt: { 
     type: Date,
     default: null
   },
@@ -121,16 +136,16 @@ export const postSchema = new mongoose.Schema({
 
 // const PostModel = mongoose.model('Post', postSchema);
 const PostModel: Model<IPost> = mongoose.model<IPost>('Post', postSchema);
+// const PostModel: Model<IPost> = mongoose.models.Post || mongoose.model<IPost>('Post', postSchema);
 
 export function validatePost(post: typeof PostModel) {
   const schema = Joi.object({
-    title: Joi.string().min(5).max(255).required(),
-    body: Joi.string().min(5).required(),
-    authorId: Joi.string().hex().length(24).required(),
-    // userId: Joi.object.objectId().required(),
+    title: Joi.string().min(1).max(255),
+    body: Joi.string().min(1),
+    postAuthorId: Joi.string().hex().length(24),
     img: Joi.string().min(5),
     category: Joi.string().min(5),
-    tags: Joi.string().min(5),
+    tags: Joi.array().items(Joi.string().min(5))
   });
 
   return schema.validate(post);
@@ -140,11 +155,10 @@ export function validateUpdatePost(post: typeof PostModel) {
   const schema = Joi.object({
     title: Joi.string().min(5).max(255),
     body: Joi.string().min(5),
-    // authorId: Joi.string().hex().length(24),
-    postAuthorId: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).required(),
+    postAuthorId: Joi.string().pattern(/^[0-9a-fA-F]{24}$/),
     img: Joi.string().min(5),
     category: Joi.string().min(5),
-    tags: Joi.string().min(5),
+    tags: Joi.array().items(Joi.string().min(5)),
   });
 
   return schema.validate(post);

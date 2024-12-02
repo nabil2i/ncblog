@@ -2,6 +2,7 @@ import AuthorModel from "./author.js";
 import BookModel from "./book.js";
 import CategoryModel from "./category.js";
 import CommentModel from "./comment.js";
+import DraftPostModel from "./draftpost.js";
 import GenreModel from "./genre.js";
 import PermissionModel from "./permission.js";
 import PostModel from "./post.js";
@@ -18,4 +19,5 @@ export type CustomModel = typeof AuthorModel
                 | typeof CommentModel
                 | typeof AuthorModel 
                 | typeof BookModel
-                | typeof GenreModel;
+                | typeof GenreModel
+                | typeof DraftPostModel;

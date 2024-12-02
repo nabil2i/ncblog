@@ -15,11 +15,15 @@ export default function checkRole(roleslist: string[]): RequestHandler {
     
     try {
       const user = await UserModel.findById(customReq.user._id).populate("roles");
+      // console.log("user: ", user);
       if (!user) return next(makeError(401, "Unauthorized"));
 
+      // console.log ("roleslist: ", roleslist);
       const userRoles = user?.roles as IRole[];
+      // console.log("user roles: ", userRoles)
 
       const hasRole = userRoles.some((role) => roleslist.includes(role.name));
+      // console.log("hasRole: ", hasRole);
       if (!hasRole) return next(makeError(403, "Access denied. Wrong permission"));
 
       // const hasRole = user?.roles

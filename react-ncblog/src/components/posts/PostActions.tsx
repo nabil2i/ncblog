@@ -16,8 +16,8 @@ interface Props {
 const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
   const location = useLocation();
   const isCreate =
-    location.pathname.startsWith("/blog/write") ||
-    location.pathname.startsWith("/myposts/write");
+    location.pathname.startsWith("/blog/new-post") ||
+    location.pathname.startsWith("/myposts/new-post");
   // const userId = post?.postAuthorId?._id as string;
   const postId = post?._id as string;
 

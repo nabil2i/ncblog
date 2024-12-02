@@ -1,24 +1,23 @@
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Box,
   Flex,
   FormControl,
   FormErrorMessage,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 // import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 // import "easymde/dist/easymde.min.css";
 // import SimpleMDE from "react-simplemde-editor";
 import {
-  useAddNewPostMutation,
-  useUpdatePostMutation,
+  useCreateDraftFromPostMutation,
+  useCreateDraftPostMutation,
+  useGetCurrentDraftPostQuery,
+  usePublishDraftPostMutation,
+  useUpdateDraftPostMutation,
+  useUpdatePublishedPostMutation,
 } from "../../../app/features/posts/postsApiSlice";
 import Post, { PostFormData } from "../../../entities/Post";
 import useAuth from "../../../hooks/useAuth";
@@ -30,6 +29,9 @@ import PostActions from "./PostActions";
 // import { stateToHTML } from "draft-js-export-html";
 // import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { FetchResponse } from "../../../services/api-client";
+
+import { debounce } from "lodash";
 import PostTitleEditor from "../../common/PostTitleEditor";
 import { WambuiEditor } from "../../common/wambuieditor";
 
@@ -37,94 +39,36 @@ interface Props {
   post?: Post;
 }
 
+const debouncedAutoSave = debounce(async (data, handleAutoSave) => {
+  await handleAutoSave(data);
+}, 3000); // trigger autosave when user pauses typing for x seconds
+
 const PostForm = ({ post }: Props) => {
-  const { _id } = useAuth();
+  const { _id: loggedUserId } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const [isSubmittingPost, setSubmittingPost] = useState(false);
   const toast = useToast();
+  // const [currentDraftPost, setCurrentDraftPost] = useState<Post | null>(null);
+  const currentDraftPostRef = useRef<Post | null>(null);
+  const [isAutoSaving, setIsAutoSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [hasFetchedDraft, setHasFetchedDraft] = useState(false);
 
-  const [
-    addNewPost,
-    { isError: isErrorAdd, isSuccess: isSuccessAdd, error: addPostError },
-  ] = useAddNewPostMutation();
+  const [createDraftPost] = useCreateDraftPostMutation();
+  const [updateDraftPost] = useUpdateDraftPostMutation();
+  const [publishDraftPostMutation] = usePublishDraftPostMutation();
+  const [updatePublishedPost] = useUpdatePublishedPostMutation();
+  const [createDraftFromPost] = useCreateDraftFromPostMutation();
+  const { data } = useGetCurrentDraftPostQuery(post?._id, {
+    skip: hasFetchedDraft,
+  });
 
-  const [
-    updatePost,
-    {
-      isError: isErrorUpdate,
-      isSuccess: isSuccessUpdate,
-      error: updatePostError,
-    },
-  ] = useUpdatePostMutation();
+  // console.log ("post current draft id:", postId);
+  // console.log ("post current draft id:", post?.currentDraftId);
 
-  useEffect(() => {
-    if (isSuccessAdd) {
-      // reset();
-      setSubmittingPost(false);
-      navigate("/dashboard?tab=posts");
-      toast({
-        title: "",
-        description: "Successfully added the post.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "success",
-        position: "top",
-        icon: <AddIcon />,
-      });
-    }
-
-    if (isErrorAdd) {
-      setSubmittingPost(false);
-      setError("Could not add the post");
-      // setError(addPostError);
-      toast({
-        title: "",
-        description: "An error occured while adding the post.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "error",
-        position: "top",
-        icon: <AddIcon />,
-      });
-    }
-
-    if (isSuccessUpdate) {
-      setSubmittingPost(false);
-      navigate("/dashboard?tab=posts");
-      toast({
-        title: "",
-        description: "Successfully updated the post.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "success",
-        position: "top",
-        icon: <EditIcon />,
-      });
-    }
-
-    if (isErrorUpdate) {
-      setSubmittingPost(false);
-      setError("Could not update the post");
-      // setError(updatePostError);
-      toast({
-        title: "",
-        description: "An error occured while updating the post.",
-        duration: 5000, // 5s
-        isClosable: true,
-        status: "error",
-        position: "top",
-        icon: <EditIcon />,
-      });
-    }
-  }, [
-    isErrorAdd,
-    isErrorUpdate,
-    isSuccessAdd,
-    isSuccessUpdate,
-    navigate,
-    toast,
-  ]);
+  const draft = data?.data;
+  console.log(" first currentDraftData: ", draft);
 
   const {
     handleSubmit,
@@ -132,46 +76,232 @@ const PostForm = ({ post }: Props) => {
     control,
     // reset,
     setValue,
-    // getValues,
+    getValues,
+    watch,
     formState: { errors },
   } = useForm<PostFormData>();
 
-  const onSubmit = (data: PostFormData) => {
-    // const formData = getValues();
-    // console.log("data", formData);
+  // watch for changes in the title and body,
+  // then call the debouncedAutoSave function
+  const title = watch("title");
+  const body = watch("body");
+
+  //a unique local storage key for the current post or new draft
+  const localStorageKey = post?._id ? `draftPost-${post._id}` : "draftPost-new";
+
+  // const draftKey = `draftPost-${post?._id || "new"}`;
+
+  // useCallback prevents unnecessary re-creations of
+  // the debouncedAutoSave function on every render
+  // by memoizing the debouncedAutoSave function
+  const handleAutoSave = useCallback(
+    async (data: PostFormData) => {
+      setIsAutoSaving(true);
+      setIsSaved(false);
+      // setStatusMessage("Saving...");
+      // if (!data.title && !data.body) return;  // Only save if there's content
+      try {
+        //If updating an already published post
+        if (post) {
+          const response = (await updatePublishedPost({
+            ...data,
+            id: post._id,
+          }).unwrap()) as FetchResponse<Post>;
+          currentDraftPostRef.current = response.data;
+          localStorage.setItem(localStorageKey, JSON.stringify(response.data)); // Sync to local storage
+          // setCurrentDraftPost(response.data);
+          setIsSaved(true);
+          // setStatusMessage("Saved");
+          // console.log("Draft updated and saved:", response.data);
+        } else {
+          //If creating a new post
+          if (!currentDraftPostRef.current) {
+            const response = (await createDraftPost({
+              ...data,
+              postAuthorId: loggedUserId,
+            }).unwrap()) as FetchResponse<Post>;
+            currentDraftPostRef.current = response.data;
+            localStorage.setItem(
+              localStorageKey,
+              JSON.stringify(response.data)
+            ); // Save new draft
+            // setCurrentDraftPost(response.data);
+            setIsSaved(true);
+            // setStatusMessage("Saved");
+            // console.log("Draft created and saved:", response.data);
+          } else {
+            const response = (await updateDraftPost({
+              ...data,
+              id: currentDraftPostRef.current._id,
+            }).unwrap()) as FetchResponse<Post>;
+            currentDraftPostRef.current = response.data;
+            localStorage.setItem(
+              localStorageKey,
+              JSON.stringify(response.data)
+            ); // Update draft in local storage
+            // setCurrentDraftPost(response.data);
+            setIsSaved(true);
+            // setStatusMessage("Saved");
+            // console.log("Draft updated and saved:", response.data);
+          }
+        }
+        if (!isAutoSaving && isSaved) {
+          toast({
+            title: "Auto-save",
+            description: "Draft saved successfully",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      } catch (error: unknown) {
+        toast({
+          title: "Auto-save",
+          description: "Draft auto-save failed",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        // console.error("Auto-save failed:", error);
+      } finally {
+        setIsAutoSaving(false);
+      }
+    },
+    [
+      createDraftPost,
+      isAutoSaving,
+      isSaved,
+      localStorageKey,
+      loggedUserId,
+      post,
+      toast,
+      updateDraftPost,
+      updatePublishedPost,
+    ]
+  );
+
+  const debouncedAutoSaveCallback = useCallback(
+    (data: PostFormData) => debouncedAutoSave(data, handleAutoSave),
+    [handleAutoSave]
+  );
+
+  useEffect(() => {
+    const fetchOrCreateDraftPost = async () => {
+      const localDraft = localStorage.getItem(localStorageKey);
+
+      if (localDraft) {
+        const parsedDraft = JSON.parse(localDraft) as Post;
+        currentDraftPostRef.current = parsedDraft;
+        setValue("title", parsedDraft.title);
+        setValue("body", parsedDraft.body);
+      }
+
+      if (post && !hasFetchedDraft) {
+        try {
+          if (draft) {
+            // setCurrentDraftPost(draft);
+            currentDraftPostRef.current = draft;
+            setValue("title", draft.title);
+            setValue("body", draft.body);
+            localStorage.setItem(localStorageKey, JSON.stringify(draft)); // Save fetched draft to local storage
+          } else {
+            // Create and save it to the currentDraftPost
+            const response = (await createDraftFromPost(
+              post._id
+            ).unwrap()) as FetchResponse<Post>;
+            currentDraftPostRef.current = response.data;
+            setValue("title", response.data.title);
+            setValue("body", response.data.body);
+            localStorage.setItem(localStorageKey, JSON.stringify(draft)); // Save fetched draft to local storage
+            // setCurrentDraftPost(response.data);
+            // console.log("Draft created from published post and saved:", response.data);
+          }
+          setHasFetchedDraft(true);
+        } catch (err) {
+          console.error("Error fetching or creating draft post:", err);
+        }
+      }
+    };
+
+    fetchOrCreateDraftPost(); // Call the async function
+
+    // Watch for auto-save changes if data updates
+    if ((title && title.trim()) || (body && body.trim())) {
+      const formData = getValues();
+      debouncedAutoSaveCallback(formData);
+    }
+
+    // cleanup of local storage
+    return () => {
+      localStorage.removeItem(localStorageKey);
+    };
+  }, [
+    body,
+    createDraftFromPost,
+    debouncedAutoSaveCallback,
+    draft,
+    getValues,
+    hasFetchedDraft,
+    localStorageKey,
+    post,
+    setValue,
+    title,
+  ]);
+
+  // useEffect(() => {
+  //   const formData = getValues();
+
+  //   if ((title && title.trim()) || (body && body.trim())) {
+  //   // if (formData.title || formData.body) {
+  //     debouncedAutoSaveCallback(formData);
+  //   }
+  // }, [title, body, getValues, debouncedAutoSaveCallback]);
+
+  // save and publish the post
+  const onSubmit = async (data: PostFormData) => {
+    // const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // event.preventDefault();
+    // if (!currentPost) {
+    //   console.error("No draft post found.");
+    //   return;
+    // }
+    // // const formData = getValues();
+    // // console.log("data", formData);
     setSubmittingPost(true);
-    if (post) {
-      console.log(data);
-      updatePost({
+    try {
+      await publishDraftPostMutation({
         ...data,
-        id: post._id,
-        title: data.title,
-        body: data.body,
-        postAuthorId: post.postAuthorId?._id,
+        id: currentDraftPostRef.current?._id,
+        status: "published",
       });
-      // updatePost.mutate({
-      //   title: data.title,
-      //   body: data.body,
-      //   userId: post?.user?._id,
-      // });
-    } else {
-      addNewPost({
-        ...data,
-        title: data.title,
-        body: data.body,
-        postAuthorId: _id,
+      localStorage.removeItem(localStorageKey); // Clear local storage after publish
+      navigate("/myposts");
+      toast({
+        title: "Post Published",
+        description: "Your post is now live!",
+        duration: 5000,
+        isClosable: true,
+        status: "success",
+        position: "top",
       });
-      // createPost.mutate({
-      //   title: data.title,
-      //   body: data.body,
-      //   userId: state.user?._id,
-      // });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred while publishing the post.",
+        duration: 5000,
+        isClosable: true,
+        status: "error",
+        position: "top",
+      });
+    } finally {
+      setSubmittingPost(false);
     }
   };
 
   return (
     <>
       <Flex>
+        {/* <Box>{!isAutoSaving && isSaved ? "Saved" : "Saving..."}</Box> */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex display="column">
             <PostActions
@@ -189,7 +319,7 @@ const PostForm = ({ post }: Props) => {
               maxW="800px"
               align="center"
             >
-              {addPostError && (
+              {/* {addPostError && (
                 <Alert mb="15px" mt="10px" status="error">
                   <AlertIcon />
                   <AlertTitle></AlertTitle>
@@ -202,7 +332,7 @@ const PostForm = ({ post }: Props) => {
                   <AlertTitle></AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
-              )}
+              )} */}
               <FormControl
                 isRequired
                 isInvalid={errors.title ? true : false}
@@ -210,7 +340,7 @@ const PostForm = ({ post }: Props) => {
               >
                 <PostTitleEditor
                   id={"title"}
-                  content={post?.title as string}
+                  content={currentDraftPostRef.current?.title as string}
                   placeholder="Add title"
                   register={register}
                   setFieldValue={setValue}
@@ -233,12 +363,14 @@ const PostForm = ({ post }: Props) => {
               <Controller
                 name="body"
                 control={control}
-                defaultValue={post?.body || ""}
+                defaultValue={currentDraftPostRef.current?.body || ""}
                 render={({ field }) => (
                   <Box w="full" overflowWrap="break-word" mt={15}>
                     <WambuiEditor
-                      placeholder={"Write here..."}
-                      value={field.value || ""}
+                      placeholder={
+                        currentDraftPostRef.current?.body || "Write here..."
+                      }
+                      value={currentDraftPostRef.current?.body || field.value}
                       handleEditorChange={async () => {
                         field.onChange;
                         // try {

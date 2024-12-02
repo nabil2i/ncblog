@@ -26,17 +26,15 @@ interface Props {
 }
 
 const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
-  
-  console.log("WambuiEditor placeholder: ", placeholder);
-  console.log("WambuiEditor value: ", value);
-  console.log("WambuiEditor handleEditorChange: ", handleEditorChange);
+  // console.log("WambuiEditor placeholder: ", placeholder);
+  // console.log("WambuiEditor value: ", value);
+  // console.log("WambuiEditor handleEditorChange: ", handleEditorChange);
 
-  
-  const [editorContent, setEditorContent] = useState<string>("");
-  
-  const savedContent = localStorage.getItem("editorContent") || value;
-  
-  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setEditorContent] = useState<string>("");
+
+  // const savedContent = localStorage.getItem("editorContent") || value;
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({}),
@@ -52,13 +50,14 @@ const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
       }),
       Underline,
     ],
-    content: savedContent,
+    content: value,
+    // content: savedContent,
     autofocus: true,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       setEditorContent(html);
       handleEditorChange(html);
-      localStorage.setItem("editorContent", html);
+      // localStorage.setItem("editorContent", html);
     },
   });
 
@@ -67,17 +66,16 @@ const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
       editor.commands.setContent(value);
     }
   }, [value, editor]);
-  
+
   // useEffect(() => {
   //   const loadContent = async () => {
   //     const response = await fetch("/api/load");
   //     const data = await response.json();
   //     editor?.commands.setContent(data.content);
   //   };
-  
+
   //   loadContent();
   // }, [editor?.commands]);
-  
 
   // Toolbar Buttons
   // const toolbarButtons: ToolbarButton[] = [
@@ -202,18 +200,19 @@ const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
   //   }
   // };
 
-  useEffect(() => {
-    // Auto-save every 5 seconds (5000 ms)
-    const interval = setInterval(() => {
-      if (editor) {
-        const content = editor.getHTML();
-        localStorage.setItem("editorContent", content);
-      }
-    }, 5000);
+  //autosave in local storage
+  // useEffect(() => {
+  //   // Auto-save every 5 seconds (5000 ms)
+  //   const interval = setInterval(() => {
+  //     if (editor) {
+  //       const content = editor.getHTML();
+  //       localStorage.setItem("editorContent", content);
+  //     }
+  //   }, 5000);
 
-    // Clean up the interval on component unmount
-    return () => clearInterval(interval);
-  }, [editor]);
+  //   // Clean up the interval on component unmount
+  //   return () => clearInterval(interval);
+  // }, [editor]);
 
   // Clean up the editor when the component unmounts
   useEffect(() => {
@@ -240,7 +239,7 @@ const WambuiEditor = ({ placeholder, value, handleEditorChange }: Props) => {
       </Toolbar> */}
       <StyledEditorContent editor={editor} />
       {/* Optional: Display the HTML content for debugging */}
-      <pre>{editorContent}</pre>
+      {/* <pre>{editorContent}</pre> */}
       <WambuiFloatingToolbar editor={editor} />
     </EditorContainer>
   );

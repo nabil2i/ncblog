@@ -63,7 +63,7 @@ const PersistLogin = () => {
     if (
       path.includes("/admin") ||
       path.includes("/myposts") ||
-      path.includes("/blog/write")
+      path.includes("/blog/new-post")
     )
       content = <Navigate to={"/login"}></Navigate>;
 

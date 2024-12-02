@@ -115,7 +115,7 @@ const Profile = () => {
                 privilegelevel === "admin" ||
                 privilegelevel === "superadmin") && (
                 <>
-                  <MenuItem onClick={() => navigate("/blog/write")}>
+                  <MenuItem onClick={() => navigate("/blog/new-post")}>
                     Create a post
                   </MenuItem>
                   <MenuItem onClick={() => navigate("/myposts")}>

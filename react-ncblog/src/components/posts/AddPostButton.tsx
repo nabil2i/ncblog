@@ -7,7 +7,7 @@ const AddPostButton = () => {
     <Link
       as={NavLink}
       _hover={{ textDecoration: "none" }}
-      to={`/myposts/write`}
+      to={`/myposts/new-post`}
     >
       {/* <Link href={`/admin/posts/new`}> */}
       <Button colorScheme="gray">Create a post</Button>

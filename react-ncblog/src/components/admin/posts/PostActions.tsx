@@ -16,8 +16,8 @@ const PostActions = ({ post, isSubmittingPost, setFieldValue }: Props) => {
   const location = useLocation();
   const isCreate =
     location.pathname.startsWith("/dashboard/posts/new") ||
-    location.pathname.startsWith("/blog/write") ||
-    location.pathname.startsWith("/myposts/write");
+    location.pathname.startsWith("/blog/new-post") ||
+    location.pathname.startsWith("/myposts/new-post");
   const [selectedCategory, setSelectedCategory] = useState(""); // State to track the selected category
 
   useEffect(() => {

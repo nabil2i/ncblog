@@ -24,6 +24,7 @@ export interface FetchError {
   }
   message: string;
   isError: boolean;
+  status: number;
 }
 
 export interface ArrayData<S> {

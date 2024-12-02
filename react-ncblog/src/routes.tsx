@@ -45,7 +45,7 @@ const router = createBrowserRouter([
                   { path: ":slug", element: <PostPage /> },
                   // { path: ":slug", element: <PostPage /> },
                   {
-                    path: "write",
+                    path: "new-post",
                     element: <RequireAuth allowedRoles={['blogauthor', 'admin', 'superadmin']} />,
                     children: [{ index: true, element: <AddPostPage /> }],
                   },
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
                   { index: true, element: <MyPostsPage /> },
                   { path: ":id", element: <PostPage /> },
                   { path: "edit/:id", element: <EditPostPage /> },
-                  { path: "write", element: <AddPostPage /> },
+                  { path: "new-post", element: <AddPostPage /> },
                 ],
               },
               { path: "search", element: <SearchPage /> },

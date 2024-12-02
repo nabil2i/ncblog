@@ -26,13 +26,18 @@ export default interface Post {
   likeCount?: number;
   status?: 'draft' | 'published';
   deletingStatus?: 'active' | 'deleted' | 'archived';
+  currentDraftId: string;
 }
 export interface PostData {
   // _id?: string;
-  title: string;
-  body: string;
+  title?: string;
+  body?: string;
   // tags?: string[];
   postAuthorId?: string;
+  slug?: string;
+  img?: string;
+  category?: string;
+  tags?: string[];
 }
 
 export interface PostComment {
@@ -62,6 +67,7 @@ export interface PostFormData {
   img?: string;
   category?: string;
   tags?: string[];
+  status?: string;
 }
 
 // export interface LikePost {

@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react";
+import { Box, Spinner } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useGetPostsQuery } from "../../app/features/posts/postsApiSlice";
 import BlogDetailsActions from "../../components/admin/posts/BlogDetailsActions";
@@ -57,26 +57,26 @@ const AdminPostPage = () => {
 
   return content;
 
-  return (
-    <>
-      <Grid
-        gap={2}
-        templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
-        templateColumns={{ base: "1fr", lg: "2f 1fr" }}
-      >
-        <GridItem area="main" p={4}>
-          <BlogPostDetails post={post as Post} />
-        </GridItem>
+  // return (
+  //   <>
+  //     <Grid
+  //       gap={2}
+  //       templateAreas={{ base: `"side" "main"`, lg: `"main side"` }}
+  //       templateColumns={{ base: "1fr", lg: "2f 1fr" }}
+  //     >
+  //       <GridItem area="main" p={4}>
+  //         <BlogPostDetails post={post as Post} />
+  //       </GridItem>
 
-        {/* <GridItem area="side">
-          <Flex direction={{ base: "row", lg: "column" }} gap="4">
-            <EditPostButton postId={post._id as string} />
-            <DeletePostButton postId={post._id as string} />
-          </Flex>
-        </GridItem> */}
-      </Grid>
-    </>
-  );
+  //       {/* <GridItem area="side">
+  //         <Flex direction={{ base: "row", lg: "column" }} gap="4">
+  //           <EditPostButton postId={post._id as string} />
+  //           <DeletePostButton postId={post._id as string} />
+  //         </Flex>
+  //       </GridItem> */}
+  //     </Grid>
+  //   </>
+  // );
 };
 
 export default AdminPostPage;
